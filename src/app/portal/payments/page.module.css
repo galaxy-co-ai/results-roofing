@@ -1,0 +1,511 @@
+/* =================================================
+   PORTAL PAYMENTS STYLES
+   ================================================= */
+
+.paymentsPage {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--rr-color-text-primary);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--rr-color-text-secondary);
+  margin: 0;
+}
+
+/* ========================================
+   SUMMARY CARD
+   ======================================== */
+
+.summaryCard {
+  background: var(--rr-color-bg-secondary);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--rr-color-border-default);
+}
+
+.summaryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.summaryTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0;
+}
+
+.paymentMethod {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--rr-color-bg-tertiary);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: var(--rr-color-text-secondary);
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rr-color-border-default);
+  margin-bottom: 1.5rem;
+}
+
+.summaryItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.summaryLabel {
+  font-size: 0.8125rem;
+  color: var(--rr-color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.summaryValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--rr-color-text-primary);
+}
+
+.summarySuccess {
+  color: var(--rr-color-success);
+}
+
+.summaryPrimary {
+  color: var(--rr-color-sandstone);
+}
+
+/* Progress Bar */
+.progressContainer {
+  background: var(--rr-color-bg-tertiary);
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.progressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.625rem;
+}
+
+.progressLabel {
+  font-size: 0.875rem;
+  color: var(--rr-color-text-secondary);
+}
+
+.progressPercent {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--rr-color-sandstone);
+}
+
+.progressBar {
+  height: 8px;
+  background: var(--rr-color-bg-secondary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--rr-color-sandstone), var(--rr-color-terracotta));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* ========================================
+   TWO COLUMN LAYOUT
+   ======================================== */
+
+.twoColumn {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0 0 1.25rem;
+}
+
+/* ========================================
+   PAYMENT OPTIONS
+   ======================================== */
+
+.optionsCard {
+  background: var(--rr-color-bg-secondary);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid var(--rr-color-border-default);
+}
+
+.optionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.optionButton {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--rr-color-bg-tertiary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.optionButton:hover {
+  border-color: var(--rr-color-sandstone);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.optionPrimary {
+  background: linear-gradient(135deg, var(--rr-color-sandstone), var(--rr-color-terracotta));
+  border: none;
+  color: white;
+}
+
+.optionPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(196, 167, 125, 0.3);
+}
+
+.optionIcon {
+  width: 44px;
+  height: 44px;
+  background: var(--rr-color-bg-secondary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rr-color-sandstone);
+  flex-shrink: 0;
+}
+
+.optionPrimary .optionIcon {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.optionContent {
+  flex: 1;
+}
+
+.optionTitle {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin-bottom: 0.125rem;
+}
+
+.optionPrimary .optionTitle {
+  color: white;
+}
+
+.optionDescription {
+  font-size: 0.8125rem;
+  color: var(--rr-color-text-tertiary);
+}
+
+.optionPrimary .optionDescription {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.optionAmount {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--rr-color-text-primary);
+}
+
+.optionPrimary .optionAmount {
+  color: white;
+}
+
+.optionArrow {
+  color: var(--rr-color-text-tertiary);
+  flex-shrink: 0;
+}
+
+.optionPrimary .optionArrow {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Scheduled Payment */
+.scheduledPayment {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--rr-color-info-light);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.scheduledPayment:hover {
+  background: #d4e8f9;
+}
+
+.scheduledIcon {
+  color: var(--rr-color-info);
+  flex-shrink: 0;
+}
+
+.scheduledContent {
+  flex: 1;
+}
+
+.scheduledTitle {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--rr-color-text-primary);
+}
+
+.scheduledDescription {
+  font-size: 0.8125rem;
+  color: var(--rr-color-text-secondary);
+}
+
+.scheduledArrow {
+  color: var(--rr-color-info);
+}
+
+/* ========================================
+   PAYMENT HISTORY
+   ======================================== */
+
+.historyCard {
+  background: var(--rr-color-bg-secondary);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid var(--rr-color-border-default);
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.historyItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--rr-color-bg-tertiary);
+  border-radius: 10px;
+}
+
+.historyIcon {
+  width: 36px;
+  height: 36px;
+  background: var(--rr-color-success-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rr-color-success);
+  flex-shrink: 0;
+}
+
+.historyContent {
+  flex: 1;
+}
+
+.historyHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.historyType {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+}
+
+.historyAmount {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--rr-color-success);
+}
+
+.historyMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--rr-color-text-tertiary);
+  margin-bottom: 0.375rem;
+}
+
+.historyDot {
+  color: var(--rr-color-border-default);
+}
+
+.historyConfirmation {
+  font-size: 0.75rem;
+  color: var(--rr-color-text-tertiary);
+  font-family: monospace;
+}
+
+.downloadButton {
+  width: 36px;
+  height: 36px;
+  background: var(--rr-color-bg-secondary);
+  border: none;
+  border-radius: 8px;
+  color: var(--rr-color-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.downloadButton:hover {
+  background: var(--rr-color-sandstone);
+  color: white;
+}
+
+/* Empty State */
+.emptyHistory {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.emptyIcon {
+  color: var(--rr-color-text-tertiary);
+  margin-bottom: 0.75rem;
+}
+
+.emptyText {
+  font-size: 0.9375rem;
+  color: var(--rr-color-text-secondary);
+  margin: 0;
+}
+
+/* ========================================
+   INFO NOTE
+   ======================================== */
+
+.infoNote {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--rr-color-bg-tertiary);
+  border-radius: 12px;
+  border: 1px solid var(--rr-color-border-default);
+}
+
+.infoIcon {
+  color: var(--rr-color-sandstone);
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.infoContent {
+  flex: 1;
+}
+
+.infoTitle {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--rr-color-text-primary);
+  margin: 0 0 0.25rem;
+}
+
+.infoText {
+  font-size: 0.875rem;
+  color: var(--rr-color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .summaryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .twoColumn {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryValue {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .summaryGrid {
+    gap: 1rem;
+  }
+
+  .optionButton {
+    flex-wrap: wrap;
+  }
+
+  .optionAmount {
+    width: 100%;
+    margin-top: 0.5rem;
+    order: 3;
+  }
+}

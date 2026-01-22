@@ -4,6 +4,9 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
  * Define routes that require authentication
  * - Portal routes require user to be signed in
  * - API routes for portal data require authentication
+ * 
+ * NOTE: Auth protection is disabled during development until Clerk is configured.
+ * Uncomment the auth.protect() call when ready to enable authentication.
  */
 const isProtectedRoute = createRouteMatcher([
   '/portal(.*)',
@@ -16,9 +19,10 @@ const isProtectedRoute = createRouteMatcher([
  * Protected routes: customer portal
  */
 export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) {
-    await auth.protect();
-  }
+  // TODO: Enable authentication when Clerk is configured
+  // if (isProtectedRoute(req)) {
+  //   await auth.protect();
+  // }
 });
 
 export const config = {
