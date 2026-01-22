@@ -5,7 +5,7 @@ import { useChat } from './ChatContext';
 import styles from './SidebarSupport.module.css';
 
 /**
- * A compact support section for sidebars.
+ * A compact support button for the sidebar.
  * Opens the chat widget when clicked.
  */
 export function SidebarSupport() {
@@ -19,9 +19,8 @@ export function SidebarSupport() {
         aria-label="Open support chat"
       >
         <MessageCircle size={18} />
-        <span>Chat with Support</span>
+        <span>Support</span>
       </button>
-      <p className={styles.responseTime}>Usually replies in minutes</p>
     </div>
   );
 }

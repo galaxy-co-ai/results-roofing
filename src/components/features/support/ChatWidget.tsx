@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Minimize2 } from 'lucide-react';
+import { Send, Minimize2 } from 'lucide-react';
 import { useChat } from './ChatContext';
 import styles from './ChatWidget.module.css';
 
@@ -29,7 +29,7 @@ const QUICK_REPLIES = [
 ];
 
 export function ChatWidget() {
-  const { isOpen, closeChat, toggleChat, initialMessage } = useChat();
+  const { isOpen, closeChat, initialMessage } = useChat();
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -199,17 +199,6 @@ export function ChatWidget() {
           </button>
         </form>
       </div>
-
-      {/* Floating Button */}
-      <button
-        className={`${styles.floatingButton} ${isOpen ? styles.hidden : ''}`}
-        onClick={toggleChat}
-        aria-label="Open support chat"
-        aria-expanded={isOpen}
-      >
-        <MessageCircle size={24} />
-        <span className={styles.buttonLabel}>Help</span>
-      </button>
     </>
   );
 }

@@ -1,136 +1,168 @@
-import type { Metadata } from 'next';
-import { 
-  FileText, 
-  Download, 
-  Eye, 
-  CheckCircle,
-  Clock,
-  Filter,
-  Search,
-  FolderOpen,
-  Shield,
-  FileCheck,
-  Receipt
-} from 'lucide-react';
+'use client';
+
+import { useState } from 'react';
+import { Filter, Search } from 'lucide-react';
+import { DocumentCard } from '@/components/features/documents';
+import type { DocumentData } from '@/components/features/documents';
 import { HelpNoteSupport } from '@/components/features/support';
 import styles from './page.module.css';
 
-export const metadata: Metadata = {
-  title: 'Documents',
-  description: 'Access and download your roofing project documents including contracts, warranties, and permits.',
-};
-
-// Document type icons
-const DOC_TYPE_ICONS: Record<string, typeof FileText> = {
-  contract: FileCheck,
-  warranty: Shield,
-  invoice: Receipt,
-  permit: FolderOpen,
-  other: FileText,
-};
-
 // Mock data - would come from database in production
-const DOCUMENTS = [
+const DOCUMENTS: (DocumentData & { category: string; fileSize: string; description: string })[] = [
   {
     id: 'doc-1',
-    name: 'Roofing Contract',
     type: 'contract',
-    category: 'Contracts',
+    title: 'Roofing Contract',
     status: 'signed',
-    dateAdded: 'January 22, 2026',
+    date: 'January 22, 2026',
+    category: 'Contracts',
     fileSize: '245 KB',
     description: 'Full roofing replacement agreement for Better Package',
+    projectData: {
+      address: '123 Main Street, Austin, TX 78701',
+      customerName: 'John Smith',
+      email: 'john@example.com',
+      phone: '(555) 123-4567',
+      packageName: 'Better Package',
+      totalPrice: 15000,
+      depositAmount: 750,
+      installationDate: 'February 3, 2026',
+      contractDate: 'January 22, 2026',
+      materials: 'GAF Timberline HDZ Architectural Shingles',
+      warrantyYears: 30,
+    },
   },
   {
     id: 'doc-2',
-    name: '30-Year Warranty Certificate',
     type: 'warranty',
-    category: 'Warranty',
+    title: '30-Year Warranty Certificate',
     status: 'active',
-    dateAdded: 'January 22, 2026',
+    date: 'January 22, 2026',
+    category: 'Warranty',
     fileSize: '128 KB',
     description: 'GAF Golden Pledge warranty coverage details',
+    projectData: {
+      address: '123 Main Street, Austin, TX 78701',
+      customerName: 'John Smith',
+      email: 'john@example.com',
+      phone: '(555) 123-4567',
+      packageName: 'Better Package',
+      totalPrice: 15000,
+      depositAmount: 750,
+      installationDate: 'February 3, 2026',
+      contractDate: 'January 22, 2026',
+      materials: 'GAF Timberline HDZ Architectural Shingles',
+      warrantyYears: 30,
+    },
   },
   {
     id: 'doc-3',
-    name: 'Deposit Receipt',
-    type: 'invoice',
-    category: 'Payments',
+    type: 'receipt',
+    title: 'Deposit Receipt',
     status: 'paid',
-    dateAdded: 'January 22, 2026',
+    date: 'January 22, 2026',
+    category: 'Payments',
     fileSize: '56 KB',
     description: 'Receipt for $750 deposit payment',
+    projectData: {
+      address: '123 Main Street, Austin, TX 78701',
+      customerName: 'John Smith',
+      email: 'john@example.com',
+      phone: '(555) 123-4567',
+      packageName: 'Better Package',
+      totalPrice: 15000,
+      depositAmount: 750,
+      installationDate: 'February 3, 2026',
+      contractDate: 'January 22, 2026',
+      materials: 'GAF Timberline HDZ Architectural Shingles',
+      warrantyYears: 30,
+    },
   },
   {
     id: 'doc-4',
-    name: 'Building Permit',
     type: 'permit',
+    title: 'Building Permit',
+    status: 'approved',
+    date: 'January 23, 2026',
     category: 'Permits',
-    status: 'pending',
-    dateAdded: 'January 23, 2026',
     fileSize: '312 KB',
     description: 'City of Austin building permit application',
+    projectData: {
+      address: '123 Main Street, Austin, TX 78701',
+      customerName: 'John Smith',
+      email: 'john@example.com',
+      phone: '(555) 123-4567',
+      packageName: 'Better Package',
+      totalPrice: 15000,
+      depositAmount: 750,
+      installationDate: 'February 3, 2026',
+      contractDate: 'January 22, 2026',
+      materials: 'GAF Timberline HDZ Architectural Shingles',
+      warrantyYears: 30,
+      permitNumber: 'BP-2026-00847',
+    },
   },
   {
     id: 'doc-5',
-    name: 'Material Specifications',
-    type: 'other',
-    category: 'Materials',
+    type: 'materials',
+    title: 'Material Specifications',
     status: 'active',
-    dateAdded: 'January 23, 2026',
+    date: 'January 23, 2026',
+    category: 'Materials',
     fileSize: '1.2 MB',
     description: 'GAF Timberline HDZ shingle specifications and colors',
+    projectData: {
+      address: '123 Main Street, Austin, TX 78701',
+      customerName: 'John Smith',
+      email: 'john@example.com',
+      phone: '(555) 123-4567',
+      packageName: 'Better Package',
+      totalPrice: 15000,
+      depositAmount: 750,
+      installationDate: 'February 3, 2026',
+      contractDate: 'January 22, 2026',
+      materials: 'GAF Timberline HDZ Architectural Shingles',
+      warrantyYears: 30,
+    },
   },
   {
     id: 'doc-6',
-    name: 'Project Scope of Work',
-    type: 'contract',
-    category: 'Contracts',
+    type: 'scope',
+    title: 'Project Scope of Work',
     status: 'signed',
-    dateAdded: 'January 22, 2026',
+    date: 'January 22, 2026',
+    category: 'Contracts',
     fileSize: '189 KB',
     description: 'Detailed breakdown of all work to be performed',
+    projectData: {
+      address: '123 Main Street, Austin, TX 78701',
+      customerName: 'John Smith',
+      email: 'john@example.com',
+      phone: '(555) 123-4567',
+      packageName: 'Better Package',
+      totalPrice: 15000,
+      depositAmount: 750,
+      installationDate: 'February 3, 2026',
+      contractDate: 'January 22, 2026',
+      materials: 'GAF Timberline HDZ Architectural Shingles',
+      warrantyYears: 30,
+    },
   },
 ];
 
 const CATEGORIES = ['All Documents', 'Contracts', 'Warranty', 'Payments', 'Permits', 'Materials'];
 
-function getStatusBadge(status: string) {
-  switch (status) {
-    case 'signed':
-      return (
-        <span className={`${styles.statusBadge} ${styles.statusSigned}`}>
-          <CheckCircle size={12} /> Signed
-        </span>
-      );
-    case 'active':
-      return (
-        <span className={`${styles.statusBadge} ${styles.statusActive}`}>
-          <CheckCircle size={12} /> Active
-        </span>
-      );
-    case 'paid':
-      return (
-        <span className={`${styles.statusBadge} ${styles.statusPaid}`}>
-          <CheckCircle size={12} /> Paid
-        </span>
-      );
-    case 'pending':
-      return (
-        <span className={`${styles.statusBadge} ${styles.statusPending}`}>
-          <Clock size={12} /> Pending
-        </span>
-      );
-    default:
-      return (
-        <span className={`${styles.statusBadge} ${styles.statusDefault}`}>
-          <AlertCircle size={12} /> {status}
-        </span>
-      );
-  }
-}
-
 export default function DocumentsPage() {
+  const [activeCategory, setActiveCategory] = useState('All Documents');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredDocuments = DOCUMENTS.filter((doc) => {
+    const matchesCategory = activeCategory === 'All Documents' || doc.category === activeCategory;
+    const matchesSearch = doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         doc.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
   return (
     <div className={styles.documentsPage}>
       {/* Header */}
@@ -138,7 +170,7 @@ export default function DocumentsPage() {
         <div className={styles.headerContent}>
           <h1 className={styles.title}>Your Documents</h1>
           <p className={styles.subtitle}>
-            Access, view, and download all project-related documents
+            Click any document to view, sign, print, or download
           </p>
         </div>
       </header>
@@ -152,6 +184,8 @@ export default function DocumentsPage() {
             placeholder="Search documents..."
             className={styles.searchInput}
             aria-label="Search documents"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <div className={styles.filterGroup}>
@@ -164,56 +198,42 @@ export default function DocumentsPage() {
 
       {/* Category Tabs */}
       <div className={styles.categoryTabs}>
-        {CATEGORIES.map((category, index) => (
-          <button
-            key={category}
-            className={`${styles.categoryTab} ${index === 0 ? styles.categoryTabActive : ''}`}
-          >
-            {category}
-            {category === 'All Documents' && (
-              <span className={styles.categoryCount}>{DOCUMENTS.length}</span>
-            )}
-          </button>
-        ))}
+        {CATEGORIES.map((category) => {
+          const count = category === 'All Documents' 
+            ? DOCUMENTS.length 
+            : DOCUMENTS.filter(d => d.category === category).length;
+          
+          return (
+            <button
+              key={category}
+              className={`${styles.categoryTab} ${activeCategory === category ? styles.categoryTabActive : ''}`}
+              onClick={() => setActiveCategory(category)}
+            >
+              {category}
+              {count > 0 && (
+                <span className={styles.categoryCount}>{count}</span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       {/* Documents List */}
       <div className={styles.documentsList}>
-        {DOCUMENTS.map((doc) => {
-          const IconComponent = DOC_TYPE_ICONS[doc.type] || FileText;
-          
-          return (
-            <article key={doc.id} className={styles.documentCard}>
-              <div className={styles.docIcon}>
-                <IconComponent size={24} />
-              </div>
-              
-              <div className={styles.docContent}>
-                <div className={styles.docHeader}>
-                  <h3 className={styles.docName}>{doc.name}</h3>
-                  {getStatusBadge(doc.status)}
-                </div>
-                <p className={styles.docDescription}>{doc.description}</p>
-                <div className={styles.docMeta}>
-                  <span className={styles.docCategory}>{doc.category}</span>
-                  <span className={styles.docDot}>•</span>
-                  <span className={styles.docDate}>{doc.dateAdded}</span>
-                  <span className={styles.docDot}>•</span>
-                  <span className={styles.docSize}>{doc.fileSize}</span>
-                </div>
-              </div>
-
-              <div className={styles.docActions}>
-                <button className={styles.actionButton} aria-label="View document">
-                  <Eye size={18} />
-                </button>
-                <button className={styles.actionButton} aria-label="Download document">
-                  <Download size={18} />
-                </button>
-              </div>
-            </article>
-          );
-        })}
+        {filteredDocuments.map((doc) => (
+          <DocumentCard
+            key={doc.id}
+            document={doc}
+            subtitle={doc.category}
+            fileSize={doc.fileSize}
+          />
+        ))}
+        
+        {filteredDocuments.length === 0 && (
+          <div className={styles.emptyState}>
+            <p>No documents found matching your search.</p>
+          </div>
+        )}
       </div>
 
       {/* Help Note */}

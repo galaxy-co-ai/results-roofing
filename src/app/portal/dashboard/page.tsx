@@ -1,4 +1,6 @@
-import type { Metadata } from 'next';
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import { 
   FileText, 
@@ -6,19 +8,13 @@ import {
   Calendar, 
   CheckCircle,
   Clock,
-  AlertCircle,
-  ArrowRight,
   Home,
   Wrench,
-  Shield,
-  ChevronRight
+  ChevronRight,
+  ChevronDown
 } from 'lucide-react';
+import { FAQBar } from '@/components/features/faq';
 import styles from './page.module.css';
-
-export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'View your roofing project status, upcoming appointments, and recent activity.',
-};
 
 // Mock data - would come from database in production
 const PROJECT_STATUS = {
@@ -31,6 +27,10 @@ const PROJECT_STATUS = {
   totalPrice: 15000,
   depositPaid: 750,
   balanceDue: 14250,
+  materials: 'GAF Timberline HDZ Architectural Shingles',
+  warrantyYears: 30,
+  estimatedDuration: '1-2 days',
+  roofSize: '2,150 sq ft',
 };
 
 const TIMELINE_STEPS = [
@@ -90,6 +90,8 @@ function getStatusIcon(status: string) {
 }
 
 export default function DashboardPage() {
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
+
   return (
     <div className={styles.dashboard}>
       {/* Header */}
@@ -117,30 +119,64 @@ export default function DashboardPage() {
           <span className={styles.propertyAddress}>{PROJECT_STATUS.address}</span>
         </div>
 
-        <div className={styles.projectDetails}>
-          <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Package</span>
-            <span className={styles.detailValue}>{PROJECT_STATUS.package}</span>
-          </div>
-          <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Total</span>
-            <span className={styles.detailValue}>{formatCurrency(PROJECT_STATUS.totalPrice)}</span>
-          </div>
-          <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Paid</span>
-            <span className={styles.detailValueSuccess}>{formatCurrency(PROJECT_STATUS.depositPaid)}</span>
-          </div>
-          <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Balance</span>
-            <span className={styles.detailValuePrimary}>{formatCurrency(PROJECT_STATUS.balanceDue)}</span>
-          </div>
+        <div className={styles.nextMilestone}>
+          <Calendar size={18} className={styles.milestoneIcon} />
+          <span className={styles.milestoneText}>
+            <strong>{PROJECT_STATUS.nextMilestone}</strong> scheduled for {PROJECT_STATUS.nextMilestoneDate}
+          </span>
         </div>
 
-        <div className={styles.nextMilestone}>
-          <AlertCircle size={18} className={styles.milestoneIcon} />
-          <span className={styles.milestoneText}>
-            Next: <strong>{PROJECT_STATUS.nextMilestone}</strong> scheduled for {PROJECT_STATUS.nextMilestoneDate}
-          </span>
+        {/* Expandable Project Details */}
+        <button 
+          className={styles.detailsToggle}
+          onClick={() => setDetailsExpanded(!detailsExpanded)}
+          aria-expanded={detailsExpanded}
+        >
+          <span>Project Details</span>
+          <ChevronDown 
+            size={18} 
+            className={`${styles.detailsChevron} ${detailsExpanded ? styles.detailsChevronOpen : ''}`}
+          />
+        </button>
+
+        <div className={`${styles.projectDetails} ${detailsExpanded ? styles.projectDetailsOpen : ''}`}>
+          <div className={styles.detailsGrid}>
+            <div className={styles.detailItem}>
+              <span className={styles.detailLabel}>Package</span>
+              <span className={styles.detailValue}>{PROJECT_STATUS.package}</span>
+            </div>
+            <div className={styles.detailItem}>
+              <span className={styles.detailLabel}>Roof Size</span>
+              <span className={styles.detailValue}>{PROJECT_STATUS.roofSize}</span>
+            </div>
+            <div className={styles.detailItem}>
+              <span className={styles.detailLabel}>Materials</span>
+              <span className={styles.detailValue}>{PROJECT_STATUS.materials}</span>
+            </div>
+            <div className={styles.detailItem}>
+              <span className={styles.detailLabel}>Est. Duration</span>
+              <span className={styles.detailValue}>{PROJECT_STATUS.estimatedDuration}</span>
+            </div>
+            <div className={styles.detailItem}>
+              <span className={styles.detailLabel}>Warranty</span>
+              <span className={styles.detailValue}>{PROJECT_STATUS.warrantyYears} Years</span>
+            </div>
+            <div className={styles.detailItem}>
+              <span className={styles.detailLabel}>Project Total</span>
+              <span className={styles.detailValue}>{formatCurrency(PROJECT_STATUS.totalPrice)}</span>
+            </div>
+          </div>
+          
+          <div className={styles.paymentSummary}>
+            <div className={styles.paymentRow}>
+              <span>Deposit Paid</span>
+              <span className={styles.paymentPaid}>{formatCurrency(PROJECT_STATUS.depositPaid)}</span>
+            </div>
+            <div className={styles.paymentRow}>
+              <span>Balance Due</span>
+              <span className={styles.paymentDue}>{formatCurrency(PROJECT_STATUS.balanceDue)}</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -193,22 +229,8 @@ export default function DashboardPage() {
         </section>
       </div>
 
-      {/* Warranty Card */}
-      <section className={styles.warrantyCard}>
-        <div className={styles.warrantyIcon}>
-          <Shield size={28} />
-        </div>
-        <div className={styles.warrantyContent}>
-          <h3 className={styles.warrantyTitle}>30-Year Full Warranty</h3>
-          <p className={styles.warrantyText}>
-            Your roof is covered by our comprehensive 30-year warranty, including materials 
-            and workmanship. View warranty details in your documents.
-          </p>
-        </div>
-        <Link href="/portal/documents" className={styles.warrantyLink}>
-          View Warranty <ArrowRight size={16} />
-        </Link>
-      </section>
+      {/* FAQ Bar */}
+      <FAQBar />
     </div>
   );
 }

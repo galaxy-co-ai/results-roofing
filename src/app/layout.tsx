@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { ChatProvider, ChatWidget } from '@/components/features/support';
+import { DocumentProvider, DocumentViewer } from '@/components/features/documents';
+import { FAQProvider, FAQModal } from '@/components/features/faq';
 import '@/styles/globals.css';
 
 const inter = Inter({
@@ -57,8 +59,14 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body>
         <ChatProvider>
-          {children}
-          <ChatWidget />
+          <DocumentProvider>
+            <FAQProvider>
+              {children}
+              <ChatWidget />
+              <DocumentViewer />
+              <FAQModal />
+            </FAQProvider>
+          </DocumentProvider>
         </ChatProvider>
       </body>
     </html>

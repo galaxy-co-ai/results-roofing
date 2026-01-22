@@ -1,0 +1,65 @@
+.faqBar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 20px 24px;
+  background: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  font-family: inherit;
+}
+
+.faqBar:hover {
+  border-color: var(--rr-color-sandstone);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.faqBar:focus-visible {
+  outline: 2px solid var(--rr-color-sandstone);
+  outline-offset: 2px;
+}
+
+.iconWrapper {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rr-color-sandstone);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--rr-color-text-secondary);
+}
+
+.arrow {
+  color: var(--rr-color-text-tertiary);
+  transition: transform 0.2s;
+}
+
+.faqBar:hover .arrow {
+  transform: translateX(4px);
+  color: var(--rr-color-sandstone);
+}

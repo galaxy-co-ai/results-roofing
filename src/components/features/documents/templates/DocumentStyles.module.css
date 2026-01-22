@@ -1,0 +1,351 @@
+/* Shared Document Styles */
+.document {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: var(--rr-color-charcoal);
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+/* Letterhead */
+.letterhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--rr-color-charcoal);
+  margin-bottom: 32px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoIcon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rr-color-sandstone);
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.companyInfo {
+  font-family: 'Inter', sans-serif;
+}
+
+.companyName {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--rr-color-charcoal);
+  margin: 0 0 4px;
+}
+
+.companyTagline {
+  font-size: 0.75rem;
+  color: var(--rr-color-stone);
+  margin: 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.contactInfo {
+  text-align: right;
+  font-size: 0.8125rem;
+  color: var(--rr-color-slate);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+}
+
+/* Document Title */
+.documentTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 8px;
+  color: var(--rr-color-charcoal);
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.documentNumber {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--rr-color-stone);
+  margin: 0 0 32px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Sections */
+.section {
+  margin-bottom: 28px;
+}
+
+.sectionTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--rr-color-charcoal);
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rr-color-sand);
+  font-family: 'Inter', sans-serif;
+}
+
+.sectionContent {
+  padding-left: 0;
+}
+
+/* Info Grid */
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 32px;
+  margin-bottom: 24px;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.infoLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--rr-color-stone);
+  font-family: 'Inter', sans-serif;
+}
+
+.infoValue {
+  font-size: 0.9375rem;
+  color: var(--rr-color-charcoal);
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.table th,
+.table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--rr-color-sand);
+  font-size: 0.875rem;
+}
+
+.table th {
+  background: var(--rr-color-sand-light);
+  font-weight: 600;
+  color: var(--rr-color-charcoal);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 0.75rem;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.tableTotal {
+  font-weight: 600;
+  background: var(--rr-color-sand-light);
+}
+
+.tableTotal td {
+  border-top: 2px solid var(--rr-color-charcoal);
+}
+
+/* Highlight Box */
+.highlightBox {
+  background: var(--rr-color-sand-light);
+  border-left: 4px solid var(--rr-color-sandstone);
+  padding: 16px 20px;
+  margin: 20px 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.highlightBox p {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+/* Signature Block */
+.signatureBlock {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rr-color-sand);
+}
+
+.signatureItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.signatureLine {
+  border-bottom: 1px solid var(--rr-color-charcoal);
+  height: 60px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 4px;
+}
+
+.signatureValue {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 1.5rem;
+  color: var(--rr-color-charcoal);
+}
+
+.signatureLabel {
+  font-size: 0.75rem;
+  color: var(--rr-color-stone);
+  font-family: 'Inter', sans-serif;
+}
+
+.signatureDate {
+  font-size: 0.8125rem;
+  color: var(--rr-color-slate);
+  margin-top: 4px;
+}
+
+/* Footer */
+.footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rr-color-sand);
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--rr-color-stone);
+  font-family: 'Inter', sans-serif;
+}
+
+.footer p {
+  margin: 4px 0;
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--rr-color-success-light);
+  border: 1px solid var(--rr-color-success);
+  border-radius: 8px;
+  color: var(--rr-color-success);
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 24px;
+}
+
+/* Terms List */
+.termsList {
+  padding-left: 24px;
+  margin: 12px 0;
+}
+
+.termsList li {
+  margin-bottom: 8px;
+}
+
+/* Watermark */
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  font-size: 120px;
+  font-weight: 700;
+  color: rgba(74, 124, 89, 0.08);
+  text-transform: uppercase;
+  pointer-events: none;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+}
+
+/* Certificate styling */
+.certificateWrapper {
+  position: relative;
+  border: 3px double var(--rr-color-sandstone);
+  padding: 8px;
+}
+
+.certificateInner {
+  border: 1px solid var(--rr-color-sand);
+  padding: 40px;
+}
+
+.certificateTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--rr-color-charcoal);
+  margin: 0 0 8px;
+  font-family: 'Inter', sans-serif;
+}
+
+.certificateSubtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--rr-color-stone);
+  margin: 0 0 32px;
+}
+
+.certificateSeal {
+  display: flex;
+  justify-content: center;
+  margin: 32px 0;
+}
+
+.seal {
+  width: 100px;
+  height: 100px;
+  border: 3px solid var(--rr-color-sandstone);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--rr-color-sand-light);
+}
+
+.sealInner {
+  width: 80px;
+  height: 80px;
+  border: 2px solid var(--rr-color-sandstone);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--rr-color-sandstone);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: 'Inter', sans-serif;
+}
+
+.sealYears {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
