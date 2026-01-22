@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results Roofing - Executive Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sandstone: #C4A77D;
+      --terracotta: #B86B4C;
+      --charcoal: #2C2C2C;
+      --cream: #FAF8F5;
+      --sand-light: #F5F0E8;
+      --sand: #E8E0D4;
+      --stone: #9C9688;
+      --slate: #5C5C5C;
+      --success: #4A7C59;
+      --white: #FFFFFF;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      line-height: 1.6;
+      padding: 40px 24px;
+    }
+
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--sand);
+    }
+
+    .header-left h1 {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .header-left .tagline {
+      color: var(--slate);
+      font-size: 15px;
+    }
+
+    .header-right {
+      text-align: right;
+    }
+
+    .logo {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .logo span:first-child { color: var(--charcoal); }
+    .logo span:last-child { color: var(--sandstone); }
+
+    .header-right .date {
+      color: var(--stone);
+      font-size: 13px;
+    }
+
+    /* Progress Hero */
+    .progress-hero {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 40px;
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 12px rgba(44, 44, 44, 0.05);
+    }
+
+    .progress-ring {
+      position: relative;
+      width: 120px;
+      height: 120px;
+    }
+
+    .progress-ring svg { transform: rotate(-90deg); }
+    .progress-ring circle { fill: none; stroke-width: 10; }
+    .progress-ring .bg { stroke: var(--sand-light); }
+    .progress-ring .progress {
+      stroke: var(--sandstone);
+      stroke-linecap: round;
+      stroke-dasharray: 314;
+      stroke-dashoffset: 78.5;
+    }
+
+    .progress-ring .percentage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .progress-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .stat-item h4 {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--stone);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .stat-item .value {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .stat-item .subtext {
+      font-size: 12px;
+      color: var(--stone);
+    }
+
+    /* Section */
+    section { margin-bottom: 32px; }
+
+    section h2 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+      color: var(--charcoal);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    section h2::before {
+      content: '';
+      width: 3px;
+      height: 16px;
+      background: var(--sandstone);
+      border-radius: 2px;
+    }
+
+    /* Two Column Layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; }
+      .progress-hero { grid-template-columns: 1fr; }
+      .progress-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .card h3 {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--stone);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    /* Tech Stack Table */
+    .tech-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .tech-table tr {
+      border-bottom: 1px solid var(--sand-light);
+    }
+
+    .tech-table tr:last-child { border-bottom: none; }
+
+    .tech-table td {
+      padding: 8px 0;
+      font-size: 13px;
+    }
+
+    .tech-table td:first-child {
+      color: var(--stone);
+      width: 100px;
+    }
+
+    .tech-table td:last-child {
+      font-weight: 500;
+    }
+
+    .version {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: var(--sand-light);
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      color: var(--slate);
+    }
+
+    /* Directory Tree */
+    .tree {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.8;
+      color: var(--slate);
+    }
+
+    .tree .folder { color: var(--sandstone); font-weight: 500; }
+    .tree .comment { color: var(--stone); font-style: italic; }
+
+    /* Status List */
+    .status-list { background: var(--white); border: 1px solid var(--sand); border-radius: 12px; overflow: hidden; }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--sand-light);
+    }
+
+    .status-item:last-child { border-bottom: none; }
+
+    .status-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .status-icon.complete { background: var(--success); color: white; }
+    .status-icon.active { background: var(--sandstone); color: white; }
+    .status-icon.pending { background: var(--sand); color: var(--stone); }
+
+    .status-content { flex: 1; }
+    .status-content h4 { font-size: 13px; font-weight: 500; }
+    .status-content p { font-size: 12px; color: var(--stone); }
+
+    .status-badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .status-badge.complete { background: rgba(74, 124, 89, 0.12); color: var(--success); }
+    .status-badge.active { background: rgba(196, 167, 125, 0.2); color: var(--terracotta); }
+    .status-badge.pending { background: var(--sand-light); color: var(--stone); }
+
+    /* Integrations Grid */
+    .int-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .int-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: var(--sand-light);
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    .int-status {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .int-status.on { background: var(--success); color: white; }
+    .int-status.ready { background: var(--sand); color: var(--slate); }
+
+    /* Roadmap */
+    .roadmap {
+      display: flex;
+      gap: 0;
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .phase {
+      flex: 1;
+      padding: 16px;
+      border-right: 1px solid var(--sand-light);
+      position: relative;
+    }
+
+    .phase:last-child { border-right: none; }
+
+    .phase.complete { background: rgba(74, 124, 89, 0.05); }
+    .phase.active { background: rgba(196, 167, 125, 0.08); }
+
+    .phase-num {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--stone);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .phase h4 {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .phase p {
+      font-size: 11px;
+      color: var(--stone);
+    }
+
+    .phase-check {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--success);
+      color: white;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phase-active {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--sandstone);
+      color: white;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Dependencies */
+    .deps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .dep-item {
+      background: var(--sand-light);
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .dep-item .name { font-weight: 500; }
+    .dep-item .ver {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--stone);
+    }
+
+    /* README Preview */
+    .readme-box {
+      background: var(--charcoal);
+      color: var(--cream);
+      border-radius: 12px;
+      padding: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .readme-box .h1 { color: var(--sandstone); font-size: 14px; margin-bottom: 8px; }
+    .readme-box .badge { 
+      display: inline-block;
+      background: var(--slate);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      margin-right: 4px;
+    }
+    .readme-box .desc { color: var(--stone); margin: 12px 0; }
+    .readme-box ul { margin-left: 16px; color: var(--sand); }
+
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--sand);
+      display: flex;
+      justify-content: space-between;
+      color: var(--stone);
+      font-size: 12px;
+    }
+
+    /* Print */
+    @media print {
+      body { background: white; padding: 20px; }
+      .card, .status-list, .roadmap, .readme-box { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <h1>Results Roofing</h1>
+        <p class="tagline">Instant roof replacement quotes for self-pay homeowners</p>
+      </div>
+      <div class="header-right">
+        <div class="logo"><span>RESULTS</span> <span>ROOFING</span></div>
+        <p class="date">January 22, 2026</p>
+      </div>
+    </header>
+
+    <!-- Progress Hero -->
+    <div class="progress-hero">
+      <div class="progress-ring">
+        <svg width="120" height="120">
+          <circle class="bg" cx="60" cy="60" r="50"/>
+          <circle class="progress" cx="60" cy="60" r="50"/>
+        </svg>
+        <span class="percentage">75%</span>
+      </div>
+      <div class="progress-stats">
+        <div class="stat-item">
+          <h4>Pages</h4>
+          <div class="value">15/15</div>
+          <div class="subtext">All screens built</div>
+        </div>
+        <div class="stat-item">
+          <h4>API Routes</h4>
+          <div class="value">15/15</div>
+          <div class="subtext">All endpoints done</div>
+        </div>
+        <div class="stat-item">
+          <h4>Components</h4>
+          <div class="value">15+</div>
+          <div class="subtext">Reusable UI library</div>
+        </div>
+        <div class="stat-item">
+          <h4>Database</h4>
+          <div class="value">13</div>
+          <div class="subtext">Tables in production</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Roadmap -->
+    <section>
+      <h2>Development Roadmap</h2>
+      <div class="roadmap">
+        <div class="phase complete">
+          <span class="phase-check">✓</span>
+          <div class="phase-num">Phase 0</div>
+          <h4>Setup</h4>
+          <p>Repo, CI/CD, env</p>
+        </div>
+        <div class="phase complete">
+          <span class="phase-check">✓</span>
+          <div class="phase-num">Phase 1</div>
+          <h4>Discovery</h4>
+          <p>Personas, requirements</p>
+        </div>
+        <div class="phase complete">
+          <span class="phase-check">✓</span>
+          <div class="phase-num">Phase 2</div>
+          <h4>Design</h4>
+          <p>UI/UX, architecture</p>
+        </div>
+        <div class="phase active">
+          <span class="phase-active">→</span>
+          <div class="phase-num">Phase 3</div>
+          <h4>Build</h4>
+          <p>Implementation</p>
+        </div>
+        <div class="phase">
+          <div class="phase-num">Phase 4</div>
+          <h4>Launch</h4>
+          <p>Deploy, monitor</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two Column: Tech Stack + Directory -->
+    <div class="two-col">
+      <!-- Tech Stack -->
+      <section>
+        <h2>Tech Stack</h2>
+        <div class="card">
+          <table class="tech-table">
+            <tr><td>Framework</td><td>Next.js <span class="version">14.2</span></td></tr>
+            <tr><td>Language</td><td>TypeScript <span class="version">5.7</span></td></tr>
+            <tr><td>Database</td><td>Neon PostgreSQL</td></tr>
+            <tr><td>ORM</td><td>Drizzle <span class="version">0.38</span></td></tr>
+            <tr><td>Auth</td><td>Clerk <span class="version">6.9</span></td></tr>
+            <tr><td>Payments</td><td>Stripe <span class="version">17.5</span></td></tr>
+            <tr><td>State</td><td>TanStack Query <span class="version">5.62</span></td></tr>
+            <tr><td>Forms</td><td>React Hook Form + Zod</td></tr>
+            <tr><td>Testing</td><td>Vitest + Playwright</td></tr>
+            <tr><td>Deploy</td><td>Vercel + GitHub Actions</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- Directory Structure -->
+      <section>
+        <h2>Project Structure</h2>
+        <div class="card">
+          <div class="tree">
+            <span class="folder">results-roofing/</span><br>
+            ├── <span class="folder">docs/</span> <span class="comment"># 23 planning docs</span><br>
+            ├── <span class="folder">drizzle/</span> <span class="comment"># DB migrations</span><br>
+            ├── <span class="folder">src/</span><br>
+            │&nbsp;&nbsp; ├── <span class="folder">app/</span> <span class="comment"># Next.js routes</span><br>
+            │&nbsp;&nbsp; │&nbsp;&nbsp; ├── api/ <span class="comment"># 15 endpoints</span><br>
+            │&nbsp;&nbsp; │&nbsp;&nbsp; ├── quote/ <span class="comment"># Quote flow</span><br>
+            │&nbsp;&nbsp; │&nbsp;&nbsp; └── portal/ <span class="comment"># Customer portal</span><br>
+            │&nbsp;&nbsp; ├── <span class="folder">components/</span><br>
+            │&nbsp;&nbsp; │&nbsp;&nbsp; ├── ui/ <span class="comment"># Shared primitives</span><br>
+            │&nbsp;&nbsp; │&nbsp;&nbsp; ├── layout/ <span class="comment"># Header, Footer</span><br>
+            │&nbsp;&nbsp; │&nbsp;&nbsp; └── features/ <span class="comment"># Domain components</span><br>
+            │&nbsp;&nbsp; ├── <span class="folder">db/</span> <span class="comment"># Schema + queries</span><br>
+            │&nbsp;&nbsp; ├── <span class="folder">hooks/</span> <span class="comment"># React Query hooks</span><br>
+            │&nbsp;&nbsp; └── <span class="folder">lib/</span> <span class="comment"># Utils, integrations</span><br>
+            └── <span class="folder">tests/</span> <span class="comment"># E2E + unit tests</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Two Column: Status + Integrations -->
+    <div class="two-col">
+      <!-- Development Status -->
+      <section>
+        <h2>Development Status</h2>
+        <div class="status-list">
+          <div class="status-item">
+            <div class="status-icon complete">✓</div>
+            <div class="status-content">
+              <h4>Quote Flow (10 pages)</h4>
+              <p>Address → Measuring → Packages → Checkout → Payment</p>
+            </div>
+            <span class="status-badge complete">Done</span>
+          </div>
+          <div class="status-item">
+            <div class="status-icon complete">✓</div>
+            <div class="status-content">
+              <h4>Customer Portal (4 pages)</h4>
+              <p>Dashboard, Documents, Payments, Schedule</p>
+            </div>
+            <span class="status-badge complete">Done</span>
+          </div>
+          <div class="status-item">
+            <div class="status-icon complete">✓</div>
+            <div class="status-content">
+              <h4>Database Schema</h4>
+              <p>13 tables, Neon PostgreSQL, Drizzle ORM</p>
+            </div>
+            <span class="status-badge complete">Done</span>
+          </div>
+          <div class="status-item">
+            <div class="status-icon active">→</div>
+            <div class="status-content">
+              <h4>Data Wiring</h4>
+              <p>Connect portal to real database</p>
+            </div>
+            <span class="status-badge active">Active</span>
+          </div>
+          <div class="status-item">
+            <div class="status-icon pending">⏸</div>
+            <div class="status-content">
+              <h4>External Integrations</h4>
+              <p>Awaiting vendor account credentials</p>
+            </div>
+            <span class="status-badge pending">Blocked</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Integrations -->
+      <section>
+        <h2>Integrations</h2>
+        <div class="card">
+          <h3>Connected</h3>
+          <div class="int-grid" style="margin-bottom: 16px;">
+            <div class="int-item"><span>Stripe</span><span class="int-status on">Live</span></div>
+            <div class="int-item"><span>Google Places</span><span class="int-status on">Live</span></div>
+            <div class="int-item"><span>Clerk Auth</span><span class="int-status on">Live</span></div>
+            <div class="int-item"><span>Neon DB</span><span class="int-status on">Live</span></div>
+          </div>
+          <h3>Ready (Awaiting Credentials)</h3>
+          <div class="int-grid">
+            <div class="int-item"><span>Documenso</span><span class="int-status ready">Ready</span></div>
+            <div class="int-item"><span>Wisetack</span><span class="int-status ready">Ready</span></div>
+            <div class="int-item"><span>Roofr</span><span class="int-status ready">Ready</span></div>
+            <div class="int-item"><span>JobNimbus</span><span class="int-status ready">Ready</span></div>
+            <div class="int-item"><span>Cal.com</span><span class="int-status ready">Ready</span></div>
+            <div class="int-item"><span>Resend</span><span class="int-status ready">Ready</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Two Column: Dependencies + README -->
+    <div class="two-col">
+      <!-- Key Dependencies -->
+      <section>
+        <h2>Key Dependencies</h2>
+        <div class="card">
+          <h3>Production</h3>
+          <div class="deps-grid" style="margin-bottom: 12px;">
+            <div class="dep-item"><span class="name">next</span><span class="ver">14.2.25</span></div>
+            <div class="dep-item"><span class="name">react</span><span class="ver">18.3.1</span></div>
+            <div class="dep-item"><span class="name">typescript</span><span class="ver">5.7.3</span></div>
+            <div class="dep-item"><span class="name">drizzle-orm</span><span class="ver">0.38.3</span></div>
+            <div class="dep-item"><span class="name">@clerk/nextjs</span><span class="ver">6.9.0</span></div>
+            <div class="dep-item"><span class="name">stripe</span><span class="ver">17.5.0</span></div>
+            <div class="dep-item"><span class="name">@tanstack/query</span><span class="ver">5.62.8</span></div>
+            <div class="dep-item"><span class="name">zod</span><span class="ver">3.24.1</span></div>
+            <div class="dep-item"><span class="name">lucide-react</span><span class="ver">0.469.0</span></div>
+          </div>
+          <h3>Development</h3>
+          <div class="deps-grid">
+            <div class="dep-item"><span class="name">vitest</span><span class="ver">2.1.8</span></div>
+            <div class="dep-item"><span class="name">playwright</span><span class="ver">1.49.1</span></div>
+            <div class="dep-item"><span class="name">eslint</span><span class="ver">8.57.0</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- README Preview -->
+      <section>
+        <h2>README.md</h2>
+        <div class="readme-box">
+          <div class="h1"># Results Roofing</div>
+          <span class="badge">TypeScript 5.7</span>
+          <span class="badge">Next.js 14</span>
+          <span class="badge">CI Passing</span>
+          <div class="desc">> Instant roof replacement quote platform for self-pay homeowners in premium markets.</div>
+          <strong>Key Features:</strong>
+          <ul>
+            <li>Instant Quotes from satellite data</li>
+            <li>Self-Service quote-to-booking flow</li>
+            <li>Transparent Pricing breakdown</li>
+            <li>60-Second Financing pre-qual</li>
+            <li>Customer Portal for project tracking</li>
+          </ul>
+          <br>
+          <strong>Service Areas:</strong> TX | GA | NC | AZ
+        </div>
+      </section>
+    </div>
+
+    <!-- Remaining Work -->
+    <section>
+      <h2>Remaining Work (25%)</h2>
+      <div class="status-list">
+        <div class="status-item">
+          <div class="status-icon active">1</div>
+          <div class="status-content">
+            <h4>Wire Portal to Real Data</h4>
+            <p>Connect dashboard, payments, schedule, documents to database via React Query hooks</p>
+          </div>
+        </div>
+        <div class="status-item">
+          <div class="status-icon active">2</div>
+          <div class="status-content">
+            <h4>Order Creation</h4>
+            <p>Create order records when payment succeeds (webhook + dev mode fallback)</p>
+          </div>
+        </div>
+        <div class="status-item">
+          <div class="status-icon active">3</div>
+          <div class="status-content">
+            <h4>End-to-End Testing</h4>
+            <p>Full quote → payment → portal flow with live Neon database</p>
+          </div>
+        </div>
+        <div class="status-item">
+          <div class="status-icon pending">4</div>
+          <div class="status-content">
+            <h4>Connect External Integrations</h4>
+            <p>Documenso, Wisetack, Roofr, JobNimbus, Resend (when accounts provided)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Target Market -->
+    <section>
+      <h2>Target Market</h2>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+        <div class="card" style="text-align: center;">
+          <h3>Focus</h3>
+          <div style="font-size: 16px; font-weight: 600;">Self-Pay</div>
+          <div style="font-size: 12px; color: var(--stone);">No insurance claims</div>
+        </div>
+        <div class="card" style="text-align: center;">
+          <h3>Regions</h3>
+          <div style="font-size: 16px; font-weight: 600;">TX, GA, NC, AZ</div>
+          <div style="font-size: 12px; color: var(--stone);">Affluent suburbs</div>
+        </div>
+        <div class="card" style="text-align: center;">
+          <h3>Avg Project</h3>
+          <div style="font-size: 16px; font-weight: 600;">$12K–$25K</div>
+          <div style="font-size: 12px; color: var(--stone);">3-tier pricing</div>
+        </div>
+        <div class="card" style="text-align: center;">
+          <h3>Key Metric</h3>
+          <div style="font-size: 16px; font-weight: 600;">60-Second</div>
+          <div style="font-size: 12px; color: var(--stone);">Quote time</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>GitHub: galaxy-co-ai/results-roofing</span>
+      <span>Deployed: Vercel</span>
+      <span>Build: Passing ✓</span>
+    </footer>
+
+  </div>
+</body>
+</html>
