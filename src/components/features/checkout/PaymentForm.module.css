@@ -1,0 +1,206 @@
+/* PaymentForm Component Styles */
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-4);
+  padding: var(--rr-space-16);
+  color: var(--rr-color-stone);
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rr-space-4);
+  padding: var(--rr-space-8);
+  color: var(--rr-color-error);
+  background-color: var(--rr-color-error-bg);
+  border-radius: var(--rr-radius-md);
+  text-align: center;
+}
+
+.retryButton {
+  margin-top: var(--rr-space-4);
+  padding: var(--rr-space-2) var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-charcoal);
+  background-color: var(--rr-color-sandstone);
+  border: none;
+  border-radius: var(--rr-radius-sm);
+  cursor: pointer;
+  transition: var(--rr-transition-colors);
+}
+
+.retryButton:hover {
+  background-color: var(--rr-color-terracotta);
+  color: var(--rr-color-white);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-6);
+}
+
+.paymentElementContainer {
+  padding: var(--rr-space-4);
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-sand);
+  border-radius: var(--rr-radius-md);
+}
+
+.inlineError {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-3) var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-error);
+  background-color: var(--rr-color-error-bg);
+  border-radius: var(--rr-radius-sm);
+}
+
+.submitButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  width: 100%;
+  height: var(--rr-button-height-lg);
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-charcoal);
+  background-color: var(--rr-color-sandstone);
+  border: none;
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: var(--rr-transition-colors);
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: var(--rr-color-terracotta);
+  color: var(--rr-color-white);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.submitButton:focus-visible {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: var(--rr-focus-ring-offset);
+}
+
+.securityNote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-stone);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-slate);
+}
+
+.divider {
+  color: var(--rr-color-sand);
+}
+
+.successContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-4);
+  padding: var(--rr-space-16);
+  text-align: center;
+}
+
+.successIcon {
+  color: var(--rr-color-success);
+}
+
+.successContainer h3 {
+  font-size: var(--rr-font-size-xl);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-charcoal);
+  margin: 0;
+}
+
+.successContainer p {
+  color: var(--rr-color-stone);
+  margin: 0;
+}
+
+/* Mock Mode Styles */
+.mockBanner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-3) var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: #856404;
+  background-color: #fff3cd;
+  border-radius: var(--rr-radius-sm);
+  margin-bottom: var(--rr-space-4);
+}
+
+.mockInput {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-1);
+  margin-bottom: var(--rr-space-4);
+}
+
+.mockInput label {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-secondary);
+}
+
+.mockInput input {
+  padding: var(--rr-space-3);
+  font-size: var(--rr-font-size-base);
+  border: 1px solid var(--rr-color-sand);
+  border-radius: var(--rr-radius-sm);
+  background-color: var(--rr-color-white);
+}
+
+.mockInput input:focus {
+  outline: none;
+  border-color: var(--rr-color-sandstone);
+  box-shadow: 0 0 0 2px rgba(196, 163, 90, 0.2);
+}
+
+.mockInputRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--rr-space-4);
+}
