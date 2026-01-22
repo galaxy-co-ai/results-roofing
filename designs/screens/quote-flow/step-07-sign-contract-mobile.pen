@@ -3,7 +3,7 @@
   "children": [
     {
       "type": "frame",
-      "id": "screen07",
+      "id": "lVwCV",
       "x": 0,
       "y": 0,
       "name": "Sign Contract - Mobile",
@@ -14,124 +14,305 @@
       "children": [
         {
           "type": "frame",
-          "id": "header07",
+          "id": "tAbSa",
           "name": "header",
           "width": "fill_container",
           "fill": "#FFFFFF",
-          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
-          "padding": 16,
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "#E8E0D4"
+          },
           "gap": 12,
+          "padding": [
+            12,
+            16
+          ],
           "alignItems": "center",
           "children": [
-            {"type": "icon_font", "id": "backIcon07", "name": "back", "width": 24, "height": 24, "iconFontName": "arrow-left", "iconFontFamily": "lucide", "fill": "#2C2C2C"},
-            {"type": "frame", "id": "headerContent07", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 2, "children": [
-              {"type": "text", "id": "headerTitle07", "name": "title", "fill": "#2C2C2C", "content": "Contract", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
-              {"type": "text", "id": "headerAddress07", "name": "address", "fill": "#5C5C5C", "content": "123 Main St, Dallas, TX", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
-            ]}
+            {
+              "type": "icon_font",
+              "id": "OIR6E",
+              "name": "backBtn",
+              "width": 20,
+              "height": 20,
+              "iconFontName": "arrow-left",
+              "iconFontFamily": "lucide",
+              "fill": "#5C5C5C"
+            },
+            {
+              "type": "text",
+              "id": "9agZy",
+              "name": "addressText",
+              "fill": "#2C2C2C",
+              "content": "123 Main St, Dallas, TX",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "500"
+            }
           ]
         },
         {
           "type": "frame",
-          "id": "progress07",
+          "id": "gAOJ6",
           "name": "progress",
           "width": "fill_container",
-          "height": 4,
-          "fill": "#E8E0D4",
+          "fill": "#FFFFFF",
+          "padding": [
+            12,
+            16
+          ],
+          "justifyContent": "center",
           "children": [
-            {"type": "frame", "id": "progressFill07", "name": "fill", "width": "90%", "height": "fill_container", "fill": "#C4A77D"}
+            {
+              "type": "text",
+              "id": "clJDc",
+              "name": "progressDots",
+              "fill": "#C4A77D",
+              "content": "Progress: ●●●●●",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
           ]
         },
         {
           "type": "frame",
-          "id": "content07",
-          "name": "content",
+          "id": "iS8b1",
+          "name": "mainContent",
           "width": "fill_container",
           "height": "fill_container",
           "layout": "vertical",
-          "gap": 24,
-          "padding": [24, 16],
+          "gap": 20,
+          "padding": [
+            24,
+            16
+          ],
           "children": [
-            {"type": "text", "id": "title07", "name": "title", "fill": "#2C2C2C", "content": "Review & Sign", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "700"},
+            {
+              "type": "text",
+              "id": "qd7Mr",
+              "name": "title",
+              "fill": "#2C2C2C",
+              "content": "Review & Sign",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700"
+            },
             {
               "type": "frame",
-              "id": "contractSummary",
-              "name": "contractSummary",
+              "id": "b3xSq",
+              "name": "summaryCard",
               "width": "fill_container",
               "fill": "#FFFFFF",
               "cornerRadius": 12,
-              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E8E0D4"
+              },
               "layout": "vertical",
               "gap": 12,
               "padding": 16,
               "children": [
-                {"type": "text", "id": "summaryTitle", "name": "title", "fill": "#2C2C2C", "content": "Contract Summary", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
-                {"type": "frame", "id": "sumRow1", "name": "row", "width": "fill_container", "justifyContent": "space_between", "children": [
-                  {"type": "text", "id": "sumLabel1", "name": "label", "fill": "#5C5C5C", "content": "Package", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                  {"type": "text", "id": "sumValue1", "name": "value", "fill": "#2C2C2C", "content": "Better", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"}
-                ]},
-                {"type": "frame", "id": "sumRow2", "name": "row", "width": "fill_container", "justifyContent": "space_between", "children": [
-                  {"type": "text", "id": "sumLabel2", "name": "label", "fill": "#5C5C5C", "content": "Total Price", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                  {"type": "text", "id": "sumValue2", "name": "value", "fill": "#C4A77D", "content": "$12,400", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                ]},
-                {"type": "frame", "id": "sumRow3", "name": "row", "width": "fill_container", "justifyContent": "space_between", "children": [
-                  {"type": "text", "id": "sumLabel3", "name": "label", "fill": "#5C5C5C", "content": "Installation Date", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                  {"type": "text", "id": "sumValue3", "name": "value", "fill": "#2C2C2C", "content": "Jan 14, 2026", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"}
-                ]}
+                {
+                  "type": "text",
+                  "id": "YGtZK",
+                  "name": "summaryTitle",
+                  "fill": "#2C2C2C",
+                  "content": "Contract Summary",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "KDwkB",
+                  "name": "row1",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "HMagC",
+                      "name": "summaryRow1Label",
+                      "fill": "#5C5C5C",
+                      "content": "Package",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "fqnxz",
+                      "name": "summaryRow1Value",
+                      "fill": "#2C2C2C",
+                      "content": "Better",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "qRQ8j",
+                  "name": "row2",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "9B0SF",
+                      "name": "summaryRow2Label",
+                      "fill": "#5C5C5C",
+                      "content": "Total Price",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "N0Sm8",
+                      "name": "summaryRow2Value",
+                      "fill": "#2C2C2C",
+                      "content": "$12,400",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "RJrnB",
+                  "name": "row3",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "dN9Yi",
+                      "name": "summaryRow3Label",
+                      "fill": "#5C5C5C",
+                      "content": "Installation Date",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "jox1K",
+                      "name": "summaryRow3Value",
+                      "fill": "#2C2C2C",
+                      "content": "Jan 14, 2026",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
               ]
             },
             {
               "type": "frame",
-              "id": "keyTerms",
-              "name": "keyTerms",
+              "id": "EQT36",
+              "name": "termsSection",
               "width": "fill_container",
-              "fill": "#FFFFFF",
-              "cornerRadius": 12,
-              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
               "layout": "vertical",
               "gap": 12,
-              "padding": 16,
               "children": [
-                {"type": "text", "id": "termsTitle", "name": "title", "fill": "#2C2C2C", "content": "Key Terms", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
-                {"type": "frame", "id": "term1", "name": "term", "gap": 8, "alignItems": "flex_start", "children": [
-                  {"type": "icon_font", "id": "term1Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                  {"type": "text", "id": "term1Text", "name": "text", "fill": "#5C5C5C", "content": "10% deposit due today", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
-                ]},
-                {"type": "frame", "id": "term2", "name": "term", "gap": 8, "alignItems": "flex_start", "children": [
-                  {"type": "icon_font", "id": "term2Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                  {"type": "text", "id": "term2Text", "name": "text", "fill": "#5C5C5C", "content": "Balance due upon completion", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
-                ]},
-                {"type": "frame", "id": "term3", "name": "term", "gap": 8, "alignItems": "flex_start", "children": [
-                  {"type": "icon_font", "id": "term3Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                  {"type": "text", "id": "term3Text", "name": "text", "fill": "#5C5C5C", "content": "30-year manufacturer warranty", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
-                ]},
-                {"type": "frame", "id": "term4", "name": "term", "gap": 8, "alignItems": "flex_start", "children": [
-                  {"type": "icon_font", "id": "term4Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                  {"type": "text", "id": "term4Text", "name": "text", "fill": "#5C5C5C", "content": "5-year workmanship guarantee", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
-                ]}
+                {
+                  "type": "text",
+                  "id": "o5Xyf",
+                  "name": "termsTitle",
+                  "fill": "#2C2C2C",
+                  "content": "Key Terms",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "LS9n1",
+                  "name": "term1",
+                  "fill": "#5C5C5C",
+                  "content": "• 10% deposit required to secure date",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "5dPfN",
+                  "name": "term2",
+                  "fill": "#5C5C5C",
+                  "content": "• Balance due upon completion",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "0ScG7",
+                  "name": "term3",
+                  "fill": "#5C5C5C",
+                  "content": "• 30-year manufacturer warranty",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
               ]
             },
             {
               "type": "frame",
-              "id": "signatureSection",
+              "id": "3rdPg",
               "name": "signatureSection",
               "width": "fill_container",
               "layout": "vertical",
               "gap": 12,
               "children": [
-                {"type": "text", "id": "sigLabel", "name": "label", "fill": "#2C2C2C", "content": "Your Signature", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                {
+                  "type": "text",
+                  "id": "mCUcA",
+                  "name": "sigLabel",
+                  "fill": "#2C2C2C",
+                  "content": "Type your full legal name to sign",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
                 {
                   "type": "frame",
-                  "id": "sigInput",
+                  "id": "CLr2Q",
                   "name": "signatureInput",
                   "width": "fill_container",
                   "height": 48,
                   "fill": "#FFFFFF",
                   "cornerRadius": 8,
-                  "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
-                  "padding": [12, 16],
-                  "alignItems": "center",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "padding": [
+                    12,
+                    16
+                  ],
                   "children": [
-                    {"type": "text", "id": "sigPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Full Legal Name", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
+                    {
+                      "type": "text",
+                      "id": "PJPN1",
+                      "name": "sigPlaceholder",
+                      "fill": "#9C9688",
+                      "content": "Full Legal Name",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
                   ]
                 }
               ]
@@ -140,30 +321,80 @@
         },
         {
           "type": "frame",
-          "id": "footer07",
-          "name": "footer",
+          "id": "SiwEL",
+          "name": "stickyFooter",
           "width": "fill_container",
           "fill": "#FFFFFF",
-          "stroke": {"align": "inside", "thickness": {"top": 1}, "fill": "#E8E0D4"},
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "top": 1
+            },
+            "fill": "#E8E0D4"
+          },
+          "effect": {
+            "type": "shadow",
+            "shadowType": "outer",
+            "color": "rgba(44, 44, 44, 0.1)",
+            "offset": {
+              "x": 0,
+              "y": -4
+            },
+            "blur": 6
+          },
           "layout": "vertical",
-          "gap": 8,
-          "padding": [16, 24],
+          "gap": 12,
+          "padding": 16,
           "children": [
             {
               "type": "frame",
-              "id": "footerBtn07",
+              "id": "5fDg0",
               "name": "ctaButton",
               "width": "fill_container",
               "height": 52,
               "fill": "#C4A77D",
               "cornerRadius": 8,
+              "gap": 8,
+              "padding": [
+                16,
+                24
+              ],
               "justifyContent": "center",
               "alignItems": "center",
               "children": [
-                {"type": "text", "id": "footerBtnLabel07", "name": "label", "fill": "#FFFFFF", "content": "Sign Contract", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
+                {
+                  "type": "icon_font",
+                  "id": "7xEwJ",
+                  "name": "footerBtnIcon",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "file-text",
+                  "iconFontFamily": "lucide",
+                  "fill": "#FFFFFF"
+                },
+                {
+                  "type": "text",
+                  "id": "gwVUd",
+                  "name": "footerBtnText",
+                  "fill": "#FFFFFF",
+                  "content": "Sign Contract",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
               ]
             },
-            {"type": "text", "id": "footerDisclaimer", "name": "disclaimer", "fill": "#9C9688", "content": "By signing, you agree to the terms and conditions", "textAlign": "center", "fontFamily": "Inter", "fontSize": 11, "fontWeight": "normal"}
+            {
+              "type": "text",
+              "id": "bkbQ7",
+              "name": "footerDisclaimer",
+              "fill": "#9C9688",
+              "content": "By signing, you agree to our Terms of Service",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            }
           ]
         }
       ]

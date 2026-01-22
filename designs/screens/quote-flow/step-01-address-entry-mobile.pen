@@ -3,7 +3,7 @@
   "children": [
     {
       "type": "frame",
-      "id": "screen01",
+      "id": "KFJVQ",
       "x": 0,
       "y": 0,
       "name": "Address Entry - Mobile",
@@ -14,124 +14,402 @@
       "children": [
         {
           "type": "frame",
-          "id": "header01",
+          "id": "9UV1K",
           "name": "header",
           "width": "fill_container",
           "fill": "#FFFFFF",
-          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
-          "padding": 16,
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "#E8E0D4"
+          },
+          "padding": [
+            12,
+            16
+          ],
           "justifyContent": "center",
           "alignItems": "center",
           "children": [
-            {"type": "text", "id": "logo01", "name": "logo", "fill": "#2C2C2C", "content": "RESULTS ROOFING", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "700"}
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "hero01",
-          "name": "hero",
-          "width": "fill_container",
-          "layout": "vertical",
-          "gap": 8,
-          "padding": [32, 24],
-          "alignItems": "center",
-          "children": [
-            {"type": "text", "id": "heroTitle", "name": "title", "fill": "#2C2C2C", "content": "Get Your Free Roof Quote", "textAlign": "center", "fontFamily": "Inter", "fontSize": 28, "fontWeight": "700"},
-            {"type": "text", "id": "heroSubtitle", "name": "subtitle", "fill": "#5C5C5C", "content": "Instant AI-powered estimate in minutes", "textAlign": "center", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "inputCard",
-          "name": "inputCard",
-          "width": "fill_container",
-          "fill": "#FFFFFF",
-          "cornerRadius": 16,
-          "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
-          "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.08)", "offset": {"x": 0, "y": 4}, "blur": 12},
-          "layout": "vertical",
-          "gap": 16,
-          "margin": [0, 24],
-          "padding": 24,
-          "children": [
-            {"type": "text", "id": "inputLabel", "name": "label", "fill": "#2C2C2C", "content": "Enter Your Address", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
             {
-              "type": "frame",
-              "id": "inputField",
-              "name": "inputField",
-              "width": "fill_container",
-              "height": 48,
-              "fill": "#FFFFFF",
-              "cornerRadius": 8,
-              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
-              "gap": 12,
-              "padding": [12, 16],
-              "alignItems": "center",
-              "children": [
-                {"type": "icon_font", "id": "inputIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "map-pin", "iconFontFamily": "lucide", "fill": "#9C9688"},
-                {"type": "text", "id": "inputPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Enter your address...", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "ctaBtn",
-              "name": "ctaButton",
-              "width": "fill_container",
-              "height": 52,
-              "fill": "#C4A77D",
-              "cornerRadius": 8,
-              "justifyContent": "center",
-              "alignItems": "center",
-              "children": [
-                {"type": "text", "id": "ctaLabel", "name": "label", "fill": "#FFFFFF", "content": "Get My Quote", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
-              ]
+              "type": "text",
+              "id": "5N5WY",
+              "name": "logo",
+              "fill": "#2C2C2C",
+              "content": "RESULTS ROOFING",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "700"
             }
           ]
         },
         {
           "type": "frame",
-          "id": "valueProps",
-          "name": "valueProps",
+          "id": "hmafj",
+          "name": "mainContent",
           "width": "fill_container",
+          "height": "fill_container",
           "layout": "vertical",
-          "gap": 12,
-          "padding": [24, 24],
+          "gap": 24,
+          "padding": [
+            24,
+            16
+          ],
           "children": [
-            {"type": "frame", "id": "vp1", "name": "valueProp", "gap": 12, "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "vp1Icon", "name": "icon", "width": 20, "height": 20, "iconFontName": "zap", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-              {"type": "text", "id": "vp1Text", "name": "text", "fill": "#5C5C5C", "content": "Instant AI-powered estimate", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-            ]},
-            {"type": "frame", "id": "vp2", "name": "valueProp", "gap": 12, "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "vp2Icon", "name": "icon", "width": 20, "height": 20, "iconFontName": "shield-check", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-              {"type": "text", "id": "vp2Text", "name": "text", "fill": "#5C5C5C", "content": "Licensed & insured contractors", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-            ]},
-            {"type": "frame", "id": "vp3", "name": "valueProp", "gap": 12, "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "vp3Icon", "name": "icon", "width": 20, "height": 20, "iconFontName": "credit-card", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-              {"type": "text", "id": "vp3Text", "name": "text", "fill": "#5C5C5C", "content": "Flexible financing available", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-            ]}
-          ]
-        },
-        {"type": "frame", "id": "spacer01", "name": "spacer", "width": "fill_container", "height": "fill_container"},
-        {
-          "type": "frame",
-          "id": "trustBadges",
-          "name": "trustBadges",
-          "width": "fill_container",
-          "padding": [24, 16],
-          "justifyContent": "space_around",
-          "children": [
-            {"type": "frame", "id": "badge1", "name": "badge", "layout": "vertical", "gap": 4, "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "badge1Icon", "name": "icon", "width": 24, "height": 24, "iconFontName": "star", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-              {"type": "text", "id": "badge1Text", "name": "text", "fill": "#2C2C2C", "content": "4.9 Rating", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "600"}
-            ]},
-            {"type": "frame", "id": "badge2", "name": "badge", "layout": "vertical", "gap": 4, "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "badge2Icon", "name": "icon", "width": 24, "height": 24, "iconFontName": "award", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-              {"type": "text", "id": "badge2Text", "name": "text", "fill": "#2C2C2C", "content": "Licensed", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "600"}
-            ]},
-            {"type": "frame", "id": "badge3", "name": "badge", "layout": "vertical", "gap": 4, "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "badge3Icon", "name": "icon", "width": 24, "height": 24, "iconFontName": "shield", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-              {"type": "text", "id": "badge3Text", "name": "text", "fill": "#2C2C2C", "content": "Warranty", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "600"}
-            ]}
+            {
+              "type": "frame",
+              "id": "8qe3b",
+              "name": "heroSection",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "YlVH8",
+                  "name": "title",
+                  "fill": "#2C2C2C",
+                  "content": "Get Your Free Quote",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "x5572",
+                  "name": "subtitle",
+                  "fill": "#5C5C5C",
+                  "content": "Enter your address to start",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "etSgf",
+              "name": "inputCard",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "rgba(44, 44, 44, 0.07)",
+                "offset": {
+                  "x": 0,
+                  "y": 2
+                },
+                "blur": 4
+              },
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "UYyUg",
+                  "name": "label",
+                  "fill": "#2C2C2C",
+                  "content": "Property Address",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "IJWcO",
+                  "name": "inputField",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "TIKZN",
+                      "name": "inputIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "map-pin",
+                      "iconFontFamily": "lucide",
+                      "fill": "#9C9688"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ACxUK",
+                      "name": "placeholder",
+                      "fill": "#9C9688",
+                      "content": "Enter your address...",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "k8sRl",
+                  "name": "ctaButton",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#C4A77D",
+                  "cornerRadius": 8,
+                  "padding": [
+                    12,
+                    24
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Lx58q",
+                      "name": "label",
+                      "fill": "#FFFFFF",
+                      "content": "Get My Quote",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "oVDt9",
+              "name": "valueProps",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "xqHUg",
+                  "name": "valueProp1",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "mCQj9",
+                      "name": "vp1Icon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "check",
+                      "iconFontFamily": "lucide",
+                      "fill": "#4A7C59"
+                    },
+                    {
+                      "type": "text",
+                      "id": "egDQa",
+                      "name": "vp1Text",
+                      "fill": "#5C5C5C",
+                      "content": "Instant satellite-based estimate",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ETmce",
+                  "name": "valueProp2",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "aKwmP",
+                      "name": "vp2Icon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "check",
+                      "iconFontFamily": "lucide",
+                      "fill": "#4A7C59"
+                    },
+                    {
+                      "type": "text",
+                      "id": "hbIv4",
+                      "name": "vp2Text",
+                      "fill": "#5C5C5C",
+                      "content": "Licensed & insured contractors",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "LQdel",
+                  "name": "valueProp3",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "Pffnn",
+                      "name": "vp3Icon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "check",
+                      "iconFontFamily": "lucide",
+                      "fill": "#4A7C59"
+                    },
+                    {
+                      "type": "text",
+                      "id": "WVN8y",
+                      "name": "vp3Text",
+                      "fill": "#5C5C5C",
+                      "content": "Financing options available",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "vZFNQ",
+              "name": "trustSection",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "6EROs",
+                  "name": "trustLabel",
+                  "fill": "#9C9688",
+                  "content": "Trusted by homeowners in TX, GA, NC, AZ",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "FjWSf",
+                  "name": "trustBadges",
+                  "gap": 16,
+                  "justifyContent": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "byM6F",
+                      "name": "badge1",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "MEr4n",
+                          "name": "badge1Icon",
+                          "width": 24,
+                          "height": 24,
+                          "iconFontName": "star",
+                          "iconFontFamily": "lucide",
+                          "fill": "#C4A77D"
+                        },
+                        {
+                          "type": "text",
+                          "id": "UdzDx",
+                          "name": "badge1Text",
+                          "fill": "#5C5C5C",
+                          "content": "4.9 Rating",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Ok2wL",
+                      "name": "badge2",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "8hi8P",
+                          "name": "badge2Icon",
+                          "width": 24,
+                          "height": 24,
+                          "iconFontName": "shield",
+                          "iconFontFamily": "lucide",
+                          "fill": "#C4A77D"
+                        },
+                        {
+                          "type": "text",
+                          "id": "uST5a",
+                          "name": "badge2Text",
+                          "fill": "#5C5C5C",
+                          "content": "Licensed",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "N9ttk",
+                      "name": "badge3",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "6FH9S",
+                          "name": "badge3Icon",
+                          "width": 24,
+                          "height": 24,
+                          "iconFontName": "award",
+                          "iconFontFamily": "lucide",
+                          "fill": "#C4A77D"
+                        },
+                        {
+                          "type": "text",
+                          "id": "1FrmQ",
+                          "name": "badge3Text",
+                          "fill": "#5C5C5C",
+                          "content": "10yr Warranty",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         }
       ]

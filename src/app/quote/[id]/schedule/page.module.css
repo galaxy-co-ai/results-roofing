@@ -1,0 +1,271 @@
+/* =================================================
+   SCHEDULE PAGE STYLES
+   Appointment date/time selection
+   ================================================= */
+
+.main {
+  min-height: 100vh;
+  background-color: var(--rr-color-bg-primary);
+  padding: var(--rr-space-8) var(--rr-space-page-gutter);
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ========================================
+   BACK LINK
+   ======================================== */
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rr-space-1);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-tertiary);
+  text-decoration: none;
+  margin-bottom: var(--rr-space-6);
+  transition: var(--rr-transition-colors);
+}
+
+.backLink:hover {
+  color: var(--rr-color-text-secondary);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+  margin-bottom: var(--rr-space-6);
+}
+
+.title {
+  font-size: var(--rr-font-size-2xl);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.subtitle {
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-secondary);
+  margin-bottom: 0;
+}
+
+/* ========================================
+   ADDRESS CARD
+   ======================================== */
+
+.addressCard {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-3);
+  padding: var(--rr-space-4);
+  background-color: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-8);
+}
+
+.addressIcon {
+  color: var(--rr-color-sandstone);
+  flex-shrink: 0;
+}
+
+/* ========================================
+   SECTIONS
+   ======================================== */
+
+.section {
+  margin-bottom: var(--rr-space-8);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-4);
+}
+
+.sectionTitle svg {
+  color: var(--rr-color-stone);
+}
+
+/* ========================================
+   DATE GRID
+   ======================================== */
+
+.dateGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--rr-space-2);
+}
+
+.dateCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--rr-space-3) var(--rr-space-2);
+  background-color: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: var(--rr-transition-colors), var(--rr-transition-shadow);
+}
+
+.dateCard:hover {
+  border-color: var(--rr-color-sandstone);
+  box-shadow: var(--rr-shadow-sm);
+}
+
+.dateCard_selected {
+  border-color: var(--rr-color-sandstone);
+  background-color: var(--rr-color-sand-light);
+}
+
+.dateDayName {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-tertiary);
+  margin-bottom: var(--rr-space-1);
+}
+
+.dateDayNum {
+  font-size: var(--rr-font-size-xl);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+}
+
+.dateMonth {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-secondary);
+}
+
+.dateCheck {
+  position: absolute;
+  top: var(--rr-space-1);
+  right: var(--rr-space-1);
+  color: var(--rr-color-sandstone);
+}
+
+/* ========================================
+   TIME GRID
+   ======================================== */
+
+.timeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--rr-space-3);
+}
+
+.timeCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--rr-space-5);
+  background-color: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: var(--rr-transition-colors), var(--rr-transition-shadow);
+}
+
+.timeCard:hover {
+  border-color: var(--rr-color-sandstone);
+  box-shadow: var(--rr-shadow-sm);
+}
+
+.timeCard_selected {
+  border-color: var(--rr-color-sandstone);
+  background-color: var(--rr-color-sand-light);
+}
+
+.timeLabel {
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-1);
+}
+
+.timeRange {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+}
+
+.timeCheck {
+  position: absolute;
+  top: var(--rr-space-2);
+  right: var(--rr-space-2);
+  color: var(--rr-color-sandstone);
+}
+
+/* ========================================
+   INFO NOTE
+   ======================================== */
+
+.infoNote {
+  padding: var(--rr-space-4);
+  background-color: var(--rr-color-info-light);
+  border-radius: var(--rr-radius-md);
+  margin-bottom: var(--rr-space-6);
+}
+
+.infoNote p {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  margin: 0;
+}
+
+/* ========================================
+   CONTINUE BUTTON
+   ======================================== */
+
+.continueButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  width: 100%;
+  height: var(--rr-button-height-lg);
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-charcoal);
+  background-color: var(--rr-color-sandstone);
+  border-radius: var(--rr-radius-md);
+  text-decoration: none;
+  transition: var(--rr-transition-colors);
+}
+
+.continueButton:hover {
+  background-color: var(--rr-color-terracotta);
+  color: var(--rr-color-white);
+}
+
+.continueButton:focus-visible {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: var(--rr-focus-ring-offset);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 640px) {
+  .main {
+    padding: var(--rr-space-12) var(--rr-space-page-gutter);
+  }
+}
+
+@media (max-width: 480px) {
+  .dateGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -3,73 +3,203 @@
   "children": [
     {
       "type": "frame",
-      "id": "lib01",
+      "id": "tT7mT",
       "x": 0,
       "y": 0,
       "name": "Textarea Component Library",
       "width": 1000,
-      "height": 800,
-      "fill": "#FFFFFF",
+      "fill": "#FAF8F5",
       "layout": "vertical",
-      "gap": 32,
-      "padding": 32,
+      "gap": 40,
+      "padding": 40,
       "children": [
-        {"type": "text", "id": "title01", "name": "title", "fill": "#2C2C2C", "content": "Textarea Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
         {
           "type": "frame",
-          "id": "row01",
-          "name": "variantsRow",
+          "id": "p1CmM",
+          "name": "section1",
           "width": "fill_container",
-          "gap": 32,
+          "layout": "vertical",
+          "gap": 24,
           "children": [
             {
-              "type": "frame",
-              "id": "taDefault",
-              "name": "Textarea/Default",
-              "reusable": true,
-              "width": 300,
-              "layout": "vertical",
-              "gap": 8,
-              "children": [
-                {"type": "text", "id": "taDefaultLabel", "name": "label", "fill": "#2C2C2C", "content": "Message", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                {
-                  "type": "frame",
-                  "id": "taDefaultField",
-                  "name": "field",
-                  "width": "fill_container",
-                  "height": 120,
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 8,
-                  "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
-                  "padding": [12, 16],
-                  "children": [
-                    {"type": "text", "id": "taDefaultPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Enter your message...", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                  ]
-                }
-              ]
+              "type": "text",
+              "id": "luG6X",
+              "name": "section1Title",
+              "fill": "#2C2C2C",
+              "content": "Textarea Variants",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
             },
             {
               "type": "frame",
-              "id": "taFilled",
-              "name": "Textarea/Filled",
-              "reusable": true,
-              "width": 300,
-              "layout": "vertical",
-              "gap": 8,
+              "id": "nFoAe",
+              "name": "variantsRow",
+              "gap": 24,
               "children": [
-                {"type": "text", "id": "taFilledLabel", "name": "label", "fill": "#2C2C2C", "content": "Message", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
                 {
                   "type": "frame",
-                  "id": "taFilledField",
-                  "name": "field",
-                  "width": "fill_container",
-                  "height": 120,
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 8,
-                  "stroke": {"align": "inside", "thickness": 1, "fill": "#2C2C2C"},
-                  "padding": [12, 16],
+                  "id": "42V3Q",
+                  "name": "Textarea/Default",
+                  "reusable": true,
+                  "width": 300,
+                  "layout": "vertical",
+                  "gap": 8,
                   "children": [
-                    {"type": "text", "id": "taFilledText", "name": "value", "fill": "#2C2C2C", "content": "I'm interested in getting a quote for my roof replacement. The current roof is about 20 years old.", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
+                    {
+                      "type": "text",
+                      "id": "qBaFA",
+                      "name": "label",
+                      "fill": "#2C2C2C",
+                      "content": "Message",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "NGQ2k",
+                      "name": "field",
+                      "width": "fill_container",
+                      "height": 120,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E8E0D4"
+                      },
+                      "padding": [
+                        12,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "QDIeo",
+                          "name": "placeholder",
+                          "fill": "#9C9688",
+                          "content": "Enter your message...",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kRyWe",
+                  "name": "Textarea/Filled",
+                  "reusable": true,
+                  "width": 300,
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "wOk59",
+                      "name": "label",
+                      "fill": "#2C2C2C",
+                      "content": "Message",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "dUm2A",
+                      "name": "field",
+                      "width": "fill_container",
+                      "height": 120,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E8E0D4"
+                      },
+                      "padding": [
+                        12,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "rB8YS",
+                          "name": "content",
+                          "fill": "#2C2C2C",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "I would like to learn more about your roofing services. Please contact me at your earliest convenience.",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "9g0Tg",
+                  "name": "Textarea/Error",
+                  "reusable": true,
+                  "width": 300,
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "8fenq",
+                      "name": "label",
+                      "fill": "#2C2C2C",
+                      "content": "Message",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "mXNTU",
+                      "name": "field",
+                      "width": "fill_container",
+                      "height": 120,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#B54A4A"
+                      },
+                      "padding": [
+                        12,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "MqITu",
+                          "name": "placeholder",
+                          "fill": "#9C9688",
+                          "content": "Enter your message...",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "CNMBB",
+                      "name": "errorMessage",
+                      "fill": "#B54A4A",
+                      "content": "Message is required",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
                   ]
                 }
               ]
@@ -78,86 +208,97 @@
         },
         {
           "type": "frame",
-          "id": "row02",
-          "name": "statesRow",
+          "id": "U7iTH",
+          "name": "section2",
           "width": "fill_container",
-          "gap": 32,
+          "layout": "vertical",
+          "gap": 24,
           "children": [
             {
-              "type": "frame",
-              "id": "taError",
-              "name": "Textarea/Error",
-              "reusable": true,
-              "width": 300,
-              "layout": "vertical",
-              "gap": 8,
-              "children": [
-                {"type": "text", "id": "taErrorLabel", "name": "label", "fill": "#2C2C2C", "content": "Message", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                {
-                  "type": "frame",
-                  "id": "taErrorField",
-                  "name": "field",
-                  "width": "fill_container",
-                  "height": 120,
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 8,
-                  "stroke": {"align": "inside", "thickness": 2, "fill": "#D94F4F"},
-                  "padding": [12, 16],
-                  "children": [
-                    {"type": "text", "id": "taErrorPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Enter your message...", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                  ]
-                },
-                {"type": "text", "id": "taErrorMsg", "name": "errorMessage", "fill": "#D94F4F", "content": "Message is required", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
-              ]
+              "type": "text",
+              "id": "Iydh2",
+              "name": "section2Title",
+              "fill": "#2C2C2C",
+              "content": "With Character Count",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
             },
             {
               "type": "frame",
-              "id": "taDisabled",
-              "name": "Textarea/Disabled",
-              "reusable": true,
-              "width": 300,
-              "layout": "vertical",
-              "gap": 8,
+              "id": "OBbWz",
+              "name": "countRow",
+              "gap": 24,
               "children": [
-                {"type": "text", "id": "taDisabledLabel", "name": "label", "fill": "#9C9688", "content": "Message", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
                 {
                   "type": "frame",
-                  "id": "taDisabledField",
-                  "name": "field",
-                  "width": "fill_container",
-                  "height": 120,
-                  "fill": "#F5F3EF",
-                  "cornerRadius": 8,
-                  "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
-                  "padding": [12, 16],
+                  "id": "bQ5zO",
+                  "name": "Textarea/WithCharCount",
+                  "reusable": true,
+                  "width": 400,
+                  "layout": "vertical",
+                  "gap": 8,
                   "children": [
-                    {"type": "text", "id": "taDisabledPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Enter your message...", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "taFocus",
-              "name": "Textarea/Focus",
-              "reusable": true,
-              "width": 300,
-              "layout": "vertical",
-              "gap": 8,
-              "children": [
-                {"type": "text", "id": "taFocusLabel", "name": "label", "fill": "#2C2C2C", "content": "Message", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                {
-                  "type": "frame",
-                  "id": "taFocusField",
-                  "name": "field",
-                  "width": "fill_container",
-                  "height": 120,
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 8,
-                  "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"},
-                  "padding": [12, 16],
-                  "children": [
-                    {"type": "text", "id": "taFocusPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Enter your message...", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
+                    {
+                      "type": "text",
+                      "id": "cWK1q",
+                      "name": "label",
+                      "fill": "#2C2C2C",
+                      "content": "Additional Notes",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "9lFFG",
+                      "name": "field",
+                      "width": "fill_container",
+                      "height": 120,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E8E0D4"
+                      },
+                      "padding": [
+                        12,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ouRyw",
+                          "name": "content",
+                          "fill": "#2C2C2C",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Please ensure all work is completed before the scheduled date. Thank you.",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "753Zl",
+                      "name": "footer",
+                      "width": "fill_container",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ACDKG",
+                          "name": "charCount",
+                          "fill": "#9C9688",
+                          "content": "67 / 500",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
                   ]
                 }
               ]
@@ -166,36 +307,159 @@
         },
         {
           "type": "frame",
-          "id": "row03",
-          "name": "charCountRow",
+          "id": "VA0RI",
+          "name": "section3",
           "width": "fill_container",
-          "gap": 32,
+          "layout": "vertical",
+          "gap": 24,
           "children": [
             {
+              "type": "text",
+              "id": "NU9C5",
+              "name": "section3Title",
+              "fill": "#2C2C2C",
+              "content": "Disabled State",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
+            },
+            {
               "type": "frame",
-              "id": "taCharCount",
-              "name": "Textarea/WithCharCount",
-              "reusable": true,
-              "width": 300,
-              "layout": "vertical",
-              "gap": 8,
+              "id": "YBLpC",
+              "name": "disabledRow",
+              "gap": 24,
               "children": [
-                {"type": "text", "id": "taCharCountLabel", "name": "label", "fill": "#2C2C2C", "content": "Message", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
                 {
                   "type": "frame",
-                  "id": "taCharCountField",
-                  "name": "field",
-                  "width": "fill_container",
-                  "height": 120,
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 8,
-                  "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
-                  "padding": [12, 16],
+                  "id": "3JH0p",
+                  "name": "Textarea/Disabled",
+                  "reusable": true,
+                  "opacity": 0.5,
+                  "width": 300,
+                  "layout": "vertical",
+                  "gap": 8,
                   "children": [
-                    {"type": "text", "id": "taCharCountText", "name": "value", "fill": "#2C2C2C", "content": "Hello, I would like to...", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
+                    {
+                      "type": "text",
+                      "id": "NPlba",
+                      "name": "label",
+                      "fill": "#2C2C2C",
+                      "content": "Message",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "hllxN",
+                      "name": "field",
+                      "width": "fill_container",
+                      "height": 120,
+                      "fill": "#E8E0D4",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E8E0D4"
+                      },
+                      "padding": [
+                        12,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "dKq6S",
+                          "name": "placeholder",
+                          "fill": "#9C9688",
+                          "content": "Enter your message...",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
                   ]
-                },
-                {"type": "text", "id": "taCharCountCount", "name": "charCount", "fill": "#9C9688", "content": "25/500", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal", "textAlign": "right"}
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "vFqpc",
+          "name": "section4",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "type": "text",
+              "id": "EZpp6",
+              "name": "section4Title",
+              "fill": "#2C2C2C",
+              "content": "Focus State",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "uuB41",
+              "name": "focusRow",
+              "gap": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "PfGr1",
+                  "name": "Textarea/Focus",
+                  "reusable": true,
+                  "width": 300,
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Wk64X",
+                      "name": "label",
+                      "fill": "#2C2C2C",
+                      "content": "Message",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "EFvcU",
+                      "name": "field",
+                      "width": "fill_container",
+                      "height": 120,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#C4A77D"
+                      },
+                      "padding": [
+                        12,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Sas1U",
+                          "name": "content",
+                          "fill": "#2C2C2C",
+                          "content": "Typing here...",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
               ]
             }
           ]

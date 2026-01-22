@@ -3,120 +3,334 @@
   "children": [
     {
       "type": "frame",
-      "id": "toastLib",
+      "id": "HqhkJ",
       "x": 0,
       "y": 0,
       "name": "Toast Component Library",
-      "width": 900,
-      "height": 500,
-      "fill": "#FFFFFF",
+      "width": 1000,
+      "fill": "#FAF8F5",
       "layout": "vertical",
-      "gap": 32,
-      "padding": 32,
+      "gap": 40,
+      "padding": 40,
       "children": [
-        {"type": "text", "id": "toastTitle", "name": "title", "fill": "#2C2C2C", "content": "Toast Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
         {
           "type": "frame",
-          "id": "toastRow1",
-          "name": "variantsRow",
+          "id": "NmDAN",
+          "name": "section1",
           "width": "fill_container",
           "layout": "vertical",
-          "gap": 16,
+          "gap": 24,
           "children": [
             {
-              "type": "frame",
-              "id": "toastSuccess",
-              "name": "Toast/Success",
-              "reusable": true,
-              "width": 360,
-              "fill": "#FFFFFF",
-              "cornerRadius": 8,
-              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
-              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.12)", "offset": {"x": 0, "y": 4}, "blur": 12},
-              "gap": 12,
-              "padding": 16,
-              "alignItems": "flex_start",
-              "children": [
-                {"type": "frame", "id": "toastSuccessIconBg", "name": "iconBg", "width": 32, "height": 32, "fill": "#E8F5E9", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
-                  {"type": "icon_font", "id": "toastSuccessIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"}
-                ]},
-                {"type": "frame", "id": "toastSuccessContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 4, "children": [
-                  {"type": "text", "id": "toastSuccessTitle", "name": "title", "fill": "#2C2C2C", "content": "Success!", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
-                  {"type": "text", "id": "toastSuccessMsg", "name": "message", "fill": "#5C5C5C", "content": "Your changes have been saved.", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
-                ]},
-                {"type": "icon_font", "id": "toastSuccessClose", "name": "close", "width": 16, "height": 16, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#9C9688"}
-              ]
+              "type": "text",
+              "id": "8zgy4",
+              "name": "section1Title",
+              "fill": "#2C2C2C",
+              "content": "Toast Variants",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
             },
             {
               "type": "frame",
-              "id": "toastError",
-              "name": "Toast/Error",
-              "reusable": true,
-              "width": 360,
-              "fill": "#FFFFFF",
-              "cornerRadius": 8,
-              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
-              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.12)", "offset": {"x": 0, "y": 4}, "blur": 12},
-              "gap": 12,
-              "padding": 16,
-              "alignItems": "flex_start",
+              "id": "Ziuq2",
+              "name": "toastsGrid",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
               "children": [
-                {"type": "frame", "id": "toastErrorIconBg", "name": "iconBg", "width": 32, "height": 32, "fill": "#FFEBEE", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
-                  {"type": "icon_font", "id": "toastErrorIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#D94F4F"}
-                ]},
-                {"type": "frame", "id": "toastErrorContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 4, "children": [
-                  {"type": "text", "id": "toastErrorTitle", "name": "title", "fill": "#2C2C2C", "content": "Error", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
-                  {"type": "text", "id": "toastErrorMsg", "name": "message", "fill": "#5C5C5C", "content": "Something went wrong. Please try again.", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
-                ]},
-                {"type": "icon_font", "id": "toastErrorClose", "name": "close", "width": 16, "height": 16, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#9C9688"}
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "toastWarning",
-              "name": "Toast/Warning",
-              "reusable": true,
-              "width": 360,
-              "fill": "#FFFFFF",
-              "cornerRadius": 8,
-              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
-              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.12)", "offset": {"x": 0, "y": 4}, "blur": 12},
-              "gap": 12,
-              "padding": 16,
-              "alignItems": "flex_start",
-              "children": [
-                {"type": "frame", "id": "toastWarningIconBg", "name": "iconBg", "width": 32, "height": 32, "fill": "#FFF8E1", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
-                  {"type": "icon_font", "id": "toastWarningIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "alert-triangle", "iconFontFamily": "lucide", "fill": "#C9A227"}
-                ]},
-                {"type": "frame", "id": "toastWarningContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 4, "children": [
-                  {"type": "text", "id": "toastWarningTitle", "name": "title", "fill": "#2C2C2C", "content": "Warning", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
-                  {"type": "text", "id": "toastWarningMsg", "name": "message", "fill": "#5C5C5C", "content": "Please review before proceeding.", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
-                ]},
-                {"type": "icon_font", "id": "toastWarningClose", "name": "close", "width": 16, "height": 16, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#9C9688"}
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "toastInfo",
-              "name": "Toast/Info",
-              "reusable": true,
-              "width": 360,
-              "fill": "#FFFFFF",
-              "cornerRadius": 8,
-              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
-              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.12)", "offset": {"x": 0, "y": 4}, "blur": 12},
-              "gap": 12,
-              "padding": 16,
-              "alignItems": "flex_start",
-              "children": [
-                {"type": "frame", "id": "toastInfoIconBg", "name": "iconBg", "width": 32, "height": 32, "fill": "#E3F2FD", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
-                  {"type": "icon_font", "id": "toastInfoIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "info", "iconFontFamily": "lucide", "fill": "#3B82F6"}
-                ]},
-                {"type": "frame", "id": "toastInfoContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 4, "children": [
-                  {"type": "text", "id": "toastInfoTitle", "name": "title", "fill": "#2C2C2C", "content": "Info", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
-                  {"type": "text", "id": "toastInfoMsg", "name": "message", "fill": "#5C5C5C", "content": "Here's some helpful information.", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
-                ]},
-                {"type": "icon_font", "id": "toastInfoClose", "name": "close", "width": 16, "height": 16, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#9C9688"}
+                {
+                  "type": "frame",
+                  "id": "MJJYK",
+                  "name": "Toast/Success",
+                  "reusable": true,
+                  "width": 400,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "left": 4
+                    },
+                    "fill": "#4A7C59"
+                  },
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "rgba(44, 44, 44, 0.1)",
+                    "offset": {
+                      "x": 0,
+                      "y": 4
+                    },
+                    "blur": 6
+                  },
+                  "gap": 12,
+                  "padding": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "6bDM1",
+                      "name": "successIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "check-circle",
+                      "iconFontFamily": "lucide",
+                      "fill": "#4A7C59"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tPuNK",
+                      "name": "successContent",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Kk6Hc",
+                          "name": "successTitle",
+                          "fill": "#2C2C2C",
+                          "content": "Contract signed",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "3Vwj7",
+                          "name": "successDesc",
+                          "fill": "#5C5C5C",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Your contract has been successfully signed",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "NdPOX",
+                  "name": "Toast/Error",
+                  "reusable": true,
+                  "width": 400,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "left": 4
+                    },
+                    "fill": "#B54A4A"
+                  },
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "rgba(44, 44, 44, 0.1)",
+                    "offset": {
+                      "x": 0,
+                      "y": 4
+                    },
+                    "blur": 6
+                  },
+                  "gap": 12,
+                  "padding": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "kMZvf",
+                      "name": "errorIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "alert-circle",
+                      "iconFontFamily": "lucide",
+                      "fill": "#B54A4A"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "6wxTc",
+                      "name": "errorContent",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "WamAD",
+                          "name": "errorTitle",
+                          "fill": "#2C2C2C",
+                          "content": "Payment failed",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "FK3UL",
+                          "name": "errorDesc",
+                          "fill": "#5C5C5C",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Please check your payment information",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "SXwDs",
+                  "name": "Toast/Warning",
+                  "reusable": true,
+                  "width": 400,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "left": 4
+                    },
+                    "fill": "#C9A227"
+                  },
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "rgba(44, 44, 44, 0.1)",
+                    "offset": {
+                      "x": 0,
+                      "y": 4
+                    },
+                    "blur": 6
+                  },
+                  "gap": 12,
+                  "padding": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "B0Pff",
+                      "name": "warningIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "alert-triangle",
+                      "iconFontFamily": "lucide",
+                      "fill": "#C9A227"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Ja1vL",
+                      "name": "warningContent",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "VHEVe",
+                          "name": "warningTitle",
+                          "fill": "#2C2C2C",
+                          "content": "Slot almost full",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "a1w6O",
+                          "name": "warningDesc",
+                          "fill": "#5C5C5C",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Only 2 appointment slots remaining",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "YUwCG",
+                  "name": "Toast/Info",
+                  "reusable": true,
+                  "width": 400,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "left": 4
+                    },
+                    "fill": "#5B7B8C"
+                  },
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "rgba(44, 44, 44, 0.1)",
+                    "offset": {
+                      "x": 0,
+                      "y": 4
+                    },
+                    "blur": 6
+                  },
+                  "gap": 12,
+                  "padding": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "Ox0by",
+                      "name": "infoIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "info",
+                      "iconFontFamily": "lucide",
+                      "fill": "#5B7B8C"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "iKyka",
+                      "name": "infoContent",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "VBpZX",
+                          "name": "infoTitle",
+                          "fill": "#2C2C2C",
+                          "content": "Quote saved",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "b16eE",
+                          "name": "infoDesc",
+                          "fill": "#5C5C5C",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Your quote has been saved to your account",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
               ]
             }
           ]

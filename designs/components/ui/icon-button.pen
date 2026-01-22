@@ -3,105 +3,377 @@
   "children": [
     {
       "type": "frame",
-      "id": "iconBtnLib",
+      "id": "4Gp5r",
       "x": 0,
       "y": 0,
-      "name": "Icon Button Component Library",
-      "width": 900,
-      "height": 500,
-      "fill": "#FFFFFF",
+      "name": "IconButton Component Library",
+      "width": 1000,
+      "fill": "#FAF8F5",
       "layout": "vertical",
-      "gap": 32,
-      "padding": 32,
+      "gap": 40,
+      "padding": 40,
       "children": [
-        {"type": "text", "id": "iconBtnTitle", "name": "title", "fill": "#2C2C2C", "content": "Icon Button Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
         {
           "type": "frame",
-          "id": "iconBtnRow1",
-          "name": "variantsRow",
+          "id": "kbwaM",
+          "name": "section1",
           "width": "fill_container",
-          "gap": 32,
-          "alignItems": "center",
+          "layout": "vertical",
+          "gap": 24,
           "children": [
-            {"type": "text", "id": "variantsLabel", "name": "label", "fill": "#5C5C5C", "content": "Variants:", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
-            {"type": "frame", "id": "iconBtnPrimary", "name": "IconButton/Primary", "reusable": true, "width": 44, "height": 44, "fill": "#C4A77D", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "iconBtnPrimaryIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "plus", "iconFontFamily": "lucide", "fill": "#FFFFFF"}
-            ]},
-            {"type": "frame", "id": "iconBtnSecondary", "name": "IconButton/Secondary", "reusable": true, "width": 44, "height": 44, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#C4A77D"}, "justifyContent": "center", "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "iconBtnSecondaryIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "edit", "iconFontFamily": "lucide", "fill": "#C4A77D"}
-            ]},
-            {"type": "frame", "id": "iconBtnGhost", "name": "IconButton/Ghost", "reusable": true, "width": 44, "height": 44, "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "iconBtnGhostIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "more-horizontal", "iconFontFamily": "lucide", "fill": "#5C5C5C"}
-            ]},
-            {"type": "frame", "id": "iconBtnDanger", "name": "IconButton/Danger", "reusable": true, "width": 44, "height": 44, "fill": "#D94F4F", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "iconBtnDangerIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "trash-2", "iconFontFamily": "lucide", "fill": "#FFFFFF"}
-            ]}
+            {
+              "type": "text",
+              "id": "hqVPs",
+              "name": "section1Title",
+              "fill": "#2C2C2C",
+              "content": "IconButton Sizes",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "SXkXw",
+              "name": "sizesRow",
+              "width": "fill_container",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kwYGp",
+                  "name": "IconButton/Small",
+                  "reusable": true,
+                  "width": 32,
+                  "height": 32,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "FNVP1",
+                      "name": "smallIcon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "x",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2C2C2C"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "1wAdx",
+                  "name": "IconButton/Medium",
+                  "reusable": true,
+                  "width": 40,
+                  "height": 40,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "r1GXY",
+                      "name": "mediumIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "x",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2C2C2C"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "5eU3U",
+                  "name": "IconButton/Large",
+                  "reusable": true,
+                  "width": 48,
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "mfLgz",
+                      "name": "largeIcon",
+                      "width": 24,
+                      "height": 24,
+                      "iconFontName": "x",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2C2C2C"
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "frame",
-          "id": "iconBtnRow2",
-          "name": "sizesRow",
+          "id": "l04pI",
+          "name": "section2",
           "width": "fill_container",
-          "gap": 32,
-          "alignItems": "center",
+          "layout": "vertical",
+          "gap": 24,
           "children": [
-            {"type": "text", "id": "sizesLabel", "name": "label", "fill": "#5C5C5C", "content": "Sizes:", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
-            {"type": "frame", "id": "iconBtnSmall", "name": "IconButton/Small", "reusable": true, "width": 32, "height": 32, "fill": "#C4A77D", "cornerRadius": 6, "justifyContent": "center", "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "iconBtnSmallIcon", "name": "icon", "width": 16, "height": 16, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#FFFFFF"}
-            ]},
-            {"type": "frame", "id": "iconBtnMedium", "name": "IconButton/Medium", "reusable": true, "width": 44, "height": 44, "fill": "#C4A77D", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "iconBtnMediumIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#FFFFFF"}
-            ]},
-            {"type": "frame", "id": "iconBtnLarge", "name": "IconButton/Large", "reusable": true, "width": 56, "height": 56, "fill": "#C4A77D", "cornerRadius": 10, "justifyContent": "center", "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "iconBtnLargeIcon", "name": "icon", "width": 24, "height": 24, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#FFFFFF"}
-            ]}
+            {
+              "type": "text",
+              "id": "ZeCax",
+              "name": "section2Title",
+              "fill": "#2C2C2C",
+              "content": "IconButton Variants",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "LWLNW",
+              "name": "variantsRow",
+              "width": "fill_container",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "xc4Pe",
+                  "name": "IconButton/Default",
+                  "reusable": true,
+                  "width": 40,
+                  "height": 40,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "Fa0gI",
+                      "name": "defaultIconBtnIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "menu",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2C2C2C"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "5dmqB",
+                  "name": "IconButton/Ghost",
+                  "reusable": true,
+                  "width": 40,
+                  "height": 40,
+                  "fill": "transparent",
+                  "cornerRadius": 6,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "cbbNs",
+                      "name": "ghostIconBtnIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "more-vertical",
+                      "iconFontFamily": "lucide",
+                      "fill": "#5C5C5C"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "2DaJP",
+                  "name": "IconButton/Primary",
+                  "reusable": true,
+                  "width": 40,
+                  "height": 40,
+                  "fill": "#C4A77D",
+                  "cornerRadius": 6,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "JZunV",
+                      "name": "primaryIconBtnIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "check",
+                      "iconFontFamily": "lucide",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "tzviZ",
+                  "name": "IconButton/Danger",
+                  "reusable": true,
+                  "width": 40,
+                  "height": 40,
+                  "fill": "#B54A4A",
+                  "cornerRadius": 6,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "eiOnA",
+                      "name": "dangerIconBtnIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "trash-2",
+                      "iconFontFamily": "lucide",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "frame",
-          "id": "iconBtnRow3",
-          "name": "statesRow",
+          "id": "KSXiM",
+          "name": "section3",
           "width": "fill_container",
-          "gap": 32,
-          "alignItems": "center",
+          "layout": "vertical",
+          "gap": 24,
           "children": [
-            {"type": "text", "id": "statesLabel", "name": "label", "fill": "#5C5C5C", "content": "States:", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
-            {"type": "frame", "id": "iconBtnDefault", "name": "state", "layout": "vertical", "gap": 8, "alignItems": "center", "children": [
-              {"type": "frame", "id": "iconBtnDefaultBtn", "name": "IconButton/Default", "reusable": true, "width": 44, "height": 44, "fill": "#C4A77D", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
-                {"type": "icon_font", "id": "iconBtnDefaultIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "heart", "iconFontFamily": "lucide", "fill": "#FFFFFF"}
-              ]},
-              {"type": "text", "id": "iconBtnDefaultLabel", "name": "label", "fill": "#9C9688", "content": "Default", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
-            ]},
-            {"type": "frame", "id": "iconBtnHover", "name": "state", "layout": "vertical", "gap": 8, "alignItems": "center", "children": [
-              {"type": "frame", "id": "iconBtnHoverBtn", "name": "IconButton/Hover", "reusable": true, "width": 44, "height": 44, "fill": "#B89A6F", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
-                {"type": "icon_font", "id": "iconBtnHoverIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "heart", "iconFontFamily": "lucide", "fill": "#FFFFFF"}
-              ]},
-              {"type": "text", "id": "iconBtnHoverLabel", "name": "label", "fill": "#9C9688", "content": "Hover", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
-            ]},
-            {"type": "frame", "id": "iconBtnDisabled", "name": "state", "layout": "vertical", "gap": 8, "alignItems": "center", "children": [
-              {"type": "frame", "id": "iconBtnDisabledBtn", "name": "IconButton/Disabled", "reusable": true, "width": 44, "height": 44, "fill": "#E8E0D4", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
-                {"type": "icon_font", "id": "iconBtnDisabledIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "heart", "iconFontFamily": "lucide", "fill": "#9C9688"}
-              ]},
-              {"type": "text", "id": "iconBtnDisabledLabel", "name": "label", "fill": "#9C9688", "content": "Disabled", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
-            ]}
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "iconBtnRow4",
-          "name": "roundRow",
-          "width": "fill_container",
-          "gap": 32,
-          "alignItems": "center",
-          "children": [
-            {"type": "text", "id": "roundLabel", "name": "label", "fill": "#5C5C5C", "content": "Round:", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
-            {"type": "frame", "id": "iconBtnRound", "name": "IconButton/Round", "reusable": true, "width": 44, "height": 44, "fill": "#C4A77D", "cornerRadius": 22, "justifyContent": "center", "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "iconBtnRoundIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "phone", "iconFontFamily": "lucide", "fill": "#FFFFFF"}
-            ]},
-            {"type": "frame", "id": "iconBtnRoundSecondary", "name": "IconButton/RoundSecondary", "reusable": true, "width": 44, "height": 44, "fill": "#FFFFFF", "cornerRadius": 22, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "justifyContent": "center", "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "iconBtnRoundSecondaryIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "share", "iconFontFamily": "lucide", "fill": "#5C5C5C"}
-            ]}
+            {
+              "type": "text",
+              "id": "91Ghg",
+              "name": "section3Title",
+              "fill": "#2C2C2C",
+              "content": "IconButton States",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "4w2cW",
+              "name": "statesRow",
+              "width": "fill_container",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "7zDXD",
+                  "name": "defaultState",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "czlrD",
+                      "name": "defaultStateIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "heart",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2C2C2C"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "CIDvX",
+                  "name": "hoverState",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "#F5F0E8",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "OeGuG",
+                      "name": "hoverStateIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "heart",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2C2C2C"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "2B6Gr",
+                  "name": "disabledState",
+                  "opacity": 0.5,
+                  "width": 40,
+                  "height": 40,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "JCypM",
+                      "name": "disabledStateIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "heart",
+                      "iconFontFamily": "lucide",
+                      "fill": "#9C9688"
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         }
       ]

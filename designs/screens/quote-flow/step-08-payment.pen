@@ -3,113 +3,551 @@
   "children": [
     {
       "type": "frame",
-      "id": "screen08D",
+      "id": "OKSSN",
       "x": 0,
       "y": 0,
       "name": "Payment - Desktop",
       "width": 1440,
-      "height": 900,
+      "height": 1024,
       "fill": "#FAF8F5",
       "layout": "vertical",
       "children": [
         {
           "type": "frame",
-          "id": "header08D",
+          "id": "jIVKs",
           "name": "header",
           "width": "fill_container",
+          "height": 64,
           "fill": "#FFFFFF",
-          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
-          "padding": [16, 80],
-          "gap": 24,
+          "padding": [
+            16,
+            40
+          ],
+          "justifyContent": "space_between",
           "alignItems": "center",
           "children": [
-            {"type": "icon_font", "id": "backIcon08D", "name": "back", "width": 24, "height": 24, "iconFontName": "arrow-left", "iconFontFamily": "lucide", "fill": "#2C2C2C"},
-            {"type": "frame", "id": "headerInfo08D", "name": "info", "width": "fill_container", "layout": "vertical", "gap": 2, "children": [
-              {"type": "text", "id": "headerTitle08D", "name": "title", "fill": "#2C2C2C", "content": "Pay Deposit", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"},
-              {"type": "text", "id": "headerAddress08D", "name": "address", "fill": "#5C5C5C", "content": "123 Main St, Dallas, TX 75201", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-            ]},
-            {"type": "frame", "id": "progress08D", "name": "progress", "width": 200, "height": 8, "fill": "#E8E0D4", "cornerRadius": 4, "children": [
-              {"type": "frame", "id": "progressFill08D", "name": "fill", "width": "95%", "height": "fill_container", "fill": "#C4A77D", "cornerRadius": 4}
-            ]}
+            {
+              "type": "frame",
+              "id": "iLmOi",
+              "name": "backButton",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "wECGr",
+                  "name": "backIcon",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "arrow-left",
+                  "iconFontFamily": "lucide",
+                  "fill": "#5C5C5C"
+                },
+                {
+                  "type": "text",
+                  "id": "bUTgz",
+                  "name": "backText",
+                  "fill": "#5C5C5C",
+                  "content": "Back",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "cNTiL",
+              "name": "progress",
+              "fill": "#5C5C5C",
+              "content": "Progress: ●●●●●",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            }
           ]
         },
         {
           "type": "frame",
-          "id": "content08D",
-          "name": "content",
+          "id": "uE0jJ",
+          "name": "mainContent",
           "width": "fill_container",
           "height": "fill_container",
-          "padding": [60, 120],
-          "gap": 60,
-          "justifyContent": "center",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            48,
+            40
+          ],
+          "alignItems": "center",
           "children": [
             {
+              "type": "text",
+              "id": "54W6m",
+              "name": "title",
+              "fill": "#2C2C2C",
+              "content": "Pay Your Deposit",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 36,
+              "fontWeight": "700"
+            },
+            {
               "type": "frame",
-              "id": "leftCol08D",
-              "name": "leftColumn",
-              "width": 400,
+              "id": "FrMdh",
+              "name": "depositCard",
+              "width": 500,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#C4A77D"
+              },
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "rgba(44, 44, 44, 0.07)",
+                "offset": {
+                  "x": 0,
+                  "y": 2
+                },
+                "blur": 4
+              },
               "layout": "vertical",
-              "gap": 24,
+              "gap": 16,
+              "padding": 32,
+              "alignItems": "center",
               "children": [
-                {"type": "text", "id": "title08D", "name": "title", "fill": "#2C2C2C", "content": "Secure Your Spot", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
-                {"type": "frame", "id": "depositCard08D", "name": "depositCard", "width": "fill_container", "fill": "#FFFFFF", "cornerRadius": 16, "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"}, "layout": "vertical", "gap": 12, "padding": 24, "alignItems": "center", "children": [
-                  {"type": "text", "id": "depositLabel08D", "name": "label", "fill": "#5C5C5C", "content": "Deposit Amount", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                  {"type": "text", "id": "depositAmount08D", "name": "amount", "fill": "#C4A77D", "content": "$1,240", "fontFamily": "Inter", "fontSize": 40, "fontWeight": "700"},
-                  {"type": "text", "id": "depositNote08D", "name": "note", "fill": "#9C9688", "content": "10% of total • Refundable if cancelled 48hrs+ before", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
-                ]},
-                {"type": "frame", "id": "trustBadges08D", "name": "trustBadges", "width": "fill_container", "justifyContent": "center", "gap": 24, "children": [
-                  {"type": "frame", "id": "trust1D08", "name": "trust", "gap": 8, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "trust1D08Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "lock", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "trust1D08Text", "name": "text", "fill": "#5C5C5C", "content": "Secure Payment", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
-                  ]},
-                  {"type": "frame", "id": "trust2D08", "name": "trust", "gap": 8, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "trust2D08Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "shield", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "trust2D08Text", "name": "text", "fill": "#5C5C5C", "content": "256-bit SSL", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
-                  ]}
-                ]}
+                {
+                  "type": "text",
+                  "id": "jBgnU",
+                  "name": "depositTitle",
+                  "fill": "#2C2C2C",
+                  "content": "DEPOSIT DUE TODAY",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "CeSfa",
+                  "name": "depositAmount",
+                  "fill": "#2C2C2C",
+                  "content": "$1,320.00",
+                  "fontFamily": "Inter",
+                  "fontSize": 48,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "eZWDp",
+                  "name": "depositNote",
+                  "fill": "#5C5C5C",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Remaining balance of $11,880 due on project completion.",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
               ]
             },
             {
               "type": "frame",
-              "id": "rightCol08D",
-              "name": "rightColumn",
-              "width": 480,
+              "id": "AbhrO",
+              "name": "paymentMethod",
+              "width": 600,
               "layout": "vertical",
-              "gap": 20,
+              "gap": 16,
               "children": [
-                {"type": "frame", "id": "paymentForm08D", "name": "paymentForm", "width": "fill_container", "fill": "#FFFFFF", "cornerRadius": 16, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "layout": "vertical", "gap": 20, "padding": 28, "children": [
-                  {"type": "text", "id": "formTitle08D", "name": "title", "fill": "#2C2C2C", "content": "Payment Details", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "600"},
-                  {"type": "frame", "id": "cardField08D", "name": "cardField", "width": "fill_container", "layout": "vertical", "gap": 8, "children": [
-                    {"type": "text", "id": "cardLabel08D", "name": "label", "fill": "#2C2C2C", "content": "Card Number", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                    {"type": "frame", "id": "cardInput08D", "name": "input", "width": "fill_container", "height": 52, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [14, 16], "justifyContent": "space_between", "alignItems": "center", "children": [
-                      {"type": "text", "id": "cardPlaceholder08D", "name": "placeholder", "fill": "#9C9688", "content": "1234 5678 9012 3456", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
-                      {"type": "icon_font", "id": "cardIcon08D", "name": "icon", "width": 20, "height": 20, "iconFontName": "credit-card", "iconFontFamily": "lucide", "fill": "#9C9688"}
-                    ]}
-                  ]},
-                  {"type": "frame", "id": "expCvvRow08D", "name": "row", "width": "fill_container", "gap": 16, "children": [
-                    {"type": "frame", "id": "expField08D", "name": "expField", "width": "fill_container", "layout": "vertical", "gap": 8, "children": [
-                      {"type": "text", "id": "expLabel08D", "name": "label", "fill": "#2C2C2C", "content": "Expiry Date", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                      {"type": "frame", "id": "expInput08D", "name": "input", "width": "fill_container", "height": 52, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [14, 16], "alignItems": "center", "children": [
-                        {"type": "text", "id": "expPlaceholder08D", "name": "placeholder", "fill": "#9C9688", "content": "MM / YY", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                      ]}
-                    ]},
-                    {"type": "frame", "id": "cvvField08D", "name": "cvvField", "width": "fill_container", "layout": "vertical", "gap": 8, "children": [
-                      {"type": "text", "id": "cvvLabel08D", "name": "label", "fill": "#2C2C2C", "content": "CVV", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                      {"type": "frame", "id": "cvvInput08D", "name": "input", "width": "fill_container", "height": 52, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [14, 16], "alignItems": "center", "children": [
-                        {"type": "text", "id": "cvvPlaceholder08D", "name": "placeholder", "fill": "#9C9688", "content": "123", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                      ]}
-                    ]}
-                  ]},
-                  {"type": "frame", "id": "nameField08D", "name": "nameField", "width": "fill_container", "layout": "vertical", "gap": 8, "children": [
-                    {"type": "text", "id": "nameLabel08D", "name": "label", "fill": "#2C2C2C", "content": "Name on Card", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                    {"type": "frame", "id": "nameInput08D", "name": "input", "width": "fill_container", "height": 52, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [14, 16], "alignItems": "center", "children": [
-                      {"type": "text", "id": "namePlaceholder08D", "name": "placeholder", "fill": "#9C9688", "content": "John Smith", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                    ]}
-                  ]}
-                ]},
-                {"type": "frame", "id": "ctaBtn08D", "name": "cta", "width": "fill_container", "height": 56, "fill": "#C4A77D", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
-                  {"type": "text", "id": "ctaBtnLabel08D", "name": "label", "fill": "#FFFFFF", "content": "Pay $1,240 Deposit", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
-                ]}
+                {
+                  "type": "text",
+                  "id": "ErIi7",
+                  "name": "paymentMethodTitle",
+                  "fill": "#2C2C2C",
+                  "content": "Payment Method",
+                  "fontFamily": "Inter",
+                  "fontSize": 20,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "oZZil",
+                  "name": "paymentOptions",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kpSHN",
+                      "name": "cardOption",
+                      "width": "fill_container",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "VtzeG",
+                          "name": "cardRadio",
+                          "width": 20,
+                          "height": 20,
+                          "fill": "#C4A77D",
+                          "cornerRadius": 10,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "jU6mc",
+                              "name": "cardRadioInner",
+                              "width": 8,
+                              "height": 8,
+                              "fill": "#FFFFFF",
+                              "cornerRadius": 4
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "914yc",
+                          "name": "cardOptionText",
+                          "fill": "#2C2C2C",
+                          "content": "Credit or Debit Card",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "5Lf70",
+                      "name": "achOption",
+                      "width": "fill_container",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "zJ7lC",
+                          "name": "achRadio",
+                          "width": 20,
+                          "height": 20,
+                          "fill": "#FFFFFF",
+                          "cornerRadius": 10,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 1,
+                            "fill": "#E8E0D4"
+                          },
+                          "justifyContent": "center",
+                          "alignItems": "center"
+                        },
+                        {
+                          "type": "text",
+                          "id": "McioK",
+                          "name": "achOptionText",
+                          "fill": "#2C2C2C",
+                          "content": "Bank Account (ACH)",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "04MBV",
+                  "name": "paymentForm",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "rgba(44, 44, 44, 0.07)",
+                    "offset": {
+                      "x": 0,
+                      "y": 2
+                    },
+                    "blur": 4
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "claNz",
+                      "name": "cardNumberLabel",
+                      "fill": "#2C2C2C",
+                      "content": "Card Number",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "I67oo",
+                      "name": "cardNumberInput",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E8E0D4"
+                      },
+                      "padding": [
+                        12,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "XSAUO",
+                          "name": "cardNumberText",
+                          "fill": "#2C2C2C",
+                          "content": "4242 4242 4242 4242",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "rg1Hv",
+                      "name": "cardDetailsRow",
+                      "width": "fill_container",
+                      "gap": 12,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "R3QuB",
+                          "name": "expiryGroup",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "SD2Cf",
+                              "name": "expiryLabel",
+                              "fill": "#2C2C2C",
+                              "content": "Expiry",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "1ELaH",
+                              "name": "expiryInput",
+                              "width": "fill_container",
+                              "height": 48,
+                              "fill": "#FFFFFF",
+                              "cornerRadius": 8,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 1,
+                                "fill": "#E8E0D4"
+                              },
+                              "padding": [
+                                12,
+                                16
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "Wu4NL",
+                                  "name": "expiryText",
+                                  "fill": "#9C9688",
+                                  "content": "MM/YY",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "RduYY",
+                          "name": "cvcGroup",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "2H61I",
+                              "name": "cvcLabel",
+                              "fill": "#2C2C2C",
+                              "content": "CVC",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "q5uKS",
+                              "name": "cvcInput",
+                              "width": "fill_container",
+                              "height": 48,
+                              "fill": "#FFFFFF",
+                              "cornerRadius": 8,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 1,
+                                "fill": "#E8E0D4"
+                              },
+                              "padding": [
+                                12,
+                                16
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "IpMJp",
+                                  "name": "cvcText",
+                                  "fill": "#2C2C2C",
+                                  "content": "123",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "2mxrI",
+                      "name": "nameLabel",
+                      "fill": "#2C2C2C",
+                      "content": "Name on Card",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "5gCWe",
+                      "name": "nameInput",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E8E0D4"
+                      },
+                      "padding": [
+                        12,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "9x2Ii",
+                          "name": "nameText",
+                          "fill": "#2C2C2C",
+                          "content": "Richard Thompson",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "CJYC1",
+                  "name": "securityBadge",
+                  "gap": 6,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "PsK7i",
+                      "name": "lockIcon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "lock",
+                      "iconFontFamily": "lucide",
+                      "fill": "#5C5C5C"
+                    },
+                    {
+                      "type": "text",
+                      "id": "wgnmp",
+                      "name": "securityText",
+                      "fill": "#5C5C5C",
+                      "content": "Secure payment by Stripe",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "7nsZq",
+                  "name": "refundLink",
+                  "fill": "#C4A77D",
+                  "content": "[Refund Policy]",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "VIci9",
+              "name": "ctaButton",
+              "width": 600,
+              "height": 52,
+              "fill": "#C4A77D",
+              "cornerRadius": 8,
+              "gap": 8,
+              "padding": [
+                16,
+                32
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "PPtQ0",
+                  "name": "ctaButtonText",
+                  "fill": "#FFFFFF",
+                  "content": "Pay $1,320.00",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600"
+                }
               ]
             }
           ]

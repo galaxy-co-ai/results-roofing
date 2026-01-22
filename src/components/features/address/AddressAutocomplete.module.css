@@ -94,6 +94,34 @@
   color: var(--color-text-muted, #6b7280);
 }
 
+.devModeHint {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.devModeButton {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  background-color: var(--rr-color-sandstone, #c4a35a);
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.devModeButton:hover:not(:disabled) {
+  background-color: var(--rr-color-terracotta, #b8860b);
+  color: white;
+}
+
+.devModeButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);

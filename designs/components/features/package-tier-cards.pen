@@ -3,162 +3,1141 @@
   "children": [
     {
       "type": "frame",
-      "id": "pkgLib",
+      "id": "jMFt6",
       "x": 0,
       "y": 0,
-      "name": "Package Tier Cards Component Library",
+      "name": "Package Tier Cards - Desktop",
       "width": 1200,
-      "height": 800,
-      "fill": "#FFFFFF",
+      "fill": "#FAF8F5",
       "layout": "vertical",
       "gap": 32,
-      "padding": 32,
+      "padding": 40,
       "children": [
-        {"type": "text", "id": "pkgTitle", "name": "title", "fill": "#2C2C2C", "content": "Package Tier Cards", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
-        {"type": "text", "id": "pkgSubtitle", "name": "subtitle", "fill": "#5C5C5C", "content": "Roofing package selection cards for the quote flow", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
         {
           "type": "frame",
-          "id": "pkgRow1",
-          "name": "cardsRow",
+          "id": "AIYtG",
+          "name": "header",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 8,
+          "children": [
+            {
+              "type": "text",
+              "id": "s8loD",
+              "name": "title",
+              "fill": "#2C2C2C",
+              "content": "Choose Your Package",
+              "fontFamily": "Inter",
+              "fontSize": 30,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "248ad",
+              "name": "subtitle",
+              "fill": "#5C5C5C",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Based on your 2,450 sq ft roof. All packages include professional installation, permits, and full cleanup.",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "rIrY8",
+          "name": "cardsGrid",
           "width": "fill_container",
           "gap": 24,
           "children": [
             {
               "type": "frame",
-              "id": "pkgGood",
-              "name": "PackageCard/Good",
-              "reusable": true,
-              "width": 340,
+              "id": "LaXBE",
+              "name": "Good Tier Card",
+              "width": "fill_container",
               "fill": "#FFFFFF",
-              "cornerRadius": 16,
-              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "cornerRadius": 8,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E8E0D4"
+              },
               "layout": "vertical",
               "gap": 20,
               "padding": 24,
               "children": [
-                {"type": "frame", "id": "pkgGoodHeader", "name": "header", "width": "fill_container", "justifyContent": "space_between", "alignItems": "center", "children": [
-                  {"type": "text", "id": "pkgGoodTitle", "name": "title", "fill": "#2C2C2C", "content": "Good", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "700"},
-                  {"type": "text", "id": "pkgGoodPrice", "name": "price", "fill": "#C4A77D", "content": "$8,900 - $10,800", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
-                ]},
-                {"type": "text", "id": "pkgGoodMaterial", "name": "material", "fill": "#5C5C5C", "content": "3-Tab Shingles", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
-                {"type": "frame", "id": "pkgGoodWarranty", "name": "warranty", "gap": 8, "alignItems": "center", "children": [
-                  {"type": "icon_font", "id": "pkgGoodWarrantyIcon", "name": "icon", "width": 16, "height": 16, "iconFontName": "shield", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-                  {"type": "text", "id": "pkgGoodWarrantyText", "name": "text", "fill": "#5C5C5C", "content": "25-year warranty", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                ]},
-                {"type": "frame", "id": "pkgGoodDivider", "name": "divider", "width": "fill_container", "height": 1, "fill": "#E8E0D4"},
-                {"type": "frame", "id": "pkgGoodFeatures", "name": "features", "width": "fill_container", "layout": "vertical", "gap": 12, "children": [
-                  {"type": "frame", "id": "pkgGoodF1", "name": "feature", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "pkgGoodF1Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "pkgGoodF1Text", "name": "text", "fill": "#2C2C2C", "content": "Standard installation", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]},
-                  {"type": "frame", "id": "pkgGoodF2", "name": "feature", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "pkgGoodF2Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "pkgGoodF2Text", "name": "text", "fill": "#2C2C2C", "content": "Basic cleanup included", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]},
-                  {"type": "frame", "id": "pkgGoodF3", "name": "feature", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "pkgGoodF3Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "pkgGoodF3Text", "name": "text", "fill": "#2C2C2C", "content": "Standard underlayment", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]}
-                ]},
-                {"type": "frame", "id": "pkgGoodBtn", "name": "selectButton", "width": "fill_container", "height": 48, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#C4A77D"}, "justifyContent": "center", "alignItems": "center", "children": [
-                  {"type": "text", "id": "pkgGoodBtnLabel", "name": "label", "fill": "#C4A77D", "content": "Select Good", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
-                ]}
+                {
+                  "type": "frame",
+                  "id": "rBo8J",
+                  "name": "goodHeader",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "QIy9B",
+                      "name": "goodTitle",
+                      "fill": "#2C2C2C",
+                      "content": "Good",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "T5J5q",
+                      "name": "goodDesc",
+                      "fill": "#5C5C5C",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Quality roofing at an affordable price. Perfect for budget-conscious homeowners who want reliable protection.",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "QXaUM",
+                  "name": "goodPrice",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "aTjat",
+                      "name": "goodPriceTotal",
+                      "fill": "#2C2C2C",
+                      "content": "$13,750",
+                      "fontFamily": "Inter",
+                      "fontSize": 36,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "14Arb",
+                      "name": "goodPricePerSqft",
+                      "fill": "#9C9688",
+                      "content": "$5.61/sq ft installed",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pUDMl",
+                  "name": "goodMaterial",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 2,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "gwTnj",
+                      "name": "goodBrand",
+                      "fill": "#2C2C2C",
+                      "content": "GAF Royal Sovereign",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "hD3rB",
+                      "name": "goodType",
+                      "fill": "#5C5C5C",
+                      "content": "3-tab shingles",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "0OOrv",
+                  "name": "goodFeatures",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "JNHdI",
+                      "name": "goodFeature1",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "LrHzx",
+                          "name": "goodCheck1",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "l6x4L",
+                          "name": "goodFeatureText1",
+                          "fill": "#2C2C2C",
+                          "content": "25-year limited warranty",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "DvR09",
+                      "name": "goodFeature2",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "SfXro",
+                          "name": "goodCheck2",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "8yKIV",
+                          "name": "goodFeatureText2",
+                          "fill": "#2C2C2C",
+                          "content": "Synthetic felt",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "BMd5x",
+                      "name": "goodFeature3",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "O0ufv",
+                          "name": "goodCheck3",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "yBnmf",
+                          "name": "goodFeatureText3",
+                          "fill": "#2C2C2C",
+                          "content": "Standard cleanup and disposal",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "20PAA",
+                      "name": "goodFeature4",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "btGe0",
+                          "name": "goodCheck4",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "si7gT",
+                          "name": "goodFeatureText4",
+                          "fill": "#2C2C2C",
+                          "content": "Basic inspection report",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rX4Ed",
+                  "name": "goodDeposit",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "top": 1
+                    },
+                    "fill": "#E8E0D4"
+                  },
+                  "padding": [
+                    16,
+                    0,
+                    0,
+                    0
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "fI7RW",
+                      "name": "goodDepositLabel",
+                      "fill": "#5C5C5C",
+                      "content": "Due today:",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "0Dqj7",
+                      "name": "goodDepositAmount",
+                      "fill": "#2C2C2C",
+                      "content": "$1,375 (10% deposit)",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Krsbl",
+                  "name": "goodButton",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "gap": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "yM3m3",
+                      "name": "goodButtonText",
+                      "fill": "#2C2C2C",
+                      "content": "Select Good",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "vJteL",
+                      "name": "goodButtonIcon",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "chevron-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2C2C2C"
+                    }
+                  ]
+                }
               ]
             },
             {
               "type": "frame",
-              "id": "pkgBetter",
-              "name": "PackageCard/Better",
-              "reusable": true,
-              "width": 340,
+              "id": "M6DSd",
+              "name": "Better Tier Card",
+              "width": "fill_container",
               "fill": "#FFFFFF",
-              "cornerRadius": 16,
-              "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"},
-              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(196, 167, 125, 0.2)", "offset": {"x": 0, "y": 4}, "blur": 12},
+              "cornerRadius": 8,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#C4A77D"
+              },
               "layout": "vertical",
               "gap": 20,
               "padding": 24,
               "children": [
-                {"type": "frame", "id": "pkgBetterBadge", "name": "badge", "fill": "#C4A77D", "cornerRadius": 4, "padding": [6, 12], "children": [
-                  {"type": "text", "id": "pkgBetterBadgeText", "name": "text", "fill": "#FFFFFF", "content": "RECOMMENDED", "fontFamily": "Inter", "fontSize": 11, "fontWeight": "700"}
-                ]},
-                {"type": "frame", "id": "pkgBetterHeader", "name": "header", "width": "fill_container", "justifyContent": "space_between", "alignItems": "center", "children": [
-                  {"type": "text", "id": "pkgBetterTitle", "name": "title", "fill": "#2C2C2C", "content": "Better", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "700"},
-                  {"type": "text", "id": "pkgBetterPrice", "name": "price", "fill": "#C4A77D", "content": "$11,800 - $14,400", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
-                ]},
-                {"type": "text", "id": "pkgBetterMaterial", "name": "material", "fill": "#5C5C5C", "content": "Architectural Shingles", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
-                {"type": "frame", "id": "pkgBetterWarranty", "name": "warranty", "gap": 8, "alignItems": "center", "children": [
-                  {"type": "icon_font", "id": "pkgBetterWarrantyIcon", "name": "icon", "width": 16, "height": 16, "iconFontName": "shield", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-                  {"type": "text", "id": "pkgBetterWarrantyText", "name": "text", "fill": "#5C5C5C", "content": "30-year warranty", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                ]},
-                {"type": "frame", "id": "pkgBetterDivider", "name": "divider", "width": "fill_container", "height": 1, "fill": "#E8E0D4"},
-                {"type": "frame", "id": "pkgBetterFeatures", "name": "features", "width": "fill_container", "layout": "vertical", "gap": 12, "children": [
-                  {"type": "frame", "id": "pkgBetterF1", "name": "feature", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "pkgBetterF1Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "pkgBetterF1Text", "name": "text", "fill": "#2C2C2C", "content": "Enhanced durability", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]},
-                  {"type": "frame", "id": "pkgBetterF2", "name": "feature", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "pkgBetterF2Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "pkgBetterF2Text", "name": "text", "fill": "#2C2C2C", "content": "Ice & water shield included", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]},
-                  {"type": "frame", "id": "pkgBetterF3", "name": "feature", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "pkgBetterF3Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "pkgBetterF3Text", "name": "text", "fill": "#2C2C2C", "content": "Premium cleanup", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]},
-                  {"type": "frame", "id": "pkgBetterF4", "name": "feature", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "pkgBetterF4Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "pkgBetterF4Text", "name": "text", "fill": "#2C2C2C", "content": "Ridge vent upgrade", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]}
-                ]},
-                {"type": "frame", "id": "pkgBetterBtn", "name": "selectButton", "width": "fill_container", "height": 48, "fill": "#C4A77D", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
-                  {"type": "text", "id": "pkgBetterBtnLabel", "name": "label", "fill": "#FFFFFF", "content": "Select Better", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
-                ]}
+                {
+                  "type": "frame",
+                  "id": "ByTNY",
+                  "name": "betterBadge",
+                  "height": 28,
+                  "fill": "#C4A77D",
+                  "cornerRadius": 14,
+                  "gap": 6,
+                  "padding": [
+                    6,
+                    12
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "UhU8J",
+                      "name": "betterBadgeIcon",
+                      "width": 14,
+                      "height": 14,
+                      "iconFontName": "star",
+                      "iconFontFamily": "lucide",
+                      "fill": "#FFFFFF"
+                    },
+                    {
+                      "type": "text",
+                      "id": "VaQdC",
+                      "name": "betterBadgeText",
+                      "fill": "#FFFFFF",
+                      "content": "Most Popular",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "busq5",
+                  "name": "betterHeader",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "pDQCE",
+                      "name": "betterTitle",
+                      "fill": "#2C2C2C",
+                      "content": "Better",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "wW8p8",
+                      "name": "betterDesc",
+                      "fill": "#5C5C5C",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Enhanced durability and curb appeal. Our most popular choice with architectural shingles and extended warranty.",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "PhGOp",
+                  "name": "betterPrice",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Lwk7E",
+                      "name": "betterPriceTotal",
+                      "fill": "#2C2C2C",
+                      "content": "$17,150",
+                      "fontFamily": "Inter",
+                      "fontSize": 36,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "yYjyO",
+                      "name": "betterPricePerSqft",
+                      "fill": "#9C9688",
+                      "content": "$7.00/sq ft installed",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Xj0Y0",
+                  "name": "betterMaterial",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 2,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "mcDWx",
+                      "name": "betterBrand",
+                      "fill": "#2C2C2C",
+                      "content": "GAF Timberline HDZ",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Scken",
+                      "name": "betterType",
+                      "fill": "#5C5C5C",
+                      "content": "architectural shingles",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "N1neE",
+                  "name": "betterFeatures",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "gIkSg",
+                      "name": "betterFeature1",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "zsnG8",
+                          "name": "betterCheck1",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "BbLBs",
+                          "name": "betterFeatureText1",
+                          "fill": "#2C2C2C",
+                          "content": "30-year full warranty",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "oo2Rk",
+                      "name": "betterFeature2",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "mvLWS",
+                          "name": "betterCheck2",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "hz1RW",
+                          "name": "betterFeatureText2",
+                          "fill": "#2C2C2C",
+                          "content": "Synthetic underlayment",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "7jNC0",
+                      "name": "betterFeature3",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "GZEio",
+                          "name": "betterCheck3",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "iBAsG",
+                          "name": "betterFeatureText3",
+                          "fill": "#2C2C2C",
+                          "content": "Enhanced cleanup and disposal",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "l6YYu",
+                      "name": "betterFeature4",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "lbrVi",
+                          "name": "betterCheck4",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "hA0qa",
+                          "name": "betterFeatureText4",
+                          "fill": "#2C2C2C",
+                          "content": "Detailed inspection report",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "AgjAU",
+                      "name": "betterFeature5",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "eNXA1",
+                          "name": "betterCheck5",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "YxMl6",
+                          "name": "betterFeatureText5",
+                          "fill": "#2C2C2C",
+                          "content": "Starter strip and drip edge included",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "80qYq",
+                  "name": "betterDeposit",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "top": 1
+                    },
+                    "fill": "#E8E0D4"
+                  },
+                  "padding": [
+                    16,
+                    0,
+                    0,
+                    0
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "oI186",
+                      "name": "betterDepositLabel",
+                      "fill": "#5C5C5C",
+                      "content": "Due today:",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "V7CU3",
+                      "name": "betterDepositAmount",
+                      "fill": "#2C2C2C",
+                      "content": "$1,715 (10% deposit)",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "DbK7f",
+                  "name": "betterButton",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#C4A77D",
+                  "cornerRadius": 6,
+                  "gap": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "8LGqT",
+                      "name": "betterButtonText",
+                      "fill": "#FFFFFF",
+                      "content": "Select Better",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "H5FQs",
+                      "name": "betterButtonIcon",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "chevron-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                }
               ]
             },
             {
               "type": "frame",
-              "id": "pkgBest",
-              "name": "PackageCard/Best",
-              "reusable": true,
-              "width": 340,
+              "id": "ECdtu",
+              "name": "Best Tier Card",
+              "width": "fill_container",
               "fill": "#FFFFFF",
-              "cornerRadius": 16,
-              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "cornerRadius": 8,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E8E0D4"
+              },
               "layout": "vertical",
               "gap": 20,
               "padding": 24,
               "children": [
-                {"type": "frame", "id": "pkgBestHeader", "name": "header", "width": "fill_container", "justifyContent": "space_between", "alignItems": "center", "children": [
-                  {"type": "text", "id": "pkgBestTitle", "name": "title", "fill": "#2C2C2C", "content": "Best", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "700"},
-                  {"type": "text", "id": "pkgBestPrice", "name": "price", "fill": "#C4A77D", "content": "$15,200 - $18,500", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
-                ]},
-                {"type": "text", "id": "pkgBestMaterial", "name": "material", "fill": "#5C5C5C", "content": "Premium Designer Shingles", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
-                {"type": "frame", "id": "pkgBestWarranty", "name": "warranty", "gap": 8, "alignItems": "center", "children": [
-                  {"type": "icon_font", "id": "pkgBestWarrantyIcon", "name": "icon", "width": 16, "height": 16, "iconFontName": "shield", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-                  {"type": "text", "id": "pkgBestWarrantyText", "name": "text", "fill": "#5C5C5C", "content": "50-year warranty", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                ]},
-                {"type": "frame", "id": "pkgBestDivider", "name": "divider", "width": "fill_container", "height": 1, "fill": "#E8E0D4"},
-                {"type": "frame", "id": "pkgBestFeatures", "name": "features", "width": "fill_container", "layout": "vertical", "gap": 12, "children": [
-                  {"type": "frame", "id": "pkgBestF1", "name": "feature", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "pkgBestF1Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "pkgBestF1Text", "name": "text", "fill": "#2C2C2C", "content": "Lifetime craftsmanship warranty", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]},
-                  {"type": "frame", "id": "pkgBestF2", "name": "feature", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "pkgBestF2Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "pkgBestF2Text", "name": "text", "fill": "#2C2C2C", "content": "All Better package features", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]},
-                  {"type": "frame", "id": "pkgBestF3", "name": "feature", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "pkgBestF3Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "pkgBestF3Text", "name": "text", "fill": "#2C2C2C", "content": "Priority scheduling", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]},
-                  {"type": "frame", "id": "pkgBestF4", "name": "feature", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "pkgBestF4Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "pkgBestF4Text", "name": "text", "fill": "#2C2C2C", "content": "Premium curb appeal", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]}
-                ]},
-                {"type": "frame", "id": "pkgBestBtn", "name": "selectButton", "width": "fill_container", "height": 48, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#C4A77D"}, "justifyContent": "center", "alignItems": "center", "children": [
-                  {"type": "text", "id": "pkgBestBtnLabel", "name": "label", "fill": "#C4A77D", "content": "Select Best", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
-                ]}
+                {
+                  "type": "frame",
+                  "id": "1XZzz",
+                  "name": "bestHeader",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "0lsi6",
+                      "name": "bestTitle",
+                      "fill": "#2C2C2C",
+                      "content": "Best",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "aB5K0",
+                      "name": "bestDesc",
+                      "fill": "#5C5C5C",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Premium materials with maximum protection. Designer shingles, lifetime warranty, and transferable coverage.",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "FyqzQ",
+                  "name": "bestPrice",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "7EVB8",
+                      "name": "bestPriceTotal",
+                      "fill": "#2C2C2C",
+                      "content": "$22,050",
+                      "fontFamily": "Inter",
+                      "fontSize": 36,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "rNiTP",
+                      "name": "bestPricePerSqft",
+                      "fill": "#9C9688",
+                      "content": "$9.00/sq ft installed",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "LHuCt",
+                  "name": "bestMaterial",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 2,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "vohkW",
+                      "name": "bestBrand",
+                      "fill": "#2C2C2C",
+                      "content": "GAF Grand Canyon",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "uCdOu",
+                      "name": "bestType",
+                      "fill": "#5C5C5C",
+                      "content": "designer shingles",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "oPJDy",
+                  "name": "bestFeatures",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "SSMks",
+                      "name": "bestFeature1",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "ppBQM",
+                          "name": "bestCheck1",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "h31Ma",
+                          "name": "bestFeatureText1",
+                          "fill": "#2C2C2C",
+                          "content": "Lifetime transferable warranty",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Kp8LB",
+                      "name": "bestFeature2",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "VHtKy",
+                          "name": "bestCheck2",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "VhoTe",
+                          "name": "bestFeatureText2",
+                          "fill": "#2C2C2C",
+                          "content": "Premium synthetic with ice & water shield",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "HrqSV",
+                      "name": "bestFeature3",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "d2XQA",
+                          "name": "bestCheck3",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "5Acs1",
+                          "name": "bestFeatureText3",
+                          "fill": "#2C2C2C",
+                          "content": "Premium cleanup and disposal",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "AFv64",
+                      "name": "bestFeature4",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "fRCja",
+                          "name": "bestCheck4",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "7Heye",
+                          "name": "bestFeatureText4",
+                          "fill": "#2C2C2C",
+                          "content": "Comprehensive inspection report",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "5QIII",
+                      "name": "bestFeature5",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "nTqjm",
+                          "name": "bestCheck5",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "RpCT8",
+                          "name": "bestFeatureText5",
+                          "fill": "#2C2C2C",
+                          "content": "Full ridge vent system",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "2YdWb",
+                      "name": "bestFeature6",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "CV4Hz",
+                          "name": "bestCheck6",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "fBJv0",
+                          "name": "bestFeatureText6",
+                          "fill": "#2C2C2C",
+                          "content": "Ice & water shield at all valleys",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "5h6Gj",
+                  "name": "bestDeposit",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "top": 1
+                    },
+                    "fill": "#E8E0D4"
+                  },
+                  "padding": [
+                    16,
+                    0,
+                    0,
+                    0
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "6OkmL",
+                      "name": "bestDepositLabel",
+                      "fill": "#5C5C5C",
+                      "content": "Due today:",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Vm6cO",
+                      "name": "bestDepositAmount",
+                      "fill": "#2C2C2C",
+                      "content": "$2,205 (10% deposit)",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "K1JTb",
+                  "name": "bestButton",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "gap": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "YT079",
+                      "name": "bestButtonText",
+                      "fill": "#2C2C2C",
+                      "content": "Select Best",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "OqGqB",
+                      "name": "bestButtonIcon",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "chevron-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2C2C2C"
+                    }
+                  ]
+                }
               ]
             }
           ]

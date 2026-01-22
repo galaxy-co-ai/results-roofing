@@ -1,0 +1,126 @@
+/* =================================================
+   PROGRESS INDICATOR STYLES
+   Multi-step progress display
+   ================================================= */
+
+.container {
+  width: 100%;
+  padding: var(--rr-space-4) var(--rr-space-page-gutter);
+  background-color: var(--rr-color-bg-secondary);
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.stepsList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* ========================================
+   STEP INDICATOR (Circle)
+   ======================================== */
+
+.stepIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: var(--rr-radius-full);
+  font-size: var(--rr-font-size-xs);
+  font-weight: var(--rr-font-weight-medium);
+  transition: var(--rr-transition-colors);
+}
+
+.step_pending .stepIndicator {
+  background-color: var(--rr-color-sand);
+  color: var(--rr-color-text-tertiary);
+}
+
+.step_current .stepIndicator {
+  background-color: var(--rr-color-sandstone);
+  color: var(--rr-color-charcoal);
+}
+
+.step_completed .stepIndicator {
+  background-color: var(--rr-color-success);
+  color: var(--rr-color-white);
+}
+
+/* ========================================
+   STEP LABEL
+   ======================================== */
+
+.stepLabel {
+  display: none;
+  margin-left: var(--rr-space-2);
+  font-size: var(--rr-font-size-xs);
+  font-weight: var(--rr-font-weight-medium);
+  white-space: nowrap;
+}
+
+.step_pending .stepLabel {
+  color: var(--rr-color-text-tertiary);
+}
+
+.step_current .stepLabel {
+  color: var(--rr-color-text-primary);
+}
+
+.step_completed .stepLabel {
+  color: var(--rr-color-success);
+}
+
+/* ========================================
+   CONNECTOR LINE
+   ======================================== */
+
+.connector {
+  width: 24px;
+  height: 2px;
+  margin: 0 var(--rr-space-2);
+  background-color: var(--rr-color-sand);
+  transition: var(--rr-transition-colors);
+}
+
+.connector_completed {
+  background-color: var(--rr-color-success);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 640px) {
+  .container {
+    padding: var(--rr-space-5) var(--rr-space-page-gutter);
+  }
+
+  .stepLabel {
+    display: inline;
+  }
+
+  .connector {
+    width: 40px;
+    margin: 0 var(--rr-space-3);
+  }
+}
+
+@media (min-width: 768px) {
+  .connector {
+    width: 60px;
+  }
+}

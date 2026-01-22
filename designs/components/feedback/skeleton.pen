@@ -3,158 +3,234 @@
   "children": [
     {
       "type": "frame",
-      "id": "skelLib",
+      "id": "R9AdH",
       "x": 0,
       "y": 0,
       "name": "Skeleton Component Library",
-      "width": 900,
-      "height": 600,
-      "fill": "#FFFFFF",
+      "width": 1000,
+      "fill": "#FAF8F5",
       "layout": "vertical",
-      "gap": 32,
-      "padding": 32,
+      "gap": 40,
+      "padding": 40,
       "children": [
-        {"type": "text", "id": "skelTitle", "name": "title", "fill": "#2C2C2C", "content": "Skeleton Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
         {
           "type": "frame",
-          "id": "skelRow1",
-          "name": "basicRow",
+          "id": "brspA",
+          "name": "section1",
           "width": "fill_container",
-          "gap": 32,
+          "layout": "vertical",
+          "gap": 24,
           "children": [
             {
-              "type": "frame",
-              "id": "skelText",
-              "name": "Skeleton/Text",
-              "reusable": true,
-              "width": 200,
-              "height": 16,
-              "fill": "#E8E0D4",
-              "cornerRadius": 4
+              "type": "text",
+              "id": "bGVCp",
+              "name": "section1Title",
+              "fill": "#2C2C2C",
+              "content": "Skeleton Variants",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
             },
             {
               "type": "frame",
-              "id": "skelTextShort",
-              "name": "Skeleton/TextShort",
-              "reusable": true,
-              "width": 120,
-              "height": 16,
-              "fill": "#E8E0D4",
-              "cornerRadius": 4
-            },
-            {
-              "type": "frame",
-              "id": "skelHeading",
-              "name": "Skeleton/Heading",
-              "reusable": true,
-              "width": 280,
-              "height": 24,
-              "fill": "#E8E0D4",
-              "cornerRadius": 4
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "skelRow2",
-          "name": "shapesRow",
-          "width": "fill_container",
-          "gap": 32,
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "frame",
-              "id": "skelCircle",
-              "name": "Skeleton/Circle",
-              "reusable": true,
-              "width": 48,
-              "height": 48,
-              "fill": "#E8E0D4",
-              "cornerRadius": 24
-            },
-            {
-              "type": "frame",
-              "id": "skelCircleSmall",
-              "name": "Skeleton/CircleSmall",
-              "reusable": true,
-              "width": 32,
-              "height": 32,
-              "fill": "#E8E0D4",
-              "cornerRadius": 16
-            },
-            {
-              "type": "frame",
-              "id": "skelRect",
-              "name": "Skeleton/Rectangle",
-              "reusable": true,
-              "width": 100,
-              "height": 80,
-              "fill": "#E8E0D4",
-              "cornerRadius": 8
-            },
-            {
-              "type": "frame",
-              "id": "skelButton",
-              "name": "Skeleton/Button",
-              "reusable": true,
-              "width": 120,
-              "height": 44,
-              "fill": "#E8E0D4",
-              "cornerRadius": 6
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "skelRow3",
-          "name": "compositeRow",
-          "width": "fill_container",
-          "gap": 32,
-          "children": [
-            {
-              "type": "frame",
-              "id": "skelCard",
-              "name": "Skeleton/Card",
-              "reusable": true,
-              "width": 320,
-              "fill": "#FFFFFF",
-              "cornerRadius": 12,
-              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "id": "VQn8E",
+              "name": "skeletonsGrid",
+              "width": "fill_container",
               "layout": "vertical",
-              "gap": 16,
-              "padding": 20,
+              "gap": 24,
               "children": [
-                {"type": "frame", "id": "skelCardHeader", "name": "header", "gap": 12, "alignItems": "center", "children": [
-                  {"type": "frame", "id": "skelCardAvatar", "name": "avatar", "width": 40, "height": 40, "fill": "#E8E0D4", "cornerRadius": 20},
-                  {"type": "frame", "id": "skelCardMeta", "name": "meta", "layout": "vertical", "gap": 8, "children": [
-                    {"type": "frame", "id": "skelCardName", "name": "name", "width": 120, "height": 14, "fill": "#E8E0D4", "cornerRadius": 4},
-                    {"type": "frame", "id": "skelCardDate", "name": "date", "width": 80, "height": 12, "fill": "#E8E0D4", "cornerRadius": 4}
-                  ]}
-                ]},
-                {"type": "frame", "id": "skelCardLine1", "name": "line1", "width": "fill_container", "height": 14, "fill": "#E8E0D4", "cornerRadius": 4},
-                {"type": "frame", "id": "skelCardLine2", "name": "line2", "width": "80%", "height": 14, "fill": "#E8E0D4", "cornerRadius": 4},
-                {"type": "frame", "id": "skelCardLine3", "name": "line3", "width": "60%", "height": 14, "fill": "#E8E0D4", "cornerRadius": 4}
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "skelListItem",
-              "name": "Skeleton/ListItem",
-              "reusable": true,
-              "width": 320,
-              "fill": "#FFFFFF",
-              "cornerRadius": 12,
-              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
-              "padding": 16,
-              "gap": 12,
-              "alignItems": "center",
-              "children": [
-                {"type": "frame", "id": "skelListIcon", "name": "icon", "width": 40, "height": 40, "fill": "#E8E0D4", "cornerRadius": 8},
-                {"type": "frame", "id": "skelListContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 8, "children": [
-                  {"type": "frame", "id": "skelListTitle", "name": "title", "width": "70%", "height": 14, "fill": "#E8E0D4", "cornerRadius": 4},
-                  {"type": "frame", "id": "skelListDesc", "name": "desc", "width": "50%", "height": 12, "fill": "#E8E0D4", "cornerRadius": 4}
-                ]},
-                {"type": "frame", "id": "skelListChevron", "name": "chevron", "width": 20, "height": 20, "fill": "#E8E0D4", "cornerRadius": 4}
+                {
+                  "type": "frame",
+                  "id": "UHfcf",
+                  "name": "textSkeleton",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "579kA",
+                      "name": "textSkeletonLabel",
+                      "fill": "#2C2C2C",
+                      "content": "Text Skeleton",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "EfE3h",
+                      "name": "Skeleton/Text",
+                      "reusable": true,
+                      "opacity": 0.5,
+                      "width": "fill_container",
+                      "height": 16,
+                      "fill": "#E8E0D4",
+                      "cornerRadius": 4
+                    },
+                    {
+                      "type": "frame",
+                      "id": "sGWfu",
+                      "name": "textSkeletonBar2",
+                      "opacity": 0.5,
+                      "width": "fit_content(0)",
+                      "height": 16,
+                      "fill": "#E8E0D4",
+                      "cornerRadius": 4
+                    },
+                    {
+                      "type": "frame",
+                      "id": "21rQL",
+                      "name": "textSkeletonBar3",
+                      "opacity": 0.5,
+                      "width": "fit_content(0)",
+                      "height": 16,
+                      "fill": "#E8E0D4",
+                      "cornerRadius": 4
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "9qPsG",
+                  "name": "headingSkeleton",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "PTxMI",
+                      "name": "headingSkeletonLabel",
+                      "fill": "#2C2C2C",
+                      "content": "Heading Skeleton",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "0XJoS",
+                      "name": "Skeleton/Heading",
+                      "reusable": true,
+                      "opacity": 0.5,
+                      "width": "fit_content(0)",
+                      "height": 32,
+                      "fill": "#E8E0D4",
+                      "cornerRadius": 4
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "IO484",
+                  "name": "buttonSkeleton",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Qc62r",
+                      "name": "buttonSkeletonLabel",
+                      "fill": "#2C2C2C",
+                      "content": "Button Skeleton",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "vxBVj",
+                      "name": "Skeleton/Button",
+                      "reusable": true,
+                      "opacity": 0.5,
+                      "width": 200,
+                      "height": 44,
+                      "fill": "#E8E0D4",
+                      "cornerRadius": 6
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "hVouv",
+                  "name": "cardSkeleton",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "eWiNZ",
+                      "name": "cardSkeletonLabel",
+                      "fill": "#2C2C2C",
+                      "content": "Card Skeleton",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Yl30u",
+                      "name": "Skeleton/Card",
+                      "reusable": true,
+                      "width": 400,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E8E0D4"
+                      },
+                      "layout": "vertical",
+                      "gap": 16,
+                      "padding": 24,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "sTp7D",
+                          "name": "cardSkeletonTitle",
+                          "opacity": 0.5,
+                          "width": "fit_content(0)",
+                          "height": 24,
+                          "fill": "#E8E0D4",
+                          "cornerRadius": 4
+                        },
+                        {
+                          "type": "frame",
+                          "id": "w3GE0",
+                          "name": "cardSkeletonLine1",
+                          "opacity": 0.5,
+                          "width": "fill_container",
+                          "height": 16,
+                          "fill": "#E8E0D4",
+                          "cornerRadius": 4
+                        },
+                        {
+                          "type": "frame",
+                          "id": "4kdxL",
+                          "name": "cardSkeletonLine2",
+                          "opacity": 0.5,
+                          "width": "fit_content(0)",
+                          "height": 16,
+                          "fill": "#E8E0D4",
+                          "cornerRadius": 4
+                        },
+                        {
+                          "type": "frame",
+                          "id": "bDLdn",
+                          "name": "cardSkeletonButton",
+                          "opacity": 0.5,
+                          "width": 120,
+                          "height": 44,
+                          "fill": "#E8E0D4",
+                          "cornerRadius": 6
+                        }
+                      ]
+                    }
+                  ]
+                }
               ]
             }
           ]

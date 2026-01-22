@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { MapPin, Loader2, AlertCircle, X } from 'lucide-react';
+import { logger } from '@/lib/utils';
 import styles from './AddressAutocomplete.module.css';
 
 export interface ParsedAddress {
@@ -51,7 +52,7 @@ export function AddressAutocomplete({
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY;
 
     if (!apiKey) {
-      console.warn('Google Places API key not configured');
+      logger.warn('Google Places API key not configured');
       setIsScriptLoaded(true); // Allow fallback to manual entry
       return;
     }
@@ -67,7 +68,7 @@ export function AddressAutocomplete({
     script.defer = true;
     script.onload = () => setIsScriptLoaded(true);
     script.onerror = () => {
-      console.error('Failed to load Google Places script');
+      logger.error('Failed to load Google Places script');
       setIsScriptLoaded(true); // Allow fallback
     };
 
@@ -187,6 +188,60 @@ export function AddressAutocomplete({
     inputRef.current?.focus();
   };
 
+  // Development mode: Allow manual entry when Google Places isn't configured
+  // Track if Google Places is available (must be state because window isn't defined on server)
+  const [isGooglePlacesAvailable, setIsGooglePlacesAvailable] = useState(false);
+
+  // Check for Google Places after script loads
+  useEffect(() => {
+    if (isScriptLoaded && typeof window !== 'undefined') {
+      setIsGooglePlacesAvailable(!!window.google?.maps?.places);
+    }
+  }, [isScriptLoaded]);
+
+  // Enable dev mode when Google Places isn't available  
+  const isDevMode = isScriptLoaded && !isGooglePlacesAvailable;
+
+  const handleManualEntry = useCallback(() => {
+    if (!value.trim()) {
+      setError('Please enter an address');
+      return;
+    }
+
+    // Simple address parser for development - expects "123 Main St, City, ST 12345"
+    const addressPattern = /^(.+),\s*([^,]+),\s*([A-Z]{2})\s*(\d{5})$/i;
+    const match = value.match(addressPattern);
+
+    if (!match) {
+      setError('Please enter a full address: 123 Main St, City, ST 12345');
+      return;
+    }
+
+    const [, streetAddress, city, state, zip] = match;
+    const stateUpper = state.toUpperCase();
+
+    // Check service area
+    if (!serviceStates.includes(stateUpper)) {
+      setError(`Sorry, we don't serve ${stateUpper} yet.`);
+      onServiceAreaError?.(stateUpper);
+      return;
+    }
+
+    const parsed: ParsedAddress = {
+      streetAddress: streetAddress.trim(),
+      city: city.trim(),
+      state: stateUpper,
+      zip: zip.trim(),
+      formattedAddress: value.trim(),
+      lat: 30.2672 + Math.random() * 0.1, // Mock coordinates in Austin area
+      lng: -97.7431 + Math.random() * 0.1,
+      placeId: `dev-${Date.now()}`,
+    };
+
+    setError(null);
+    onAddressSelect(parsed);
+  }, [value, serviceStates, onAddressSelect, onServiceAreaError]);
+
   return (
     <div className={styles.container}>
       <div className={styles.inputWrapper}>
@@ -195,9 +250,15 @@ export function AddressAutocomplete({
           ref={inputRef}
           type="text"
           className={styles.input}
-          placeholder="Enter your home address"
+          placeholder={isDevMode ? "123 Main St, City, TX 78701" : "Enter your home address"}
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (isDevMode && e.key === 'Enter') {
+              e.preventDefault();
+              handleManualEntry();
+            }
+          }}
           disabled={disabled || isLoading}
           autoComplete="off"
         />
@@ -221,9 +282,25 @@ export function AddressAutocomplete({
         </div>
       )}
 
-      <p className={styles.hint}>
-        Start typing and select your address from the dropdown
-      </p>
+      {isDevMode ? (
+        <div className={styles.devModeHint}>
+          <button
+            type="button"
+            className={styles.devModeButton}
+            onClick={handleManualEntry}
+            disabled={disabled || isLoading || !value.trim()}
+          >
+            Confirm Address (Dev Mode)
+          </button>
+          <p className={styles.hint}>
+            Format: 123 Main St, City, TX 78701
+          </p>
+        </div>
+      ) : (
+        <p className={styles.hint}>
+          Start typing and select your address from the dropdown
+        </p>
+      )}
     </div>
   );
 }

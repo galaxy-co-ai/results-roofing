@@ -3,113 +3,412 @@
   "children": [
     {
       "type": "frame",
-      "id": "modalLib",
+      "id": "YydH5",
       "x": 0,
       "y": 0,
       "name": "Modal Component Library",
-      "width": 1000,
-      "height": 800,
-      "fill": "#FFFFFF",
+      "width": 1200,
+      "fill": "#FAF8F5",
       "layout": "vertical",
-      "gap": 32,
-      "padding": 32,
+      "gap": 40,
+      "padding": 40,
       "children": [
-        {"type": "text", "id": "modalTitle", "name": "title", "fill": "#2C2C2C", "content": "Modal Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
         {
           "type": "frame",
-          "id": "modalRow1",
-          "name": "defaultRow",
+          "id": "qiyJW",
+          "name": "section1",
           "width": "fill_container",
-          "gap": 32,
+          "layout": "vertical",
+          "gap": 24,
           "children": [
             {
+              "type": "text",
+              "id": "3LxvO",
+              "name": "section1Title",
+              "fill": "#2C2C2C",
+              "content": "Modal Sizes",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
+            },
+            {
               "type": "frame",
-              "id": "modalDefault",
-              "name": "Modal/Default",
-              "reusable": true,
-              "width": 420,
-              "fill": "#FFFFFF",
-              "cornerRadius": 16,
-              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.2)", "offset": {"x": 0, "y": 8}, "blur": 24},
-              "layout": "vertical",
+              "id": "0G7pA",
+              "name": "modalsRow",
+              "width": "fill_container",
+              "gap": 32,
               "children": [
-                {"type": "frame", "id": "modalDefaultHeader", "name": "header", "width": "fill_container", "padding": 24, "justifyContent": "space_between", "alignItems": "center", "children": [
-                  {"type": "text", "id": "modalDefaultTitle", "name": "title", "fill": "#2C2C2C", "content": "Modal Title", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "600"},
-                  {"type": "icon_font", "id": "modalDefaultClose", "name": "close", "width": 24, "height": 24, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#5C5C5C"}
-                ]},
-                {"type": "frame", "id": "modalDefaultBody", "name": "body", "width": "fill_container", "padding": [0, 24], "children": [
-                  {"type": "text", "id": "modalDefaultContent", "name": "content", "fill": "#5C5C5C", "content": "This is the modal body content. You can place any content here including forms, information, or actions.", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                ]},
-                {"type": "frame", "id": "modalDefaultFooter", "name": "footer", "width": "fill_container", "padding": 24, "gap": 12, "justifyContent": "flex_end", "children": [
-                  {"type": "frame", "id": "modalDefaultCancel", "name": "cancelButton", "height": 44, "fill": "#FFFFFF", "cornerRadius": 6, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [12, 24], "justifyContent": "center", "alignItems": "center", "children": [
-                    {"type": "text", "id": "modalDefaultCancelLabel", "name": "label", "fill": "#5C5C5C", "content": "Cancel", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                  ]},
-                  {"type": "frame", "id": "modalDefaultConfirm", "name": "confirmButton", "height": 44, "fill": "#C4A77D", "cornerRadius": 6, "padding": [12, 24], "justifyContent": "center", "alignItems": "center", "children": [
-                    {"type": "text", "id": "modalDefaultConfirmLabel", "name": "label", "fill": "#FFFFFF", "content": "Confirm", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                  ]}
-                ]}
+                {
+                  "type": "frame",
+                  "id": "fvRb4",
+                  "name": "Modal/Small",
+                  "reusable": true,
+                  "width": 400,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "rgba(44, 44, 44, 0.2)",
+                    "offset": {
+                      "x": 0,
+                      "y": 8
+                    },
+                    "blur": 24
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "bAzCd",
+                      "name": "smallModalHeader",
+                      "width": "fill_container",
+                      "gap": 16,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "x6hot",
+                          "name": "smallModalTitle",
+                          "fill": "#2C2C2C",
+                          "content": "Confirm Action",
+                          "fontFamily": "Inter",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "6f3Xs",
+                          "name": "smallModalClose",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "x",
+                          "iconFontFamily": "lucide",
+                          "fill": "#5C5C5C"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "RNUpw",
+                      "name": "smallModalContent",
+                      "fill": "#5C5C5C",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Are you sure you want to proceed with this action?",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "J7RW4",
+                      "name": "smallModalFooter",
+                      "width": "fill_container",
+                      "gap": 12,
+                      "justifyContent": "end",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "NdBwW",
+                          "name": "smallModalCancel",
+                          "height": 44,
+                          "fill": "transparent",
+                          "cornerRadius": 6,
+                          "gap": 8,
+                          "padding": [
+                            12,
+                            24
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "hLazH",
+                              "name": "smallModalCancelText",
+                              "fill": "#5C5C5C",
+                              "content": "Cancel",
+                              "fontFamily": "Inter",
+                              "fontSize": 16,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "IeeCf",
+                          "name": "smallModalConfirm",
+                          "height": 44,
+                          "fill": "#C4A77D",
+                          "cornerRadius": 6,
+                          "gap": 8,
+                          "padding": [
+                            12,
+                            24
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "d16uT",
+                              "name": "smallModalConfirmText",
+                              "fill": "#FFFFFF",
+                              "content": "Confirm",
+                              "fontFamily": "Inter",
+                              "fontSize": 16,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "tFjDP",
+                  "name": "Modal/Medium",
+                  "reusable": true,
+                  "width": 560,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "rgba(44, 44, 44, 0.2)",
+                    "offset": {
+                      "x": 0,
+                      "y": 8
+                    },
+                    "blur": 24
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "7uOtm",
+                      "name": "mediumModalHeader",
+                      "width": "fill_container",
+                      "gap": 16,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "y6fJm",
+                          "name": "mediumModalTitle",
+                          "fill": "#2C2C2C",
+                          "content": "Share Quote",
+                          "fontFamily": "Inter",
+                          "fontSize": 20,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "lQDg5",
+                          "name": "mediumModalClose",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "x",
+                          "iconFontFamily": "lucide",
+                          "fill": "#5C5C5C"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "mp3Nn",
+                      "name": "mediumModalContent",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 12,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "SfxJL",
+                          "name": "mediumModalInput",
+                          "width": "fill_container",
+                          "height": 48,
+                          "fill": "#FFFFFF",
+                          "cornerRadius": 8,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 1,
+                            "fill": "#E8E0D4"
+                          },
+                          "padding": [
+                            12,
+                            16
+                          ],
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "71Wdi",
+                              "name": "mediumModalInputText",
+                              "fill": "#2C2C2C",
+                              "content": "https://resultsroofing.com/quote/abc123",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "n7205",
+                              "name": "mediumModalCopy",
+                              "height": 36,
+                              "fill": "#C4A77D",
+                              "cornerRadius": 6,
+                              "gap": 8,
+                              "padding": [
+                                8,
+                                16
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "4a28Y",
+                                  "name": "mediumModalCopyText",
+                                  "fill": "#FFFFFF",
+                                  "content": "Copy",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 14,
+                                  "fontWeight": "500"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "lv1ay",
+                      "name": "mediumModalFooter",
+                      "width": "fill_container",
+                      "gap": 12,
+                      "justifyContent": "end",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "kLkUF",
+                          "name": "mediumModalCloseBtn",
+                          "height": 44,
+                          "fill": "#C4A77D",
+                          "cornerRadius": 6,
+                          "gap": 8,
+                          "padding": [
+                            12,
+                            24
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "B7eeg",
+                              "name": "mediumModalCloseBtnText",
+                              "fill": "#FFFFFF",
+                              "content": "Close",
+                              "fontFamily": "Inter",
+                              "fontSize": 16,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
               ]
             }
           ]
         },
         {
           "type": "frame",
-          "id": "modalRow2",
-          "name": "alertRow",
+          "id": "uXrvK",
+          "name": "backdrop",
           "width": "fill_container",
-          "gap": 32,
+          "layout": "vertical",
+          "gap": 16,
           "children": [
             {
-              "type": "frame",
-              "id": "modalAlert",
-              "name": "Modal/Alert",
-              "reusable": true,
-              "width": 380,
-              "fill": "#FFFFFF",
-              "cornerRadius": 16,
-              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.2)", "offset": {"x": 0, "y": 8}, "blur": 24},
-              "layout": "vertical",
-              "gap": 16,
-              "padding": 24,
-              "alignItems": "center",
-              "children": [
-                {"type": "frame", "id": "modalAlertIconBg", "name": "iconBg", "width": 56, "height": 56, "fill": "#FFF8E1", "cornerRadius": 28, "justifyContent": "center", "alignItems": "center", "children": [
-                  {"type": "icon_font", "id": "modalAlertIcon", "name": "icon", "width": 28, "height": 28, "iconFontName": "alert-triangle", "iconFontFamily": "lucide", "fill": "#C9A227"}
-                ]},
-                {"type": "text", "id": "modalAlertTitle", "name": "title", "fill": "#2C2C2C", "content": "Are you sure?", "textAlign": "center", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "600"},
-                {"type": "text", "id": "modalAlertDesc", "name": "description", "fill": "#5C5C5C", "content": "This action cannot be undone. Please confirm to proceed.", "textAlign": "center", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                {"type": "frame", "id": "modalAlertActions", "name": "actions", "width": "fill_container", "gap": 12, "children": [
-                  {"type": "frame", "id": "modalAlertCancel", "name": "cancelButton", "width": "fill_container", "height": 44, "fill": "#FFFFFF", "cornerRadius": 6, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "justifyContent": "center", "alignItems": "center", "children": [
-                    {"type": "text", "id": "modalAlertCancelLabel", "name": "label", "fill": "#5C5C5C", "content": "Cancel", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                  ]},
-                  {"type": "frame", "id": "modalAlertConfirm", "name": "confirmButton", "width": "fill_container", "height": 44, "fill": "#C9A227", "cornerRadius": 6, "justifyContent": "center", "alignItems": "center", "children": [
-                    {"type": "text", "id": "modalAlertConfirmLabel", "name": "label", "fill": "#FFFFFF", "content": "Proceed", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                  ]}
-                ]}
-              ]
+              "type": "text",
+              "id": "TzkIl",
+              "name": "backdropTitle",
+              "fill": "#2C2C2C",
+              "content": "Modal with Backdrop",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
             },
             {
               "type": "frame",
-              "id": "modalSuccess",
-              "name": "Modal/Success",
-              "reusable": true,
-              "width": 380,
-              "fill": "#FFFFFF",
-              "cornerRadius": 16,
-              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.2)", "offset": {"x": 0, "y": 8}, "blur": 24},
+              "id": "KiEaM",
+              "name": "backdropExample",
+              "width": "fill_container",
+              "height": 400,
+              "fill": "rgba(44, 44, 44, 0.5)",
               "layout": "vertical",
-              "gap": 16,
-              "padding": 24,
+              "justifyContent": "center",
               "alignItems": "center",
               "children": [
-                {"type": "frame", "id": "modalSuccessIconBg", "name": "iconBg", "width": 56, "height": 56, "fill": "#E8F5E9", "cornerRadius": 28, "justifyContent": "center", "alignItems": "center", "children": [
-                  {"type": "icon_font", "id": "modalSuccessIcon", "name": "icon", "width": 28, "height": 28, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"}
-                ]},
-                {"type": "text", "id": "modalSuccessTitle", "name": "title", "fill": "#2C2C2C", "content": "Success!", "textAlign": "center", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "600"},
-                {"type": "text", "id": "modalSuccessDesc", "name": "description", "fill": "#5C5C5C", "content": "Your action was completed successfully.", "textAlign": "center", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                {"type": "frame", "id": "modalSuccessBtn", "name": "button", "width": "fill_container", "height": 44, "fill": "#4A7C59", "cornerRadius": 6, "justifyContent": "center", "alignItems": "center", "children": [
-                  {"type": "text", "id": "modalSuccessBtnLabel", "name": "label", "fill": "#FFFFFF", "content": "Continue", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                ]}
+                {
+                  "type": "frame",
+                  "id": "Qxu6C",
+                  "name": "Modal/WithBackdrop",
+                  "reusable": true,
+                  "width": 400,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "HIuF5",
+                      "name": "backdropModalTitle",
+                      "fill": "#2C2C2C",
+                      "content": "Modal Title",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "62UGZ",
+                      "name": "backdropModalContent",
+                      "fill": "#5C5C5C",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Modal content appears here with a semi-transparent backdrop behind it.",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
               ]
             }
           ]

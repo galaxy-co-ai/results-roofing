@@ -3,7 +3,7 @@
   "children": [
     {
       "type": "frame",
-      "id": "screenPay",
+      "id": "cZ3Ld",
       "x": 0,
       "y": 0,
       "name": "Payments - Mobile",
@@ -14,22 +14,37 @@
       "children": [
         {
           "type": "frame",
-          "id": "headerPay",
+          "id": "ntwBW",
           "name": "header",
           "width": "fill_container",
           "fill": "#FFFFFF",
-          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "#E8E0D4"
+          },
           "padding": 16,
           "justifyContent": "center",
           "alignItems": "center",
           "children": [
-            {"type": "text", "id": "headerTitlePay", "name": "title", "fill": "#2C2C2C", "content": "Payments", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
+            {
+              "type": "text",
+              "id": "Cay16",
+              "name": "headerTitle",
+              "fill": "#2C2C2C",
+              "content": "Payments",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600"
+            }
           ]
         },
         {
           "type": "frame",
-          "id": "contentPay",
-          "name": "content",
+          "id": "0jHox",
+          "name": "mainContent",
           "width": "fill_container",
           "height": "fill_container",
           "layout": "vertical",
@@ -38,86 +53,212 @@
           "children": [
             {
               "type": "frame",
-              "id": "summaryCard",
+              "id": "342Zn",
               "name": "summaryCard",
               "width": "fill_container",
               "fill": "#FFFFFF",
               "cornerRadius": 12,
-              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E8E0D4"
+              },
               "layout": "vertical",
               "gap": 16,
               "padding": 20,
               "children": [
-                {"type": "frame", "id": "sumRow1", "name": "row", "width": "fill_container", "justifyContent": "space_between", "alignItems": "center", "children": [
-                  {"type": "text", "id": "sumLabel1", "name": "label", "fill": "#5C5C5C", "content": "Total Project Cost", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                  {"type": "text", "id": "sumValue1", "name": "value", "fill": "#2C2C2C", "content": "$12,400", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                ]},
-                {"type": "frame", "id": "sumRow2", "name": "row", "width": "fill_container", "justifyContent": "space_between", "alignItems": "center", "children": [
-                  {"type": "text", "id": "sumLabel2", "name": "label", "fill": "#5C5C5C", "content": "Deposit Paid", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                  {"type": "text", "id": "sumValue2", "name": "value", "fill": "#4A7C59", "content": "-$1,240", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                ]},
-                {"type": "frame", "id": "divider", "name": "divider", "width": "fill_container", "height": 1, "fill": "#E8E0D4"},
-                {"type": "frame", "id": "sumRow3", "name": "row", "width": "fill_container", "justifyContent": "space_between", "alignItems": "center", "children": [
-                  {"type": "text", "id": "sumLabel3", "name": "label", "fill": "#2C2C2C", "content": "Balance Due", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
-                  {"type": "text", "id": "sumValue3", "name": "value", "fill": "#C4A77D", "content": "$11,160", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "700"}
-                ]}
+                {
+                  "type": "frame",
+                  "id": "ZQYBb",
+                  "name": "row1",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "CPxsh",
+                      "name": "summaryRow1Label",
+                      "fill": "#5C5C5C",
+                      "content": "Total Project Cost",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "HsKJi",
+                      "name": "summaryRow1Value",
+                      "fill": "#2C2C2C",
+                      "content": "$12,400",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "RwEo9",
+                  "name": "row2",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "AFpNu",
+                      "name": "summaryRow2Label",
+                      "fill": "#5C5C5C",
+                      "content": "Deposit Paid",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "0YEYQ",
+                      "name": "summaryRow2Value",
+                      "fill": "#4A7C59",
+                      "content": "-$1,240",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "IjI9d",
+                  "name": "divider",
+                  "width": "fill_container",
+                  "height": 1,
+                  "fill": "#E8E0D4"
+                },
+                {
+                  "type": "frame",
+                  "id": "U2WFS",
+                  "name": "row3",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "VSjTJ",
+                      "name": "summaryRow3Label",
+                      "fill": "#2C2C2C",
+                      "content": "Balance Due",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "JXvt0",
+                      "name": "summaryRow3Value",
+                      "fill": "#C4A77D",
+                      "content": "$11,160",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
               ]
             },
             {
               "type": "frame",
-              "id": "historySection",
+              "id": "ZGB3d",
               "name": "historySection",
               "width": "fill_container",
               "layout": "vertical",
               "gap": 12,
               "children": [
-                {"type": "text", "id": "historyTitle", "name": "title", "fill": "#2C2C2C", "content": "Payment History", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
                 {
-                  "type": "frame",
-                  "id": "payment1",
-                  "name": "paymentItem",
-                  "width": "fill_container",
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 12,
-                  "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
-                  "padding": 16,
-                  "justifyContent": "space_between",
-                  "alignItems": "center",
-                  "children": [
-                    {"type": "frame", "id": "pay1Left", "name": "left", "gap": 12, "alignItems": "center", "children": [
-                      {"type": "frame", "id": "pay1Icon", "name": "iconBg", "width": 40, "height": 40, "fill": "#E8F5E9", "cornerRadius": 20, "justifyContent": "center", "alignItems": "center", "children": [
-                        {"type": "icon_font", "id": "pay1IconI", "name": "icon", "width": 20, "height": 20, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"}
-                      ]},
-                      {"type": "frame", "id": "pay1Info", "name": "info", "layout": "vertical", "gap": 2, "children": [
-                        {"type": "text", "id": "pay1Title", "name": "title", "fill": "#2C2C2C", "content": "Deposit Payment", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                        {"type": "text", "id": "pay1Date", "name": "date", "fill": "#5C5C5C", "content": "Jan 10, 2026", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
-                      ]}
-                    ]},
-                    {"type": "text", "id": "pay1Amount", "name": "amount", "fill": "#4A7C59", "content": "$1,240", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                  ]
+                  "type": "text",
+                  "id": "kO0Vi",
+                  "name": "historyTitle",
+                  "fill": "#2C2C2C",
+                  "content": "Payment History",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600"
                 },
                 {
                   "type": "frame",
-                  "id": "payment2",
-                  "name": "paymentPending",
+                  "id": "vOCPi",
+                  "name": "payment1",
                   "width": "fill_container",
                   "fill": "#FFFFFF",
                   "cornerRadius": 12,
-                  "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
                   "padding": 16,
                   "justifyContent": "space_between",
                   "alignItems": "center",
                   "children": [
-                    {"type": "frame", "id": "pay2Left", "name": "left", "gap": 12, "alignItems": "center", "children": [
-                      {"type": "frame", "id": "pay2Icon", "name": "iconBg", "width": 40, "height": 40, "fill": "#FFF8E1", "cornerRadius": 20, "justifyContent": "center", "alignItems": "center", "children": [
-                        {"type": "icon_font", "id": "pay2IconI", "name": "icon", "width": 20, "height": 20, "iconFontName": "clock", "iconFontFamily": "lucide", "fill": "#C9A227"}
-                      ]},
-                      {"type": "frame", "id": "pay2Info", "name": "info", "layout": "vertical", "gap": 2, "children": [
-                        {"type": "text", "id": "pay2Title", "name": "title", "fill": "#2C2C2C", "content": "Final Payment", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                        {"type": "text", "id": "pay2Date", "name": "date", "fill": "#C9A227", "content": "Due upon completion", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
-                      ]}
-                    ]},
-                    {"type": "text", "id": "pay2Amount", "name": "amount", "fill": "#5C5C5C", "content": "$11,160", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                    {
+                      "type": "frame",
+                      "id": "muaY7",
+                      "name": "left",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "kssTZ",
+                          "name": "payment1Icon",
+                          "width": 24,
+                          "height": 24,
+                          "iconFontName": "credit-card",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "vhGZ7",
+                          "name": "info",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "MKRzs",
+                              "name": "payment1Title",
+                              "fill": "#2C2C2C",
+                              "content": "Deposit Payment",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "text",
+                              "id": "Lk6WW",
+                              "name": "payment1Date",
+                              "fill": "#5C5C5C",
+                              "content": "Jan 10, 2026 • Visa ****4242",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "NSVwD",
+                      "name": "payment1Amount",
+                      "fill": "#4A7C59",
+                      "content": "$1,240",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
                   ]
                 }
               ]
@@ -126,35 +267,174 @@
         },
         {
           "type": "frame",
-          "id": "bottomTabBar",
+          "id": "PjBeY",
           "name": "bottomTabBar",
           "width": "fill_container",
           "fill": "#FFFFFF",
-          "stroke": {"align": "inside", "thickness": {"top": 1}, "fill": "#E8E0D4"},
-          "padding": [12, 16],
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "top": 1
+            },
+            "fill": "#E8E0D4"
+          },
+          "padding": [
+            12,
+            16
+          ],
           "justifyContent": "space_around",
           "alignItems": "center",
           "children": [
-            {"type": "frame", "id": "tab1", "name": "tab", "layout": "vertical", "gap": 4, "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "tab1Icon", "name": "icon", "width": 24, "height": 24, "iconFontName": "home", "iconFontFamily": "lucide", "fill": "#9C9688"},
-              {"type": "text", "id": "tab1Text", "name": "text", "fill": "#9C9688", "content": "Home", "fontFamily": "Inter", "fontSize": 10, "fontWeight": "normal"}
-            ]},
-            {"type": "frame", "id": "tab2", "name": "tab", "layout": "vertical", "gap": 4, "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "tab2Icon", "name": "icon", "width": 24, "height": 24, "iconFontName": "file-text", "iconFontFamily": "lucide", "fill": "#9C9688"},
-              {"type": "text", "id": "tab2Text", "name": "text", "fill": "#9C9688", "content": "Docs", "fontFamily": "Inter", "fontSize": 10, "fontWeight": "normal"}
-            ]},
-            {"type": "frame", "id": "tab3", "name": "tab", "layout": "vertical", "gap": 4, "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "tab3Icon", "name": "icon", "width": 24, "height": 24, "iconFontName": "calendar", "iconFontFamily": "lucide", "fill": "#9C9688"},
-              {"type": "text", "id": "tab3Text", "name": "text", "fill": "#9C9688", "content": "Apt", "fontFamily": "Inter", "fontSize": 10, "fontWeight": "normal"}
-            ]},
-            {"type": "frame", "id": "tab4", "name": "tabActive", "layout": "vertical", "gap": 4, "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "tab4Icon", "name": "icon", "width": 24, "height": 24, "iconFontName": "credit-card", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-              {"type": "text", "id": "tab4Text", "name": "text", "fill": "#C4A77D", "content": "Pay", "fontFamily": "Inter", "fontSize": 10, "fontWeight": "500"}
-            ]},
-            {"type": "frame", "id": "tab5", "name": "tab", "layout": "vertical", "gap": 4, "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "tab5Icon", "name": "icon", "width": 24, "height": 24, "iconFontName": "help-circle", "iconFontFamily": "lucide", "fill": "#9C9688"},
-              {"type": "text", "id": "tab5Text", "name": "text", "fill": "#9C9688", "content": "Help", "fontFamily": "Inter", "fontSize": 10, "fontWeight": "normal"}
-            ]}
+            {
+              "type": "frame",
+              "id": "59aRO",
+              "name": "tab1",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "I8GPi",
+                  "name": "tab1Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "layout-grid",
+                  "iconFontFamily": "lucide",
+                  "fill": "#9C9688"
+                },
+                {
+                  "type": "text",
+                  "id": "4oAUp",
+                  "name": "tab1Text",
+                  "fill": "#9C9688",
+                  "content": "Home",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "5nat5",
+              "name": "tab2",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "MpXWv",
+                  "name": "tab2Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "file-text",
+                  "iconFontFamily": "lucide",
+                  "fill": "#9C9688"
+                },
+                {
+                  "type": "text",
+                  "id": "MmLyN",
+                  "name": "tab2Text",
+                  "fill": "#9C9688",
+                  "content": "Docs",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "hjeJ5",
+              "name": "tab3",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "oNDo0",
+                  "name": "tab3Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "calendar",
+                  "iconFontFamily": "lucide",
+                  "fill": "#9C9688"
+                },
+                {
+                  "type": "text",
+                  "id": "O76CJ",
+                  "name": "tab3Text",
+                  "fill": "#9C9688",
+                  "content": "Apt",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "IK6Bw",
+              "name": "tab4",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "GLgJN",
+                  "name": "tab4Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "credit-card",
+                  "iconFontFamily": "lucide",
+                  "fill": "#C4A77D"
+                },
+                {
+                  "type": "text",
+                  "id": "2ekmg",
+                  "name": "tab4Text",
+                  "fill": "#C4A77D",
+                  "content": "Pay",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "5XnhB",
+              "name": "tab5",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "U1xC0",
+                  "name": "tab5Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "message-circle",
+                  "iconFontFamily": "lucide",
+                  "fill": "#9C9688"
+                },
+                {
+                  "type": "text",
+                  "id": "ObhTK",
+                  "name": "tab5Text",
+                  "fill": "#9C9688",
+                  "content": "Help",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
           ]
         }
       ]

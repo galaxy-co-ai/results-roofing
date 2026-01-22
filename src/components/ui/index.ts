@@ -4,3 +4,4 @@
  */
 
 export { TrustBar } from './TrustBar';
+export { ProgressIndicator, type ProgressStep } from './ProgressIndicator';

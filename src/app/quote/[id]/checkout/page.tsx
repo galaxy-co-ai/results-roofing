@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { Check, Calendar, FileText, CreditCard, ChevronLeft } from 'lucide-react';
+import { Check, Calendar, FileText, CreditCard, ChevronLeft, ChevronRight } from 'lucide-react';
 import { db, schema, eq } from '@/db/index';
+import { ProgressIndicator } from '@/components/ui';
 import styles from './page.module.css';
 
 interface CheckoutPageProps {
@@ -12,6 +13,14 @@ const CHECKOUT_STEPS = [
   { id: 'schedule', label: 'Schedule', icon: Calendar },
   { id: 'contract', label: 'Review & Sign', icon: FileText },
   { id: 'payment', label: 'Payment', icon: CreditCard },
+];
+
+const PROGRESS_STEPS = [
+  { id: 'address', label: 'Address' },
+  { id: 'packages', label: 'Package' },
+  { id: 'checkout', label: 'Checkout' },
+  { id: 'payment', label: 'Payment' },
+  { id: 'done', label: 'Done' },
 ];
 
 function formatCurrency(amount: number): string {
@@ -50,13 +59,15 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
   const depositAmount = quote.depositAmount ? parseFloat(quote.depositAmount) : 0;
 
   return (
-    <main className={styles.main}>
-      <div className={styles.container}>
-        {/* Back Link */}
-        <Link href={`/quote/${quoteId}/packages`} className={styles.backLink}>
-          <ChevronLeft size={18} />
-          Change Package
-        </Link>
+    <>
+      <ProgressIndicator steps={PROGRESS_STEPS} currentStep={3} />
+      <main className={styles.main}>
+        <div className={styles.container}>
+          {/* Back Link */}
+          <Link href={`/quote/${quoteId}/packages`} className={styles.backLink}>
+            <ChevronLeft size={18} />
+            Change Package
+          </Link>
 
         {/* Header */}
         <div className={styles.header}>
@@ -125,17 +136,11 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
           </div>
         </div>
 
-        {/* Coming Soon Notice */}
-        <div className={styles.notice}>
-          <Check size={20} className={styles.noticeIcon} />
-          <div>
-            <p className={styles.noticeTitle}>Checkout flow coming soon</p>
-            <p className={styles.noticeText}>
-              Scheduling, contract signing, and payment features are being developed.
-              Your quote has been saved.
-            </p>
-          </div>
-        </div>
+        {/* Continue Button */}
+        <Link href={`/quote/${quoteId}/financing`} className={styles.continueButton}>
+          Continue to Payment Options
+          <ChevronRight size={20} />
+        </Link>
 
         {/* Included Items */}
         <div className={styles.includedSection}>
@@ -163,7 +168,8 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
             </li>
           </ul>
         </div>
-      </div>
-    </main>
+        </div>
+      </main>
+    </>
   );
 }

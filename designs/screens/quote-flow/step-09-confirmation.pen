@@ -3,104 +3,392 @@
   "children": [
     {
       "type": "frame",
-      "id": "screen09D",
+      "id": "F2Dfm",
       "x": 0,
       "y": 0,
       "name": "Confirmation - Desktop",
       "width": 1440,
-      "height": 900,
+      "height": 1024,
       "fill": "#FAF8F5",
       "layout": "vertical",
       "children": [
         {
           "type": "frame",
-          "id": "header09D",
-          "name": "header",
-          "width": "fill_container",
-          "fill": "#FFFFFF",
-          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
-          "padding": [16, 80],
-          "justifyContent": "space_between",
-          "alignItems": "center",
-          "children": [
-            {"type": "text", "id": "logo09D", "name": "logo", "fill": "#2C2C2C", "content": "RESULTS ROOFING", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "700"},
-            {"type": "frame", "id": "helpBtn09D", "name": "helpButton", "gap": 8, "alignItems": "center", "children": [
-              {"type": "icon_font", "id": "helpIcon09D", "name": "icon", "width": 20, "height": 20, "iconFontName": "phone", "iconFontFamily": "lucide", "fill": "#5C5C5C"},
-              {"type": "text", "id": "helpText09D", "name": "text", "fill": "#5C5C5C", "content": "Need Help?", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"}
-            ]}
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "content09D",
-          "name": "content",
+          "id": "yanO9",
+          "name": "mainContent",
           "width": "fill_container",
           "height": "fill_container",
-          "padding": [80, 120],
+          "layout": "vertical",
+          "gap": 40,
+          "padding": [
+            80,
+            40
+          ],
           "justifyContent": "center",
           "alignItems": "center",
           "children": [
             {
               "type": "frame",
-              "id": "confirmationCard09D",
-              "name": "confirmationCard",
-              "width": 700,
-              "fill": "#FFFFFF",
-              "cornerRadius": 24,
-              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.08)", "offset": {"x": 0, "y": 8}, "blur": 32},
-              "layout": "vertical",
-              "gap": 32,
-              "padding": 48,
+              "id": "sar3p",
+              "name": "successIcon",
+              "width": 80,
+              "height": 80,
+              "fill": "#4A7C59",
+              "cornerRadius": 40,
+              "justifyContent": "center",
               "alignItems": "center",
               "children": [
-                {"type": "frame", "id": "successIcon09D", "name": "successIcon", "width": 80, "height": 80, "fill": "#E8F5E9", "cornerRadius": 40, "justifyContent": "center", "alignItems": "center", "children": [
-                  {"type": "icon_font", "id": "checkIcon09D", "name": "icon", "width": 40, "height": 40, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"}
-                ]},
-                {"type": "frame", "id": "titleGroup09D", "name": "titleGroup", "layout": "vertical", "gap": 12, "alignItems": "center", "children": [
-                  {"type": "text", "id": "title09D", "name": "title", "fill": "#2C2C2C", "content": "You're All Set!", "textAlign": "center", "fontFamily": "Inter", "fontSize": 36, "fontWeight": "700"},
-                  {"type": "text", "id": "subtitle09D", "name": "subtitle", "fill": "#5C5C5C", "content": "Your roofing project is confirmed and scheduled.", "textAlign": "center", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "normal"}
-                ]},
-                {"type": "frame", "id": "summaryCard09D", "name": "summaryCard", "width": "fill_container", "fill": "#FAF8F5", "cornerRadius": 16, "layout": "vertical", "gap": 16, "padding": 24, "children": [
-                  {"type": "frame", "id": "summaryRow1D09", "name": "row", "width": "fill_container", "justifyContent": "space_between", "children": [
-                    {"type": "text", "id": "sumLabel1D09", "name": "label", "fill": "#5C5C5C", "content": "Installation Date", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                    {"type": "text", "id": "sumValue1D09", "name": "value", "fill": "#2C2C2C", "content": "Tuesday, January 14, 2026", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                  ]},
-                  {"type": "frame", "id": "summaryRow2D09", "name": "row", "width": "fill_container", "justifyContent": "space_between", "children": [
-                    {"type": "text", "id": "sumLabel2D09", "name": "label", "fill": "#5C5C5C", "content": "Time Window", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                    {"type": "text", "id": "sumValue2D09", "name": "value", "fill": "#2C2C2C", "content": "Morning (8AM - 12PM)", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                  ]},
-                  {"type": "frame", "id": "summaryRow3D09", "name": "row", "width": "fill_container", "justifyContent": "space_between", "children": [
-                    {"type": "text", "id": "sumLabel3D09", "name": "label", "fill": "#5C5C5C", "content": "Package", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                    {"type": "text", "id": "sumValue3D09", "name": "value", "fill": "#2C2C2C", "content": "Better - Architectural Shingles", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                  ]},
-                  {"type": "frame", "id": "summaryRow4D09", "name": "row", "width": "fill_container", "justifyContent": "space_between", "children": [
-                    {"type": "text", "id": "sumLabel4D09", "name": "label", "fill": "#5C5C5C", "content": "Deposit Paid", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                    {"type": "text", "id": "sumValue4D09", "name": "value", "fill": "#4A7C59", "content": "$1,240", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                  ]}
-                ]},
-                {"type": "frame", "id": "whatNext09D", "name": "whatNext", "width": "fill_container", "layout": "vertical", "gap": 16, "children": [
-                  {"type": "text", "id": "whatNextTitle09D", "name": "title", "fill": "#2C2C2C", "content": "What Happens Next", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"},
-                  {"type": "frame", "id": "next1D09", "name": "item", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "next1D09Icon", "name": "icon", "width": 20, "height": 20, "iconFontName": "mail", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-                    {"type": "text", "id": "next1D09Text", "name": "text", "fill": "#5C5C5C", "content": "Confirmation email sent to your inbox", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]},
-                  {"type": "frame", "id": "next2D09", "name": "item", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "next2D09Icon", "name": "icon", "width": 20, "height": 20, "iconFontName": "phone", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-                    {"type": "text", "id": "next2D09Text", "name": "text", "fill": "#5C5C5C", "content": "Our team will call to confirm details", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]},
-                  {"type": "frame", "id": "next3D09", "name": "item", "gap": 12, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "next3D09Icon", "name": "icon", "width": 20, "height": 20, "iconFontName": "calendar", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-                    {"type": "text", "id": "next3D09Text", "name": "text", "fill": "#5C5C5C", "content": "Reminder sent 24 hours before installation", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-                  ]}
-                ]},
-                {"type": "frame", "id": "actions09D", "name": "actions", "width": "fill_container", "gap": 16, "children": [
-                  {"type": "frame", "id": "portalBtn09D", "name": "portalButton", "width": "fill_container", "height": 52, "fill": "#C4A77D", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
-                    {"type": "text", "id": "portalBtnLabel09D", "name": "label", "fill": "#FFFFFF", "content": "View My Portal", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
-                  ]},
-                  {"type": "frame", "id": "homeBtn09D", "name": "homeButton", "width": "fill_container", "height": 52, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "justifyContent": "center", "alignItems": "center", "children": [
-                    {"type": "text", "id": "homeBtnLabel09D", "name": "label", "fill": "#5C5C5C", "content": "Return Home", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
-                  ]}
-                ]}
+                {
+                  "type": "icon_font",
+                  "id": "uwOF3",
+                  "name": "checkIcon",
+                  "width": 48,
+                  "height": 48,
+                  "iconFontName": "check",
+                  "iconFontFamily": "lucide",
+                  "fill": "#FFFFFF"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "55gyQ",
+              "name": "title",
+              "fill": "#2C2C2C",
+              "content": "You're All Set!",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 48,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "yyvB5",
+              "name": "confirmationNumber",
+              "fill": "#5C5C5C",
+              "content": "Confirmation #RR-2026-1234",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "DrNSC",
+              "name": "projectCard",
+              "width": 600,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E8E0D4"
+              },
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "rgba(44, 44, 44, 0.07)",
+                "offset": {
+                  "x": 0,
+                  "y": 2
+                },
+                "blur": 4
+              },
+              "layout": "vertical",
+              "gap": 20,
+              "padding": 32,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "iczgz",
+                  "name": "projectTitle",
+                  "fill": "#2C2C2C",
+                  "content": "YOUR PROJECT",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "frame",
+                  "id": "mPwL4",
+                  "name": "projectDetails",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "WSpU9",
+                      "name": "projectRow1",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Q15qS",
+                          "name": "projectRow1Label",
+                          "fill": "#5C5C5C",
+                          "content": "Address:",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "ac3nw",
+                          "name": "projectRow1Value",
+                          "fill": "#2C2C2C",
+                          "content": "123 Main St, Dallas TX",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "JOiE9",
+                      "name": "projectRow2",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "7Lad4",
+                          "name": "projectRow2Label",
+                          "fill": "#5C5C5C",
+                          "content": "Package:",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "bYJap",
+                          "name": "projectRow2Value",
+                          "fill": "#2C2C2C",
+                          "content": "Better Package",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Cl3IX",
+                      "name": "projectRow3",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "spBQ5",
+                          "name": "projectRow3Label",
+                          "fill": "#5C5C5C",
+                          "content": "Install Date:",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "uXbNR",
+                          "name": "projectRow3Value",
+                          "fill": "#2C2C2C",
+                          "content": "Tuesday, January 14, 2026",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "PoHf4",
+              "name": "nextSteps",
+              "width": 600,
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "mMXUH",
+                  "name": "nextStepsTitle",
+                  "fill": "#2C2C2C",
+                  "content": "What Happens Next",
+                  "fontFamily": "Inter",
+                  "fontSize": 20,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "XYMlR",
+                  "name": "nextStepsList",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "zbhW8",
+                      "name": "step1",
+                      "width": "fill_container",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "4p8Mx",
+                          "name": "step1Icon",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "mail",
+                          "iconFontFamily": "lucide",
+                          "fill": "#C4A77D"
+                        },
+                        {
+                          "type": "text",
+                          "id": "mKkla",
+                          "name": "step1Text",
+                          "fill": "#2C2C2C",
+                          "content": "You'll receive a confirmation email with all details",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Q1kh2",
+                      "name": "step2",
+                      "width": "fill_container",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "9P6EM",
+                          "name": "step2Icon",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "calendar",
+                          "iconFontFamily": "lucide",
+                          "fill": "#C4A77D"
+                        },
+                        {
+                          "type": "text",
+                          "id": "F9UlK",
+                          "name": "step2Text",
+                          "fill": "#2C2C2C",
+                          "content": "Our team will confirm your installation date",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "vbN7W",
+                      "name": "step3",
+                      "width": "fill_container",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "uKgVK",
+                          "name": "step3Icon",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "home",
+                          "iconFontFamily": "lucide",
+                          "fill": "#C4A77D"
+                        },
+                        {
+                          "type": "text",
+                          "id": "iWzjV",
+                          "name": "step3Text",
+                          "fill": "#2C2C2C",
+                          "content": "We'll arrive on your scheduled date and complete the installation",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "8btrD",
+              "name": "actions",
+              "width": 600,
+              "gap": 16,
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "0FeOu",
+                  "name": "portalButton",
+                  "height": 44,
+                  "fill": "transparent",
+                  "cornerRadius": 6,
+                  "gap": 8,
+                  "padding": [
+                    12,
+                    24
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "JxpDt",
+                      "name": "portalButtonText",
+                      "fill": "#5C5C5C",
+                      "content": "View in Portal",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "xw9Pu",
+                  "name": "homeButton",
+                  "height": 44,
+                  "fill": "#C4A77D",
+                  "cornerRadius": 6,
+                  "gap": 8,
+                  "padding": [
+                    12,
+                    24
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "UTWZ0",
+                      "name": "homeButtonText",
+                      "fill": "#FFFFFF",
+                      "content": "Return Home",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
               ]
             }
           ]

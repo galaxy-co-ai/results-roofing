@@ -3,103 +3,330 @@
   "children": [
     {
       "type": "frame",
-      "id": "screen01D",
+      "id": "gVqP2",
       "x": 0,
       "y": 0,
       "name": "Address Entry - Desktop",
       "width": 1440,
-      "height": 900,
+      "height": 1024,
       "fill": "#FAF8F5",
+      "placeholder": true,
       "layout": "vertical",
       "children": [
         {
           "type": "frame",
-          "id": "header01D",
+          "id": "MXNPS",
           "name": "header",
           "width": "fill_container",
+          "height": 64,
           "fill": "#FFFFFF",
-          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
-          "padding": [16, 80],
+          "padding": [
+            16,
+            40
+          ],
           "justifyContent": "space_between",
-          "alignItems": "center",
-          "children": [
-            {"type": "text", "id": "logo01D", "name": "logo", "fill": "#2C2C2C", "content": "RESULTS ROOFING", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "700"},
-            {"type": "frame", "id": "navLinks", "name": "nav", "gap": 32, "children": [
-              {"type": "text", "id": "nav1", "name": "link", "fill": "#5C5C5C", "content": "How It Works", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-              {"type": "text", "id": "nav2", "name": "link", "fill": "#5C5C5C", "content": "Services", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-              {"type": "text", "id": "nav3", "name": "link", "fill": "#5C5C5C", "content": "About", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"}
-            ]},
-            {"type": "frame", "id": "headerCta", "name": "cta", "height": 40, "fill": "#C4A77D", "cornerRadius": 6, "padding": [10, 20], "justifyContent": "center", "alignItems": "center", "children": [
-              {"type": "text", "id": "headerCtaLabel", "name": "label", "fill": "#FFFFFF", "content": "Get Quote", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-            ]}
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "heroSection",
-          "name": "hero",
-          "width": "fill_container",
-          "height": "fill_container",
-          "padding": [80, 120],
-          "justifyContent": "center",
           "alignItems": "center",
           "children": [
             {
               "type": "frame",
-              "id": "heroContent",
-              "name": "content",
-              "width": 800,
-              "layout": "vertical",
-              "gap": 32,
+              "id": "EFGYO",
+              "name": "headerBorder",
+              "width": "fill_container",
+              "height": 1,
+              "fill": "#E8E0D4"
+            },
+            {
+              "type": "text",
+              "id": "vE0Xa",
+              "name": "logo",
+              "fill": "#2C2C2C",
+              "content": "RESULTS ROOFING",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "1rev7",
+              "name": "headerRight",
+              "gap": 24,
               "alignItems": "center",
               "children": [
-                {"type": "frame", "id": "heroText", "name": "textGroup", "layout": "vertical", "gap": 16, "alignItems": "center", "children": [
-                  {"type": "text", "id": "heroTitle", "name": "title", "fill": "#2C2C2C", "content": "Get Your Free Roof Quote in Minutes", "textAlign": "center", "fontFamily": "Inter", "fontSize": 48, "fontWeight": "700"},
-                  {"type": "text", "id": "heroSubtitle", "name": "subtitle", "fill": "#5C5C5C", "content": "Our AI-powered system analyzes your roof and provides an instant estimate. No sales calls, no pressure.", "textAlign": "center", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "normal"}
-                ]},
                 {
                   "type": "frame",
-                  "id": "inputCard",
-                  "name": "inputCard",
-                  "width": 600,
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 16,
-                  "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
-                  "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.08)", "offset": {"x": 0, "y": 8}, "blur": 24},
-                  "layout": "vertical",
-                  "gap": 20,
-                  "padding": 32,
+                  "id": "GVKTx",
+                  "name": "rating",
+                  "gap": 8,
+                  "alignItems": "center",
                   "children": [
-                    {"type": "text", "id": "inputLabel", "name": "label", "fill": "#2C2C2C", "content": "Enter Your Property Address", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"},
-                    {"type": "frame", "id": "inputRow", "name": "inputRow", "width": "fill_container", "gap": 12, "children": [
-                      {"type": "frame", "id": "inputField", "name": "input", "width": "fill_container", "height": 52, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "gap": 12, "padding": [14, 16], "alignItems": "center", "children": [
-                        {"type": "icon_font", "id": "inputIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "map-pin", "iconFontFamily": "lucide", "fill": "#9C9688"},
-                        {"type": "text", "id": "inputPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "123 Main Street, Dallas, TX", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                      ]},
-                      {"type": "frame", "id": "ctaBtn", "name": "button", "height": 52, "fill": "#C4A77D", "cornerRadius": 8, "padding": [14, 32], "justifyContent": "center", "alignItems": "center", "children": [
-                        {"type": "text", "id": "ctaLabel", "name": "label", "fill": "#FFFFFF", "content": "Get My Quote", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
-                      ]}
-                    ]}
+                    {
+                      "type": "text",
+                      "id": "v2NlL",
+                      "name": "stars",
+                      "fill": "#C4A77D",
+                      "content": "★★★★★",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "PfYOI",
+                      "name": "ratingText",
+                      "fill": "#2C2C2C",
+                      "content": "4.9 (500+ reviews)",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
                   ]
                 },
-                {"type": "frame", "id": "valueProps", "name": "valueProps", "gap": 48, "children": [
-                  {"type": "frame", "id": "vp1", "name": "prop", "gap": 8, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "vp1Icon", "name": "icon", "width": 20, "height": 20, "iconFontName": "zap", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-                    {"type": "text", "id": "vp1Text", "name": "text", "fill": "#5C5C5C", "content": "Instant AI Estimate", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"}
-                  ]},
-                  {"type": "frame", "id": "vp2", "name": "prop", "gap": 8, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "vp2Icon", "name": "icon", "width": 20, "height": 20, "iconFontName": "shield-check", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-                    {"type": "text", "id": "vp2Text", "name": "text", "fill": "#5C5C5C", "content": "Licensed & Insured", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"}
-                  ]},
-                  {"type": "frame", "id": "vp3", "name": "prop", "gap": 8, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "vp3Icon", "name": "icon", "width": 20, "height": 20, "iconFontName": "credit-card", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-                    {"type": "text", "id": "vp3Text", "name": "text", "fill": "#5C5C5C", "content": "Financing Available", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"}
-                  ]},
-                  {"type": "frame", "id": "vp4", "name": "prop", "gap": 8, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "vp4Icon", "name": "icon", "width": 20, "height": 20, "iconFontName": "star", "iconFontFamily": "lucide", "fill": "#C4A77D"},
-                    {"type": "text", "id": "vp4Text", "name": "text", "fill": "#5C5C5C", "content": "4.9★ Rating", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"}
-                  ]}
-                ]}
+                {
+                  "type": "text",
+                  "id": "Mbnvb",
+                  "name": "phone",
+                  "fill": "#5C5C5C",
+                  "content": "Call: (555) 123-4567",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "PDk2k",
+          "name": "mainContent",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 48,
+          "padding": [
+            80,
+            40
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "C0kKd",
+              "name": "heroTitle",
+              "fill": "#2C2C2C",
+              "textGrowth": "fixed-width",
+              "width": 800,
+              "content": "Get Your Instant Roofing Estimate",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 48,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "z5t1H",
+              "name": "heroSubtitle",
+              "fill": "#5C5C5C",
+              "textGrowth": "fixed-width",
+              "width": 600,
+              "content": "No waiting. No phone calls. Real pricing in seconds.",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "bQ6cf",
+              "name": "addressCard",
+              "width": 700,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E8E0D4"
+              },
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "rgba(44, 44, 44, 0.1)",
+                "offset": {
+                  "x": 0,
+                  "y": 4
+                },
+                "blur": 6
+              },
+              "layout": "vertical",
+              "gap": 24,
+              "padding": 32,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "JEPx9",
+                  "name": "addressLabel",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "3pV6d",
+                      "name": "addressIcon",
+                      "width": 24,
+                      "height": 24,
+                      "iconFontName": "map-pin",
+                      "iconFontFamily": "lucide",
+                      "fill": "#C4A77D"
+                    },
+                    {
+                      "type": "text",
+                      "id": "C9a0s",
+                      "name": "addressLabelText",
+                      "fill": "#2C2C2C",
+                      "content": "Enter your property address",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Q69bh",
+                  "name": "addressInputRow",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "T6PrB",
+                      "name": "addressInput",
+                      "width": "fill_container",
+                      "height": 52,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E8E0D4"
+                      },
+                      "padding": [
+                        12,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "I9OiN",
+                          "name": "addressInputText",
+                          "fill": "#2C2C2C",
+                          "content": "123 Main St, Dallas, TX",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "6yvYH",
+                      "name": "ctaButton",
+                      "height": 52,
+                      "fill": "#C4A77D",
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        12,
+                        32
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "X7eL2",
+                          "name": "ctaButtonText",
+                          "fill": "#FFFFFF",
+                          "content": "Get My Free Estimate",
+                          "fontFamily": "Inter",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "x5PNg",
+                  "name": "valueProps",
+                  "width": "fill_container",
+                  "gap": 16,
+                  "justifyContent": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "i8VMD",
+                      "name": "valueProp1",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "lCimD",
+                          "name": "check1",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "hmoYH",
+                          "name": "valueProp1Text",
+                          "fill": "#5C5C5C",
+                          "content": "No credit card required",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "hfRxw",
+                      "name": "valueProp2",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "O9uO7",
+                          "name": "check2",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#4A7C59"
+                        },
+                        {
+                          "type": "text",
+                          "id": "upwK4",
+                          "name": "valueProp2Text",
+                          "fill": "#5C5C5C",
+                          "content": "Instant results",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
               ]
             }
           ]

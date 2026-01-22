@@ -69,6 +69,7 @@ export default function HomePage() {
                 className={styles.addressInput}
                 placeholder="Enter your home address"
                 autoComplete="street-address"
+                aria-label="Enter your home address to get a quote"
                 required
               />
             </div>

@@ -3,165 +3,600 @@
   "children": [
     {
       "type": "frame",
-      "id": "inputLib",
+      "id": "4axEP",
       "x": 0,
       "y": 0,
-      "name": "Text Input Component Library",
-      "width": 1100,
-      "height": 700,
-      "fill": "#FFFFFF",
+      "name": "TextInput Component Library",
+      "width": 800,
+      "fill": "#FAF8F5",
       "layout": "vertical",
-      "gap": 32,
-      "padding": 32,
+      "gap": 40,
+      "padding": 40,
       "children": [
-        {"type": "text", "id": "inputTitle", "name": "title", "fill": "#2C2C2C", "content": "Text Input Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
         {
           "type": "frame",
-          "id": "inputRow1",
-          "name": "statesRow",
+          "id": "5S8mJ",
+          "name": "section1",
           "width": "fill_container",
-          "gap": 32,
+          "layout": "vertical",
+          "gap": 16,
           "children": [
             {
+              "type": "text",
+              "id": "VrF7z",
+              "name": "section1Title",
+              "fill": "#2C2C2C",
+              "content": "TextInput States",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
+            },
+            {
               "type": "frame",
-              "id": "inputDefault",
+              "id": "g7JYm",
               "name": "TextInput/Default",
-              "reusable": true,
-              "width": 300,
+              "width": "fill_container",
               "layout": "vertical",
               "gap": 8,
               "children": [
-                {"type": "text", "id": "inputDefaultLabel", "name": "label", "fill": "#2C2C2C", "content": "Email", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                {"type": "frame", "id": "inputDefaultField", "name": "field", "width": "fill_container", "height": 44, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [12, 16], "alignItems": "center", "children": [
-                  {"type": "text", "id": "inputDefaultPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Enter your email", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                ]}
+                {
+                  "type": "text",
+                  "id": "lQoh1",
+                  "name": "defaultLabel",
+                  "fill": "#2C2C2C",
+                  "content": "Email Address",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "Sl35m",
+                  "name": "defaultInputField",
+                  "reusable": true,
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "padding": [
+                    12,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "XWuiB",
+                      "name": "defaultInputText",
+                      "fill": "#9C9688",
+                      "content": "Enter your email",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
               ]
             },
             {
               "type": "frame",
-              "id": "inputFilled",
-              "name": "TextInput/Filled",
-              "reusable": true,
-              "width": 300,
+              "id": "aFl1G",
+              "name": "focusInput",
+              "width": "fill_container",
               "layout": "vertical",
               "gap": 8,
               "children": [
-                {"type": "text", "id": "inputFilledLabel", "name": "label", "fill": "#2C2C2C", "content": "Email", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                {"type": "frame", "id": "inputFilledField", "name": "field", "width": "fill_container", "height": 44, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#2C2C2C"}, "padding": [12, 16], "alignItems": "center", "children": [
-                  {"type": "text", "id": "inputFilledValue", "name": "value", "fill": "#2C2C2C", "content": "john@example.com", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                ]}
+                {
+                  "type": "text",
+                  "id": "fbbWl",
+                  "name": "focusLabel",
+                  "fill": "#2C2C2C",
+                  "content": "Email Address",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "RRaE8",
+                  "name": "focusInputField",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 2,
+                    "fill": "#C4A77D"
+                  },
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "rgba(196, 167, 125, 0.15)",
+                    "blur": 3
+                  },
+                  "padding": [
+                    12,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "jBqY6",
+                      "name": "focusInputText",
+                      "fill": "#2C2C2C",
+                      "content": "john@example.com",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
               ]
             },
             {
               "type": "frame",
-              "id": "inputFocus",
-              "name": "TextInput/Focus",
-              "reusable": true,
-              "width": 300,
+              "id": "fsgHM",
+              "name": "errorInput",
+              "width": "fill_container",
               "layout": "vertical",
               "gap": 8,
               "children": [
-                {"type": "text", "id": "inputFocusLabel", "name": "label", "fill": "#2C2C2C", "content": "Email", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                {"type": "frame", "id": "inputFocusField", "name": "field", "width": "fill_container", "height": 44, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"}, "padding": [12, 16], "alignItems": "center", "children": [
-                  {"type": "text", "id": "inputFocusValue", "name": "value", "fill": "#2C2C2C", "content": "john@", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                ]}
+                {
+                  "type": "text",
+                  "id": "sHjhQ",
+                  "name": "errorLabel",
+                  "fill": "#2C2C2C",
+                  "content": "Email Address",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "ge0e9",
+                  "name": "errorInputField",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFEBEE",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#B54A4A"
+                  },
+                  "padding": [
+                    12,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "2gdqT",
+                      "name": "errorInputText",
+                      "fill": "#2C2C2C",
+                      "content": "invalid-email",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "yUIEz",
+                  "name": "errorMessage",
+                  "fill": "#B54A4A",
+                  "content": "Please enter a valid email address",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "TG3W3",
+              "name": "disabledInput",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "tirBr",
+                  "name": "disabledLabel",
+                  "opacity": 0.5,
+                  "fill": "#2C2C2C",
+                  "content": "Email Address",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "ymNN8",
+                  "name": "disabledInputField",
+                  "opacity": 0.5,
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#E8E0D4",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "padding": [
+                    12,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "pVKZi",
+                      "name": "disabledInputText",
+                      "fill": "#9C9688",
+                      "content": "Disabled input",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
               ]
             }
           ]
         },
         {
           "type": "frame",
-          "id": "inputRow2",
-          "name": "errorDisabledRow",
+          "id": "3LFcH",
+          "name": "section2",
           "width": "fill_container",
-          "gap": 32,
+          "layout": "vertical",
+          "gap": 16,
           "children": [
             {
+              "type": "text",
+              "id": "S5tJW",
+              "name": "section2Title",
+              "fill": "#2C2C2C",
+              "content": "TextInput with Icons",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
+            },
+            {
               "type": "frame",
-              "id": "inputError",
-              "name": "TextInput/Error",
-              "reusable": true,
-              "width": 300,
+              "id": "jtESu",
+              "name": "leftIconInput",
+              "width": "fill_container",
               "layout": "vertical",
               "gap": 8,
               "children": [
-                {"type": "text", "id": "inputErrorLabel", "name": "label", "fill": "#2C2C2C", "content": "Email", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                {"type": "frame", "id": "inputErrorField", "name": "field", "width": "fill_container", "height": 44, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 2, "fill": "#D94F4F"}, "padding": [12, 16], "alignItems": "center", "children": [
-                  {"type": "text", "id": "inputErrorValue", "name": "value", "fill": "#2C2C2C", "content": "invalid-email", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                ]},
-                {"type": "text", "id": "inputErrorMsg", "name": "errorMessage", "fill": "#D94F4F", "content": "Please enter a valid email address", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+                {
+                  "type": "text",
+                  "id": "dg06t",
+                  "name": "leftIconLabel",
+                  "fill": "#2C2C2C",
+                  "content": "Search",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "v9j3h",
+                  "name": "TextInput/WithLeftIcon",
+                  "reusable": true,
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    16,
+                    12,
+                    44
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "az9WL",
+                      "name": "leftIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "search",
+                      "iconFontFamily": "lucide",
+                      "fill": "#9C9688"
+                    },
+                    {
+                      "type": "text",
+                      "id": "uJtTV",
+                      "name": "leftIconInputText",
+                      "fill": "#9C9688",
+                      "content": "Search addresses...",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
               ]
             },
             {
               "type": "frame",
-              "id": "inputDisabled",
-              "name": "TextInput/Disabled",
-              "reusable": true,
-              "width": 300,
+              "id": "xJYtN",
+              "name": "rightIconInput",
+              "width": "fill_container",
               "layout": "vertical",
               "gap": 8,
               "children": [
-                {"type": "text", "id": "inputDisabledLabel", "name": "label", "fill": "#9C9688", "content": "Email", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                {"type": "frame", "id": "inputDisabledField", "name": "field", "width": "fill_container", "height": 44, "fill": "#F5F3EF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [12, 16], "alignItems": "center", "children": [
-                  {"type": "text", "id": "inputDisabledPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Disabled input", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                ]}
+                {
+                  "type": "text",
+                  "id": "WVyAJ",
+                  "name": "rightIconLabel",
+                  "fill": "#2C2C2C",
+                  "content": "Password",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "WzBYD",
+                  "name": "TextInput/WithRightIcon",
+                  "reusable": true,
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    44,
+                    12,
+                    16
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "eNlIZ",
+                      "name": "rightIconInputText",
+                      "fill": "#2C2C2C",
+                      "content": "••••••••",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "PsyS8",
+                      "name": "rightIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "eye",
+                      "iconFontFamily": "lucide",
+                      "fill": "#9C9688"
+                    }
+                  ]
+                }
               ]
             }
           ]
         },
         {
           "type": "frame",
-          "id": "inputRow3",
-          "name": "withIconRow",
+          "id": "sEIBG",
+          "name": "section3",
           "width": "fill_container",
-          "gap": 32,
+          "layout": "vertical",
+          "gap": 16,
           "children": [
             {
-              "type": "frame",
-              "id": "inputWithLeftIcon",
-              "name": "TextInput/WithLeftIcon",
-              "reusable": true,
-              "width": 300,
-              "layout": "vertical",
-              "gap": 8,
-              "children": [
-                {"type": "text", "id": "inputLeftIconLabel", "name": "label", "fill": "#2C2C2C", "content": "Search", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                {"type": "frame", "id": "inputLeftIconField", "name": "field", "width": "fill_container", "height": 44, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "gap": 12, "padding": [12, 16], "alignItems": "center", "children": [
-                  {"type": "icon_font", "id": "inputLeftIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "search", "iconFontFamily": "lucide", "fill": "#9C9688"},
-                  {"type": "text", "id": "inputLeftIconPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Search...", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                ]}
-              ]
+              "type": "text",
+              "id": "QEh3W",
+              "name": "section3Title",
+              "fill": "#2C2C2C",
+              "content": "Input Types",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "600"
             },
             {
               "type": "frame",
-              "id": "inputWithRightIcon",
-              "name": "TextInput/WithRightIcon",
-              "reusable": true,
-              "width": 300,
+              "id": "Id7jQ",
+              "name": "typesGrid",
+              "width": "fill_container",
               "layout": "vertical",
-              "gap": 8,
+              "gap": 16,
               "children": [
-                {"type": "text", "id": "inputRightIconLabel", "name": "label", "fill": "#2C2C2C", "content": "Password", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                {"type": "frame", "id": "inputRightIconField", "name": "field", "width": "fill_container", "height": 44, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [12, 16], "justifyContent": "space_between", "alignItems": "center", "children": [
-                  {"type": "text", "id": "inputRightIconValue", "name": "value", "fill": "#2C2C2C", "content": "••••••••", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
-                  {"type": "icon_font", "id": "inputRightIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "eye", "iconFontFamily": "lucide", "fill": "#9C9688"}
-                ]}
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "inputWithHelper",
-              "name": "TextInput/WithHelper",
-              "reusable": true,
-              "width": 300,
-              "layout": "vertical",
-              "gap": 8,
-              "children": [
-                {"type": "text", "id": "inputHelperLabel", "name": "label", "fill": "#2C2C2C", "content": "Username", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                {"type": "frame", "id": "inputHelperField", "name": "field", "width": "fill_container", "height": 44, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [12, 16], "alignItems": "center", "children": [
-                  {"type": "text", "id": "inputHelperPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Choose a username", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                ]},
-                {"type": "text", "id": "inputHelperText", "name": "helperText", "fill": "#9C9688", "content": "Must be 3-20 characters", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+                {
+                  "type": "frame",
+                  "id": "Ds9t7",
+                  "name": "emailInput",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "eAiV8",
+                      "name": "emailLabel",
+                      "fill": "#2C2C2C",
+                      "content": "Email (type: email)",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "yHYOA",
+                      "name": "emailField",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E8E0D4"
+                      },
+                      "padding": [
+                        12,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "uLvve",
+                          "name": "emailText",
+                          "fill": "#2C2C2C",
+                          "content": "user@example.com",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "7edl0",
+                  "name": "telInput",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "2IrkB",
+                      "name": "telLabel",
+                      "fill": "#2C2C2C",
+                      "content": "Phone (type: tel)",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "2nuQO",
+                      "name": "telField",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E8E0D4"
+                      },
+                      "padding": [
+                        12,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "GkVrR",
+                          "name": "telText",
+                          "fill": "#2C2C2C",
+                          "content": "(555) 123-4567",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "jPcjs",
+                  "name": "searchInput",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "uR5Iy",
+                      "name": "searchLabel",
+                      "fill": "#2C2C2C",
+                      "content": "Search (type: search)",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "q8StJ",
+                      "name": "searchField",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E8E0D4"
+                      },
+                      "padding": [
+                        12,
+                        16
+                      ],
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "t3viU",
+                          "name": "searchText",
+                          "fill": "#9C9688",
+                          "content": "Search...",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "6iSiR",
+                          "name": "searchClear",
+                          "width": 18,
+                          "height": 18,
+                          "iconFontName": "x",
+                          "iconFontFamily": "lucide",
+                          "fill": "#9C9688"
+                        }
+                      ]
+                    }
+                  ]
+                }
               ]
             }
           ]

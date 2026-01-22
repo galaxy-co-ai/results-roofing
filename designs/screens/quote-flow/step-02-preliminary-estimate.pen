@@ -3,104 +3,552 @@
   "children": [
     {
       "type": "frame",
-      "id": "screen02D",
+      "id": "BDCXl",
       "x": 0,
       "y": 0,
       "name": "Preliminary Estimate - Desktop",
       "width": 1440,
-      "height": 900,
+      "height": 1024,
       "fill": "#FAF8F5",
       "layout": "vertical",
       "children": [
         {
           "type": "frame",
-          "id": "header02D",
+          "id": "Lt7wi",
           "name": "header",
           "width": "fill_container",
+          "height": 64,
           "fill": "#FFFFFF",
-          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
-          "padding": [16, 80],
-          "gap": 24,
+          "padding": [
+            16,
+            40
+          ],
+          "justifyContent": "space_between",
           "alignItems": "center",
           "children": [
-            {"type": "icon_font", "id": "backIcon02D", "name": "back", "width": 24, "height": 24, "iconFontName": "arrow-left", "iconFontFamily": "lucide", "fill": "#2C2C2C"},
-            {"type": "frame", "id": "headerInfo02D", "name": "info", "width": "fill_container", "layout": "vertical", "gap": 2, "children": [
-              {"type": "text", "id": "headerTitle02D", "name": "title", "fill": "#2C2C2C", "content": "Your Preliminary Estimate", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"},
-              {"type": "text", "id": "headerAddress02D", "name": "address", "fill": "#5C5C5C", "content": "123 Main St, Dallas, TX 75201", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
-            ]},
-            {"type": "frame", "id": "progress02D", "name": "progress", "width": 200, "height": 8, "fill": "#E8E0D4", "cornerRadius": 4, "children": [
-              {"type": "frame", "id": "progressFill02D", "name": "fill", "width": "40%", "height": "fill_container", "fill": "#C4A77D", "cornerRadius": 4}
-            ]}
+            {
+              "type": "frame",
+              "id": "y55JA",
+              "name": "backButton",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "gyQ5N",
+                  "name": "backIcon",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "arrow-left",
+                  "iconFontFamily": "lucide",
+                  "fill": "#5C5C5C"
+                },
+                {
+                  "type": "text",
+                  "id": "TY7Dt",
+                  "name": "backText",
+                  "fill": "#5C5C5C",
+                  "content": "Back",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "po91m",
+              "name": "addressDisplay",
+              "fill": "#2C2C2C",
+              "content": "123 Main St, Dallas, TX",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "KuPHE",
+              "name": "progress",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "DfA08",
+                  "name": "progressText",
+                  "fill": "#5C5C5C",
+                  "content": "Progress: ●●○○○",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
           ]
         },
         {
           "type": "frame",
-          "id": "content02D",
-          "name": "content",
+          "id": "hyqTW",
+          "name": "mainContent",
           "width": "fill_container",
           "height": "fill_container",
-          "padding": [48, 120],
-          "gap": 48,
-          "justifyContent": "center",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            48,
+            40
+          ],
+          "alignItems": "center",
           "children": [
             {
-              "type": "frame",
-              "id": "leftCol02D",
-              "name": "leftColumn",
-              "width": 500,
-              "layout": "vertical",
-              "gap": 32,
-              "children": [
-                {"type": "frame", "id": "titleSection02D", "name": "titleSection", "layout": "vertical", "gap": 12, "children": [
-                  {"type": "text", "id": "title02D", "name": "title", "fill": "#2C2C2C", "content": "Your Roof Analysis", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
-                  {"type": "text", "id": "subtitle02D", "name": "subtitle", "fill": "#5C5C5C", "content": "Based on satellite imagery and AI analysis", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
-                ]},
-                {"type": "frame", "id": "roofStats", "name": "roofStats", "width": "fill_container", "fill": "#FFFFFF", "cornerRadius": 16, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "layout": "vertical", "gap": 16, "padding": 24, "children": [
-                  {"type": "frame", "id": "stat1", "name": "stat", "width": "fill_container", "justifyContent": "space_between", "children": [
-                    {"type": "text", "id": "stat1Label", "name": "label", "fill": "#5C5C5C", "content": "Roof Area", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                    {"type": "text", "id": "stat1Value", "name": "value", "fill": "#2C2C2C", "content": "2,450 sq ft", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                  ]},
-                  {"type": "frame", "id": "stat2", "name": "stat", "width": "fill_container", "justifyContent": "space_between", "children": [
-                    {"type": "text", "id": "stat2Label", "name": "label", "fill": "#5C5C5C", "content": "Roof Pitch", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                    {"type": "text", "id": "stat2Value", "name": "value", "fill": "#2C2C2C", "content": "6/12 (Standard)", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                  ]},
-                  {"type": "frame", "id": "stat3", "name": "stat", "width": "fill_container", "justifyContent": "space_between", "children": [
-                    {"type": "text", "id": "stat3Label", "name": "label", "fill": "#5C5C5C", "content": "Stories", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                    {"type": "text", "id": "stat3Value", "name": "value", "fill": "#2C2C2C", "content": "2 stories", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                  ]},
-                  {"type": "frame", "id": "stat4", "name": "stat", "width": "fill_container", "justifyContent": "space_between", "children": [
-                    {"type": "text", "id": "stat4Label", "name": "label", "fill": "#5C5C5C", "content": "Complexity", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
-                    {"type": "text", "id": "stat4Value", "name": "value", "fill": "#2C2C2C", "content": "Moderate", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
-                  ]}
-                ]}
-              ]
+              "type": "text",
+              "id": "fT8Ff",
+              "name": "title",
+              "fill": "#2C2C2C",
+              "content": "Your Preliminary Estimate",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 36,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "BawYM",
+              "name": "subtitle",
+              "fill": "#5C5C5C",
+              "textGrowth": "fixed-width",
+              "width": 600,
+              "content": "Based on typical homes in your area. Final price confirmed after measurement.",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "normal"
             },
             {
               "type": "frame",
-              "id": "rightCol02D",
-              "name": "rightColumn",
-              "width": 500,
-              "layout": "vertical",
+              "id": "fzgdU",
+              "name": "cardsGrid",
+              "width": 1200,
               "gap": 24,
               "children": [
-                {"type": "frame", "id": "estimateCard", "name": "estimateCard", "width": "fill_container", "fill": "#FFFFFF", "cornerRadius": 16, "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"}, "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(196, 167, 125, 0.15)", "offset": {"x": 0, "y": 4}, "blur": 16}, "layout": "vertical", "gap": 20, "padding": 32, "alignItems": "center", "children": [
-                  {"type": "text", "id": "estimateLabel", "name": "label", "fill": "#5C5C5C", "content": "Preliminary Estimate Range", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
-                  {"type": "text", "id": "estimatePrice", "name": "price", "fill": "#C4A77D", "content": "$8,900 – $18,500", "fontFamily": "Inter", "fontSize": 36, "fontWeight": "700"},
-                  {"type": "text", "id": "estimateNote", "name": "note", "fill": "#9C9688", "content": "Based on material and package selection", "textAlign": "center", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"},
-                  {"type": "frame", "id": "estimateCta", "name": "cta", "width": "fill_container", "height": 52, "fill": "#C4A77D", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
-                    {"type": "text", "id": "estimateCtaLabel", "name": "label", "fill": "#FFFFFF", "content": "Compare Packages", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
-                  ]}
-                ]},
-                {"type": "frame", "id": "trustRow", "name": "trustRow", "width": "fill_container", "justifyContent": "center", "gap": 32, "children": [
-                  {"type": "frame", "id": "trust1", "name": "trust", "gap": 8, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "trust1Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "lock", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "trust1Text", "name": "text", "fill": "#5C5C5C", "content": "No obligation", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
-                  ]},
-                  {"type": "frame", "id": "trust2", "name": "trust", "gap": 8, "alignItems": "center", "children": [
-                    {"type": "icon_font", "id": "trust2Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "shield", "iconFontFamily": "lucide", "fill": "#4A7C59"},
-                    {"type": "text", "id": "trust2Text", "name": "text", "fill": "#5C5C5C", "content": "Price guarantee", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
-                  ]}
-                ]}
+                {
+                  "type": "frame",
+                  "id": "DSiSw",
+                  "name": "goodCard",
+                  "width": "fill_container",
+                  "height": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "rgba(44, 44, 44, 0.07)",
+                    "offset": {
+                      "x": 0,
+                      "y": 2
+                    },
+                    "blur": 4
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 32,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ilZmI",
+                      "name": "goodTitle",
+                      "fill": "#2C2C2C",
+                      "content": "GOOD",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "8JtKM",
+                      "name": "goodDesc",
+                      "fill": "#5C5C5C",
+                      "content": "3-Tab Shingles",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "8Yqp0",
+                      "name": "goodWarranty",
+                      "fill": "#5C5C5C",
+                      "content": "10-Year Warranty",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Vlar0",
+                      "name": "goodPrice",
+                      "fill": "#2C2C2C",
+                      "content": "$8,500 - $10,500",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ragC2",
+                      "name": "goodMonthly",
+                      "fill": "#5C5C5C",
+                      "content": "from $175/mo",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "RNM2u",
+                      "name": "goodButton",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "#C4A77D",
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        12,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "wsARe",
+                          "name": "goodButtonText",
+                          "fill": "#FFFFFF",
+                          "content": "Select Good",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "zWZHV",
+                  "name": "betterCard",
+                  "width": "fill_container",
+                  "height": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 2,
+                    "fill": "#C4A77D"
+                  },
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "rgba(44, 44, 44, 0.1)",
+                    "offset": {
+                      "x": 0,
+                      "y": 4
+                    },
+                    "blur": 6
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 32,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "6Y0Mo",
+                      "name": "betterBadge",
+                      "height": 28,
+                      "fill": "#C4A77D",
+                      "cornerRadius": 14,
+                      "gap": 6,
+                      "padding": [
+                        6,
+                        12
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "dzz0R",
+                          "name": "betterBadgeIcon",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "star",
+                          "iconFontFamily": "lucide",
+                          "fill": "#FFFFFF"
+                        },
+                        {
+                          "type": "text",
+                          "id": "gmvDW",
+                          "name": "betterBadgeText",
+                          "fill": "#FFFFFF",
+                          "content": "RECOMMENDED",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "z8EZ0",
+                      "name": "betterTitle",
+                      "fill": "#2C2C2C",
+                      "content": "BETTER",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "slQiD",
+                      "name": "betterDesc",
+                      "fill": "#5C5C5C",
+                      "content": "Architectural Shingles",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "I2mNv",
+                      "name": "betterWarranty",
+                      "fill": "#5C5C5C",
+                      "content": "25-Year Warranty",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "T3bOd",
+                      "name": "betterPrice",
+                      "fill": "#2C2C2C",
+                      "content": "$12,000 - $14,500",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "GRjQo",
+                      "name": "betterMonthly",
+                      "fill": "#5C5C5C",
+                      "content": "from $245/mo",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "wVr8M",
+                      "name": "betterButton",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "#C4A77D",
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        12,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "cBmng",
+                          "name": "betterButtonText",
+                          "fill": "#FFFFFF",
+                          "content": "Select Better",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "a45Qr",
+                  "name": "bestCard",
+                  "width": "fill_container",
+                  "height": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8E0D4"
+                  },
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "rgba(44, 44, 44, 0.07)",
+                    "offset": {
+                      "x": 0,
+                      "y": 2
+                    },
+                    "blur": 4
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 32,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Vhtyy",
+                      "name": "bestTitle",
+                      "fill": "#2C2C2C",
+                      "content": "BEST",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "pivtf",
+                      "name": "bestDesc",
+                      "fill": "#5C5C5C",
+                      "content": "Premium Architectural",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "2Rs9B",
+                      "name": "bestWarranty",
+                      "fill": "#5C5C5C",
+                      "content": "50-Year Warranty",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "yycVn",
+                      "name": "bestPrice",
+                      "fill": "#2C2C2C",
+                      "content": "$16,000 - $19,500",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "yDF1T",
+                      "name": "bestMonthly",
+                      "fill": "#5C5C5C",
+                      "content": "from $320/mo",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tnH0O",
+                      "name": "bestButton",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "#C4A77D",
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        12,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "RduTl",
+                          "name": "bestButtonText",
+                          "fill": "#FFFFFF",
+                          "content": "Select Best",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "CuUWt",
+              "name": "infoText",
+              "fill": "#5C5C5C",
+              "content": "ⓘ Prices updated Jan 2026",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "uI90I",
+              "name": "ctaSection",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "appfJ",
+                  "name": "exactPriceButton",
+                  "height": 52,
+                  "fill": "#C4A77D",
+                  "cornerRadius": 8,
+                  "gap": 8,
+                  "padding": [
+                    16,
+                    32
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "yxjbG",
+                      "name": "exactPriceText",
+                      "fill": "#FFFFFF",
+                      "content": "Get Exact Price",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "IhuPo",
+                  "name": "orText",
+                  "fill": "#5C5C5C",
+                  "content": "or continue with estimate",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
               ]
             }
           ]
