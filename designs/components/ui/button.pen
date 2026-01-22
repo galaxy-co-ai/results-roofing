@@ -1,0 +1,329 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "lib01",
+      "x": 0,
+      "y": 0,
+      "name": "Button Component Library",
+      "width": 1200,
+      "height": 600,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "gap": 32,
+      "padding": 32,
+      "children": [
+        {
+          "type": "text",
+          "id": "title01",
+          "name": "title",
+          "fill": "#2C2C2C",
+          "content": "Button Components",
+          "fontFamily": "Inter",
+          "fontSize": 32,
+          "fontWeight": "700"
+        },
+        {
+          "type": "frame",
+          "id": "row01",
+          "name": "variantsRow",
+          "width": "fill_container",
+          "gap": 24,
+          "alignItems": "flex_start",
+          "children": [
+            {
+              "type": "frame",
+              "id": "sec01",
+              "name": "primarySection",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {"type": "text", "id": "sec01t", "name": "sectionTitle", "fill": "#5C5C5C", "content": "Primary", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+                {
+                  "type": "frame",
+                  "id": "btnPrimary",
+                  "name": "Button/Primary",
+                  "reusable": true,
+                  "width": "fit_content(0)",
+                  "height": 44,
+                  "fill": "#C4A77D",
+                  "cornerRadius": 6,
+                  "padding": [12, 24],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {"type": "text", "id": "btnPrimaryL", "name": "label", "fill": "#FFFFFF", "content": "Primary", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "sec02",
+              "name": "secondarySection",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {"type": "text", "id": "sec02t", "name": "sectionTitle", "fill": "#5C5C5C", "content": "Secondary", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+                {
+                  "type": "frame",
+                  "id": "btnSecondary",
+                  "name": "Button/Secondary",
+                  "reusable": true,
+                  "width": "fit_content(0)",
+                  "height": 44,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {"align": "inside", "thickness": 1, "fill": "#C4A77D"},
+                  "padding": [12, 24],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {"type": "text", "id": "btnSecondaryL", "name": "label", "fill": "#C4A77D", "content": "Secondary", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "sec03",
+              "name": "dangerSection",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {"type": "text", "id": "sec03t", "name": "sectionTitle", "fill": "#5C5C5C", "content": "Danger", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+                {
+                  "type": "frame",
+                  "id": "btnDanger",
+                  "name": "Button/Danger",
+                  "reusable": true,
+                  "width": "fit_content(0)",
+                  "height": 44,
+                  "fill": "#D94F4F",
+                  "cornerRadius": 6,
+                  "padding": [12, 24],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {"type": "text", "id": "btnDangerL", "name": "label", "fill": "#FFFFFF", "content": "Danger", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "row02",
+          "name": "sizesRow",
+          "width": "fill_container",
+          "gap": 24,
+          "alignItems": "center",
+          "children": [
+            {"type": "text", "id": "sizeT", "name": "sectionTitle", "fill": "#5C5C5C", "content": "Sizes:", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+            {
+              "type": "frame",
+              "id": "btnSmall",
+              "name": "Button/Small",
+              "reusable": true,
+              "width": "fit_content(0)",
+              "height": 32,
+              "fill": "#C4A77D",
+              "cornerRadius": 4,
+              "padding": [8, 16],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "text", "id": "btnSmallL", "name": "label", "fill": "#FFFFFF", "content": "Small", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "btnMedium",
+              "name": "Button/Medium",
+              "reusable": true,
+              "width": "fit_content(0)",
+              "height": 44,
+              "fill": "#C4A77D",
+              "cornerRadius": 6,
+              "padding": [12, 24],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "text", "id": "btnMediumL", "name": "label", "fill": "#FFFFFF", "content": "Medium", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "btnLarge",
+              "name": "Button/Large",
+              "reusable": true,
+              "width": "fit_content(0)",
+              "height": 56,
+              "fill": "#C4A77D",
+              "cornerRadius": 8,
+              "padding": [16, 32],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "text", "id": "btnLargeL", "name": "label", "fill": "#FFFFFF", "content": "Large", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "row03",
+          "name": "statesRow",
+          "width": "fill_container",
+          "gap": 24,
+          "alignItems": "center",
+          "children": [
+            {"type": "text", "id": "stateT", "name": "sectionTitle", "fill": "#5C5C5C", "content": "States:", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+            {
+              "type": "frame",
+              "id": "btnDefault",
+              "name": "Button/Default",
+              "reusable": true,
+              "width": "fit_content(0)",
+              "height": 44,
+              "fill": "#C4A77D",
+              "cornerRadius": 6,
+              "padding": [12, 24],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "text", "id": "btnDefaultL", "name": "label", "fill": "#FFFFFF", "content": "Default", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "btnHover",
+              "name": "Button/Hover",
+              "reusable": true,
+              "width": "fit_content(0)",
+              "height": 44,
+              "fill": "#B89A6F",
+              "cornerRadius": 6,
+              "padding": [12, 24],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "text", "id": "btnHoverL", "name": "label", "fill": "#FFFFFF", "content": "Hover", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "btnDisabled",
+              "name": "Button/Disabled",
+              "reusable": true,
+              "width": "fit_content(0)",
+              "height": 44,
+              "fill": "#E8E0D4",
+              "cornerRadius": 6,
+              "padding": [12, 24],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "text", "id": "btnDisabledL", "name": "label", "fill": "#9C9688", "content": "Disabled", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "row04",
+          "name": "iconsRow",
+          "width": "fill_container",
+          "gap": 24,
+          "alignItems": "center",
+          "children": [
+            {"type": "text", "id": "iconT", "name": "sectionTitle", "fill": "#5C5C5C", "content": "With Icons:", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+            {
+              "type": "frame",
+              "id": "btnLeftIcon",
+              "name": "Button/WithLeftIcon",
+              "reusable": true,
+              "width": "fit_content(0)",
+              "height": 44,
+              "fill": "#C4A77D",
+              "cornerRadius": 6,
+              "gap": 8,
+              "padding": [12, 24],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "icon_font", "id": "btnLeftIconI", "name": "icon", "width": 20, "height": 20, "iconFontName": "plus", "iconFontFamily": "lucide", "fill": "#FFFFFF"},
+                {"type": "text", "id": "btnLeftIconL", "name": "label", "fill": "#FFFFFF", "content": "Add Item", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "btnRightIcon",
+              "name": "Button/WithRightIcon",
+              "reusable": true,
+              "width": "fit_content(0)",
+              "height": 44,
+              "fill": "#C4A77D",
+              "cornerRadius": 6,
+              "gap": 8,
+              "padding": [12, 24],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "text", "id": "btnRightIconL", "name": "label", "fill": "#FFFFFF", "content": "Continue", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                {"type": "icon_font", "id": "btnRightIconI", "name": "icon", "width": 20, "height": 20, "iconFontName": "arrow-right", "iconFontFamily": "lucide", "fill": "#FFFFFF"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "btnLoading",
+              "name": "Button/Loading",
+              "reusable": true,
+              "width": "fit_content(0)",
+              "height": 44,
+              "fill": "#C4A77D",
+              "cornerRadius": 6,
+              "gap": 8,
+              "padding": [12, 24],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "icon_font", "id": "btnLoadingI", "name": "spinner", "width": 20, "height": 20, "iconFontName": "loader", "iconFontFamily": "lucide", "fill": "#FFFFFF"},
+                {"type": "text", "id": "btnLoadingL", "name": "label", "fill": "#FFFFFF", "content": "Loading...", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "row05",
+          "name": "fullWidthRow",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "children": [
+            {"type": "text", "id": "fullT", "name": "sectionTitle", "fill": "#5C5C5C", "content": "Full Width:", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+            {
+              "type": "frame",
+              "id": "btnFullWidth",
+              "name": "Button/FullWidth",
+              "reusable": true,
+              "width": 400,
+              "height": 44,
+              "fill": "#C4A77D",
+              "cornerRadius": 6,
+              "padding": [12, 24],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "text", "id": "btnFullWidthL", "name": "label", "fill": "#FFFFFF", "content": "Full Width Button", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

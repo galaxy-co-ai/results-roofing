@@ -1,0 +1,120 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "screen04D",
+      "x": 0,
+      "y": 0,
+      "name": "Package Selection Summary - Desktop",
+      "width": 1440,
+      "height": 900,
+      "fill": "#FAF8F5",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "header04D",
+          "name": "header",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
+          "padding": [16, 80],
+          "gap": 24,
+          "alignItems": "center",
+          "children": [
+            {"type": "icon_font", "id": "backIcon04D", "name": "back", "width": 24, "height": 24, "iconFontName": "arrow-left", "iconFontFamily": "lucide", "fill": "#2C2C2C"},
+            {"type": "frame", "id": "headerInfo04D", "name": "info", "width": "fill_container", "layout": "vertical", "gap": 2, "children": [
+              {"type": "text", "id": "headerTitle04D", "name": "title", "fill": "#2C2C2C", "content": "Your Selection", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"},
+              {"type": "text", "id": "headerAddress04D", "name": "address", "fill": "#5C5C5C", "content": "123 Main St, Dallas, TX 75201", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+            ]},
+            {"type": "frame", "id": "progress04D", "name": "progress", "width": 200, "height": 8, "fill": "#E8E0D4", "cornerRadius": 4, "children": [
+              {"type": "frame", "id": "progressFill04D", "name": "fill", "width": "70%", "height": "fill_container", "fill": "#C4A77D", "cornerRadius": 4}
+            ]}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "content04D",
+          "name": "content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "padding": [60, 120],
+          "gap": 60,
+          "justifyContent": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "leftCol04D",
+              "name": "leftColumn",
+              "width": 480,
+              "layout": "vertical",
+              "gap": 32,
+              "children": [
+                {"type": "text", "id": "title04D", "name": "title", "fill": "#2C2C2C", "content": "You Selected:", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
+                {"type": "frame", "id": "summaryCard04D", "name": "summaryCard", "width": "fill_container", "fill": "#FFFFFF", "cornerRadius": 16, "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"}, "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(196, 167, 125, 0.15)", "offset": {"x": 0, "y": 4}, "blur": 16}, "layout": "vertical", "gap": 20, "padding": 28, "children": [
+                  {"type": "frame", "id": "cardBadge04D", "name": "badge", "fill": "#C4A77D", "cornerRadius": 4, "padding": [6, 12], "children": [
+                    {"type": "text", "id": "cardBadgeText04D", "name": "text", "fill": "#FFFFFF", "content": "RECOMMENDED", "fontFamily": "Inter", "fontSize": 11, "fontWeight": "700"}
+                  ]},
+                  {"type": "text", "id": "cardTitle04D", "name": "title", "fill": "#2C2C2C", "content": "Better Package", "fontFamily": "Inter", "fontSize": 28, "fontWeight": "700"},
+                  {"type": "text", "id": "cardPrice04D", "name": "price", "fill": "#C4A77D", "content": "$11,800 - $14,400", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "600"},
+                  {"type": "frame", "id": "cardDetails04D", "name": "details", "width": "fill_container", "layout": "vertical", "gap": 8, "children": [
+                    {"type": "text", "id": "cardMaterial04D", "name": "material", "fill": "#5C5C5C", "content": "Architectural Shingles", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
+                    {"type": "text", "id": "cardWarranty04D", "name": "warranty", "fill": "#5C5C5C", "content": "30-year warranty included", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
+                  ]}
+                ]},
+                {"type": "frame", "id": "changeLink04D", "name": "changeLink", "gap": 8, "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "changeLinkIcon04D", "name": "icon", "width": 16, "height": 16, "iconFontName": "edit", "iconFontFamily": "lucide", "fill": "#C4A77D"},
+                  {"type": "text", "id": "changeLinkText04D", "name": "text", "fill": "#C4A77D", "content": "Change package selection", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rightCol04D",
+              "name": "rightColumn",
+              "width": 480,
+              "layout": "vertical",
+              "gap": 24,
+              "children": [
+                {"type": "text", "id": "whatsNextTitle04D", "name": "title", "fill": "#2C2C2C", "content": "What's Next", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "600"},
+                {"type": "frame", "id": "stepsCard04D", "name": "stepsCard", "width": "fill_container", "fill": "#FFFFFF", "cornerRadius": 16, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "layout": "vertical", "gap": 20, "padding": 28, "children": [
+                  {"type": "frame", "id": "step1D", "name": "step", "gap": 16, "alignItems": "flex_start", "children": [
+                    {"type": "frame", "id": "step1Num04D", "name": "number", "width": 32, "height": 32, "fill": "#C4A77D", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
+                      {"type": "text", "id": "step1NumText04D", "name": "text", "fill": "#FFFFFF", "content": "1", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                    ]},
+                    {"type": "frame", "id": "step1Content04D", "name": "content", "layout": "vertical", "gap": 4, "children": [
+                      {"type": "text", "id": "step1Title04D", "name": "title", "fill": "#2C2C2C", "content": "Choose Financing", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                      {"type": "text", "id": "step1Desc04D", "name": "desc", "fill": "#5C5C5C", "content": "Select your preferred payment method", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                    ]}
+                  ]},
+                  {"type": "frame", "id": "step2D", "name": "step", "gap": 16, "alignItems": "flex_start", "children": [
+                    {"type": "frame", "id": "step2Num04D", "name": "number", "width": 32, "height": 32, "fill": "#E8E0D4", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
+                      {"type": "text", "id": "step2NumText04D", "name": "text", "fill": "#5C5C5C", "content": "2", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                    ]},
+                    {"type": "frame", "id": "step2Content04D", "name": "content", "layout": "vertical", "gap": 4, "children": [
+                      {"type": "text", "id": "step2Title04D", "name": "title", "fill": "#2C2C2C", "content": "Schedule Installation", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                      {"type": "text", "id": "step2Desc04D", "name": "desc", "fill": "#5C5C5C", "content": "Pick a date that works for you", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                    ]}
+                  ]},
+                  {"type": "frame", "id": "step3D", "name": "step", "gap": 16, "alignItems": "flex_start", "children": [
+                    {"type": "frame", "id": "step3Num04D", "name": "number", "width": 32, "height": 32, "fill": "#E8E0D4", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
+                      {"type": "text", "id": "step3NumText04D", "name": "text", "fill": "#5C5C5C", "content": "3", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                    ]},
+                    {"type": "frame", "id": "step3Content04D", "name": "content", "layout": "vertical", "gap": 4, "children": [
+                      {"type": "text", "id": "step3Title04D", "name": "title", "fill": "#2C2C2C", "content": "Sign & Pay Deposit", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                      {"type": "text", "id": "step3Desc04D", "name": "desc", "fill": "#5C5C5C", "content": "Secure your spot with a small deposit", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                    ]}
+                  ]}
+                ]},
+                {"type": "frame", "id": "ctaBtn04D", "name": "cta", "width": "fill_container", "height": 56, "fill": "#C4A77D", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "text", "id": "ctaBtnLabel04D", "name": "label", "fill": "#FFFFFF", "content": "Continue to Financing", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
+                ]}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

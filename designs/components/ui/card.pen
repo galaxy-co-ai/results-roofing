@@ -1,0 +1,152 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "cardLib",
+      "x": 0,
+      "y": 0,
+      "name": "Card Component Library",
+      "width": 1200,
+      "height": 700,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "gap": 32,
+      "padding": 32,
+      "children": [
+        {"type": "text", "id": "cardTitle", "name": "title", "fill": "#2C2C2C", "content": "Card Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
+        {
+          "type": "frame",
+          "id": "cardRow1",
+          "name": "variantsRow",
+          "width": "fill_container",
+          "gap": 32,
+          "children": [
+            {
+              "type": "frame",
+              "id": "cardDefault",
+              "name": "Card/Default",
+              "reusable": true,
+              "width": 320,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {"type": "text", "id": "cardDefaultTitle", "name": "title", "fill": "#2C2C2C", "content": "Card Title", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"},
+                {"type": "text", "id": "cardDefaultDesc", "name": "description", "fill": "#5C5C5C", "content": "Card description text goes here. This is a default card component.", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cardElevated",
+              "name": "Card/Elevated",
+              "reusable": true,
+              "width": 320,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.1)", "offset": {"x": 0, "y": 4}, "blur": 12},
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {"type": "text", "id": "cardElevatedTitle", "name": "title", "fill": "#2C2C2C", "content": "Elevated Card", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"},
+                {"type": "text", "id": "cardElevatedDesc", "name": "description", "fill": "#5C5C5C", "content": "This card has a shadow for visual hierarchy.", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cardHighlight",
+              "name": "Card/Highlighted",
+              "reusable": true,
+              "width": 320,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"},
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {"type": "text", "id": "cardHighlightTitle", "name": "title", "fill": "#2C2C2C", "content": "Highlighted Card", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"},
+                {"type": "text", "id": "cardHighlightDesc", "name": "description", "fill": "#5C5C5C", "content": "This card is highlighted with a brand color border.", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "cardRow2",
+          "name": "specialCardsRow",
+          "width": "fill_container",
+          "gap": 32,
+          "children": [
+            {
+              "type": "frame",
+              "id": "cardWithIcon",
+              "name": "Card/WithIcon",
+              "reusable": true,
+              "width": 320,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {"type": "frame", "id": "cardIconHeader", "name": "header", "gap": 12, "alignItems": "center", "children": [
+                  {"type": "frame", "id": "cardIconBg", "name": "iconBg", "width": 40, "height": 40, "fill": "#FAF8F5", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "cardIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "home", "iconFontFamily": "lucide", "fill": "#C4A77D"}
+                  ]},
+                  {"type": "text", "id": "cardIconTitle", "name": "title", "fill": "#2C2C2C", "content": "Card with Icon", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
+                ]},
+                {"type": "text", "id": "cardIconDesc", "name": "description", "fill": "#5C5C5C", "content": "This card includes an icon in the header area.", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cardWithAction",
+              "name": "Card/WithAction",
+              "reusable": true,
+              "width": 320,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {"type": "text", "id": "cardActionTitle", "name": "title", "fill": "#2C2C2C", "content": "Card with Action", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"},
+                {"type": "text", "id": "cardActionDesc", "name": "description", "fill": "#5C5C5C", "content": "This card includes a call-to-action button.", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                {"type": "frame", "id": "cardActionBtn", "name": "button", "width": "fill_container", "height": 40, "fill": "#C4A77D", "cornerRadius": 6, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "text", "id": "cardActionBtnLabel", "name": "label", "fill": "#FFFFFF", "content": "Take Action", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cardInteractive",
+              "name": "Card/Interactive",
+              "reusable": true,
+              "width": 320,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "padding": 20,
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {"type": "frame", "id": "cardInterLeft", "name": "left", "layout": "vertical", "gap": 4, "children": [
+                  {"type": "text", "id": "cardInterTitle", "name": "title", "fill": "#2C2C2C", "content": "Interactive Card", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                  {"type": "text", "id": "cardInterDesc", "name": "description", "fill": "#5C5C5C", "content": "Click to expand", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                ]},
+                {"type": "icon_font", "id": "cardInterChevron", "name": "chevron", "width": 20, "height": 20, "iconFontName": "chevron-right", "iconFontFamily": "lucide", "fill": "#9C9688"}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

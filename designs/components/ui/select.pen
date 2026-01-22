@@ -1,0 +1,131 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "selectLib",
+      "x": 0,
+      "y": 0,
+      "name": "Select Component Library",
+      "width": 1000,
+      "height": 600,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "gap": 32,
+      "padding": 32,
+      "children": [
+        {"type": "text", "id": "selectTitle", "name": "title", "fill": "#2C2C2C", "content": "Select Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
+        {
+          "type": "frame",
+          "id": "selectRow1",
+          "name": "statesRow",
+          "width": "fill_container",
+          "gap": 32,
+          "children": [
+            {
+              "type": "frame",
+              "id": "selectDefault",
+              "name": "Select/Default",
+              "reusable": true,
+              "width": 280,
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {"type": "text", "id": "selectDefaultLabel", "name": "label", "fill": "#2C2C2C", "content": "Package", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
+                {"type": "frame", "id": "selectDefaultField", "name": "field", "width": "fill_container", "height": 44, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [12, 16], "justifyContent": "space_between", "alignItems": "center", "children": [
+                  {"type": "text", "id": "selectDefaultPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Select an option", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
+                  {"type": "icon_font", "id": "selectDefaultIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "chevron-down", "iconFontFamily": "lucide", "fill": "#9C9688"}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "selectFilled",
+              "name": "Select/Filled",
+              "reusable": true,
+              "width": 280,
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {"type": "text", "id": "selectFilledLabel", "name": "label", "fill": "#2C2C2C", "content": "Package", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
+                {"type": "frame", "id": "selectFilledField", "name": "field", "width": "fill_container", "height": 44, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#2C2C2C"}, "padding": [12, 16], "justifyContent": "space_between", "alignItems": "center", "children": [
+                  {"type": "text", "id": "selectFilledValue", "name": "value", "fill": "#2C2C2C", "content": "Better Package", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
+                  {"type": "icon_font", "id": "selectFilledIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "chevron-down", "iconFontFamily": "lucide", "fill": "#5C5C5C"}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "selectOpen",
+              "name": "Select/Open",
+              "reusable": true,
+              "width": 280,
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {"type": "text", "id": "selectOpenLabel", "name": "label", "fill": "#2C2C2C", "content": "Package", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
+                {"type": "frame", "id": "selectOpenField", "name": "field", "width": "fill_container", "height": 44, "fill": "#FFFFFF", "cornerRadius": [8, 8, 0, 0], "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"}, "padding": [12, 16], "justifyContent": "space_between", "alignItems": "center", "children": [
+                  {"type": "text", "id": "selectOpenPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Select an option", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
+                  {"type": "icon_font", "id": "selectOpenIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "chevron-up", "iconFontFamily": "lucide", "fill": "#C4A77D"}
+                ]},
+                {"type": "frame", "id": "selectOpenDropdown", "name": "dropdown", "width": "fill_container", "fill": "#FFFFFF", "cornerRadius": [0, 0, 8, 8], "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.1)", "offset": {"x": 0, "y": 4}, "blur": 12}, "layout": "vertical", "children": [
+                  {"type": "frame", "id": "option1", "name": "option", "width": "fill_container", "height": 44, "padding": [12, 16], "alignItems": "center", "children": [
+                    {"type": "text", "id": "option1Text", "name": "text", "fill": "#2C2C2C", "content": "Good Package", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "option2", "name": "optionHover", "width": "fill_container", "height": 44, "fill": "#FAF8F5", "padding": [12, 16], "alignItems": "center", "children": [
+                    {"type": "text", "id": "option2Text", "name": "text", "fill": "#2C2C2C", "content": "Better Package", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "option3", "name": "option", "width": "fill_container", "height": 44, "padding": [12, 16], "alignItems": "center", "children": [
+                    {"type": "text", "id": "option3Text", "name": "text", "fill": "#2C2C2C", "content": "Best Package", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
+                  ]}
+                ]}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "selectRow2",
+          "name": "specialRow",
+          "width": "fill_container",
+          "gap": 32,
+          "children": [
+            {
+              "type": "frame",
+              "id": "selectError",
+              "name": "Select/Error",
+              "reusable": true,
+              "width": 280,
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {"type": "text", "id": "selectErrorLabel", "name": "label", "fill": "#2C2C2C", "content": "Package", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
+                {"type": "frame", "id": "selectErrorField", "name": "field", "width": "fill_container", "height": 44, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 2, "fill": "#D94F4F"}, "padding": [12, 16], "justifyContent": "space_between", "alignItems": "center", "children": [
+                  {"type": "text", "id": "selectErrorPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Select an option", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
+                  {"type": "icon_font", "id": "selectErrorIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "chevron-down", "iconFontFamily": "lucide", "fill": "#9C9688"}
+                ]},
+                {"type": "text", "id": "selectErrorMsg", "name": "errorMessage", "fill": "#D94F4F", "content": "Please select a package", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "selectDisabled",
+              "name": "Select/Disabled",
+              "reusable": true,
+              "width": 280,
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {"type": "text", "id": "selectDisabledLabel", "name": "label", "fill": "#9C9688", "content": "Package", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
+                {"type": "frame", "id": "selectDisabledField", "name": "field", "width": "fill_container", "height": 44, "fill": "#F5F3EF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [12, 16], "justifyContent": "space_between", "alignItems": "center", "children": [
+                  {"type": "text", "id": "selectDisabledPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Select an option", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
+                  {"type": "icon_font", "id": "selectDisabledIcon", "name": "icon", "width": 20, "height": 20, "iconFontName": "chevron-down", "iconFontFamily": "lucide", "fill": "#9C9688"}
+                ]}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

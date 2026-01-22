@@ -1,0 +1,120 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "screen02M",
+      "x": 0,
+      "y": 0,
+      "name": "Preliminary Estimate - Mobile",
+      "width": 375,
+      "height": 812,
+      "fill": "#FAF8F5",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "header02M",
+          "name": "header",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
+          "padding": 16,
+          "gap": 12,
+          "alignItems": "center",
+          "children": [
+            {"type": "icon_font", "id": "backIcon02M", "name": "back", "width": 24, "height": 24, "iconFontName": "arrow-left", "iconFontFamily": "lucide", "fill": "#2C2C2C"},
+            {"type": "frame", "id": "headerContent02M", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 2, "children": [
+              {"type": "text", "id": "headerTitle02M", "name": "title", "fill": "#2C2C2C", "content": "Your Estimate", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+              {"type": "text", "id": "headerAddress02M", "name": "address", "fill": "#5C5C5C", "content": "123 Main St, Dallas, TX", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+            ]}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "progress02M",
+          "name": "progress",
+          "width": "fill_container",
+          "height": 4,
+          "fill": "#E8E0D4",
+          "children": [
+            {"type": "frame", "id": "progressFill02M", "name": "fill", "width": "40%", "height": "fill_container", "fill": "#C4A77D"}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "content02M",
+          "name": "content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "padding": 16,
+          "children": [
+            {"type": "text", "id": "title02M", "name": "title", "fill": "#2C2C2C", "content": "Your Roof Analysis", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "700"},
+            {
+              "type": "frame",
+              "id": "estimateCard02M",
+              "name": "estimateCard",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"},
+              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(196, 167, 125, 0.15)", "offset": {"x": 0, "y": 4}, "blur": 12},
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 24,
+              "alignItems": "center",
+              "children": [
+                {"type": "text", "id": "estimateLabel02M", "name": "label", "fill": "#5C5C5C", "content": "Preliminary Estimate", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
+                {"type": "text", "id": "estimatePrice02M", "name": "price", "fill": "#C4A77D", "content": "$8,900 – $18,500", "fontFamily": "Inter", "fontSize": 28, "fontWeight": "700"},
+                {"type": "text", "id": "estimateNote02M", "name": "note", "fill": "#9C9688", "content": "Based on package selection", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "roofStats02M",
+              "name": "roofStats",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 16,
+              "children": [
+                {"type": "text", "id": "statsTitle02M", "name": "title", "fill": "#2C2C2C", "content": "Roof Details", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                {"type": "frame", "id": "stat1M", "name": "stat", "width": "fill_container", "justifyContent": "space_between", "children": [
+                  {"type": "text", "id": "stat1LabelM", "name": "label", "fill": "#5C5C5C", "content": "Roof Area", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                  {"type": "text", "id": "stat1ValueM", "name": "value", "fill": "#2C2C2C", "content": "2,450 sq ft", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                ]},
+                {"type": "frame", "id": "stat2M", "name": "stat", "width": "fill_container", "justifyContent": "space_between", "children": [
+                  {"type": "text", "id": "stat2LabelM", "name": "label", "fill": "#5C5C5C", "content": "Roof Pitch", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                  {"type": "text", "id": "stat2ValueM", "name": "value", "fill": "#2C2C2C", "content": "6/12 (Standard)", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                ]},
+                {"type": "frame", "id": "stat3M", "name": "stat", "width": "fill_container", "justifyContent": "space_between", "children": [
+                  {"type": "text", "id": "stat3LabelM", "name": "label", "fill": "#5C5C5C", "content": "Stories", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                  {"type": "text", "id": "stat3ValueM", "name": "value", "fill": "#2C2C2C", "content": "2 stories", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                ]}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "footer02M",
+          "name": "footer",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"top": 1}, "fill": "#E8E0D4"},
+          "padding": [16, 24],
+          "children": [
+            {"type": "frame", "id": "footerBtn02M", "name": "cta", "width": "fill_container", "height": 52, "fill": "#C4A77D", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
+              {"type": "text", "id": "footerBtnLabel02M", "name": "label", "fill": "#FFFFFF", "content": "Compare Packages", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
+            ]}
+          ]
+        }
+      ]
+    }
+  ]
+}

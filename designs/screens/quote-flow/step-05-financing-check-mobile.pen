@@ -1,0 +1,151 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "screen05",
+      "x": 0,
+      "y": 0,
+      "name": "Financing Check - Mobile",
+      "width": 375,
+      "height": 812,
+      "fill": "#FAF8F5",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "header05",
+          "name": "header",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
+          "padding": 16,
+          "gap": 12,
+          "alignItems": "center",
+          "children": [
+            {"type": "icon_font", "id": "backIcon05", "name": "back", "width": 24, "height": 24, "iconFontName": "arrow-left", "iconFontFamily": "lucide", "fill": "#2C2C2C"},
+            {"type": "frame", "id": "headerContent05", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 2, "children": [
+              {"type": "text", "id": "headerTitle05", "name": "title", "fill": "#2C2C2C", "content": "Payment Options", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+              {"type": "text", "id": "headerAddress05", "name": "address", "fill": "#5C5C5C", "content": "123 Main St, Dallas, TX", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+            ]}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "progress05",
+          "name": "progress",
+          "width": "fill_container",
+          "height": 4,
+          "fill": "#E8E0D4",
+          "children": [
+            {"type": "frame", "id": "progressFill05", "name": "fill", "width": "75%", "height": "fill_container", "fill": "#C4A77D"}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "content05",
+          "name": "content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [24, 16],
+          "children": [
+            {"type": "text", "id": "title05", "name": "title", "fill": "#2C2C2C", "content": "Payment Options", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "700"},
+            {
+              "type": "frame",
+              "id": "priceSum05",
+              "name": "priceSummary",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {"type": "frame", "id": "priceRow1", "name": "row", "width": "fill_container", "justifyContent": "space_between", "children": [
+                  {"type": "text", "id": "priceLabel1", "name": "label", "fill": "#5C5C5C", "content": "Total Estimate", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                  {"type": "text", "id": "priceValue1", "name": "value", "fill": "#2C2C2C", "content": "$12,400", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                ]},
+                {"type": "frame", "id": "priceRow2", "name": "row", "width": "fill_container", "justifyContent": "space_between", "children": [
+                  {"type": "text", "id": "priceLabel2", "name": "label", "fill": "#5C5C5C", "content": "Deposit (10%)", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                  {"type": "text", "id": "priceValue2", "name": "value", "fill": "#C4A77D", "content": "$1,240", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "payFullCard",
+              "name": "payFullCard",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"},
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 20,
+              "children": [
+                {"type": "frame", "id": "payFullHeader", "name": "header", "width": "fill_container", "gap": 12, "alignItems": "center", "children": [
+                  {"type": "frame", "id": "payFullRadio", "name": "radio", "width": 20, "height": 20, "fill": "#C4A77D", "cornerRadius": 10, "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"}, "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "frame", "id": "payFullRadioDot", "name": "dot", "width": 8, "height": 8, "fill": "#FFFFFF", "cornerRadius": 4}
+                  ]},
+                  {"type": "text", "id": "payFullTitle", "name": "title", "fill": "#2C2C2C", "content": "Pay in Full", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                ]},
+                {"type": "text", "id": "payFullDesc", "name": "desc", "fill": "#5C5C5C", "content": "Pay the remaining balance at completion", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "financeCard",
+              "name": "financeCard",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 20,
+              "children": [
+                {"type": "frame", "id": "financeHeader", "name": "header", "width": "fill_container", "gap": 12, "alignItems": "center", "children": [
+                  {"type": "frame", "id": "financeRadio", "name": "radio", "width": 20, "height": 20, "cornerRadius": 10, "stroke": {"align": "inside", "thickness": 2, "fill": "#E8E0D4"}},
+                  {"type": "text", "id": "financeTitle", "name": "title", "fill": "#2C2C2C", "content": "Finance with Wisetack", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                ]},
+                {"type": "text", "id": "financeDesc", "name": "desc", "fill": "#5C5C5C", "content": "Monthly payments as low as $189/mo", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                {"type": "text", "id": "financeNote", "name": "note", "fill": "#9C9688", "content": "Check rates without affecting credit", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "footer05",
+          "name": "footer",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"top": 1}, "fill": "#E8E0D4"},
+          "layout": "vertical",
+          "gap": 8,
+          "padding": [16, 24],
+          "children": [
+            {
+              "type": "frame",
+              "id": "footerBtn05",
+              "name": "ctaButton",
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#C4A77D",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "text", "id": "footerBtnLabel05", "name": "label", "fill": "#FFFFFF", "content": "Continue", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
+              ]
+            },
+            {"type": "text", "id": "skipLink", "name": "skip", "fill": "#9C9688", "content": "Skip for now", "textAlign": "center", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+          ]
+        }
+      ]
+    }
+  ]
+}

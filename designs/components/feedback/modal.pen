@@ -1,0 +1,120 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "modalLib",
+      "x": 0,
+      "y": 0,
+      "name": "Modal Component Library",
+      "width": 1000,
+      "height": 800,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "gap": 32,
+      "padding": 32,
+      "children": [
+        {"type": "text", "id": "modalTitle", "name": "title", "fill": "#2C2C2C", "content": "Modal Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
+        {
+          "type": "frame",
+          "id": "modalRow1",
+          "name": "defaultRow",
+          "width": "fill_container",
+          "gap": 32,
+          "children": [
+            {
+              "type": "frame",
+              "id": "modalDefault",
+              "name": "Modal/Default",
+              "reusable": true,
+              "width": 420,
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.2)", "offset": {"x": 0, "y": 8}, "blur": 24},
+              "layout": "vertical",
+              "children": [
+                {"type": "frame", "id": "modalDefaultHeader", "name": "header", "width": "fill_container", "padding": 24, "justifyContent": "space_between", "alignItems": "center", "children": [
+                  {"type": "text", "id": "modalDefaultTitle", "name": "title", "fill": "#2C2C2C", "content": "Modal Title", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "600"},
+                  {"type": "icon_font", "id": "modalDefaultClose", "name": "close", "width": 24, "height": 24, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#5C5C5C"}
+                ]},
+                {"type": "frame", "id": "modalDefaultBody", "name": "body", "width": "fill_container", "padding": [0, 24], "children": [
+                  {"type": "text", "id": "modalDefaultContent", "name": "content", "fill": "#5C5C5C", "content": "This is the modal body content. You can place any content here including forms, information, or actions.", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                ]},
+                {"type": "frame", "id": "modalDefaultFooter", "name": "footer", "width": "fill_container", "padding": 24, "gap": 12, "justifyContent": "flex_end", "children": [
+                  {"type": "frame", "id": "modalDefaultCancel", "name": "cancelButton", "height": 44, "fill": "#FFFFFF", "cornerRadius": 6, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [12, 24], "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "text", "id": "modalDefaultCancelLabel", "name": "label", "fill": "#5C5C5C", "content": "Cancel", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                  ]},
+                  {"type": "frame", "id": "modalDefaultConfirm", "name": "confirmButton", "height": 44, "fill": "#C4A77D", "cornerRadius": 6, "padding": [12, 24], "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "text", "id": "modalDefaultConfirmLabel", "name": "label", "fill": "#FFFFFF", "content": "Confirm", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                  ]}
+                ]}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "modalRow2",
+          "name": "alertRow",
+          "width": "fill_container",
+          "gap": 32,
+          "children": [
+            {
+              "type": "frame",
+              "id": "modalAlert",
+              "name": "Modal/Alert",
+              "reusable": true,
+              "width": 380,
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.2)", "offset": {"x": 0, "y": 8}, "blur": 24},
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 24,
+              "alignItems": "center",
+              "children": [
+                {"type": "frame", "id": "modalAlertIconBg", "name": "iconBg", "width": 56, "height": 56, "fill": "#FFF8E1", "cornerRadius": 28, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "modalAlertIcon", "name": "icon", "width": 28, "height": 28, "iconFontName": "alert-triangle", "iconFontFamily": "lucide", "fill": "#C9A227"}
+                ]},
+                {"type": "text", "id": "modalAlertTitle", "name": "title", "fill": "#2C2C2C", "content": "Are you sure?", "textAlign": "center", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "600"},
+                {"type": "text", "id": "modalAlertDesc", "name": "description", "fill": "#5C5C5C", "content": "This action cannot be undone. Please confirm to proceed.", "textAlign": "center", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                {"type": "frame", "id": "modalAlertActions", "name": "actions", "width": "fill_container", "gap": 12, "children": [
+                  {"type": "frame", "id": "modalAlertCancel", "name": "cancelButton", "width": "fill_container", "height": 44, "fill": "#FFFFFF", "cornerRadius": 6, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "text", "id": "modalAlertCancelLabel", "name": "label", "fill": "#5C5C5C", "content": "Cancel", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                  ]},
+                  {"type": "frame", "id": "modalAlertConfirm", "name": "confirmButton", "width": "fill_container", "height": 44, "fill": "#C9A227", "cornerRadius": 6, "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "text", "id": "modalAlertConfirmLabel", "name": "label", "fill": "#FFFFFF", "content": "Proceed", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                  ]}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "modalSuccess",
+              "name": "Modal/Success",
+              "reusable": true,
+              "width": 380,
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.2)", "offset": {"x": 0, "y": 8}, "blur": 24},
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 24,
+              "alignItems": "center",
+              "children": [
+                {"type": "frame", "id": "modalSuccessIconBg", "name": "iconBg", "width": 56, "height": 56, "fill": "#E8F5E9", "cornerRadius": 28, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "modalSuccessIcon", "name": "icon", "width": 28, "height": 28, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"}
+                ]},
+                {"type": "text", "id": "modalSuccessTitle", "name": "title", "fill": "#2C2C2C", "content": "Success!", "textAlign": "center", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "600"},
+                {"type": "text", "id": "modalSuccessDesc", "name": "description", "fill": "#5C5C5C", "content": "Your action was completed successfully.", "textAlign": "center", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                {"type": "frame", "id": "modalSuccessBtn", "name": "button", "width": "fill_container", "height": 44, "fill": "#4A7C59", "cornerRadius": 6, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "text", "id": "modalSuccessBtnLabel", "name": "label", "fill": "#FFFFFF", "content": "Continue", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                ]}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

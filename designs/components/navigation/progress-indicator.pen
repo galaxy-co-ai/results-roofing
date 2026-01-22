@@ -1,0 +1,146 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "progressLib",
+      "x": 0,
+      "y": 0,
+      "name": "Progress Indicator Component Library",
+      "width": 1000,
+      "height": 500,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "gap": 32,
+      "padding": 32,
+      "children": [
+        {"type": "text", "id": "progressTitle", "name": "title", "fill": "#2C2C2C", "content": "Progress Indicator Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
+        {
+          "type": "frame",
+          "id": "progressRow1",
+          "name": "barRow",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "children": [
+            {"type": "text", "id": "barLabel", "name": "label", "fill": "#5C5C5C", "content": "Progress Bar", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+            {
+              "type": "frame",
+              "id": "progressBar25",
+              "name": "ProgressBar/25",
+              "reusable": true,
+              "width": 400,
+              "height": 8,
+              "fill": "#E8E0D4",
+              "cornerRadius": 4,
+              "children": [
+                {"type": "frame", "id": "progressFill25", "name": "fill", "width": "25%", "height": "fill_container", "fill": "#C4A77D", "cornerRadius": 4}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "progressBar50",
+              "name": "ProgressBar/50",
+              "reusable": true,
+              "width": 400,
+              "height": 8,
+              "fill": "#E8E0D4",
+              "cornerRadius": 4,
+              "children": [
+                {"type": "frame", "id": "progressFill50", "name": "fill", "width": "50%", "height": "fill_container", "fill": "#C4A77D", "cornerRadius": 4}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "progressBar75",
+              "name": "ProgressBar/75",
+              "reusable": true,
+              "width": 400,
+              "height": 8,
+              "fill": "#E8E0D4",
+              "cornerRadius": 4,
+              "children": [
+                {"type": "frame", "id": "progressFill75", "name": "fill", "width": "75%", "height": "fill_container", "fill": "#C4A77D", "cornerRadius": 4}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "progressBar100",
+              "name": "ProgressBar/100",
+              "reusable": true,
+              "width": 400,
+              "height": 8,
+              "fill": "#E8E0D4",
+              "cornerRadius": 4,
+              "children": [
+                {"type": "frame", "id": "progressFill100", "name": "fill", "width": "100%", "height": "fill_container", "fill": "#4A7C59", "cornerRadius": 4}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "progressRow2",
+          "name": "stepsRow",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "children": [
+            {"type": "text", "id": "stepsLabel", "name": "label", "fill": "#5C5C5C", "content": "Step Indicator", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+            {
+              "type": "frame",
+              "id": "stepIndicator",
+              "name": "StepIndicator/4Steps",
+              "reusable": true,
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {"type": "frame", "id": "step1Complete", "name": "stepComplete", "width": 32, "height": 32, "fill": "#4A7C59", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "step1Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#FFFFFF"}
+                ]},
+                {"type": "frame", "id": "line1", "name": "line", "width": 40, "height": 2, "fill": "#4A7C59"},
+                {"type": "frame", "id": "step2Complete", "name": "stepComplete", "width": 32, "height": 32, "fill": "#4A7C59", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "step2Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#FFFFFF"}
+                ]},
+                {"type": "frame", "id": "line2", "name": "line", "width": 40, "height": 2, "fill": "#C4A77D"},
+                {"type": "frame", "id": "step3Active", "name": "stepActive", "width": 32, "height": 32, "fill": "#C4A77D", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "text", "id": "step3Text", "name": "text", "fill": "#FFFFFF", "content": "3", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                ]},
+                {"type": "frame", "id": "line3", "name": "line", "width": 40, "height": 2, "fill": "#E8E0D4"},
+                {"type": "frame", "id": "step4Pending", "name": "stepPending", "width": 32, "height": 32, "cornerRadius": 16, "stroke": {"align": "inside", "thickness": 2, "fill": "#E8E0D4"}, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "text", "id": "step4Text", "name": "text", "fill": "#9C9688", "content": "4", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                ]}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "progressRow3",
+          "name": "dotsRow",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "children": [
+            {"type": "text", "id": "dotsLabel", "name": "label", "fill": "#5C5C5C", "content": "Dot Indicator", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+            {
+              "type": "frame",
+              "id": "dotIndicator",
+              "name": "DotIndicator/5Steps",
+              "reusable": true,
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {"type": "frame", "id": "dot1", "name": "dotComplete", "width": 8, "height": 8, "fill": "#C4A77D", "cornerRadius": 4},
+                {"type": "frame", "id": "dot2", "name": "dotComplete", "width": 8, "height": 8, "fill": "#C4A77D", "cornerRadius": 4},
+                {"type": "frame", "id": "dot3", "name": "dotActive", "width": 24, "height": 8, "fill": "#C4A77D", "cornerRadius": 4},
+                {"type": "frame", "id": "dot4", "name": "dotPending", "width": 8, "height": 8, "fill": "#E8E0D4", "cornerRadius": 4},
+                {"type": "frame", "id": "dot5", "name": "dotPending", "width": 8, "height": 8, "fill": "#E8E0D4", "cornerRadius": 4}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

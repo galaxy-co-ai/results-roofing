@@ -1,0 +1,169 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "pkgLib",
+      "x": 0,
+      "y": 0,
+      "name": "Package Tier Cards Component Library",
+      "width": 1200,
+      "height": 800,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "gap": 32,
+      "padding": 32,
+      "children": [
+        {"type": "text", "id": "pkgTitle", "name": "title", "fill": "#2C2C2C", "content": "Package Tier Cards", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
+        {"type": "text", "id": "pkgSubtitle", "name": "subtitle", "fill": "#5C5C5C", "content": "Roofing package selection cards for the quote flow", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
+        {
+          "type": "frame",
+          "id": "pkgRow1",
+          "name": "cardsRow",
+          "width": "fill_container",
+          "gap": 24,
+          "children": [
+            {
+              "type": "frame",
+              "id": "pkgGood",
+              "name": "PackageCard/Good",
+              "reusable": true,
+              "width": 340,
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "layout": "vertical",
+              "gap": 20,
+              "padding": 24,
+              "children": [
+                {"type": "frame", "id": "pkgGoodHeader", "name": "header", "width": "fill_container", "justifyContent": "space_between", "alignItems": "center", "children": [
+                  {"type": "text", "id": "pkgGoodTitle", "name": "title", "fill": "#2C2C2C", "content": "Good", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "700"},
+                  {"type": "text", "id": "pkgGoodPrice", "name": "price", "fill": "#C4A77D", "content": "$8,900 - $10,800", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                ]},
+                {"type": "text", "id": "pkgGoodMaterial", "name": "material", "fill": "#5C5C5C", "content": "3-Tab Shingles", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
+                {"type": "frame", "id": "pkgGoodWarranty", "name": "warranty", "gap": 8, "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "pkgGoodWarrantyIcon", "name": "icon", "width": 16, "height": 16, "iconFontName": "shield", "iconFontFamily": "lucide", "fill": "#C4A77D"},
+                  {"type": "text", "id": "pkgGoodWarrantyText", "name": "text", "fill": "#5C5C5C", "content": "25-year warranty", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                ]},
+                {"type": "frame", "id": "pkgGoodDivider", "name": "divider", "width": "fill_container", "height": 1, "fill": "#E8E0D4"},
+                {"type": "frame", "id": "pkgGoodFeatures", "name": "features", "width": "fill_container", "layout": "vertical", "gap": 12, "children": [
+                  {"type": "frame", "id": "pkgGoodF1", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "pkgGoodF1Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "pkgGoodF1Text", "name": "text", "fill": "#2C2C2C", "content": "Standard installation", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "pkgGoodF2", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "pkgGoodF2Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "pkgGoodF2Text", "name": "text", "fill": "#2C2C2C", "content": "Basic cleanup included", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "pkgGoodF3", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "pkgGoodF3Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "pkgGoodF3Text", "name": "text", "fill": "#2C2C2C", "content": "Standard underlayment", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                  ]}
+                ]},
+                {"type": "frame", "id": "pkgGoodBtn", "name": "selectButton", "width": "fill_container", "height": 48, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#C4A77D"}, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "text", "id": "pkgGoodBtnLabel", "name": "label", "fill": "#C4A77D", "content": "Select Good", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "pkgBetter",
+              "name": "PackageCard/Better",
+              "reusable": true,
+              "width": 340,
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"},
+              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(196, 167, 125, 0.2)", "offset": {"x": 0, "y": 4}, "blur": 12},
+              "layout": "vertical",
+              "gap": 20,
+              "padding": 24,
+              "children": [
+                {"type": "frame", "id": "pkgBetterBadge", "name": "badge", "fill": "#C4A77D", "cornerRadius": 4, "padding": [6, 12], "children": [
+                  {"type": "text", "id": "pkgBetterBadgeText", "name": "text", "fill": "#FFFFFF", "content": "RECOMMENDED", "fontFamily": "Inter", "fontSize": 11, "fontWeight": "700"}
+                ]},
+                {"type": "frame", "id": "pkgBetterHeader", "name": "header", "width": "fill_container", "justifyContent": "space_between", "alignItems": "center", "children": [
+                  {"type": "text", "id": "pkgBetterTitle", "name": "title", "fill": "#2C2C2C", "content": "Better", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "700"},
+                  {"type": "text", "id": "pkgBetterPrice", "name": "price", "fill": "#C4A77D", "content": "$11,800 - $14,400", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                ]},
+                {"type": "text", "id": "pkgBetterMaterial", "name": "material", "fill": "#5C5C5C", "content": "Architectural Shingles", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
+                {"type": "frame", "id": "pkgBetterWarranty", "name": "warranty", "gap": 8, "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "pkgBetterWarrantyIcon", "name": "icon", "width": 16, "height": 16, "iconFontName": "shield", "iconFontFamily": "lucide", "fill": "#C4A77D"},
+                  {"type": "text", "id": "pkgBetterWarrantyText", "name": "text", "fill": "#5C5C5C", "content": "30-year warranty", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                ]},
+                {"type": "frame", "id": "pkgBetterDivider", "name": "divider", "width": "fill_container", "height": 1, "fill": "#E8E0D4"},
+                {"type": "frame", "id": "pkgBetterFeatures", "name": "features", "width": "fill_container", "layout": "vertical", "gap": 12, "children": [
+                  {"type": "frame", "id": "pkgBetterF1", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "pkgBetterF1Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "pkgBetterF1Text", "name": "text", "fill": "#2C2C2C", "content": "Enhanced durability", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "pkgBetterF2", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "pkgBetterF2Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "pkgBetterF2Text", "name": "text", "fill": "#2C2C2C", "content": "Ice & water shield included", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "pkgBetterF3", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "pkgBetterF3Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "pkgBetterF3Text", "name": "text", "fill": "#2C2C2C", "content": "Premium cleanup", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "pkgBetterF4", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "pkgBetterF4Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "pkgBetterF4Text", "name": "text", "fill": "#2C2C2C", "content": "Ridge vent upgrade", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                  ]}
+                ]},
+                {"type": "frame", "id": "pkgBetterBtn", "name": "selectButton", "width": "fill_container", "height": 48, "fill": "#C4A77D", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "text", "id": "pkgBetterBtnLabel", "name": "label", "fill": "#FFFFFF", "content": "Select Better", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "pkgBest",
+              "name": "PackageCard/Best",
+              "reusable": true,
+              "width": 340,
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "layout": "vertical",
+              "gap": 20,
+              "padding": 24,
+              "children": [
+                {"type": "frame", "id": "pkgBestHeader", "name": "header", "width": "fill_container", "justifyContent": "space_between", "alignItems": "center", "children": [
+                  {"type": "text", "id": "pkgBestTitle", "name": "title", "fill": "#2C2C2C", "content": "Best", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "700"},
+                  {"type": "text", "id": "pkgBestPrice", "name": "price", "fill": "#C4A77D", "content": "$15,200 - $18,500", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                ]},
+                {"type": "text", "id": "pkgBestMaterial", "name": "material", "fill": "#5C5C5C", "content": "Premium Designer Shingles", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"},
+                {"type": "frame", "id": "pkgBestWarranty", "name": "warranty", "gap": 8, "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "pkgBestWarrantyIcon", "name": "icon", "width": 16, "height": 16, "iconFontName": "shield", "iconFontFamily": "lucide", "fill": "#C4A77D"},
+                  {"type": "text", "id": "pkgBestWarrantyText", "name": "text", "fill": "#5C5C5C", "content": "50-year warranty", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                ]},
+                {"type": "frame", "id": "pkgBestDivider", "name": "divider", "width": "fill_container", "height": 1, "fill": "#E8E0D4"},
+                {"type": "frame", "id": "pkgBestFeatures", "name": "features", "width": "fill_container", "layout": "vertical", "gap": 12, "children": [
+                  {"type": "frame", "id": "pkgBestF1", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "pkgBestF1Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "pkgBestF1Text", "name": "text", "fill": "#2C2C2C", "content": "Lifetime craftsmanship warranty", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "pkgBestF2", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "pkgBestF2Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "pkgBestF2Text", "name": "text", "fill": "#2C2C2C", "content": "All Better package features", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "pkgBestF3", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "pkgBestF3Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "pkgBestF3Text", "name": "text", "fill": "#2C2C2C", "content": "Priority scheduling", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "pkgBestF4", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "pkgBestF4Icon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "pkgBestF4Text", "name": "text", "fill": "#2C2C2C", "content": "Premium curb appeal", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                  ]}
+                ]},
+                {"type": "frame", "id": "pkgBestBtn", "name": "selectButton", "width": "fill_container", "height": 48, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#C4A77D"}, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "text", "id": "pkgBestBtnLabel", "name": "label", "fill": "#C4A77D", "content": "Select Best", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                ]}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

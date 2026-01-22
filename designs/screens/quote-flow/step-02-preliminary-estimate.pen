@@ -1,0 +1,111 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "screen02D",
+      "x": 0,
+      "y": 0,
+      "name": "Preliminary Estimate - Desktop",
+      "width": 1440,
+      "height": 900,
+      "fill": "#FAF8F5",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "header02D",
+          "name": "header",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
+          "padding": [16, 80],
+          "gap": 24,
+          "alignItems": "center",
+          "children": [
+            {"type": "icon_font", "id": "backIcon02D", "name": "back", "width": 24, "height": 24, "iconFontName": "arrow-left", "iconFontFamily": "lucide", "fill": "#2C2C2C"},
+            {"type": "frame", "id": "headerInfo02D", "name": "info", "width": "fill_container", "layout": "vertical", "gap": 2, "children": [
+              {"type": "text", "id": "headerTitle02D", "name": "title", "fill": "#2C2C2C", "content": "Your Preliminary Estimate", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"},
+              {"type": "text", "id": "headerAddress02D", "name": "address", "fill": "#5C5C5C", "content": "123 Main St, Dallas, TX 75201", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+            ]},
+            {"type": "frame", "id": "progress02D", "name": "progress", "width": 200, "height": 8, "fill": "#E8E0D4", "cornerRadius": 4, "children": [
+              {"type": "frame", "id": "progressFill02D", "name": "fill", "width": "40%", "height": "fill_container", "fill": "#C4A77D", "cornerRadius": 4}
+            ]}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "content02D",
+          "name": "content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "padding": [48, 120],
+          "gap": 48,
+          "justifyContent": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "leftCol02D",
+              "name": "leftColumn",
+              "width": 500,
+              "layout": "vertical",
+              "gap": 32,
+              "children": [
+                {"type": "frame", "id": "titleSection02D", "name": "titleSection", "layout": "vertical", "gap": 12, "children": [
+                  {"type": "text", "id": "title02D", "name": "title", "fill": "#2C2C2C", "content": "Your Roof Analysis", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
+                  {"type": "text", "id": "subtitle02D", "name": "subtitle", "fill": "#5C5C5C", "content": "Based on satellite imagery and AI analysis", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
+                ]},
+                {"type": "frame", "id": "roofStats", "name": "roofStats", "width": "fill_container", "fill": "#FFFFFF", "cornerRadius": 16, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "layout": "vertical", "gap": 16, "padding": 24, "children": [
+                  {"type": "frame", "id": "stat1", "name": "stat", "width": "fill_container", "justifyContent": "space_between", "children": [
+                    {"type": "text", "id": "stat1Label", "name": "label", "fill": "#5C5C5C", "content": "Roof Area", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                    {"type": "text", "id": "stat1Value", "name": "value", "fill": "#2C2C2C", "content": "2,450 sq ft", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                  ]},
+                  {"type": "frame", "id": "stat2", "name": "stat", "width": "fill_container", "justifyContent": "space_between", "children": [
+                    {"type": "text", "id": "stat2Label", "name": "label", "fill": "#5C5C5C", "content": "Roof Pitch", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                    {"type": "text", "id": "stat2Value", "name": "value", "fill": "#2C2C2C", "content": "6/12 (Standard)", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                  ]},
+                  {"type": "frame", "id": "stat3", "name": "stat", "width": "fill_container", "justifyContent": "space_between", "children": [
+                    {"type": "text", "id": "stat3Label", "name": "label", "fill": "#5C5C5C", "content": "Stories", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                    {"type": "text", "id": "stat3Value", "name": "value", "fill": "#2C2C2C", "content": "2 stories", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                  ]},
+                  {"type": "frame", "id": "stat4", "name": "stat", "width": "fill_container", "justifyContent": "space_between", "children": [
+                    {"type": "text", "id": "stat4Label", "name": "label", "fill": "#5C5C5C", "content": "Complexity", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                    {"type": "text", "id": "stat4Value", "name": "value", "fill": "#2C2C2C", "content": "Moderate", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                  ]}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rightCol02D",
+              "name": "rightColumn",
+              "width": 500,
+              "layout": "vertical",
+              "gap": 24,
+              "children": [
+                {"type": "frame", "id": "estimateCard", "name": "estimateCard", "width": "fill_container", "fill": "#FFFFFF", "cornerRadius": 16, "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"}, "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(196, 167, 125, 0.15)", "offset": {"x": 0, "y": 4}, "blur": 16}, "layout": "vertical", "gap": 20, "padding": 32, "alignItems": "center", "children": [
+                  {"type": "text", "id": "estimateLabel", "name": "label", "fill": "#5C5C5C", "content": "Preliminary Estimate Range", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
+                  {"type": "text", "id": "estimatePrice", "name": "price", "fill": "#C4A77D", "content": "$8,900 – $18,500", "fontFamily": "Inter", "fontSize": 36, "fontWeight": "700"},
+                  {"type": "text", "id": "estimateNote", "name": "note", "fill": "#9C9688", "content": "Based on material and package selection", "textAlign": "center", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"},
+                  {"type": "frame", "id": "estimateCta", "name": "cta", "width": "fill_container", "height": 52, "fill": "#C4A77D", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "text", "id": "estimateCtaLabel", "name": "label", "fill": "#FFFFFF", "content": "Compare Packages", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
+                  ]}
+                ]},
+                {"type": "frame", "id": "trustRow", "name": "trustRow", "width": "fill_container", "justifyContent": "center", "gap": 32, "children": [
+                  {"type": "frame", "id": "trust1", "name": "trust", "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "trust1Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "lock", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "trust1Text", "name": "text", "fill": "#5C5C5C", "content": "No obligation", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "trust2", "name": "trust", "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "trust2Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "shield", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "trust2Text", "name": "text", "fill": "#5C5C5C", "content": "Price guarantee", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+                  ]}
+                ]}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

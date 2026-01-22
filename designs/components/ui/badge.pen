@@ -1,0 +1,116 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "badgeLib",
+      "x": 0,
+      "y": 0,
+      "name": "Badge Component Library",
+      "width": 1000,
+      "height": 500,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "gap": 32,
+      "padding": 32,
+      "children": [
+        {"type": "text", "id": "badgeTitle", "name": "title", "fill": "#2C2C2C", "content": "Badge Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
+        {
+          "type": "frame",
+          "id": "badgeRow1",
+          "name": "colorsRow",
+          "width": "fill_container",
+          "gap": 24,
+          "alignItems": "center",
+          "children": [
+            {"type": "text", "id": "colorLabel", "name": "label", "fill": "#5C5C5C", "content": "Colors:", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+            {"type": "frame", "id": "badgeDefault", "name": "Badge/Default", "reusable": true, "fill": "#E8E0D4", "cornerRadius": 4, "padding": [4, 8], "children": [
+              {"type": "text", "id": "badgeDefaultText", "name": "label", "fill": "#5C5C5C", "content": "Default", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]},
+            {"type": "frame", "id": "badgePrimary", "name": "Badge/Primary", "reusable": true, "fill": "#C4A77D", "cornerRadius": 4, "padding": [4, 8], "children": [
+              {"type": "text", "id": "badgePrimaryText", "name": "label", "fill": "#FFFFFF", "content": "Primary", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]},
+            {"type": "frame", "id": "badgeSuccess", "name": "Badge/Success", "reusable": true, "fill": "#4A7C59", "cornerRadius": 4, "padding": [4, 8], "children": [
+              {"type": "text", "id": "badgeSuccessText", "name": "label", "fill": "#FFFFFF", "content": "Success", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]},
+            {"type": "frame", "id": "badgeWarning", "name": "Badge/Warning", "reusable": true, "fill": "#C9A227", "cornerRadius": 4, "padding": [4, 8], "children": [
+              {"type": "text", "id": "badgeWarningText", "name": "label", "fill": "#FFFFFF", "content": "Warning", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]},
+            {"type": "frame", "id": "badgeError", "name": "Badge/Error", "reusable": true, "fill": "#D94F4F", "cornerRadius": 4, "padding": [4, 8], "children": [
+              {"type": "text", "id": "badgeErrorText", "name": "label", "fill": "#FFFFFF", "content": "Error", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]},
+            {"type": "frame", "id": "badgeInfo", "name": "Badge/Info", "reusable": true, "fill": "#3B82F6", "cornerRadius": 4, "padding": [4, 8], "children": [
+              {"type": "text", "id": "badgeInfoText", "name": "label", "fill": "#FFFFFF", "content": "Info", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "badgeRow2",
+          "name": "outlineRow",
+          "width": "fill_container",
+          "gap": 24,
+          "alignItems": "center",
+          "children": [
+            {"type": "text", "id": "outlineLabel", "name": "label", "fill": "#5C5C5C", "content": "Outline:", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+            {"type": "frame", "id": "badgeOutlinePrimary", "name": "Badge/OutlinePrimary", "reusable": true, "fill": "#FFFFFF", "cornerRadius": 4, "stroke": {"align": "inside", "thickness": 1, "fill": "#C4A77D"}, "padding": [4, 8], "children": [
+              {"type": "text", "id": "badgeOutlinePrimaryText", "name": "label", "fill": "#C4A77D", "content": "Primary", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]},
+            {"type": "frame", "id": "badgeOutlineSuccess", "name": "Badge/OutlineSuccess", "reusable": true, "fill": "#FFFFFF", "cornerRadius": 4, "stroke": {"align": "inside", "thickness": 1, "fill": "#4A7C59"}, "padding": [4, 8], "children": [
+              {"type": "text", "id": "badgeOutlineSuccessText", "name": "label", "fill": "#4A7C59", "content": "Success", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]},
+            {"type": "frame", "id": "badgeOutlineWarning", "name": "Badge/OutlineWarning", "reusable": true, "fill": "#FFFFFF", "cornerRadius": 4, "stroke": {"align": "inside", "thickness": 1, "fill": "#C9A227"}, "padding": [4, 8], "children": [
+              {"type": "text", "id": "badgeOutlineWarningText", "name": "label", "fill": "#C9A227", "content": "Warning", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]},
+            {"type": "frame", "id": "badgeOutlineError", "name": "Badge/OutlineError", "reusable": true, "fill": "#FFFFFF", "cornerRadius": 4, "stroke": {"align": "inside", "thickness": 1, "fill": "#D94F4F"}, "padding": [4, 8], "children": [
+              {"type": "text", "id": "badgeOutlineErrorText", "name": "label", "fill": "#D94F4F", "content": "Error", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "badgeRow3",
+          "name": "withIconRow",
+          "width": "fill_container",
+          "gap": 24,
+          "alignItems": "center",
+          "children": [
+            {"type": "text", "id": "iconLabel", "name": "label", "fill": "#5C5C5C", "content": "With Icon:", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+            {"type": "frame", "id": "badgeWithIcon", "name": "Badge/WithIcon", "reusable": true, "fill": "#4A7C59", "cornerRadius": 4, "gap": 4, "padding": [4, 8], "alignItems": "center", "children": [
+              {"type": "icon_font", "id": "badgeIcon1", "name": "icon", "width": 12, "height": 12, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#FFFFFF"},
+              {"type": "text", "id": "badgeWithIconText", "name": "label", "fill": "#FFFFFF", "content": "Verified", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]},
+            {"type": "frame", "id": "badgeNew", "name": "Badge/New", "reusable": true, "fill": "#C4A77D", "cornerRadius": 4, "gap": 4, "padding": [4, 8], "alignItems": "center", "children": [
+              {"type": "icon_font", "id": "badgeIcon2", "name": "icon", "width": 12, "height": 12, "iconFontName": "sparkles", "iconFontFamily": "lucide", "fill": "#FFFFFF"},
+              {"type": "text", "id": "badgeNewText", "name": "label", "fill": "#FFFFFF", "content": "New", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]},
+            {"type": "frame", "id": "badgePending", "name": "Badge/Pending", "reusable": true, "fill": "#C9A227", "cornerRadius": 4, "gap": 4, "padding": [4, 8], "alignItems": "center", "children": [
+              {"type": "icon_font", "id": "badgeIcon3", "name": "icon", "width": 12, "height": 12, "iconFontName": "clock", "iconFontFamily": "lucide", "fill": "#FFFFFF"},
+              {"type": "text", "id": "badgePendingText", "name": "label", "fill": "#FFFFFF", "content": "Pending", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "badgeRow4",
+          "name": "sizesRow",
+          "width": "fill_container",
+          "gap": 24,
+          "alignItems": "center",
+          "children": [
+            {"type": "text", "id": "sizesLabel", "name": "label", "fill": "#5C5C5C", "content": "Sizes:", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+            {"type": "frame", "id": "badgeSmall", "name": "Badge/Small", "reusable": true, "fill": "#C4A77D", "cornerRadius": 3, "padding": [2, 6], "children": [
+              {"type": "text", "id": "badgeSmallText", "name": "label", "fill": "#FFFFFF", "content": "Small", "fontFamily": "Inter", "fontSize": 10, "fontWeight": "500"}
+            ]},
+            {"type": "frame", "id": "badgeMedium", "name": "Badge/Medium", "reusable": true, "fill": "#C4A77D", "cornerRadius": 4, "padding": [4, 8], "children": [
+              {"type": "text", "id": "badgeMediumText", "name": "label", "fill": "#FFFFFF", "content": "Medium", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "500"}
+            ]},
+            {"type": "frame", "id": "badgeLarge", "name": "Badge/Large", "reusable": true, "fill": "#C4A77D", "cornerRadius": 6, "padding": [6, 12], "children": [
+              {"type": "text", "id": "badgeLargeText", "name": "label", "fill": "#FFFFFF", "content": "Large", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"}
+            ]}
+          ]
+        }
+      ]
+    }
+  ]
+}

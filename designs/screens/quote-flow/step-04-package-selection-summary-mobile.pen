@@ -1,0 +1,145 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "screen04",
+      "x": 0,
+      "y": 0,
+      "name": "Package Selection Summary - Mobile",
+      "width": 375,
+      "height": 812,
+      "fill": "#FAF8F5",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "header04",
+          "name": "header",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
+          "padding": 16,
+          "gap": 12,
+          "alignItems": "center",
+          "children": [
+            {"type": "icon_font", "id": "backIcon04", "name": "back", "width": 24, "height": 24, "iconFontName": "arrow-left", "iconFontFamily": "lucide", "fill": "#2C2C2C"},
+            {"type": "frame", "id": "headerContent04", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 2, "children": [
+              {"type": "text", "id": "headerTitle04", "name": "title", "fill": "#2C2C2C", "content": "Your Selection", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+              {"type": "text", "id": "headerAddress04", "name": "address", "fill": "#5C5C5C", "content": "123 Main St, Dallas, TX", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+            ]}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "progress04",
+          "name": "progress",
+          "width": "fill_container",
+          "height": 4,
+          "fill": "#E8E0D4",
+          "children": [
+            {"type": "frame", "id": "progressFill04", "name": "fill", "width": "70%", "height": "fill_container", "fill": "#C4A77D"}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "content04",
+          "name": "content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [24, 16],
+          "children": [
+            {"type": "text", "id": "title04", "name": "title", "fill": "#2C2C2C", "content": "You Selected:", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "700"},
+            {
+              "type": "frame",
+              "id": "summaryCard04",
+              "name": "summaryCard",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"},
+              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.1)", "offset": {"x": 0, "y": 4}, "blur": 6},
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {"type": "frame", "id": "cardBadge04", "name": "badge", "fill": "#C4A77D", "cornerRadius": 4, "padding": [4, 8], "children": [
+                  {"type": "text", "id": "cardBadgeText04", "name": "text", "fill": "#FFFFFF", "content": "RECOMMENDED", "fontFamily": "Inter", "fontSize": 10, "fontWeight": "700"}
+                ]},
+                {"type": "text", "id": "cardTitle04", "name": "title", "fill": "#2C2C2C", "content": "Better Package", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "600"},
+                {"type": "text", "id": "cardPrice04", "name": "price", "fill": "#C4A77D", "content": "$11,800 - $14,400", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "700"},
+                {"type": "text", "id": "cardMaterial04", "name": "material", "fill": "#5C5C5C", "content": "Architectural Shingles", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                {"type": "text", "id": "cardWarranty04", "name": "warranty", "fill": "#5C5C5C", "content": "30-year warranty included", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "whatsNext04",
+              "name": "whatsNext",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {"type": "text", "id": "whatsNextTitle04", "name": "title", "fill": "#2C2C2C", "content": "What's Next", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"},
+                {"type": "frame", "id": "step1", "name": "step", "gap": 12, "alignItems": "flex_start", "children": [
+                  {"type": "frame", "id": "step1Num", "name": "number", "width": 28, "height": 28, "fill": "#C4A77D", "cornerRadius": 14, "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "text", "id": "step1NumText", "name": "text", "fill": "#FFFFFF", "content": "1", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                  ]},
+                  {"type": "frame", "id": "step1Content", "name": "content", "layout": "vertical", "gap": 2, "children": [
+                    {"type": "text", "id": "step1Title", "name": "title", "fill": "#2C2C2C", "content": "Choose Financing", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
+                    {"type": "text", "id": "step1Desc", "name": "desc", "fill": "#5C5C5C", "content": "Select payment option", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+                  ]}
+                ]},
+                {"type": "frame", "id": "step2", "name": "step", "gap": 12, "alignItems": "flex_start", "children": [
+                  {"type": "frame", "id": "step2Num", "name": "number", "width": 28, "height": 28, "fill": "#E8E0D4", "cornerRadius": 14, "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "text", "id": "step2NumText", "name": "text", "fill": "#5C5C5C", "content": "2", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                  ]},
+                  {"type": "frame", "id": "step2Content", "name": "content", "layout": "vertical", "gap": 2, "children": [
+                    {"type": "text", "id": "step2Title", "name": "title", "fill": "#2C2C2C", "content": "Schedule Installation", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
+                    {"type": "text", "id": "step2Desc", "name": "desc", "fill": "#5C5C5C", "content": "Pick a convenient date", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+                  ]}
+                ]},
+                {"type": "frame", "id": "step3", "name": "step", "gap": 12, "alignItems": "flex_start", "children": [
+                  {"type": "frame", "id": "step3Num", "name": "number", "width": 28, "height": 28, "fill": "#E8E0D4", "cornerRadius": 14, "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "text", "id": "step3NumText", "name": "text", "fill": "#5C5C5C", "content": "3", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                  ]},
+                  {"type": "frame", "id": "step3Content", "name": "content", "layout": "vertical", "gap": 2, "children": [
+                    {"type": "text", "id": "step3Title", "name": "title", "fill": "#2C2C2C", "content": "Sign & Pay Deposit", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
+                    {"type": "text", "id": "step3Desc", "name": "desc", "fill": "#5C5C5C", "content": "Secure your spot", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+                  ]}
+                ]}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "footer04",
+          "name": "footer",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"top": 1}, "fill": "#E8E0D4"},
+          "padding": [16, 24],
+          "children": [
+            {
+              "type": "frame",
+              "id": "footerBtn04",
+              "name": "ctaButton",
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#C4A77D",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "text", "id": "footerBtnLabel04", "name": "label", "fill": "#FFFFFF", "content": "Continue to Financing", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

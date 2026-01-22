@@ -1,0 +1,129 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "documentsD",
+      "x": 0,
+      "y": 0,
+      "name": "Documents - Desktop",
+      "width": 1440,
+      "height": 900,
+      "fill": "#FAF8F5",
+      "children": [
+        {
+          "type": "frame",
+          "id": "sidebarDocsD",
+          "name": "sidebar",
+          "width": 260,
+          "height": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"right": 1}, "fill": "#E8E0D4"},
+          "layout": "vertical",
+          "gap": 32,
+          "padding": 24,
+          "children": [
+            {"type": "text", "id": "logoDocsD", "name": "logo", "fill": "#2C2C2C", "content": "RESULTS ROOFING", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "700"},
+            {"type": "frame", "id": "navDocsD", "name": "nav", "width": "fill_container", "layout": "vertical", "gap": 4, "children": [
+              {"type": "frame", "id": "navDocsItem1D", "name": "navItem", "width": "fill_container", "cornerRadius": 8, "gap": 12, "padding": [12, 16], "alignItems": "center", "children": [
+                {"type": "icon_font", "id": "navDocs1IconD", "name": "icon", "width": 20, "height": 20, "iconFontName": "home", "iconFontFamily": "lucide", "fill": "#5C5C5C"},
+                {"type": "text", "id": "navDocs1TextD", "name": "text", "fill": "#5C5C5C", "content": "Dashboard", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]},
+              {"type": "frame", "id": "navDocsItem2D", "name": "navItemActive", "width": "fill_container", "fill": "#FAF8F5", "cornerRadius": 8, "gap": 12, "padding": [12, 16], "alignItems": "center", "children": [
+                {"type": "icon_font", "id": "navDocs2IconD", "name": "icon", "width": 20, "height": 20, "iconFontName": "file-text", "iconFontFamily": "lucide", "fill": "#C4A77D"},
+                {"type": "text", "id": "navDocs2TextD", "name": "text", "fill": "#C4A77D", "content": "Documents", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+              ]},
+              {"type": "frame", "id": "navDocsItem3D", "name": "navItem", "width": "fill_container", "cornerRadius": 8, "gap": 12, "padding": [12, 16], "alignItems": "center", "children": [
+                {"type": "icon_font", "id": "navDocs3IconD", "name": "icon", "width": 20, "height": 20, "iconFontName": "calendar", "iconFontFamily": "lucide", "fill": "#5C5C5C"},
+                {"type": "text", "id": "navDocs3TextD", "name": "text", "fill": "#5C5C5C", "content": "Schedule", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]},
+              {"type": "frame", "id": "navDocsItem4D", "name": "navItem", "width": "fill_container", "cornerRadius": 8, "gap": 12, "padding": [12, 16], "alignItems": "center", "children": [
+                {"type": "icon_font", "id": "navDocs4IconD", "name": "icon", "width": 20, "height": 20, "iconFontName": "credit-card", "iconFontFamily": "lucide", "fill": "#5C5C5C"},
+                {"type": "text", "id": "navDocs4TextD", "name": "text", "fill": "#5C5C5C", "content": "Payments", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]}
+            ]}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "mainContentDocsD",
+          "name": "mainContent",
+          "x": 260,
+          "width": 1180,
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": 40,
+          "children": [
+            {"type": "text", "id": "docsTitleD", "name": "title", "fill": "#2C2C2C", "content": "Documents", "fontFamily": "Inter", "fontSize": 28, "fontWeight": "700"},
+            {"type": "frame", "id": "docsListD", "name": "docsList", "width": "fill_container", "fill": "#FFFFFF", "cornerRadius": 16, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "layout": "vertical", "children": [
+              {"type": "frame", "id": "doc1D", "name": "docItem", "width": "fill_container", "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"}, "padding": 20, "gap": 16, "justifyContent": "space_between", "alignItems": "center", "children": [
+                {"type": "frame", "id": "doc1LeftD", "name": "left", "gap": 16, "alignItems": "center", "children": [
+                  {"type": "frame", "id": "doc1IconD", "name": "iconBg", "width": 44, "height": 44, "fill": "#FAF8F5", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "doc1IconImgD", "name": "icon", "width": 22, "height": 22, "iconFontName": "file-text", "iconFontFamily": "lucide", "fill": "#C4A77D"}
+                  ]},
+                  {"type": "frame", "id": "doc1InfoD", "name": "info", "layout": "vertical", "gap": 4, "children": [
+                    {"type": "text", "id": "doc1TitleD", "name": "title", "fill": "#2C2C2C", "content": "Signed Contract", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                    {"type": "text", "id": "doc1DateD", "name": "date", "fill": "#5C5C5C", "content": "Signed Jan 10, 2026", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                  ]}
+                ]},
+                {"type": "frame", "id": "doc1ActionsD", "name": "actions", "gap": 12, "children": [
+                  {"type": "frame", "id": "doc1ViewD", "name": "viewBtn", "height": 36, "fill": "#FFFFFF", "cornerRadius": 6, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [8, 16], "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "doc1ViewIconD", "name": "icon", "width": 16, "height": 16, "iconFontName": "eye", "iconFontFamily": "lucide", "fill": "#5C5C5C"},
+                    {"type": "text", "id": "doc1ViewTextD", "name": "text", "fill": "#5C5C5C", "content": "View", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "500"}
+                  ]},
+                  {"type": "frame", "id": "doc1DownloadD", "name": "downloadBtn", "height": 36, "fill": "#C4A77D", "cornerRadius": 6, "padding": [8, 16], "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "doc1DownIconD", "name": "icon", "width": 16, "height": 16, "iconFontName": "download", "iconFontFamily": "lucide", "fill": "#FFFFFF"},
+                    {"type": "text", "id": "doc1DownTextD", "name": "text", "fill": "#FFFFFF", "content": "Download", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "500"}
+                  ]}
+                ]}
+              ]},
+              {"type": "frame", "id": "doc2D", "name": "docItem", "width": "fill_container", "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"}, "padding": 20, "gap": 16, "justifyContent": "space_between", "alignItems": "center", "children": [
+                {"type": "frame", "id": "doc2LeftD", "name": "left", "gap": 16, "alignItems": "center", "children": [
+                  {"type": "frame", "id": "doc2IconD", "name": "iconBg", "width": 44, "height": 44, "fill": "#FAF8F5", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "doc2IconImgD", "name": "icon", "width": 22, "height": 22, "iconFontName": "receipt", "iconFontFamily": "lucide", "fill": "#C4A77D"}
+                  ]},
+                  {"type": "frame", "id": "doc2InfoD", "name": "info", "layout": "vertical", "gap": 4, "children": [
+                    {"type": "text", "id": "doc2TitleD", "name": "title", "fill": "#2C2C2C", "content": "Deposit Receipt", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                    {"type": "text", "id": "doc2DateD", "name": "date", "fill": "#5C5C5C", "content": "Paid Jan 10, 2026 • $1,240", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                  ]}
+                ]},
+                {"type": "frame", "id": "doc2ActionsD", "name": "actions", "gap": 12, "children": [
+                  {"type": "frame", "id": "doc2ViewD", "name": "viewBtn", "height": 36, "fill": "#FFFFFF", "cornerRadius": 6, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [8, 16], "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "doc2ViewIconD", "name": "icon", "width": 16, "height": 16, "iconFontName": "eye", "iconFontFamily": "lucide", "fill": "#5C5C5C"},
+                    {"type": "text", "id": "doc2ViewTextD", "name": "text", "fill": "#5C5C5C", "content": "View", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "500"}
+                  ]},
+                  {"type": "frame", "id": "doc2DownloadD", "name": "downloadBtn", "height": 36, "fill": "#C4A77D", "cornerRadius": 6, "padding": [8, 16], "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "doc2DownIconD", "name": "icon", "width": 16, "height": 16, "iconFontName": "download", "iconFontFamily": "lucide", "fill": "#FFFFFF"},
+                    {"type": "text", "id": "doc2DownTextD", "name": "text", "fill": "#FFFFFF", "content": "Download", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "500"}
+                  ]}
+                ]}
+              ]},
+              {"type": "frame", "id": "doc3D", "name": "docItem", "width": "fill_container", "padding": 20, "gap": 16, "justifyContent": "space_between", "alignItems": "center", "children": [
+                {"type": "frame", "id": "doc3LeftD", "name": "left", "gap": 16, "alignItems": "center", "children": [
+                  {"type": "frame", "id": "doc3IconD", "name": "iconBg", "width": 44, "height": 44, "fill": "#FAF8F5", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "doc3IconImgD", "name": "icon", "width": 22, "height": 22, "iconFontName": "shield", "iconFontFamily": "lucide", "fill": "#C4A77D"}
+                  ]},
+                  {"type": "frame", "id": "doc3InfoD", "name": "info", "layout": "vertical", "gap": 4, "children": [
+                    {"type": "text", "id": "doc3TitleD", "name": "title", "fill": "#2C2C2C", "content": "Warranty Information", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                    {"type": "text", "id": "doc3DateD", "name": "date", "fill": "#5C5C5C", "content": "30-year manufacturer warranty", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                  ]}
+                ]},
+                {"type": "frame", "id": "doc3ActionsD", "name": "actions", "gap": 12, "children": [
+                  {"type": "frame", "id": "doc3ViewD", "name": "viewBtn", "height": 36, "fill": "#FFFFFF", "cornerRadius": 6, "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"}, "padding": [8, 16], "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "doc3ViewIconD", "name": "icon", "width": 16, "height": 16, "iconFontName": "eye", "iconFontFamily": "lucide", "fill": "#5C5C5C"},
+                    {"type": "text", "id": "doc3ViewTextD", "name": "text", "fill": "#5C5C5C", "content": "View", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "500"}
+                  ]},
+                  {"type": "frame", "id": "doc3DownloadD", "name": "downloadBtn", "height": 36, "fill": "#C4A77D", "cornerRadius": 6, "padding": [8, 16], "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "doc3DownIconD", "name": "icon", "width": 16, "height": 16, "iconFontName": "download", "iconFontFamily": "lucide", "fill": "#FFFFFF"},
+                    {"type": "text", "id": "doc3DownTextD", "name": "text", "fill": "#FFFFFF", "content": "Download", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "500"}
+                  ]}
+                ]}
+              ]}
+            ]}
+          ]
+        }
+      ]
+    }
+  ]
+}

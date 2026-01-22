@@ -1,0 +1,131 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "checkLib",
+      "x": 0,
+      "y": 0,
+      "name": "Checkbox Component Library",
+      "width": 800,
+      "height": 500,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "gap": 32,
+      "padding": 32,
+      "children": [
+        {"type": "text", "id": "checkTitle", "name": "title", "fill": "#2C2C2C", "content": "Checkbox Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
+        {
+          "type": "frame",
+          "id": "checkRow1",
+          "name": "statesRow",
+          "width": "fill_container",
+          "gap": 48,
+          "alignItems": "flex_start",
+          "children": [
+            {
+              "type": "frame",
+              "id": "checkUnchecked",
+              "name": "Checkbox/Unchecked",
+              "reusable": true,
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {"type": "frame", "id": "checkUncheckedBox", "name": "box", "width": 20, "height": 20, "fill": "#FFFFFF", "cornerRadius": 4, "stroke": {"align": "inside", "thickness": 2, "fill": "#E8E0D4"}},
+                {"type": "text", "id": "checkUncheckedLabel", "name": "label", "fill": "#2C2C2C", "content": "Unchecked", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "checkChecked",
+              "name": "Checkbox/Checked",
+              "reusable": true,
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {"type": "frame", "id": "checkCheckedBox", "name": "box", "width": 20, "height": 20, "fill": "#C4A77D", "cornerRadius": 4, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "checkCheckedIcon", "name": "icon", "width": 14, "height": 14, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#FFFFFF"}
+                ]},
+                {"type": "text", "id": "checkCheckedLabel", "name": "label", "fill": "#2C2C2C", "content": "Checked", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "checkIndeterminate",
+              "name": "Checkbox/Indeterminate",
+              "reusable": true,
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {"type": "frame", "id": "checkIndeterminateBox", "name": "box", "width": 20, "height": 20, "fill": "#C4A77D", "cornerRadius": 4, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "checkIndeterminateIcon", "name": "icon", "width": 14, "height": 14, "iconFontName": "minus", "iconFontFamily": "lucide", "fill": "#FFFFFF"}
+                ]},
+                {"type": "text", "id": "checkIndeterminateLabel", "name": "label", "fill": "#2C2C2C", "content": "Indeterminate", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "checkRow2",
+          "name": "disabledRow",
+          "width": "fill_container",
+          "gap": 48,
+          "alignItems": "flex_start",
+          "children": [
+            {
+              "type": "frame",
+              "id": "checkDisabled",
+              "name": "Checkbox/Disabled",
+              "reusable": true,
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {"type": "frame", "id": "checkDisabledBox", "name": "box", "width": 20, "height": 20, "fill": "#F5F3EF", "cornerRadius": 4, "stroke": {"align": "inside", "thickness": 2, "fill": "#E8E0D4"}},
+                {"type": "text", "id": "checkDisabledLabel", "name": "label", "fill": "#9C9688", "content": "Disabled", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "checkDisabledChecked",
+              "name": "Checkbox/DisabledChecked",
+              "reusable": true,
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {"type": "frame", "id": "checkDisabledCheckedBox", "name": "box", "width": 20, "height": 20, "fill": "#E8E0D4", "cornerRadius": 4, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "checkDisabledCheckedIcon", "name": "icon", "width": 14, "height": 14, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#9C9688"}
+                ]},
+                {"type": "text", "id": "checkDisabledCheckedLabel", "name": "label", "fill": "#9C9688", "content": "Disabled Checked", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "checkRow3",
+          "name": "withDescRow",
+          "width": "fill_container",
+          "gap": 32,
+          "children": [
+            {
+              "type": "frame",
+              "id": "checkWithDesc",
+              "name": "Checkbox/WithDescription",
+              "reusable": true,
+              "gap": 12,
+              "alignItems": "flex_start",
+              "children": [
+                {"type": "frame", "id": "checkWithDescBox", "name": "box", "width": 20, "height": 20, "fill": "#FFFFFF", "cornerRadius": 4, "stroke": {"align": "inside", "thickness": 2, "fill": "#E8E0D4"}},
+                {"type": "frame", "id": "checkWithDescContent", "name": "content", "layout": "vertical", "gap": 4, "children": [
+                  {"type": "text", "id": "checkWithDescLabel", "name": "label", "fill": "#2C2C2C", "content": "Email notifications", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"},
+                  {"type": "text", "id": "checkWithDescDesc", "name": "description", "fill": "#5C5C5C", "content": "Receive email updates about your project", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                ]}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "toastLib",
+      "x": 0,
+      "y": 0,
+      "name": "Toast Component Library",
+      "width": 900,
+      "height": 500,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "gap": 32,
+      "padding": 32,
+      "children": [
+        {"type": "text", "id": "toastTitle", "name": "title", "fill": "#2C2C2C", "content": "Toast Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
+        {
+          "type": "frame",
+          "id": "toastRow1",
+          "name": "variantsRow",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "children": [
+            {
+              "type": "frame",
+              "id": "toastSuccess",
+              "name": "Toast/Success",
+              "reusable": true,
+              "width": 360,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.12)", "offset": {"x": 0, "y": 4}, "blur": 12},
+              "gap": 12,
+              "padding": 16,
+              "alignItems": "flex_start",
+              "children": [
+                {"type": "frame", "id": "toastSuccessIconBg", "name": "iconBg", "width": 32, "height": 32, "fill": "#E8F5E9", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "toastSuccessIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"}
+                ]},
+                {"type": "frame", "id": "toastSuccessContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 4, "children": [
+                  {"type": "text", "id": "toastSuccessTitle", "name": "title", "fill": "#2C2C2C", "content": "Success!", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+                  {"type": "text", "id": "toastSuccessMsg", "name": "message", "fill": "#5C5C5C", "content": "Your changes have been saved.", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                ]},
+                {"type": "icon_font", "id": "toastSuccessClose", "name": "close", "width": 16, "height": 16, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#9C9688"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "toastError",
+              "name": "Toast/Error",
+              "reusable": true,
+              "width": 360,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.12)", "offset": {"x": 0, "y": 4}, "blur": 12},
+              "gap": 12,
+              "padding": 16,
+              "alignItems": "flex_start",
+              "children": [
+                {"type": "frame", "id": "toastErrorIconBg", "name": "iconBg", "width": 32, "height": 32, "fill": "#FFEBEE", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "toastErrorIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#D94F4F"}
+                ]},
+                {"type": "frame", "id": "toastErrorContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 4, "children": [
+                  {"type": "text", "id": "toastErrorTitle", "name": "title", "fill": "#2C2C2C", "content": "Error", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+                  {"type": "text", "id": "toastErrorMsg", "name": "message", "fill": "#5C5C5C", "content": "Something went wrong. Please try again.", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                ]},
+                {"type": "icon_font", "id": "toastErrorClose", "name": "close", "width": 16, "height": 16, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#9C9688"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "toastWarning",
+              "name": "Toast/Warning",
+              "reusable": true,
+              "width": 360,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.12)", "offset": {"x": 0, "y": 4}, "blur": 12},
+              "gap": 12,
+              "padding": 16,
+              "alignItems": "flex_start",
+              "children": [
+                {"type": "frame", "id": "toastWarningIconBg", "name": "iconBg", "width": 32, "height": 32, "fill": "#FFF8E1", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "toastWarningIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "alert-triangle", "iconFontFamily": "lucide", "fill": "#C9A227"}
+                ]},
+                {"type": "frame", "id": "toastWarningContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 4, "children": [
+                  {"type": "text", "id": "toastWarningTitle", "name": "title", "fill": "#2C2C2C", "content": "Warning", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+                  {"type": "text", "id": "toastWarningMsg", "name": "message", "fill": "#5C5C5C", "content": "Please review before proceeding.", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                ]},
+                {"type": "icon_font", "id": "toastWarningClose", "name": "close", "width": 16, "height": 16, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#9C9688"}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "toastInfo",
+              "name": "Toast/Info",
+              "reusable": true,
+              "width": 360,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(44, 44, 44, 0.12)", "offset": {"x": 0, "y": 4}, "blur": 12},
+              "gap": 12,
+              "padding": 16,
+              "alignItems": "flex_start",
+              "children": [
+                {"type": "frame", "id": "toastInfoIconBg", "name": "iconBg", "width": 32, "height": 32, "fill": "#E3F2FD", "cornerRadius": 16, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "icon_font", "id": "toastInfoIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "info", "iconFontFamily": "lucide", "fill": "#3B82F6"}
+                ]},
+                {"type": "frame", "id": "toastInfoContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 4, "children": [
+                  {"type": "text", "id": "toastInfoTitle", "name": "title", "fill": "#2C2C2C", "content": "Info", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"},
+                  {"type": "text", "id": "toastInfoMsg", "name": "message", "fill": "#5C5C5C", "content": "Here's some helpful information.", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                ]},
+                {"type": "icon_font", "id": "toastInfoClose", "name": "close", "width": 16, "height": 16, "iconFontName": "x", "iconFontFamily": "lucide", "fill": "#9C9688"}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

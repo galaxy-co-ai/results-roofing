@@ -1,0 +1,182 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "screen03",
+      "x": 0,
+      "y": 0,
+      "name": "Package Comparison - Mobile",
+      "width": 375,
+      "height": 812,
+      "fill": "#FAF8F5",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "header03",
+          "name": "header",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
+          "padding": 16,
+          "gap": 12,
+          "alignItems": "center",
+          "children": [
+            {"type": "icon_font", "id": "backIcon", "name": "back", "width": 24, "height": 24, "iconFontName": "arrow-left", "iconFontFamily": "lucide", "fill": "#2C2C2C"},
+            {"type": "frame", "id": "headerContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 2, "children": [
+              {"type": "text", "id": "headerTitle", "name": "title", "fill": "#2C2C2C", "content": "Your Quote", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+              {"type": "text", "id": "headerAddress", "name": "address", "fill": "#5C5C5C", "content": "123 Main St, Dallas, TX", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+            ]}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "progress03",
+          "name": "progress",
+          "width": "fill_container",
+          "height": 4,
+          "fill": "#E8E0D4",
+          "children": [
+            {"type": "frame", "id": "progressFill", "name": "fill", "width": "60%", "height": "fill_container", "fill": "#C4A77D"}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "content03",
+          "name": "content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "padding": 16,
+          "children": [
+            {"type": "text", "id": "title03", "name": "title", "fill": "#2C2C2C", "content": "Compare Your Options", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "700"},
+            {
+              "type": "frame",
+              "id": "goodCard",
+              "name": "goodCard",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 16,
+              "children": [
+                {"type": "frame", "id": "goodHeader", "name": "cardHeader", "width": "fill_container", "justifyContent": "space_between", "alignItems": "center", "children": [
+                  {"type": "text", "id": "goodTitle", "name": "title", "fill": "#2C2C2C", "content": "Good", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                  {"type": "text", "id": "goodPrice", "name": "price", "fill": "#C4A77D", "content": "$8,900 - $10,800", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                ]},
+                {"type": "text", "id": "goodMaterial", "name": "material", "fill": "#5C5C5C", "content": "3-Tab Shingles • 25-year warranty", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"},
+                {"type": "frame", "id": "goodFeatures", "name": "features", "width": "fill_container", "layout": "vertical", "gap": 6, "children": [
+                  {"type": "frame", "id": "gf1", "name": "feature", "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "gf1Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "gf1Text", "name": "text", "fill": "#5C5C5C", "content": "Standard installation", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "gf2", "name": "feature", "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "gf2Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "gf2Text", "name": "text", "fill": "#5C5C5C", "content": "Basic cleanup included", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                  ]}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "betterCard",
+              "name": "betterCard",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"},
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 16,
+              "children": [
+                {"type": "frame", "id": "betterBadge", "name": "badge", "fill": "#C4A77D", "cornerRadius": 4, "padding": [4, 8], "children": [
+                  {"type": "text", "id": "betterBadgeText", "name": "text", "fill": "#FFFFFF", "content": "RECOMMENDED", "fontFamily": "Inter", "fontSize": 10, "fontWeight": "700"}
+                ]},
+                {"type": "frame", "id": "betterHeader", "name": "cardHeader", "width": "fill_container", "justifyContent": "space_between", "alignItems": "center", "children": [
+                  {"type": "text", "id": "betterTitle", "name": "title", "fill": "#2C2C2C", "content": "Better", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                  {"type": "text", "id": "betterPrice", "name": "price", "fill": "#C4A77D", "content": "$11,800 - $14,400", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                ]},
+                {"type": "text", "id": "betterMaterial", "name": "material", "fill": "#5C5C5C", "content": "Architectural Shingles • 30-year warranty", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"},
+                {"type": "frame", "id": "betterFeatures", "name": "features", "width": "fill_container", "layout": "vertical", "gap": 6, "children": [
+                  {"type": "frame", "id": "bf1", "name": "feature", "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "bf1Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "bf1Text", "name": "text", "fill": "#5C5C5C", "content": "Enhanced durability", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "bf2", "name": "feature", "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "bf2Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "bf2Text", "name": "text", "fill": "#5C5C5C", "content": "Ice & water shield included", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "bf3", "name": "feature", "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "bf3Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "bf3Text", "name": "text", "fill": "#5C5C5C", "content": "Premium cleanup", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                  ]}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bestCard",
+              "name": "bestCard",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 16,
+              "children": [
+                {"type": "frame", "id": "bestHeader", "name": "cardHeader", "width": "fill_container", "justifyContent": "space_between", "alignItems": "center", "children": [
+                  {"type": "text", "id": "bestTitle", "name": "title", "fill": "#2C2C2C", "content": "Best", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                  {"type": "text", "id": "bestPrice", "name": "price", "fill": "#C4A77D", "content": "$15,200 - $18,500", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                ]},
+                {"type": "text", "id": "bestMaterial", "name": "material", "fill": "#5C5C5C", "content": "Premium Designer • 50-year warranty", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"},
+                {"type": "frame", "id": "bestFeatures", "name": "features", "width": "fill_container", "layout": "vertical", "gap": 6, "children": [
+                  {"type": "frame", "id": "bst1", "name": "feature", "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "bst1Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "bst1Text", "name": "text", "fill": "#5C5C5C", "content": "Lifetime craftsmanship warranty", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                  ]},
+                  {"type": "frame", "id": "bst2", "name": "feature", "gap": 8, "alignItems": "center", "children": [
+                    {"type": "icon_font", "id": "bst2Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                    {"type": "text", "id": "bst2Text", "name": "text", "fill": "#5C5C5C", "content": "All premium features", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                  ]}
+                ]}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "footer03",
+          "name": "footer",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"top": 1}, "fill": "#E8E0D4"},
+          "layout": "vertical",
+          "gap": 8,
+          "padding": [16, 24],
+          "children": [
+            {
+              "type": "frame",
+              "id": "footerBtn",
+              "name": "ctaButton",
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#C4A77D",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "text", "id": "footerBtnLabel", "name": "label", "fill": "#FFFFFF", "content": "Get Exact Pricing", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
+              ]
+            },
+            {"type": "text", "id": "footerHint", "name": "hint", "fill": "#9C9688", "content": "Continue with estimate for now", "textAlign": "center", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+          ]
+        }
+      ]
+    }
+  ]
+}

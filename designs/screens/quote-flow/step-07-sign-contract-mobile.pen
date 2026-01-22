@@ -1,0 +1,172 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "screen07",
+      "x": 0,
+      "y": 0,
+      "name": "Sign Contract - Mobile",
+      "width": 375,
+      "height": 812,
+      "fill": "#FAF8F5",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "header07",
+          "name": "header",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
+          "padding": 16,
+          "gap": 12,
+          "alignItems": "center",
+          "children": [
+            {"type": "icon_font", "id": "backIcon07", "name": "back", "width": 24, "height": 24, "iconFontName": "arrow-left", "iconFontFamily": "lucide", "fill": "#2C2C2C"},
+            {"type": "frame", "id": "headerContent07", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 2, "children": [
+              {"type": "text", "id": "headerTitle07", "name": "title", "fill": "#2C2C2C", "content": "Contract", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+              {"type": "text", "id": "headerAddress07", "name": "address", "fill": "#5C5C5C", "content": "123 Main St, Dallas, TX", "fontFamily": "Inter", "fontSize": 12, "fontWeight": "normal"}
+            ]}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "progress07",
+          "name": "progress",
+          "width": "fill_container",
+          "height": 4,
+          "fill": "#E8E0D4",
+          "children": [
+            {"type": "frame", "id": "progressFill07", "name": "fill", "width": "90%", "height": "fill_container", "fill": "#C4A77D"}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "content07",
+          "name": "content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [24, 16],
+          "children": [
+            {"type": "text", "id": "title07", "name": "title", "fill": "#2C2C2C", "content": "Review & Sign", "fontFamily": "Inter", "fontSize": 24, "fontWeight": "700"},
+            {
+              "type": "frame",
+              "id": "contractSummary",
+              "name": "contractSummary",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 16,
+              "children": [
+                {"type": "text", "id": "summaryTitle", "name": "title", "fill": "#2C2C2C", "content": "Contract Summary", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                {"type": "frame", "id": "sumRow1", "name": "row", "width": "fill_container", "justifyContent": "space_between", "children": [
+                  {"type": "text", "id": "sumLabel1", "name": "label", "fill": "#5C5C5C", "content": "Package", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                  {"type": "text", "id": "sumValue1", "name": "value", "fill": "#2C2C2C", "content": "Better", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"}
+                ]},
+                {"type": "frame", "id": "sumRow2", "name": "row", "width": "fill_container", "justifyContent": "space_between", "children": [
+                  {"type": "text", "id": "sumLabel2", "name": "label", "fill": "#5C5C5C", "content": "Total Price", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                  {"type": "text", "id": "sumValue2", "name": "value", "fill": "#C4A77D", "content": "$12,400", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "600"}
+                ]},
+                {"type": "frame", "id": "sumRow3", "name": "row", "width": "fill_container", "justifyContent": "space_between", "children": [
+                  {"type": "text", "id": "sumLabel3", "name": "label", "fill": "#5C5C5C", "content": "Installation Date", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                  {"type": "text", "id": "sumValue3", "name": "value", "fill": "#2C2C2C", "content": "Jan 14, 2026", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "500"}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "keyTerms",
+              "name": "keyTerms",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 16,
+              "children": [
+                {"type": "text", "id": "termsTitle", "name": "title", "fill": "#2C2C2C", "content": "Key Terms", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                {"type": "frame", "id": "term1", "name": "term", "gap": 8, "alignItems": "flex_start", "children": [
+                  {"type": "icon_font", "id": "term1Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                  {"type": "text", "id": "term1Text", "name": "text", "fill": "#5C5C5C", "content": "10% deposit due today", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                ]},
+                {"type": "frame", "id": "term2", "name": "term", "gap": 8, "alignItems": "flex_start", "children": [
+                  {"type": "icon_font", "id": "term2Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                  {"type": "text", "id": "term2Text", "name": "text", "fill": "#5C5C5C", "content": "Balance due upon completion", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                ]},
+                {"type": "frame", "id": "term3", "name": "term", "gap": 8, "alignItems": "flex_start", "children": [
+                  {"type": "icon_font", "id": "term3Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                  {"type": "text", "id": "term3Text", "name": "text", "fill": "#5C5C5C", "content": "30-year manufacturer warranty", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                ]},
+                {"type": "frame", "id": "term4", "name": "term", "gap": 8, "alignItems": "flex_start", "children": [
+                  {"type": "icon_font", "id": "term4Icon", "name": "icon", "width": 16, "height": 16, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                  {"type": "text", "id": "term4Text", "name": "text", "fill": "#5C5C5C", "content": "5-year workmanship guarantee", "fontFamily": "Inter", "fontSize": 13, "fontWeight": "normal"}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "signatureSection",
+              "name": "signatureSection",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {"type": "text", "id": "sigLabel", "name": "label", "fill": "#2C2C2C", "content": "Your Signature", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                {
+                  "type": "frame",
+                  "id": "sigInput",
+                  "name": "signatureInput",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+                  "padding": [12, 16],
+                  "alignItems": "center",
+                  "children": [
+                    {"type": "text", "id": "sigPlaceholder", "name": "placeholder", "fill": "#9C9688", "content": "Full Legal Name", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "footer07",
+          "name": "footer",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"top": 1}, "fill": "#E8E0D4"},
+          "layout": "vertical",
+          "gap": 8,
+          "padding": [16, 24],
+          "children": [
+            {
+              "type": "frame",
+              "id": "footerBtn07",
+              "name": "ctaButton",
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#C4A77D",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {"type": "text", "id": "footerBtnLabel07", "name": "label", "fill": "#FFFFFF", "content": "Sign Contract", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"}
+              ]
+            },
+            {"type": "text", "id": "footerDisclaimer", "name": "disclaimer", "fill": "#9C9688", "content": "By signing, you agree to the terms and conditions", "textAlign": "center", "fontFamily": "Inter", "fontSize": 11, "fontWeight": "normal"}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "radioCardLib",
+      "x": 0,
+      "y": 0,
+      "name": "Radio Card Group Component Library",
+      "width": 1100,
+      "height": 600,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "gap": 32,
+      "padding": 32,
+      "children": [
+        {"type": "text", "id": "radioCardTitle", "name": "title", "fill": "#2C2C2C", "content": "Radio Card Group Components", "fontFamily": "Inter", "fontSize": 32, "fontWeight": "700"},
+        {
+          "type": "frame",
+          "id": "radioCardRow1",
+          "name": "statesRow",
+          "width": "fill_container",
+          "gap": 24,
+          "children": [
+            {
+              "type": "frame",
+              "id": "radioCardUnselected",
+              "name": "RadioCard/Unselected",
+              "reusable": true,
+              "width": 320,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "gap": 16,
+              "padding": 20,
+              "alignItems": "flex_start",
+              "children": [
+                {"type": "frame", "id": "radioUnselectedCircle", "name": "radio", "width": 20, "height": 20, "cornerRadius": 10, "stroke": {"align": "inside", "thickness": 2, "fill": "#E8E0D4"}},
+                {"type": "frame", "id": "radioUnselectedContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 4, "children": [
+                  {"type": "text", "id": "radioUnselectedTitle", "name": "title", "fill": "#2C2C2C", "content": "Option Title", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                  {"type": "text", "id": "radioUnselectedDesc", "name": "description", "fill": "#5C5C5C", "content": "Description of this option", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "radioCardSelected",
+              "name": "RadioCard/Selected",
+              "reusable": true,
+              "width": 320,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"},
+              "gap": 16,
+              "padding": 20,
+              "alignItems": "flex_start",
+              "children": [
+                {"type": "frame", "id": "radioSelectedCircle", "name": "radio", "width": 20, "height": 20, "fill": "#C4A77D", "cornerRadius": 10, "justifyContent": "center", "alignItems": "center", "children": [
+                  {"type": "frame", "id": "radioSelectedDot", "name": "dot", "width": 8, "height": 8, "fill": "#FFFFFF", "cornerRadius": 4}
+                ]},
+                {"type": "frame", "id": "radioSelectedContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 4, "children": [
+                  {"type": "text", "id": "radioSelectedTitle", "name": "title", "fill": "#2C2C2C", "content": "Selected Option", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                  {"type": "text", "id": "radioSelectedDesc", "name": "description", "fill": "#5C5C5C", "content": "This option is currently selected", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "radioCardDisabled",
+              "name": "RadioCard/Disabled",
+              "reusable": true,
+              "width": 320,
+              "fill": "#F5F3EF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "gap": 16,
+              "padding": 20,
+              "alignItems": "flex_start",
+              "children": [
+                {"type": "frame", "id": "radioDisabledCircle", "name": "radio", "width": 20, "height": 20, "cornerRadius": 10, "stroke": {"align": "inside", "thickness": 2, "fill": "#E8E0D4"}},
+                {"type": "frame", "id": "radioDisabledContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 4, "children": [
+                  {"type": "text", "id": "radioDisabledTitle", "name": "title", "fill": "#9C9688", "content": "Disabled Option", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                  {"type": "text", "id": "radioDisabledDesc", "name": "description", "fill": "#9C9688", "content": "This option is not available", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                ]}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "radioCardRow2",
+          "name": "withPriceRow",
+          "width": "fill_container",
+          "gap": 24,
+          "children": [
+            {
+              "type": "frame",
+              "id": "radioCardWithPrice",
+              "name": "RadioCard/WithPrice",
+              "reusable": true,
+              "width": 320,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"},
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 20,
+              "children": [
+                {"type": "frame", "id": "radioPriceHeader", "name": "header", "width": "fill_container", "gap": 12, "alignItems": "flex_start", "children": [
+                  {"type": "frame", "id": "radioPriceCircle", "name": "radio", "width": 20, "height": 20, "fill": "#C4A77D", "cornerRadius": 10, "justifyContent": "center", "alignItems": "center", "children": [
+                    {"type": "frame", "id": "radioPriceDot", "name": "dot", "width": 8, "height": 8, "fill": "#FFFFFF", "cornerRadius": 4}
+                  ]},
+                  {"type": "frame", "id": "radioPriceContent", "name": "content", "width": "fill_container", "justifyContent": "space_between", "alignItems": "flex_start", "children": [
+                    {"type": "frame", "id": "radioPriceLeft", "name": "left", "layout": "vertical", "gap": 4, "children": [
+                      {"type": "text", "id": "radioPriceTitle", "name": "title", "fill": "#2C2C2C", "content": "Pay in Full", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                      {"type": "text", "id": "radioPriceDesc", "name": "description", "fill": "#5C5C5C", "content": "Pay remaining at completion", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                    ]},
+                    {"type": "text", "id": "radioPriceAmount", "name": "price", "fill": "#C4A77D", "content": "$11,160", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "700"}
+                  ]}
+                ]}
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "radioCardWithBadge",
+              "name": "RadioCard/WithBadge",
+              "reusable": true,
+              "width": 320,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 20,
+              "children": [
+                {"type": "frame", "id": "radioBadge", "name": "badge", "fill": "#C4A77D", "cornerRadius": 4, "padding": [4, 8], "children": [
+                  {"type": "text", "id": "radioBadgeText", "name": "text", "fill": "#FFFFFF", "content": "POPULAR", "fontFamily": "Inter", "fontSize": 10, "fontWeight": "700"}
+                ]},
+                {"type": "frame", "id": "radioBadgeHeader", "name": "header", "width": "fill_container", "gap": 12, "alignItems": "flex_start", "children": [
+                  {"type": "frame", "id": "radioBadgeCircle", "name": "radio", "width": 20, "height": 20, "cornerRadius": 10, "stroke": {"align": "inside", "thickness": 2, "fill": "#E8E0D4"}},
+                  {"type": "frame", "id": "radioBadgeContent", "name": "content", "width": "fill_container", "layout": "vertical", "gap": 4, "children": [
+                    {"type": "text", "id": "radioBadgeTitle", "name": "title", "fill": "#2C2C2C", "content": "Finance with Wisetack", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"},
+                    {"type": "text", "id": "radioBadgeDesc", "name": "description", "fill": "#5C5C5C", "content": "As low as $189/mo", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                  ]}
+                ]}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

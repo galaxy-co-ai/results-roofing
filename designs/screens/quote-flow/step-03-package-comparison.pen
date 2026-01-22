@@ -1,0 +1,173 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "screen03D",
+      "x": 0,
+      "y": 0,
+      "name": "Package Comparison - Desktop",
+      "width": 1440,
+      "height": 900,
+      "fill": "#FAF8F5",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "header03D",
+          "name": "header",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {"align": "inside", "thickness": {"bottom": 1}, "fill": "#E8E0D4"},
+          "padding": [16, 80],
+          "gap": 24,
+          "alignItems": "center",
+          "children": [
+            {"type": "icon_font", "id": "backIcon03D", "name": "back", "width": 24, "height": 24, "iconFontName": "arrow-left", "iconFontFamily": "lucide", "fill": "#2C2C2C"},
+            {"type": "frame", "id": "headerInfo03D", "name": "info", "width": "fill_container", "layout": "vertical", "gap": 2, "children": [
+              {"type": "text", "id": "headerTitle03D", "name": "title", "fill": "#2C2C2C", "content": "Compare Packages", "fontFamily": "Inter", "fontSize": 18, "fontWeight": "600"},
+              {"type": "text", "id": "headerAddress03D", "name": "address", "fill": "#5C5C5C", "content": "123 Main St, Dallas, TX 75201", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+            ]},
+            {"type": "frame", "id": "progress03D", "name": "progress", "width": 200, "height": 8, "fill": "#E8E0D4", "cornerRadius": 4, "children": [
+              {"type": "frame", "id": "progressFill03D", "name": "fill", "width": "60%", "height": "fill_container", "fill": "#C4A77D", "cornerRadius": 4}
+            ]}
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "content03D",
+          "name": "content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [48, 80],
+          "alignItems": "center",
+          "children": [
+            {"type": "frame", "id": "titleSection03D", "name": "titleSection", "layout": "vertical", "gap": 8, "alignItems": "center", "children": [
+              {"type": "text", "id": "title03D", "name": "title", "fill": "#2C2C2C", "content": "Choose Your Package", "textAlign": "center", "fontFamily": "Inter", "fontSize": 36, "fontWeight": "700"},
+              {"type": "text", "id": "subtitle03D", "name": "subtitle", "fill": "#5C5C5C", "content": "All packages include professional installation and cleanup", "textAlign": "center", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "normal"}
+            ]},
+            {
+              "type": "frame",
+              "id": "packagesRow",
+              "name": "packages",
+              "gap": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "pkgGood03D",
+                  "name": "goodPackage",
+                  "width": 380,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 16,
+                  "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+                  "layout": "vertical",
+                  "gap": 20,
+                  "padding": 28,
+                  "children": [
+                    {"type": "text", "id": "pkgGoodTitle03D", "name": "title", "fill": "#2C2C2C", "content": "Good", "fontFamily": "Inter", "fontSize": 28, "fontWeight": "700"},
+                    {"type": "text", "id": "pkgGoodPrice03D", "name": "price", "fill": "#C4A77D", "content": "$8,900 - $10,800", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "600"},
+                    {"type": "text", "id": "pkgGoodMaterial03D", "name": "material", "fill": "#5C5C5C", "content": "3-Tab Shingles • 25-year warranty", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                    {"type": "frame", "id": "pkgGoodDivider", "name": "divider", "width": "fill_container", "height": 1, "fill": "#E8E0D4"},
+                    {"type": "frame", "id": "pkgGoodFeatures03D", "name": "features", "width": "fill_container", "layout": "vertical", "gap": 12, "children": [
+                      {"type": "frame", "id": "gf1D", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                        {"type": "icon_font", "id": "gf1DIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                        {"type": "text", "id": "gf1DText", "name": "text", "fill": "#2C2C2C", "content": "Standard installation", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                      ]},
+                      {"type": "frame", "id": "gf2D", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                        {"type": "icon_font", "id": "gf2DIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                        {"type": "text", "id": "gf2DText", "name": "text", "fill": "#2C2C2C", "content": "Basic cleanup included", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                      ]},
+                      {"type": "frame", "id": "gf3D", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                        {"type": "icon_font", "id": "gf3DIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                        {"type": "text", "id": "gf3DText", "name": "text", "fill": "#2C2C2C", "content": "Standard underlayment", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                      ]}
+                    ]},
+                    {"type": "frame", "id": "pkgGoodBtn03D", "name": "button", "width": "fill_container", "height": 48, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#C4A77D"}, "justifyContent": "center", "alignItems": "center", "children": [
+                      {"type": "text", "id": "pkgGoodBtnLabel03D", "name": "label", "fill": "#C4A77D", "content": "Select Good", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                    ]}
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pkgBetter03D",
+                  "name": "betterPackage",
+                  "width": 380,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 16,
+                  "stroke": {"align": "inside", "thickness": 2, "fill": "#C4A77D"},
+                  "effect": {"type": "shadow", "shadowType": "outer", "color": "rgba(196, 167, 125, 0.2)", "offset": {"x": 0, "y": 4}, "blur": 16},
+                  "layout": "vertical",
+                  "gap": 20,
+                  "padding": 28,
+                  "children": [
+                    {"type": "frame", "id": "pkgBetterBadge03D", "name": "badge", "fill": "#C4A77D", "cornerRadius": 4, "padding": [6, 12], "children": [
+                      {"type": "text", "id": "pkgBetterBadgeText03D", "name": "text", "fill": "#FFFFFF", "content": "RECOMMENDED", "fontFamily": "Inter", "fontSize": 11, "fontWeight": "700"}
+                    ]},
+                    {"type": "text", "id": "pkgBetterTitle03D", "name": "title", "fill": "#2C2C2C", "content": "Better", "fontFamily": "Inter", "fontSize": 28, "fontWeight": "700"},
+                    {"type": "text", "id": "pkgBetterPrice03D", "name": "price", "fill": "#C4A77D", "content": "$11,800 - $14,400", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "600"},
+                    {"type": "text", "id": "pkgBetterMaterial03D", "name": "material", "fill": "#5C5C5C", "content": "Architectural Shingles • 30-year warranty", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                    {"type": "frame", "id": "pkgBetterDivider", "name": "divider", "width": "fill_container", "height": 1, "fill": "#E8E0D4"},
+                    {"type": "frame", "id": "pkgBetterFeatures03D", "name": "features", "width": "fill_container", "layout": "vertical", "gap": 12, "children": [
+                      {"type": "frame", "id": "bf1D", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                        {"type": "icon_font", "id": "bf1DIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                        {"type": "text", "id": "bf1DText", "name": "text", "fill": "#2C2C2C", "content": "Enhanced durability", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                      ]},
+                      {"type": "frame", "id": "bf2D", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                        {"type": "icon_font", "id": "bf2DIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                        {"type": "text", "id": "bf2DText", "name": "text", "fill": "#2C2C2C", "content": "Ice & water shield included", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                      ]},
+                      {"type": "frame", "id": "bf3D", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                        {"type": "icon_font", "id": "bf3DIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                        {"type": "text", "id": "bf3DText", "name": "text", "fill": "#2C2C2C", "content": "Premium cleanup", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                      ]}
+                    ]},
+                    {"type": "frame", "id": "pkgBetterBtn03D", "name": "button", "width": "fill_container", "height": 48, "fill": "#C4A77D", "cornerRadius": 8, "justifyContent": "center", "alignItems": "center", "children": [
+                      {"type": "text", "id": "pkgBetterBtnLabel03D", "name": "label", "fill": "#FFFFFF", "content": "Select Better", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                    ]}
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pkgBest03D",
+                  "name": "bestPackage",
+                  "width": 380,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 16,
+                  "stroke": {"align": "inside", "thickness": 1, "fill": "#E8E0D4"},
+                  "layout": "vertical",
+                  "gap": 20,
+                  "padding": 28,
+                  "children": [
+                    {"type": "text", "id": "pkgBestTitle03D", "name": "title", "fill": "#2C2C2C", "content": "Best", "fontFamily": "Inter", "fontSize": 28, "fontWeight": "700"},
+                    {"type": "text", "id": "pkgBestPrice03D", "name": "price", "fill": "#C4A77D", "content": "$15,200 - $18,500", "fontFamily": "Inter", "fontSize": 20, "fontWeight": "600"},
+                    {"type": "text", "id": "pkgBestMaterial03D", "name": "material", "fill": "#5C5C5C", "content": "Premium Designer • 50-year warranty", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"},
+                    {"type": "frame", "id": "pkgBestDivider", "name": "divider", "width": "fill_container", "height": 1, "fill": "#E8E0D4"},
+                    {"type": "frame", "id": "pkgBestFeatures03D", "name": "features", "width": "fill_container", "layout": "vertical", "gap": 12, "children": [
+                      {"type": "frame", "id": "bst1D", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                        {"type": "icon_font", "id": "bst1DIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                        {"type": "text", "id": "bst1DText", "name": "text", "fill": "#2C2C2C", "content": "Lifetime craftsmanship warranty", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                      ]},
+                      {"type": "frame", "id": "bst2D", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                        {"type": "icon_font", "id": "bst2DIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                        {"type": "text", "id": "bst2DText", "name": "text", "fill": "#2C2C2C", "content": "All Better features", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                      ]},
+                      {"type": "frame", "id": "bst3D", "name": "feature", "gap": 12, "alignItems": "center", "children": [
+                        {"type": "icon_font", "id": "bst3DIcon", "name": "icon", "width": 18, "height": 18, "iconFontName": "check", "iconFontFamily": "lucide", "fill": "#4A7C59"},
+                        {"type": "text", "id": "bst3DText", "name": "text", "fill": "#2C2C2C", "content": "Priority scheduling", "fontFamily": "Inter", "fontSize": 14, "fontWeight": "normal"}
+                      ]}
+                    ]},
+                    {"type": "frame", "id": "pkgBestBtn03D", "name": "button", "width": "fill_container", "height": 48, "fill": "#FFFFFF", "cornerRadius": 8, "stroke": {"align": "inside", "thickness": 1, "fill": "#C4A77D"}, "justifyContent": "center", "alignItems": "center", "children": [
+                      {"type": "text", "id": "pkgBestBtnLabel03D", "name": "label", "fill": "#C4A77D", "content": "Select Best", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600"}
+                    ]}
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
