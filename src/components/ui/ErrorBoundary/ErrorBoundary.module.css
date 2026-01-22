@@ -1,0 +1,80 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: var(--rr-space-6);
+  background-color: var(--rr-color-background);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rr-space-4);
+  max-width: 400px;
+  padding: var(--rr-space-8);
+  text-align: center;
+  background-color: var(--rr-color-surface);
+  border-radius: var(--rr-radius-lg);
+  box-shadow: var(--rr-shadow-md);
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background-color: var(--rr-color-error-light);
+  border-radius: 50%;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  color: var(--rr-color-error);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--rr-text-xl);
+  font-weight: var(--rr-font-semibold);
+  color: var(--rr-color-text-primary);
+}
+
+.message {
+  margin: 0;
+  font-size: var(--rr-text-base);
+  color: var(--rr-color-text-secondary);
+  line-height: var(--rr-leading-relaxed);
+}
+
+.retryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-3) var(--rr-space-6);
+  font-size: var(--rr-text-base);
+  font-weight: var(--rr-font-medium);
+  color: var(--rr-color-text-on-primary);
+  background-color: var(--rr-color-primary);
+  border: none;
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: background-color var(--rr-transition-fast);
+}
+
+.retryButton:hover {
+  background-color: var(--rr-color-primary-hover);
+}
+
+.retryButton:focus-visible {
+  outline: 2px solid var(--rr-color-primary);
+  outline-offset: 2px;
+}
+
+.retryButton:active {
+  transform: translateY(1px);
+}

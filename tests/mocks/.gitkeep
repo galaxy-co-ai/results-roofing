@@ -1,4 +1,6 @@
-# Test Mocks
-# Placeholder for mock implementations
-# E.g., mock Roofr API, mock Stripe, MSW handlers
-# Pending test implementation
+# Test mocks
+# This directory will contain mock implementations:
+# - db.ts
+# - integrations.ts
+# - stripe.ts
+# Keep this file to preserve directory structure

@@ -213,7 +213,7 @@
 .optionIcon {
   width: 44px;
   height: 44px;
-  background: var(--rr-color-bg-secondary);
+  background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -277,18 +277,20 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
-  background: var(--rr-color-info-light);
+  background: var(--rr-color-bg-tertiary);
+  border: 1px solid var(--rr-color-border-default);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .scheduledPayment:hover {
-  background: #d4e8f9;
+  border-color: var(--rr-color-sandstone);
+  background: var(--rr-color-surface-hover);
 }
 
 .scheduledIcon {
-  color: var(--rr-color-info);
+  color: var(--rr-color-sandstone);
   flex-shrink: 0;
 }
 
@@ -309,7 +311,7 @@
 }
 
 .scheduledArrow {
-  color: var(--rr-color-info);
+  color: var(--rr-color-sandstone);
 }
 
 /* ========================================

@@ -46,8 +46,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: var(--rr-color-success-light);
-  color: var(--rr-color-success);
+  background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+  color: var(--rr-color-sandstone);
   border-radius: 24px;
   font-size: 0.875rem;
   font-weight: 500;
@@ -212,7 +212,7 @@
 .timelineIcon {
   width: 36px;
   height: 36px;
-  background: var(--rr-color-bg-tertiary);
+  background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
   border-radius: 50%;
   display: flex;
   align-items: center;

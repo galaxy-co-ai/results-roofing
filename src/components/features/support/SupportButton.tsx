@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { useChat } from './ChatContext';
 import styles from './SupportButton.module.css';
 

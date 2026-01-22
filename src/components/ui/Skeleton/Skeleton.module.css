@@ -1,0 +1,48 @@
+.skeleton {
+  background-color: var(--rr-color-surface-tertiary, #e8e0d4);
+}
+
+.animated {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Variants */
+.text {
+  width: 100%;
+  height: 16px;
+  border-radius: var(--rr-radius-sm, 6px);
+}
+
+.circular {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--rr-radius-full, 9999px);
+}
+
+.rectangular {
+  width: 100%;
+  height: 100px;
+  border-radius: 0;
+}
+
+.rounded {
+  width: 100%;
+  height: 100px;
+  border-radius: var(--rr-radius-md, 8px);
+}
+
+/* Text container for multiple lines */
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-2, 8px);
+}

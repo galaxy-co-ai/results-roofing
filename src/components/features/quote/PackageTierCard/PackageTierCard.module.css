@@ -1,0 +1,168 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--rr-color-surface-primary, #ffffff);
+  border: 2px solid var(--rr-color-border-subtle, #e8e0d4);
+  border-radius: var(--rr-radius-lg, 12px);
+  padding: var(--rr-space-5, 20px);
+  cursor: pointer;
+  transition: all var(--rr-transition-fast, 150ms) ease;
+}
+
+.card:hover {
+  border-color: var(--rr-color-brand-primary, #c4a77d);
+  box-shadow: var(--rr-shadow-md, 0 4px 12px rgba(44, 44, 44, 0.08));
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--rr-color-brand-primary, #c4a77d);
+  outline-offset: 2px;
+}
+
+/* Tier variants */
+.good {
+  border-top: 4px solid var(--rr-color-text-muted, #9c9688);
+}
+
+.better {
+  border-top: 4px solid var(--rr-color-brand-primary, #c4a77d);
+}
+
+.best {
+  border-top: 4px solid var(--rr-color-brand-secondary, #b86b4c);
+}
+
+/* Selected state */
+.selected {
+  border-color: var(--rr-color-brand-primary, #c4a77d);
+  background-color: var(--rr-color-brand-primary-light, #f5f0e6);
+}
+
+/* Recommended/Popular */
+.recommended {
+  position: relative;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--rr-space-4, 16px);
+}
+
+.headerContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-2, 8px);
+}
+
+.tierName {
+  font-family: var(--rr-font-family-sans, 'Inter', sans-serif);
+  font-size: var(--rr-font-size-xl, 20px);
+  font-weight: var(--rr-font-weight-semibold, 600);
+  color: var(--rr-color-text-primary, #2c2c2c);
+  margin: 0;
+}
+
+.tierLabel {
+  font-family: var(--rr-font-family-sans, 'Inter', sans-serif);
+  font-size: var(--rr-font-size-xs, 12px);
+  font-weight: var(--rr-font-weight-medium, 500);
+  color: var(--rr-color-text-muted, #9c9688);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Price */
+.priceSection {
+  margin-bottom: var(--rr-space-4, 16px);
+  padding-bottom: var(--rr-space-4, 16px);
+  border-bottom: 1px solid var(--rr-color-border-subtle, #e8e0d4);
+}
+
+.price {
+  font-family: var(--rr-font-family-sans, 'Inter', sans-serif);
+  font-size: var(--rr-font-size-2xl, 24px);
+  font-weight: var(--rr-font-weight-semibold, 600);
+  color: var(--rr-color-text-primary, #2c2c2c);
+}
+
+.monthly {
+  font-family: var(--rr-font-family-sans, 'Inter', sans-serif);
+  font-size: var(--rr-font-size-sm, 14px);
+  color: var(--rr-color-text-secondary, #5c5c5c);
+  margin-top: var(--rr-space-1, 4px);
+}
+
+/* Features */
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--rr-space-5, 20px) 0;
+  flex: 1;
+}
+
+.feature {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rr-space-2, 8px);
+  padding: var(--rr-space-2, 8px) 0;
+  font-family: var(--rr-font-family-sans, 'Inter', sans-serif);
+  font-size: var(--rr-font-size-sm, 14px);
+}
+
+.featureCheck {
+  color: var(--rr-color-status-success, #16a34a);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.featureLabel {
+  color: var(--rr-color-text-secondary, #5c5c5c);
+}
+
+.featureValue {
+  color: var(--rr-color-text-primary, #2c2c2c);
+  font-weight: var(--rr-font-weight-medium, 500);
+}
+
+/* Select button */
+.selectButton {
+  width: 100%;
+  padding: var(--rr-space-3, 12px) var(--rr-space-4, 16px);
+  background-color: transparent;
+  border: 2px solid var(--rr-color-brand-primary, #c4a77d);
+  border-radius: var(--rr-radius-md, 8px);
+  font-family: var(--rr-font-family-sans, 'Inter', sans-serif);
+  font-size: var(--rr-font-size-base, 16px);
+  font-weight: var(--rr-font-weight-medium, 500);
+  color: var(--rr-color-brand-primary, #c4a77d);
+  cursor: pointer;
+  transition: all var(--rr-transition-fast, 150ms) ease;
+}
+
+.selectButton:hover {
+  background-color: var(--rr-color-brand-primary, #c4a77d);
+  color: var(--rr-color-text-inverse, #ffffff);
+}
+
+.selectButton:focus-visible {
+  outline: 2px solid var(--rr-color-brand-primary, #c4a77d);
+  outline-offset: 2px;
+}
+
+.selected .selectButton {
+  background-color: var(--rr-color-brand-primary, #c4a77d);
+  color: var(--rr-color-text-inverse, #ffffff);
+}
+
+/* Better tier gets slightly more emphasis */
+.better .selectButton {
+  background-color: var(--rr-color-brand-primary, #c4a77d);
+  color: var(--rr-color-text-inverse, #ffffff);
+}
+
+.better .selectButton:hover {
+  background-color: var(--rr-color-brand-primary-hover, #b89a6d);
+}

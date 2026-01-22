@@ -1,11 +1,11 @@
 'use client';
 
-import { ReactNode } from 'react';
 import { Download, Eye, FileText, Shield, Receipt, FileCheck, ClipboardList, Package } from 'lucide-react';
-import { useDocument, DocumentData, DocumentType } from './DocumentContext';
+import { useDocument } from './DocumentContext';
+import type { DocumentData, DocumentType } from './DocumentContext';
 import styles from './DocumentCard.module.css';
 
-const DOCUMENT_ICONS: Record<DocumentType, React.ComponentType<{ size?: number; className?: string }>> = {
+const DOCUMENT_ICONS: Record<DocumentType, typeof FileText> = {
   contract: FileText,
   warranty: Shield,
   receipt: Receipt,

@@ -1,7 +1,21 @@
 /**
  * UI Components
- * Reusable, design-system aligned components
+ * Shared, reusable UI primitives
  */
 
+// Feedback
+export { ErrorBoundary } from './ErrorBoundary';
+export { ToastProvider, useToast } from './Toast';
+export { Modal } from './Modal';
+export { Skeleton } from './Skeleton';
+
+// Display
+export { ProgressIndicator } from './ProgressIndicator';
 export { TrustBar } from './TrustBar';
-export { ProgressIndicator, type ProgressStep } from './ProgressIndicator';
+export { Badge } from './Badge';
+
+// Layout
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './Card';
+
+// Actions
+export { Button } from './Button';

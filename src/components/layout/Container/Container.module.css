@@ -1,0 +1,53 @@
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.padded {
+  padding-left: var(--rr-space-4, 16px);
+  padding-right: var(--rr-space-4, 16px);
+}
+
+@media (min-width: 768px) {
+  .padded {
+    padding-left: var(--rr-space-6, 24px);
+    padding-right: var(--rr-space-6, 24px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .padded {
+    padding-left: var(--rr-space-8, 32px);
+    padding-right: var(--rr-space-8, 32px);
+  }
+}
+
+/* Sizes */
+.sizeSm {
+  max-width: 640px;
+}
+
+.sizeMd {
+  max-width: 768px;
+}
+
+.sizeLg {
+  max-width: 1024px;
+}
+
+.sizeXl {
+  max-width: var(--rr-container-max-width, 1280px);
+}
+
+.sizeFull {
+  max-width: none;
+}
+
+/* Center vertical */
+.centerVertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+}

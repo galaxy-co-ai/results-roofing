@@ -1,7 +1,7 @@
-# Trust Badge Images
-# Placeholder for trust badge images:
-# - BBB A+ rating badge
-# - GAF certification badge
-# - Owens Corning badge
-# - Other licensing/certification badges
-# Awaiting client assets
+# Trust badge images
+# This directory will contain trust/credential badge images:
+# - bbb-accredited.svg
+# - gaf-certified.svg
+# - owens-corning.svg
+# - licensed-insured.svg
+# Keep this file to preserve directory structure (awaiting client assets)

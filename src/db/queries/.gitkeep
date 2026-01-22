@@ -1,4 +1,7 @@
-# Database Query Functions
-# Placeholder for reusable database query functions
-# E.g., getQuoteById, createLead, updateOrderStatus
-# Pending implementation
+# Database query functions
+# This directory will contain reusable database queries:
+# - quotes.ts
+# - leads.ts
+# - orders.ts
+# - appointments.ts
+# Keep this file to preserve directory structure

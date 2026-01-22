@@ -1,0 +1,53 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--rr-font-family-sans, 'Inter', sans-serif);
+  font-weight: var(--rr-font-weight-medium, 500);
+  border-radius: var(--rr-radius-full, 9999px);
+  white-space: nowrap;
+}
+
+/* Sizes */
+.sm {
+  height: 20px;
+  padding: 0 var(--rr-space-2, 8px);
+  font-size: var(--rr-font-size-xs, 12px);
+}
+
+.md {
+  height: 24px;
+  padding: 0 var(--rr-space-3, 12px);
+  font-size: var(--rr-font-size-sm, 14px);
+}
+
+/* Variants */
+.default {
+  background-color: var(--rr-color-surface-secondary, #faf8f5);
+  color: var(--rr-color-text-secondary, #5c5c5c);
+}
+
+.primary {
+  background-color: var(--rr-color-brand-primary-light, #f5f0e6);
+  color: var(--rr-color-brand-primary, #c4a77d);
+}
+
+.success {
+  background-color: var(--rr-color-status-success-light, #dcfce7);
+  color: var(--rr-color-status-success, #16a34a);
+}
+
+.warning {
+  background-color: var(--rr-color-status-warning-light, #fef3c7);
+  color: var(--rr-color-status-warning, #d97706);
+}
+
+.error {
+  background-color: var(--rr-color-status-error-light, #fee2e2);
+  color: var(--rr-color-status-error, #dc2626);
+}
+
+.info {
+  background-color: var(--rr-color-status-info-light, #dbeafe);
+  color: var(--rr-color-status-info, #2563eb);
+}

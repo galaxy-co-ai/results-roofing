@@ -1,0 +1,81 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-3, 12px);
+  padding: var(--rr-space-4, 16px);
+  background-color: var(--rr-color-surface-primary, #ffffff);
+  border: 1px solid var(--rr-color-border-subtle, #e8e0d4);
+  border-radius: var(--rr-radius-lg, 12px);
+  text-decoration: none;
+  transition: all var(--rr-transition-fast, 150ms) ease;
+  position: relative;
+}
+
+.card:hover {
+  border-color: var(--rr-color-brand-primary, #c4a77d);
+  background-color: var(--rr-color-surface-secondary, #faf8f5);
+  box-shadow: var(--rr-shadow-sm, 0 2px 8px rgba(44, 44, 44, 0.04));
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--rr-color-brand-primary, #c4a77d);
+  outline-offset: 2px;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.disabled:hover {
+  border-color: var(--rr-color-border-subtle, #e8e0d4);
+  background-color: var(--rr-color-surface-primary, #ffffff);
+  box-shadow: none;
+}
+
+/* Icon */
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background-color: var(--rr-color-brand-primary-light, #f5f0e6);
+  border-radius: var(--rr-radius-md, 8px);
+  color: var(--rr-color-brand-primary, #c4a77d);
+  flex-shrink: 0;
+}
+
+.card:hover .iconWrapper {
+  background-color: var(--rr-color-brand-primary, #c4a77d);
+  color: var(--rr-color-text-inverse, #ffffff);
+}
+
+/* Content */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-1, 4px);
+  flex: 1;
+  min-width: 0;
+}
+
+.label {
+  font-family: var(--rr-font-family-sans, 'Inter', sans-serif);
+  font-size: var(--rr-font-size-base, 16px);
+  font-weight: var(--rr-font-weight-medium, 500);
+  color: var(--rr-color-text-primary, #2c2c2c);
+}
+
+.description {
+  font-family: var(--rr-font-family-sans, 'Inter', sans-serif);
+  font-size: var(--rr-font-size-sm, 14px);
+  color: var(--rr-color-text-secondary, #5c5c5c);
+}
+
+/* Badge */
+.badge {
+  position: absolute;
+  top: var(--rr-space-3, 12px);
+  right: var(--rr-space-3, 12px);
+}

@@ -1,0 +1,109 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--rr-color-surface-primary, #ffffff);
+  border-radius: var(--rr-radius-lg, 12px);
+  overflow: hidden;
+}
+
+/* Variants */
+.default {
+  border: 1px solid var(--rr-color-border-subtle, #e8e0d4);
+}
+
+.elevated {
+  box-shadow: var(--rr-shadow-md, 0 4px 12px rgba(44, 44, 44, 0.08));
+}
+
+.outlined {
+  border: 2px solid var(--rr-color-border-default, #d4ccc0);
+}
+
+.interactive {
+  border: 1px solid var(--rr-color-border-subtle, #e8e0d4);
+  cursor: pointer;
+  transition: all var(--rr-transition-fast, 150ms) ease;
+}
+
+.interactive:hover {
+  border-color: var(--rr-color-brand-primary, #c4a77d);
+  box-shadow: var(--rr-shadow-md, 0 4px 12px rgba(44, 44, 44, 0.08));
+}
+
+.interactive:focus-visible {
+  outline: 2px solid var(--rr-color-brand-primary, #c4a77d);
+  outline-offset: 2px;
+}
+
+/* Padding */
+.paddingNone {
+  padding: 0;
+}
+
+.paddingSm {
+  padding: var(--rr-space-3, 12px);
+}
+
+.paddingMd {
+  padding: var(--rr-space-4, 16px);
+}
+
+@media (min-width: 768px) {
+  .paddingMd {
+    padding: var(--rr-space-5, 20px);
+  }
+}
+
+.paddingLg {
+  padding: var(--rr-space-5, 20px);
+}
+
+@media (min-width: 768px) {
+  .paddingLg {
+    padding: var(--rr-space-6, 24px);
+  }
+}
+
+/* Header */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-1, 4px);
+  padding-bottom: var(--rr-space-4, 16px);
+  border-bottom: 1px solid var(--rr-color-border-subtle, #e8e0d4);
+  margin-bottom: var(--rr-space-4, 16px);
+}
+
+/* Title */
+.title {
+  font-family: var(--rr-font-family-sans, 'Inter', sans-serif);
+  font-size: var(--rr-font-size-lg, 18px);
+  font-weight: var(--rr-font-weight-semibold, 600);
+  color: var(--rr-color-text-primary, #2c2c2c);
+  margin: 0;
+  line-height: var(--rr-line-height-tight, 1.25);
+}
+
+/* Description */
+.description {
+  font-family: var(--rr-font-family-sans, 'Inter', sans-serif);
+  font-size: var(--rr-font-size-sm, 14px);
+  color: var(--rr-color-text-secondary, #5c5c5c);
+  margin: 0;
+  line-height: var(--rr-line-height-normal, 1.5);
+}
+
+/* Content */
+.content {
+  flex: 1;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-3, 12px);
+  padding-top: var(--rr-space-4, 16px);
+  border-top: 1px solid var(--rr-color-border-subtle, #e8e0d4);
+  margin-top: var(--rr-space-4, 16px);
+}

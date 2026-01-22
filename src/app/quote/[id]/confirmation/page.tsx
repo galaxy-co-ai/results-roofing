@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { CheckCircle, Calendar, FileText, Mail, MessageCircle, Home } from 'lucide-react';
+import { CheckCircle, Calendar, Mail, MessageCircle, Home } from 'lucide-react';
 import { db, schema, eq } from '@/db/index';
 import { ConfirmationSupport } from '@/components/features/support';
 import styles from './page.module.css';

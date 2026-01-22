@@ -2,7 +2,8 @@
 
 import { useRef, useEffect } from 'react';
 import { X, Download, Printer, Share2, FileSignature } from 'lucide-react';
-import { useDocument, DocumentData } from './DocumentContext';
+import { useDocument } from './DocumentContext';
+import type { DocumentData } from './DocumentContext';
 import { ContractDocument } from './templates/ContractDocument';
 import { WarrantyDocument } from './templates/WarrantyDocument';
 import { ReceiptDocument } from './templates/ReceiptDocument';

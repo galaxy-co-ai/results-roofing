@@ -4,13 +4,27 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
  * Define routes that require authentication
  * - Portal routes require user to be signed in
  * - API routes for portal data require authentication
- * 
- * NOTE: Auth protection is disabled during development until Clerk is configured.
- * Uncomment the auth.protect() call when ready to enable authentication.
  */
 const isProtectedRoute = createRouteMatcher([
   '/portal(.*)',
   '/api/portal(.*)',
+]);
+
+/**
+ * Define public routes that never require auth
+ * - Landing page, quote flow, marketing pages
+ * - Public API endpoints (quotes, leads)
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const _isPublicRoute = createRouteMatcher([
+  '/',
+  '/quote(.*)',
+  '/api/quotes(.*)',
+  '/api/leads(.*)',
+  '/api/payments/webhook(.*)',
+  '/api/pricing-tiers(.*)',
+  '/sign-in(.*)',
+  '/sign-up(.*)',
 ]);
 
 /**
@@ -19,10 +33,10 @@ const isProtectedRoute = createRouteMatcher([
  * Protected routes: customer portal
  */
 export default clerkMiddleware(async (auth, req) => {
-  // TODO: Enable authentication when Clerk is configured
-  // if (isProtectedRoute(req)) {
-  //   await auth.protect();
-  // }
+  // Protect portal routes
+  if (isProtectedRoute(req)) {
+    await auth.protect();
+  }
 });
 
 export const config = {

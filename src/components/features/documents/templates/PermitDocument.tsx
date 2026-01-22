@@ -1,5 +1,5 @@
 import { CheckCircle } from 'lucide-react';
-import { DocumentData } from '../DocumentContext';
+import type { DocumentData } from '../DocumentContext';
 import styles from './DocumentStyles.module.css';
 
 interface PermitDocumentProps {

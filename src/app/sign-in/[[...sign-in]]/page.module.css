@@ -1,0 +1,78 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--rr-space-6);
+  background-color: var(--rr-color-background);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rr-space-6);
+  width: 100%;
+  max-width: 440px;
+}
+
+.header {
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--rr-text-3xl);
+  font-weight: var(--rr-font-bold);
+  color: var(--rr-color-text-primary);
+}
+
+.subtitle {
+  margin: var(--rr-space-2) 0 0;
+  font-size: var(--rr-text-base);
+  color: var(--rr-color-text-secondary);
+}
+
+.clerkRoot {
+  width: 100%;
+}
+
+.clerkCard {
+  background-color: var(--rr-color-surface);
+  border-radius: var(--rr-radius-lg);
+  box-shadow: var(--rr-shadow-md);
+}
+
+.clerkHeaderTitle {
+  display: none;
+}
+
+.clerkHeaderSubtitle {
+  display: none;
+}
+
+.clerkButton {
+  background-color: var(--rr-color-primary);
+  border-radius: var(--rr-radius-md);
+}
+
+.clerkButton:hover {
+  background-color: var(--rr-color-primary-hover);
+}
+
+.clerkInput {
+  border-radius: var(--rr-radius-md);
+  border-color: var(--rr-color-border);
+}
+
+.clerkInput:focus {
+  border-color: var(--rr-color-primary);
+}
+
+.clerkLink {
+  color: var(--rr-color-primary);
+}
+
+.clerkLink:hover {
+  color: var(--rr-color-primary-hover);
+}

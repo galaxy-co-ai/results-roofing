@@ -152,9 +152,9 @@ export function ChatWidget() {
             <div className={`${styles.message} ${styles.support}`}>
               <div className={styles.messageAvatar}>RR</div>
               <div className={styles.typingIndicator}>
-                <span></span>
-                <span></span>
-                <span></span>
+                <span />
+                <span />
+                <span />
               </div>
             </div>
           )}

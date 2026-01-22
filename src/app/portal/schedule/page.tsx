@@ -5,7 +5,6 @@ import {
   MapPin, 
   CheckCircle,
   Sun,
-  CloudSun,
   Truck,
   HardHat,
   ClipboardCheck,
@@ -183,7 +182,7 @@ export default function SchedulePage() {
         <section className={styles.tipsCard}>
           <h2 className={styles.sectionTitle}>Prepare for Installation</h2>
           <p className={styles.tipsIntro}>
-            Here's what you can do to prepare for a smooth installation:
+            Here&apos;s what you can do to prepare for a smooth installation:
           </p>
           <ul className={styles.tipsList}>
             {PREPARATION_TIPS.map((tip, index) => (
