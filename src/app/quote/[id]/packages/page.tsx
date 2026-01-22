@@ -20,7 +20,7 @@ interface TierCard {
   shingleType: string;
   shingleBrand: string;
   warrantyYears: string;
-  warrantyType: string;
+  warrantyType: string | null;
   isPopular: boolean;
   features: string[];
 }
