@@ -17,6 +17,16 @@
   max-width: 520px;
 }
 
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-gap-md);
+  padding: var(--rr-space-16) 0;
+  color: var(--rr-color-text-secondary);
+}
+
 /* ========================================
    HEADER
    ======================================== */
