@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { db, schema, eq } from '@/db/index';
+import { estimateRoofSqft, calculatePriceRanges } from '@/lib/pricing';
 
 const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ'];
 
@@ -9,6 +10,16 @@ interface AddressParts {
   city: string;
   state: string;
   zip: string;
+}
+
+interface StructuredAddress {
+  streetAddress: string;
+  city: string;
+  state: string;
+  zip: string;
+  lat?: number;
+  lng?: number;
+  placeId?: string;
 }
 
 /**
@@ -43,56 +54,109 @@ function parseAddress(fullAddress: string): AddressParts | null {
   return { address, city, state, zip };
 }
 
+/**
+ * Check if request body is structured address from Google Places
+ */
+function isStructuredAddress(body: unknown): body is StructuredAddress {
+  if (typeof body !== 'object' || body === null) return false;
+  const obj = body as Record<string, unknown>;
+  return (
+    typeof obj.streetAddress === 'string' &&
+    typeof obj.city === 'string' &&
+    typeof obj.state === 'string' &&
+    typeof obj.zip === 'string'
+  );
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { address: fullAddress } = body;
 
-    if (!fullAddress || typeof fullAddress !== 'string') {
+    let addressData: AddressParts;
+
+    // Handle both structured address (from Google Places) and plain text
+    if (isStructuredAddress(body)) {
+      addressData = {
+        address: body.streetAddress,
+        city: body.city,
+        state: body.state.toUpperCase(),
+        zip: body.zip,
+      };
+    } else if (body.address && typeof body.address === 'string') {
+      const parsed = parseAddress(body.address);
+      if (!parsed) {
+        return NextResponse.json(
+          { error: 'Invalid address format. Please enter a complete address with city, state, and ZIP.' },
+          { status: 400 }
+        );
+      }
+      addressData = parsed;
+    } else {
       return NextResponse.json(
         { error: 'Address is required' },
         { status: 400 }
       );
     }
 
-    // Parse the address
-    const parsed = parseAddress(fullAddress);
-    if (!parsed) {
+    // Check if state is in service area
+    if (!SERVICE_STATES.includes(addressData.state)) {
       return NextResponse.json(
-        { error: 'Invalid address format. Please enter a complete address with city, state, and ZIP.' },
+        {
+          error: `Sorry, we currently only serve ${SERVICE_STATES.join(', ')}. Your state (${addressData.state}) is not in our service area.`,
+          outOfArea: true,
+          state: addressData.state,
+        },
         { status: 400 }
       );
     }
 
-    // Check if state is in service area
-    if (!SERVICE_STATES.includes(parsed.state)) {
-      return NextResponse.json(
-        { error: `Sorry, we currently only serve ${SERVICE_STATES.join(', ')}. Your state (${parsed.state}) is not in our service area.` },
-        { status: 400 }
-      );
-    }
+    // Estimate roof square footage for preliminary pricing
+    const sqftEstimate = estimateRoofSqft(addressData.state, addressData.zip);
+
+    // Get pricing tiers
+    const pricingTiers = await db.query.pricingTiers.findMany({
+      where: eq(schema.pricingTiers.isActive, true),
+      orderBy: (tiers, { asc }) => [asc(tiers.sortOrder)],
+    });
+
+    // Calculate preliminary price ranges
+    const priceRanges = calculatePriceRanges(
+      sqftEstimate.sqftMin,
+      sqftEstimate.sqftMax,
+      pricingTiers
+    );
 
     // Create lead first
     const [lead] = await db
       .insert(schema.leads)
       .values({
-        address: parsed.address,
-        city: parsed.city,
-        state: parsed.state,
-        zip: parsed.zip,
+        address: addressData.address,
+        city: addressData.city,
+        state: addressData.state,
+        zip: addressData.zip,
       })
       .returning();
 
-    // Create quote linked to lead
+    // Create quote linked to lead with preliminary estimate
     const [quote] = await db
       .insert(schema.quotes)
       .values({
         leadId: lead.id,
-        address: parsed.address,
-        city: parsed.city,
-        state: parsed.state,
-        zip: parsed.zip,
+        address: addressData.address,
+        city: addressData.city,
+        state: addressData.state,
+        zip: addressData.zip,
         status: 'preliminary',
+        sqftTotal: sqftEstimate.sqftEstimate.toString(),
+        pricingData: {
+          estimated: true,
+          sqftEstimate: sqftEstimate.sqftEstimate,
+          sqftMin: sqftEstimate.sqftMin,
+          sqftMax: sqftEstimate.sqftMax,
+          confidence: sqftEstimate.confidence,
+          source: sqftEstimate.source,
+          tiers: priceRanges,
+        },
         // Set expiration to 30 days from now
         expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       })
@@ -106,6 +170,12 @@ export async function POST(request: NextRequest) {
         city: quote.city,
         state: quote.state,
         zip: quote.zip,
+      },
+      estimate: {
+        sqft: sqftEstimate.sqftEstimate,
+        sqftRange: { min: sqftEstimate.sqftMin, max: sqftEstimate.sqftMax },
+        confidence: sqftEstimate.confidence,
+        tiers: priceRanges,
       },
     });
   } catch (error) {

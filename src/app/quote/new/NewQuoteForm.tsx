@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { MapPin, Loader2, AlertCircle, Home, ChevronRight } from 'lucide-react';
+import { Loader2, AlertCircle, Home, ChevronRight } from 'lucide-react';
+import { AddressAutocomplete, OutOfAreaCapture, type ParsedAddress } from '@/components/features/address';
 import styles from './page.module.css';
 
 const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ'];
@@ -12,35 +13,79 @@ export default function NewQuoteForm() {
   const searchParams = useSearchParams();
   const initialAddress = searchParams.get('address') || '';
 
-  const [address, setAddress] = useState(initialAddress);
+  const [selectedAddress, setSelectedAddress] = useState<ParsedAddress | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [outOfAreaState, setOutOfAreaState] = useState<string | null>(null);
+
+  const handleAddressSelect = useCallback((address: ParsedAddress) => {
+    setSelectedAddress(address);
+    setError(null);
+    setOutOfAreaState(null);
+  }, []);
+
+  const handleServiceAreaError = useCallback((state: string) => {
+    setOutOfAreaState(state);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    if (!selectedAddress) {
+      setError('Please select an address from the dropdown');
+      return;
+    }
+
     setError(null);
     setIsLoading(true);
 
     try {
-      // Create new quote via API
+      // Create new quote via API with structured address
       const response = await fetch('/api/quotes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ address }),
+        body: JSON.stringify({
+          streetAddress: selectedAddress.streetAddress,
+          city: selectedAddress.city,
+          state: selectedAddress.state,
+          zip: selectedAddress.zip,
+          lat: selectedAddress.lat,
+          lng: selectedAddress.lng,
+          placeId: selectedAddress.placeId,
+        }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
+        if (data.outOfArea) {
+          setOutOfAreaState(data.state);
+          setIsLoading(false);
+          return;
+        }
         throw new Error(data.error || 'Failed to create quote');
       }
 
-      // Redirect to measuring page (which will show satellite measurement progress)
-      router.push(`/quote/${data.id}/measuring`);
+      // Redirect to estimate page with preliminary pricing
+      router.push(`/quote/${data.id}/estimate`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
       setIsLoading(false);
     }
+  }
+
+  // Show out-of-area capture form if address is outside service area
+  if (outOfAreaState) {
+    return (
+      <main className={styles.main}>
+        <div className={styles.container}>
+          <OutOfAreaCapture
+            state={outOfAreaState}
+            onClose={() => setOutOfAreaState(null)}
+          />
+        </div>
+      </main>
+    );
   }
 
   return (
@@ -53,8 +98,8 @@ export default function NewQuoteForm() {
           </div>
           <h1 className={styles.title}>Get Your Instant Quote</h1>
           <p className={styles.subtitle}>
-            Enter your home address and we&apos;ll measure your roof using satellite imagery.
-            You&apos;ll get pricing options in minutes.
+            Enter your home address to see estimated pricing in seconds.
+            No phone calls, no waiting.
           </p>
         </div>
 
@@ -64,24 +109,13 @@ export default function NewQuoteForm() {
             <label htmlFor="address" className={styles.label}>
               Property Address
             </label>
-            <div className={styles.inputWrapper}>
-              <MapPin className={styles.inputIcon} size={20} />
-              <input
-                id="address"
-                type="text"
-                name="address"
-                className={styles.input}
-                placeholder="123 Main Street, City, State ZIP"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                autoComplete="street-address"
-                required
-                disabled={isLoading}
-              />
-            </div>
-            <p className={styles.hint}>
-              Enter your full street address including city, state, and ZIP code
-            </p>
+            <AddressAutocomplete
+              onAddressSelect={handleAddressSelect}
+              onServiceAreaError={handleServiceAreaError}
+              initialValue={initialAddress}
+              disabled={isLoading}
+              serviceStates={SERVICE_STATES}
+            />
           </div>
 
           {error && (
@@ -94,16 +128,16 @@ export default function NewQuoteForm() {
           <button
             type="submit"
             className={styles.submitButton}
-            disabled={isLoading || !address.trim()}
+            disabled={isLoading || !selectedAddress}
           >
             {isLoading ? (
               <>
                 <Loader2 size={20} className={styles.spinner} />
-                Measuring Your Roof...
+                Getting Your Estimate...
               </>
             ) : (
               <>
-                Get My Quote
+                See My Pricing
                 <ChevronRight size={20} />
               </>
             )}

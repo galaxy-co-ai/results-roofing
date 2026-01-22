@@ -155,3 +155,46 @@ button {
   background-color: var(--rr-color-sandstone);
   color: var(--rr-color-charcoal);
 }
+
+/* ========================================
+   GOOGLE PLACES AUTOCOMPLETE STYLING
+   ======================================== */
+
+.pac-container {
+  font-family: var(--rr-font-family-sans);
+  border-radius: var(--rr-radius-md);
+  border: 1px solid var(--rr-color-border);
+  box-shadow: var(--rr-shadow-lg);
+  margin-top: var(--rr-space-1);
+  z-index: 9999;
+}
+
+.pac-item {
+  padding: var(--rr-space-3) var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  cursor: pointer;
+  transition: var(--rr-transition-colors);
+  border-top: 1px solid var(--rr-color-border);
+}
+
+.pac-item:first-child {
+  border-top: none;
+}
+
+.pac-item:hover,
+.pac-item-selected {
+  background-color: var(--rr-color-bg-secondary);
+}
+
+.pac-icon {
+  margin-right: var(--rr-space-3);
+}
+
+.pac-item-query {
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+}
+
+.pac-matched {
+  font-weight: var(--rr-font-weight-semibold);
+}

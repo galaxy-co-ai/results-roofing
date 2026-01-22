@@ -4,6 +4,7 @@
  */
 
 export * from './leads';
+export * from './out-of-area-leads';
 export * from './quotes';
 export * from './measurements';
 export * from './contracts';
