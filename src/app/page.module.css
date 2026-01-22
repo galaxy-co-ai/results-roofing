@@ -1,6 +1,6 @@
 /* =================================================
    HOME PAGE STYLES
-   Landing page hero section
+   Landing page with hero, value props, and CTAs
    ================================================= */
 
 .main {
@@ -9,25 +9,37 @@
   flex-direction: column;
 }
 
+/* ========================================
+   HERO SECTION
+   ======================================== */
+
 .hero {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: var(--rr-space-layout-md) var(--rr-space-page-gutter);
-  max-width: 800px;
-  margin: 0 auto;
+  padding: var(--rr-space-layout-lg) var(--rr-space-page-gutter);
+  min-height: 70vh;
+  background: linear-gradient(
+    to bottom,
+    var(--rr-color-bg-primary) 0%,
+    var(--rr-color-sand-light) 100%
+  );
+}
+
+.heroContent {
+  max-width: 680px;
+  width: 100%;
 }
 
 .title {
-  font-size: var(--rr-font-size-4xl);
+  font-size: var(--rr-font-size-3xl);
   font-weight: var(--rr-font-weight-semibold);
   line-height: var(--rr-line-height-tight);
   letter-spacing: var(--rr-letter-spacing-tight);
   color: var(--rr-color-text-primary);
-  margin-bottom: var(--rr-space-6);
+  margin-bottom: var(--rr-space-4);
 }
 
 .highlight {
@@ -37,19 +49,310 @@
 .subtitle {
   font-size: var(--rr-font-size-lg);
   color: var(--rr-color-text-secondary);
-  max-width: 600px;
   margin-bottom: var(--rr-space-8);
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.cta {
+/* ========================================
+   ADDRESS FORM
+   ======================================== */
+
+.addressForm {
   display: flex;
+  flex-direction: column;
+  gap: var(--rr-gap-sm);
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto var(--rr-space-6);
+}
+
+.inputWrapper {
+  position: relative;
+  flex: 1;
+}
+
+.inputIcon {
+  position: absolute;
+  left: var(--rr-space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--rr-color-stone);
+  pointer-events: none;
+}
+
+.addressInput {
+  width: 100%;
+  height: var(--rr-input-height);
+  padding: var(--rr-input-padding-y) var(--rr-input-padding-x);
+  padding-left: calc(var(--rr-space-4) + 20px + var(--rr-space-3));
+  font-size: var(--rr-input-font-size);
+  color: var(--rr-color-text-primary);
+  background-color: var(--rr-color-surface-default);
+  border: var(--rr-input-border-width) solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  transition: var(--rr-transition-colors), var(--rr-transition-shadow);
+}
+
+.addressInput::placeholder {
+  color: var(--rr-color-text-tertiary);
+}
+
+.addressInput:hover {
+  border-color: var(--rr-color-border-strong);
+}
+
+.addressInput:focus {
+  outline: none;
+  border-color: var(--rr-color-border-focus);
+  box-shadow: 0 0 0 3px var(--rr-color-focus-ring-alpha);
+}
+
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-gap-xs);
+  height: var(--rr-button-height-lg);
+  padding: 0 var(--rr-button-padding-x-lg);
+  font-size: var(--rr-button-font-size);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-charcoal);
+  background-color: var(--rr-color-sandstone);
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: var(--rr-transition-colors), var(--rr-transition-shadow);
+  min-width: var(--rr-button-min-width);
+}
+
+.submitButton:hover {
+  background-color: var(--rr-color-terracotta);
+  color: var(--rr-color-white);
+}
+
+.submitButton:focus-visible {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: var(--rr-focus-ring-offset);
+}
+
+/* ========================================
+   SERVICE AREA
+   ======================================== */
+
+.serviceArea {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--rr-gap-xs);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+}
+
+.serviceAreaLabel {
+  color: var(--rr-color-text-tertiary);
+}
+
+.serviceAreaStates {
+  font-weight: var(--rr-font-weight-medium);
+}
+
+/* ========================================
+   TRUST BAR
+   ======================================== */
+
+.trustBar {
+  background-color: var(--rr-color-charcoal);
+  padding: var(--rr-space-4) var(--rr-space-page-gutter);
+}
+
+.trustBarContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rr-gap-sm);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.trustItem {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-gap-xs);
+  color: var(--rr-color-text-inverse);
+  font-size: var(--rr-font-size-sm);
+}
+
+.trustIcon {
+  color: var(--rr-color-sandstone);
+}
+
+/* ========================================
+   SECTION COMMON STYLES
+   ======================================== */
+
+.sectionContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--rr-space-page-gutter);
+  width: 100%;
+}
+
+.sectionTitle {
+  font-size: var(--rr-font-size-2xl);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  text-align: center;
+  margin-bottom: var(--rr-space-4);
+}
+
+.sectionSubtitle {
+  font-size: var(--rr-font-size-lg);
+  color: var(--rr-color-text-secondary);
+  text-align: center;
+  margin-bottom: var(--rr-space-8);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ========================================
+   VALUE PROPOSITIONS
+   ======================================== */
+
+.valueProps {
+  padding: var(--rr-space-layout-lg) 0;
+  background-color: var(--rr-color-bg-secondary);
+}
+
+.valuePropsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--rr-gap-lg);
+}
+
+.valuePropCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--rr-card-padding-md);
+  background-color: var(--rr-color-bg-primary);
+  border-radius: var(--rr-card-border-radius);
+  border: 1px solid var(--rr-color-border-default);
+}
+
+.valuePropIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-sand-light);
+  color: var(--rr-color-sandstone);
+  margin-bottom: var(--rr-space-4);
+}
+
+.valuePropTitle {
+  font-size: var(--rr-font-size-lg);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.valuePropDescription {
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-secondary);
+  margin-bottom: 0;
+}
+
+/* ========================================
+   HOW IT WORKS
+   ======================================== */
+
+.howItWorks {
+  padding: var(--rr-space-layout-lg) 0;
+  background-color: var(--rr-color-bg-primary);
+}
+
+.stepsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-gap-lg);
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
   gap: var(--rr-gap-md);
+  position: relative;
+}
+
+.stepNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-sandstone);
+  color: var(--rr-color-charcoal);
+  font-size: var(--rr-font-size-lg);
+  font-weight: var(--rr-font-weight-semibold);
+}
+
+.stepContent {
+  flex: 1;
+  padding-top: var(--rr-space-1);
+}
+
+.stepTitle {
+  font-size: var(--rr-font-size-lg);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-1);
+}
+
+.stepDescription {
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-secondary);
+  margin-bottom: 0;
+}
+
+.stepConnector {
+  display: none;
+}
+
+/* ========================================
+   BOTTOM CTA
+   ======================================== */
+
+.bottomCta {
+  padding: var(--rr-space-layout-lg) 0;
+  background-color: var(--rr-color-charcoal);
+  text-align: center;
+}
+
+.ctaTitle {
+  font-size: var(--rr-font-size-2xl);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-inverse);
+  margin-bottom: var(--rr-space-3);
+}
+
+.ctaSubtitle {
+  font-size: var(--rr-font-size-lg);
+  color: var(--rr-color-stone);
+  margin-bottom: var(--rr-space-6);
 }
 
 .ctaButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--rr-gap-xs);
   height: var(--rr-button-height-lg);
   padding: 0 var(--rr-button-padding-x-lg);
   font-size: var(--rr-button-font-size);
@@ -59,7 +362,6 @@
   border-radius: var(--rr-radius-md);
   text-decoration: none;
   transition: var(--rr-transition-colors), var(--rr-transition-shadow);
-  min-width: var(--rr-button-min-width);
 }
 
 .ctaButton:hover {
@@ -72,17 +374,70 @@
   outline-offset: var(--rr-focus-ring-offset);
 }
 
-/* Responsive */
+/* ========================================
+   RESPONSIVE STYLES
+   ======================================== */
+
+@media (min-width: 640px) {
+  .addressForm {
+    flex-direction: row;
+  }
+
+  .submitButton {
+    width: auto;
+  }
+
+  .trustBarContent {
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--rr-gap-xl);
+  }
+}
+
 @media (min-width: 768px) {
   .hero {
-    padding: var(--rr-space-layout-lg) var(--rr-space-page-gutter-lg);
+    padding: var(--rr-space-layout-xl) var(--rr-space-page-gutter-lg);
   }
 
   .title {
-    font-size: var(--rr-font-size-display);
+    font-size: var(--rr-font-size-4xl);
   }
 
   .subtitle {
     font-size: var(--rr-font-size-xl);
+  }
+
+  .valuePropsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .sectionContainer {
+    padding: 0 var(--rr-space-page-gutter-lg);
+  }
+
+  .stepsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--rr-gap-xl);
+  }
+
+  .step {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .stepContent {
+    padding-top: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .title {
+    font-size: var(--rr-font-size-display);
+  }
+
+  .stepsGrid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }

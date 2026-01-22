@@ -1,0 +1,231 @@
+/* =================================================
+   NEW QUOTE PAGE STYLES
+   Address entry and quote initiation
+   ================================================= */
+
+.main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--rr-space-layout-md) var(--rr-space-page-gutter);
+  background-color: var(--rr-color-bg-primary);
+}
+
+.container {
+  width: 100%;
+  max-width: 520px;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+  text-align: center;
+  margin-bottom: var(--rr-space-8);
+}
+
+.iconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-sand-light);
+  color: var(--rr-color-sandstone);
+  margin-bottom: var(--rr-space-4);
+}
+
+.title {
+  font-size: var(--rr-font-size-2xl);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-3);
+}
+
+.subtitle {
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-secondary);
+  margin-bottom: 0;
+}
+
+/* ========================================
+   FORM
+   ======================================== */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-gap-lg);
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-gap-xs);
+}
+
+.label {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.inputIcon {
+  position: absolute;
+  left: var(--rr-space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--rr-color-stone);
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  height: var(--rr-input-height);
+  padding: var(--rr-input-padding-y) var(--rr-input-padding-x);
+  padding-left: calc(var(--rr-space-4) + 20px + var(--rr-space-3));
+  font-size: var(--rr-input-font-size);
+  color: var(--rr-color-text-primary);
+  background-color: var(--rr-color-surface-default);
+  border: var(--rr-input-border-width) solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  transition: var(--rr-transition-colors), var(--rr-transition-shadow);
+}
+
+.input::placeholder {
+  color: var(--rr-color-text-tertiary);
+}
+
+.input:hover:not(:disabled) {
+  border-color: var(--rr-color-border-strong);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--rr-color-border-focus);
+  box-shadow: 0 0 0 3px var(--rr-color-focus-ring-alpha);
+}
+
+.input:disabled {
+  background-color: var(--rr-color-bg-muted);
+  cursor: not-allowed;
+}
+
+.hint {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-tertiary);
+  margin-bottom: 0;
+}
+
+/* ========================================
+   ERROR
+   ======================================== */
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-gap-sm);
+  padding: var(--rr-space-3) var(--rr-space-4);
+  background-color: var(--rr-color-status-error-bg);
+  color: var(--rr-color-status-error);
+  border-radius: var(--rr-radius-md);
+  font-size: var(--rr-font-size-sm);
+}
+
+/* ========================================
+   SUBMIT BUTTON
+   ======================================== */
+
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-gap-xs);
+  height: var(--rr-button-height-lg);
+  padding: 0 var(--rr-button-padding-x-lg);
+  font-size: var(--rr-button-font-size);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-charcoal);
+  background-color: var(--rr-color-sandstone);
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: var(--rr-transition-colors), var(--rr-transition-shadow);
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: var(--rr-color-terracotta);
+  color: var(--rr-color-white);
+}
+
+.submitButton:focus-visible {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: var(--rr-focus-ring-offset);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   SERVICE AREA NOTICE
+   ======================================== */
+
+.serviceAreaNotice {
+  margin-top: var(--rr-space-8);
+  padding: var(--rr-space-4);
+  background-color: var(--rr-color-bg-tertiary);
+  border-radius: var(--rr-radius-md);
+  text-align: center;
+}
+
+.serviceAreaTitle {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-1);
+}
+
+.serviceAreaText {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  margin-bottom: 0;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 768px) {
+  .main {
+    padding: var(--rr-space-layout-lg) var(--rr-space-page-gutter-lg);
+  }
+
+  .title {
+    font-size: var(--rr-font-size-3xl);
+  }
+
+  .subtitle {
+    font-size: var(--rr-font-size-lg);
+  }
+}

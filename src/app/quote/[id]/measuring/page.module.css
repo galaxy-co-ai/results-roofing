@@ -1,0 +1,212 @@
+/* =================================================
+   MEASURING PAGE STYLES
+   Roof measurement progress indicator
+   ================================================= */
+
+.main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--rr-space-layout-md) var(--rr-space-page-gutter);
+  background-color: var(--rr-color-bg-primary);
+}
+
+.container {
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+}
+
+/* ========================================
+   ICON
+   ======================================== */
+
+.iconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-sand-light);
+  color: var(--rr-color-sandstone);
+  margin-bottom: var(--rr-space-6);
+}
+
+.icon {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.title {
+  font-size: var(--rr-font-size-2xl);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-3);
+}
+
+.subtitle {
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-secondary);
+  margin-bottom: var(--rr-space-8);
+}
+
+/* ========================================
+   PROGRESS BAR
+   ======================================== */
+
+.progressWrapper {
+  margin-bottom: var(--rr-space-8);
+}
+
+.progressBar {
+  height: 8px;
+  background-color: var(--rr-color-sand);
+  border-radius: var(--rr-radius-full);
+  overflow: hidden;
+  margin-bottom: var(--rr-space-2);
+}
+
+.progressFill {
+  height: 100%;
+  background-color: var(--rr-color-sandstone);
+  border-radius: var(--rr-radius-full);
+  transition: width 0.5s ease-out;
+}
+
+.progressText {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-tertiary);
+}
+
+/* ========================================
+   STEPS LIST
+   ======================================== */
+
+.stepsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-gap-sm);
+  text-align: left;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-gap-sm);
+  padding: var(--rr-space-3) var(--rr-space-4);
+  background-color: var(--rr-color-surface-default);
+  border-radius: var(--rr-radius-md);
+  border: 1px solid var(--rr-color-border-default);
+  transition: var(--rr-transition-colors);
+}
+
+.step_pending {
+  opacity: 0.5;
+}
+
+.step_in_progress {
+  border-color: var(--rr-color-sandstone);
+  background-color: var(--rr-color-sand-light);
+}
+
+.step_completed {
+  border-color: var(--rr-color-success);
+}
+
+.stepIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--rr-color-stone);
+}
+
+.step_in_progress .stepIcon {
+  color: var(--rr-color-sandstone);
+}
+
+.step_completed .stepIcon {
+  color: var(--rr-color-success);
+}
+
+.stepDot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-stone);
+}
+
+.stepLabel {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+}
+
+.step_in_progress .stepLabel {
+  color: var(--rr-color-text-primary);
+  font-weight: var(--rr-font-weight-medium);
+}
+
+.step_completed .stepLabel {
+  color: var(--rr-color-text-primary);
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   ERROR
+   ======================================== */
+
+.error {
+  margin-top: var(--rr-space-6);
+  padding: var(--rr-space-3) var(--rr-space-4);
+  background-color: var(--rr-color-status-error-bg);
+  color: var(--rr-color-status-error);
+  border-radius: var(--rr-radius-md);
+  font-size: var(--rr-font-size-sm);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 768px) {
+  .main {
+    padding: var(--rr-space-layout-lg) var(--rr-space-page-gutter-lg);
+  }
+
+  .title {
+    font-size: var(--rr-font-size-3xl);
+  }
+
+  .subtitle {
+    font-size: var(--rr-font-size-lg);
+  }
+}

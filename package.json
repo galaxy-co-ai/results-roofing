@@ -13,6 +13,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
+    "db:seed": "node scripts/seed-pricing-tiers.mjs",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "test:e2e": "playwright test"
@@ -36,6 +37,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.49.1",
+    "tsx": "^4.19.2",
     "@testing-library/react": "^16.1.0",
     "@types/node": "^22.10.5",
     "@types/react": "^18.3.18",
