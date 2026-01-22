@@ -1,0 +1,57 @@
+.helpNote {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-primary);
+  border-radius: 8px;
+}
+
+.helpIcon {
+  color: var(--rr-color-text-tertiary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.helpContent {
+  flex: 1;
+}
+
+.helpTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0 0 4px;
+}
+
+.helpText {
+  font-size: 0.8125rem;
+  color: var(--rr-color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.chatLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--rr-color-primary-500);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.chatLink:hover {
+  color: var(--rr-color-primary-600);
+  text-decoration: underline;
+}
+
+.chatLink:focus-visible {
+  outline: 2px solid var(--rr-color-primary-300);
+  outline-offset: 2px;
+}

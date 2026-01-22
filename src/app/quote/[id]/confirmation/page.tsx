@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { CheckCircle, Calendar, FileText, Phone, Mail, Home } from 'lucide-react';
+import { CheckCircle, Calendar, FileText, Mail, MessageCircle, Home } from 'lucide-react';
 import { db, schema, eq } from '@/db/index';
+import { ConfirmationSupport } from '@/components/features/support';
 import styles from './page.module.css';
 
 interface ConfirmationPageProps {
@@ -39,9 +40,9 @@ const NEXT_STEPS = [
     description: 'Your installation is scheduled. We\'ll remind you 2 days before.',
   },
   {
-    icon: Phone,
+    icon: MessageCircle,
     title: 'We\'ll Be in Touch',
-    description: 'Our team will call to confirm details and answer questions.',
+    description: 'Our team will reach out to confirm details and answer questions.',
   },
 ];
 
@@ -152,19 +153,7 @@ export default async function ConfirmationPage({ params }: ConfirmationPageProps
         </div>
 
         {/* Contact Info */}
-        <div className={styles.contactSection}>
-          <p className={styles.contactTitle}>Questions? We&apos;re here to help.</p>
-          <div className={styles.contactMethods}>
-            <a href="tel:+18005551234" className={styles.contactLink}>
-              <Phone size={16} />
-              (800) 555-1234
-            </a>
-            <a href="mailto:support@resultsroofing.com" className={styles.contactLink}>
-              <Mail size={16} />
-              support@resultsroofing.com
-            </a>
-          </div>
-        </div>
+        <ConfirmationSupport />
       </div>
     </main>
   );

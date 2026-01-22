@@ -4,8 +4,6 @@ import {
   Clock, 
   MapPin, 
   CheckCircle,
-  Phone,
-  Mail,
   Sun,
   CloudSun,
   Truck,
@@ -13,6 +11,7 @@ import {
   ClipboardCheck,
   AlertCircle
 } from 'lucide-react';
+import { ScheduleSupport } from '@/components/features/support';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -208,22 +207,7 @@ export default function SchedulePage() {
       </div>
 
       {/* Contact Card */}
-      <section className={styles.contactCard}>
-        <h2 className={styles.contactTitle}>Questions About Your Schedule?</h2>
-        <p className={styles.contactText}>
-          Our project coordinators are available to help with any scheduling concerns.
-        </p>
-        <div className={styles.contactLinks}>
-          <a href="tel:+15551234567" className={styles.contactLink}>
-            <Phone size={18} />
-            <span>(555) 123-4567</span>
-          </a>
-          <a href="mailto:schedule@resultsroofing.com" className={styles.contactLink}>
-            <Mail size={18} />
-            <span>schedule@resultsroofing.com</span>
-          </a>
-        </div>
-      </section>
+      <ScheduleSupport />
     </div>
   );
 }

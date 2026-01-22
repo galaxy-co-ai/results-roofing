@@ -5,7 +5,6 @@ import {
   Eye, 
   CheckCircle,
   Clock,
-  AlertCircle,
   Filter,
   Search,
   FolderOpen,
@@ -13,6 +12,7 @@ import {
   FileCheck,
   Receipt
 } from 'lucide-react';
+import { HelpNoteSupport } from '@/components/features/support';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -217,17 +217,11 @@ export default function DocumentsPage() {
       </div>
 
       {/* Help Note */}
-      <div className={styles.helpNote}>
-        <AlertCircle size={18} className={styles.helpIcon} />
-        <div className={styles.helpContent}>
-          <p className={styles.helpTitle}>Need a document you don't see?</p>
-          <p className={styles.helpText}>
-            Contact our support team at{' '}
-            <a href="mailto:support@resultsroofing.com">support@resultsroofing.com</a>{' '}
-            and we'll help you locate it.
-          </p>
-        </div>
-      </div>
+      <HelpNoteSupport 
+        title="Need a document you don't see?"
+        message="We'll help you locate it."
+        chatPrompt="I need help finding a document"
+      />
     </div>
   );
 }

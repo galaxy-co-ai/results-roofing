@@ -6,10 +6,9 @@ import {
   CreditCard, 
   Calendar, 
   LogOut,
-  User,
-  Phone,
-  Mail
+  User
 } from 'lucide-react';
+import { SidebarSupport } from '@/components/features/support';
 import styles from './layout.module.css';
 
 export const metadata: Metadata = {
@@ -69,19 +68,7 @@ export default function PortalLayout({
         </nav>
 
         {/* Help Section */}
-        <div className={styles.helpSection}>
-          <h3 className={styles.helpTitle}>Need Help?</h3>
-          <div className={styles.helpLinks}>
-            <a href="tel:+15551234567" className={styles.helpLink}>
-              <Phone size={16} />
-              <span>(555) 123-4567</span>
-            </a>
-            <a href="mailto:support@resultsroofing.com" className={styles.helpLink}>
-              <Mail size={16} />
-              <span>support@resultsroofing.com</span>
-            </a>
-          </div>
-        </div>
+        <SidebarSupport />
 
         {/* Logout */}
         <div className={styles.sidebarFooter}>
