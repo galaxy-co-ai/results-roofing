@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/galaxy-co-ai/results-roofing/tree/main/docs
+    about: Check out the project documentation before opening an issue
+  - name: Troubleshooting Guide
+    url: https://github.com/galaxy-co-ai/results-roofing/blob/main/docs/reference/troubleshooting.md
+    about: Review common issues and solutions
