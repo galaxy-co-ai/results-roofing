@@ -5,3 +5,4 @@
 
 export { StatusTimeline } from './StatusTimeline';
 export { QuickActionCard } from './QuickActionCard';
+export { PortalUserCard } from './PortalUserCard';

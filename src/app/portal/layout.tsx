@@ -5,10 +5,9 @@ import {
   FileText, 
   CreditCard, 
   Calendar, 
-  LogOut,
-  User
 } from 'lucide-react';
 import { SidebarSupport } from '@/components/features/support';
+import { PortalUserCard } from '@/components/features/portal';
 import styles from './layout.module.css';
 
 export const metadata: Metadata = {
@@ -34,24 +33,16 @@ export default function PortalLayout({
   return (
     <div className={styles.portalLayout}>
       {/* Sidebar */}
-      <aside className={styles.sidebar}>
+      <aside className={styles.sidebar} aria-label="Portal sidebar">
         <div className={styles.sidebarHeader}>
-          <Link href="/" className={styles.logo}>
-            <span className={styles.logoIcon}>RR</span>
+          <Link href="/" className={styles.logo} aria-label="Results Roofing Home">
+            <span className={styles.logoIcon} aria-hidden="true">RR</span>
             <span className={styles.logoText}>Results Roofing</span>
           </Link>
         </div>
 
-        {/* User Info */}
-        <div className={styles.userCard}>
-          <div className={styles.userAvatar}>
-            <User size={20} />
-          </div>
-          <div className={styles.userInfo}>
-            <span className={styles.userName}>Welcome back</span>
-            <span className={styles.userEmail}>customer@email.com</span>
-          </div>
-        </div>
+        {/* User Info - Client Component */}
+        <PortalUserCard />
 
         {/* Navigation */}
         <nav className={styles.nav} aria-label="Portal navigation">
@@ -59,7 +50,7 @@ export default function PortalLayout({
             {NAV_ITEMS.map((item) => (
               <li key={item.id}>
                 <Link href={item.href} className={styles.navLink}>
-                  <item.icon size={20} className={styles.navIcon} />
+                  <item.icon size={20} className={styles.navIcon} aria-hidden="true" />
                   <span className={styles.navLabel}>{item.label}</span>
                 </Link>
               </li>
@@ -70,17 +61,11 @@ export default function PortalLayout({
         {/* Help Section */}
         <SidebarSupport />
 
-        {/* Logout */}
-        <div className={styles.sidebarFooter}>
-          <button className={styles.logoutButton}>
-            <LogOut size={18} />
-            <span>Sign Out</span>
-          </button>
-        </div>
+        {/* Logout - Now in PortalUserCard */}
       </aside>
 
       {/* Main Content */}
-      <main className={styles.mainContent}>
+      <main className={styles.mainContent} id="main-content">
         {children}
       </main>
     </div>

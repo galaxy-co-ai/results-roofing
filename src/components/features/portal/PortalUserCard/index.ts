@@ -1,0 +1,1 @@
+export { PortalUserCard } from './PortalUserCard';

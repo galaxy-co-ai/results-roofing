@@ -1,0 +1,112 @@
+/* =================================================
+   PORTAL USER CARD STYLES
+   ================================================= */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.userCard {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--rr-color-bg-tertiary);
+  border-radius: 12px;
+}
+
+.userAvatar {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rr-color-sandstone);
+  overflow: hidden;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarInitials {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--rr-color-sandstone);
+}
+
+.userInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.userEmail {
+  font-size: 0.8125rem;
+  color: var(--rr-color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.signOutButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.625rem 1rem;
+  background: transparent;
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: 8px;
+  color: var(--rr-color-text-secondary);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.signOutButton:hover {
+  background: var(--rr-color-surface-hover);
+  color: var(--rr-color-text-primary);
+  border-color: var(--rr-color-text-tertiary);
+}
+
+.signOutButton:focus-visible {
+  outline: 2px solid var(--rr-color-sandstone);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+
+  .userCard {
+    padding: 0.75rem;
+  }
+}

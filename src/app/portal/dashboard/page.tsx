@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useUser } from '@clerk/nextjs';
 import { 
   FileText, 
   CreditCard, 
@@ -11,36 +12,13 @@ import {
   Home,
   Wrench,
   ChevronRight,
-  ChevronDown
+  ChevronDown,
+  AlertCircle
 } from 'lucide-react';
+import { useOrders, useOrderDetails } from '@/hooks';
 import { FAQBar } from '@/components/features/faq';
+import { Skeleton } from '@/components/ui';
 import styles from './page.module.css';
-
-// Mock data - would come from database in production
-const PROJECT_STATUS = {
-  status: 'in_progress',
-  currentPhase: 'Materials Ordered',
-  nextMilestone: 'Installation',
-  nextMilestoneDate: 'February 3, 2026',
-  address: '123 Main Street, Austin, TX 78701',
-  package: 'Better Package',
-  totalPrice: 15000,
-  depositPaid: 750,
-  balanceDue: 14250,
-  materials: 'GAF Timberline HDZ Architectural Shingles',
-  warrantyYears: 30,
-  estimatedDuration: '1-2 days',
-  roofSize: '2,150 sq ft',
-};
-
-const TIMELINE_STEPS = [
-  { id: 'contract', label: 'Contract Signed', status: 'completed', date: 'Jan 22, 2026' },
-  { id: 'deposit', label: 'Deposit Paid', status: 'completed', date: 'Jan 22, 2026' },
-  { id: 'materials', label: 'Materials Ordered', status: 'current', date: 'Jan 23, 2026' },
-  { id: 'installation', label: 'Installation', status: 'pending', date: 'Feb 3, 2026' },
-  { id: 'inspection', label: 'Final Inspection', status: 'pending', date: 'Feb 4, 2026' },
-  { id: 'complete', label: 'Project Complete', status: 'pending', date: 'Feb 4, 2026' },
-];
 
 const QUICK_ACTIONS = [
   { 
@@ -49,7 +27,7 @@ const QUICK_ACTIONS = [
     description: 'Contract, warranty, and permits',
     href: '/portal/documents', 
     icon: FileText,
-    badge: '3 new',
+    badge: null,
   },
   { 
     id: 'payments', 
@@ -78,19 +56,205 @@ function formatCurrency(amount: number): string {
   }).format(amount);
 }
 
-function getStatusIcon(status: string) {
+function formatDate(dateString: string | Date | null): string {
+  if (!dateString) return 'TBD';
+  const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
+function getStatusIcon(status: 'completed' | 'current' | 'upcoming') {
   switch (status) {
     case 'completed':
-      return <CheckCircle size={18} className={styles.statusCompleted} />;
+      return <CheckCircle size={18} className={styles.statusCompleted} aria-hidden="true" />;
     case 'current':
-      return <Clock size={18} className={styles.statusCurrent} />;
+      return <Clock size={18} className={styles.statusCurrent} aria-hidden="true" />;
     default:
-      return <div className={styles.statusPending} />;
+      return <div className={styles.statusPending} aria-hidden="true" />;
   }
+}
+
+function getStatusDisplayName(status: string): string {
+  const statusMap: Record<string, string> = {
+    pending: 'Pending',
+    deposit_paid: 'Deposit Paid',
+    scheduled: 'Scheduled',
+    in_progress: 'In Progress',
+    completed: 'Completed',
+    cancelled: 'Cancelled',
+    refunded: 'Refunded',
+  };
+  return statusMap[status] || status;
+}
+
+function getTierDisplayName(tier: string): string {
+  const tierMap: Record<string, string> = {
+    good: 'Good Package',
+    better: 'Better Package',
+    best: 'Best Package',
+  };
+  return tierMap[tier] || tier;
+}
+
+function getCurrentPhase(status: string): string {
+  const phaseMap: Record<string, string> = {
+    pending: 'Awaiting Deposit',
+    deposit_paid: 'Materials Ordered',
+    scheduled: 'Installation Scheduled',
+    in_progress: 'Installation In Progress',
+    completed: 'Project Complete',
+    cancelled: 'Cancelled',
+    refunded: 'Refunded',
+  };
+  return phaseMap[status] || 'Unknown';
+}
+
+/**
+ * Loading skeleton for the dashboard
+ */
+function DashboardSkeleton() {
+  return (
+    <div className={styles.dashboard}>
+      {/* Header Skeleton */}
+      <header className={styles.header}>
+        <Skeleton variant="text" width="60%" height={32} />
+        <Skeleton variant="text" width="40%" height={20} />
+      </header>
+
+      {/* Status Card Skeleton */}
+      <section className={styles.statusCard}>
+        <div className={styles.statusHeader}>
+          <Skeleton variant="rounded" width={120} height={36} />
+          <Skeleton variant="text" width={100} />
+        </div>
+        <Skeleton variant="rounded" width="100%" height={56} />
+        <Skeleton variant="rounded" width="100%" height={48} />
+      </section>
+
+      {/* Two Column Skeleton */}
+      <div className={styles.twoColumn}>
+        <section className={styles.timelineCard}>
+          <Skeleton variant="text" width="40%" height={24} />
+          <div style={{ marginTop: '1rem' }}>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                <Skeleton variant="circular" width={18} height={18} />
+                <div style={{ flex: 1 }}>
+                  <Skeleton variant="text" width="60%" />
+                  <Skeleton variant="text" width="40%" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.actionsCard}>
+          <Skeleton variant="text" width="40%" height={24} />
+          <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} variant="rounded" width="100%" height={76} />
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Error state component
+ */
+function DashboardError({ message }: { message: string }) {
+  return (
+    <div className={styles.dashboard}>
+      <div className={styles.errorState} role="alert">
+        <AlertCircle size={48} aria-hidden="true" />
+        <h2>Something went wrong</h2>
+        <p>{message}</p>
+        <Link href="/portal/dashboard" className={styles.retryLink}>
+          Try Again
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Empty state when user has no orders
+ */
+function NoOrdersState() {
+  return (
+    <div className={styles.dashboard}>
+      <header className={styles.header}>
+        <div className={styles.headerContent}>
+          <h1 className={styles.title}>Your Project Dashboard</h1>
+          <p className={styles.subtitle}>
+            Track your roof replacement progress and manage your project
+          </p>
+        </div>
+      </header>
+
+      <div className={styles.emptyState}>
+        <Home size={48} aria-hidden="true" />
+        <h2>No Projects Yet</h2>
+        <p>Start your roofing journey by getting a free quote.</p>
+        <Link href="/quote/new" className={styles.ctaButton}>
+          Get Your Free Quote
+        </Link>
+      </div>
+    </div>
+  );
 }
 
 export default function DashboardPage() {
   const [detailsExpanded, setDetailsExpanded] = useState(false);
+  
+  // Get authenticated user from Clerk
+  const { user, isLoaded: userLoaded } = useUser();
+  const userEmail = user?.primaryEmailAddress?.emailAddress ?? null;
+
+  // Fetch user's orders
+  const { 
+    data: ordersData, 
+    isLoading: ordersLoading, 
+    error: ordersError 
+  } = useOrders(userEmail);
+
+  // Get the most recent order (first in the list since it's sorted by createdAt desc)
+  const currentOrderId = ordersData?.orders?.[0]?.id ?? null;
+
+  // Fetch order details for the current order
+  const { 
+    data: orderDetails, 
+    isLoading: detailsLoading, 
+    error: detailsError 
+  } = useOrderDetails(currentOrderId);
+
+  // Loading state
+  if (!userLoaded || ordersLoading || (currentOrderId && detailsLoading)) {
+    return <DashboardSkeleton />;
+  }
+
+  // Error state
+  if (ordersError || detailsError) {
+    return <DashboardError message="We couldn't load your project details. Please try again." />;
+  }
+
+  // No orders state
+  if (!ordersData?.orders?.length || !orderDetails) {
+    return <NoOrdersState />;
+  }
+
+  const { order, timeline } = orderDetails;
+
+  // Build full address
+  const fullAddress = `${order.propertyAddress}, ${order.propertyCity}, ${order.propertyState}`;
+
+  // Get next milestone from timeline
+  const nextMilestone = timeline.find(step => step.status === 'current' || step.status === 'upcoming');
 
   return (
     <div className={styles.dashboard}>
@@ -105,76 +269,83 @@ export default function DashboardPage() {
       </header>
 
       {/* Project Status Card */}
-      <section className={styles.statusCard}>
+      <section className={styles.statusCard} aria-labelledby="status-heading">
+        <h2 id="status-heading" className="sr-only">Project Status</h2>
+        
         <div className={styles.statusHeader}>
           <div className={styles.statusBadge}>
-            <Wrench size={16} />
-            <span>In Progress</span>
+            <Wrench size={16} aria-hidden="true" />
+            <span>{getStatusDisplayName(order.status)}</span>
           </div>
-          <span className={styles.statusPhase}>{PROJECT_STATUS.currentPhase}</span>
+          <span className={styles.statusPhase}>{getCurrentPhase(order.status)}</span>
         </div>
 
         <div className={styles.propertyInfo}>
-          <Home size={18} className={styles.propertyIcon} />
-          <span className={styles.propertyAddress}>{PROJECT_STATUS.address}</span>
+          <Home size={18} className={styles.propertyIcon} aria-hidden="true" />
+          <span className={styles.propertyAddress}>{fullAddress}</span>
         </div>
 
-        <div className={styles.nextMilestone}>
-          <Calendar size={18} className={styles.milestoneIcon} />
-          <span className={styles.milestoneText}>
-            <strong>{PROJECT_STATUS.nextMilestone}</strong> scheduled for {PROJECT_STATUS.nextMilestoneDate}
-          </span>
-        </div>
+        {nextMilestone && (
+          <div className={styles.nextMilestone}>
+            <Calendar size={18} className={styles.milestoneIcon} aria-hidden="true" />
+            <span className={styles.milestoneText}>
+              <strong>{nextMilestone.label}</strong>
+              {order.scheduledStartDate 
+                ? ` scheduled for ${formatDate(order.scheduledStartDate)}`
+                : ' - date to be scheduled'
+              }
+            </span>
+          </div>
+        )}
 
         {/* Expandable Project Details */}
         <button 
           className={styles.detailsToggle}
           onClick={() => setDetailsExpanded(!detailsExpanded)}
           aria-expanded={detailsExpanded}
+          aria-controls="project-details"
         >
           <span>Project Details</span>
           <ChevronDown 
             size={18} 
             className={`${styles.detailsChevron} ${detailsExpanded ? styles.detailsChevronOpen : ''}`}
+            aria-hidden="true"
           />
         </button>
 
-        <div className={`${styles.projectDetails} ${detailsExpanded ? styles.projectDetailsOpen : ''}`}>
+        <div 
+          id="project-details"
+          className={`${styles.projectDetails} ${detailsExpanded ? styles.projectDetailsOpen : ''}`}
+        >
           <div className={styles.detailsGrid}>
             <div className={styles.detailItem}>
               <span className={styles.detailLabel}>Package</span>
-              <span className={styles.detailValue}>{PROJECT_STATUS.package}</span>
+              <span className={styles.detailValue}>{getTierDisplayName(order.selectedTier)}</span>
             </div>
             <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Roof Size</span>
-              <span className={styles.detailValue}>{PROJECT_STATUS.roofSize}</span>
+              <span className={styles.detailLabel}>Confirmation</span>
+              <span className={styles.detailValue}>{order.confirmationNumber}</span>
             </div>
             <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Materials</span>
-              <span className={styles.detailValue}>{PROJECT_STATUS.materials}</span>
-            </div>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Est. Duration</span>
-              <span className={styles.detailValue}>{PROJECT_STATUS.estimatedDuration}</span>
-            </div>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Warranty</span>
-              <span className={styles.detailValue}>{PROJECT_STATUS.warrantyYears} Years</span>
+              <span className={styles.detailLabel}>Scheduled Date</span>
+              <span className={styles.detailValue}>
+                {order.scheduledStartDate ? formatDate(order.scheduledStartDate) : 'To be scheduled'}
+              </span>
             </div>
             <div className={styles.detailItem}>
               <span className={styles.detailLabel}>Project Total</span>
-              <span className={styles.detailValue}>{formatCurrency(PROJECT_STATUS.totalPrice)}</span>
+              <span className={styles.detailValue}>{formatCurrency(order.totalPrice)}</span>
             </div>
           </div>
           
           <div className={styles.paymentSummary}>
             <div className={styles.paymentRow}>
-              <span>Deposit Paid</span>
-              <span className={styles.paymentPaid}>{formatCurrency(PROJECT_STATUS.depositPaid)}</span>
+              <span>Total Paid</span>
+              <span className={styles.paymentPaid}>{formatCurrency(order.totalPaid)}</span>
             </div>
             <div className={styles.paymentRow}>
               <span>Balance Due</span>
-              <span className={styles.paymentDue}>{formatCurrency(PROJECT_STATUS.balanceDue)}</span>
+              <span className={styles.paymentDue}>{formatCurrency(order.balance)}</span>
             </div>
           </div>
         </div>
@@ -183,23 +354,25 @@ export default function DashboardPage() {
       {/* Two Column Layout */}
       <div className={styles.twoColumn}>
         {/* Timeline */}
-        <section className={styles.timelineCard}>
-          <h2 className={styles.sectionTitle}>Project Timeline</h2>
-          <ol className={styles.timeline}>
-            {TIMELINE_STEPS.map((step, index) => (
+        <section className={styles.timelineCard} aria-labelledby="timeline-heading">
+          <h2 id="timeline-heading" className={styles.sectionTitle}>Project Timeline</h2>
+          <ol className={styles.timeline} aria-label="Project progress timeline">
+            {timeline.map((step, index) => (
               <li 
                 key={step.id} 
                 className={`${styles.timelineItem} ${styles[`timeline_${step.status}`]}`}
               >
                 <div className={styles.timelineMarker}>
                   {getStatusIcon(step.status)}
-                  {index < TIMELINE_STEPS.length - 1 && (
-                    <div className={styles.timelineConnector} />
+                  {index < timeline.length - 1 && (
+                    <div className={styles.timelineConnector} aria-hidden="true" />
                   )}
                 </div>
                 <div className={styles.timelineContent}>
                   <span className={styles.timelineLabel}>{step.label}</span>
-                  <span className={styles.timelineDate}>{step.date}</span>
+                  {step.date && (
+                    <span className={styles.timelineDate}>{formatDate(step.date)}</span>
+                  )}
                 </div>
               </li>
             ))}
@@ -207,12 +380,17 @@ export default function DashboardPage() {
         </section>
 
         {/* Quick Actions */}
-        <section className={styles.actionsCard}>
-          <h2 className={styles.sectionTitle}>Quick Actions</h2>
+        <section className={styles.actionsCard} aria-labelledby="actions-heading">
+          <h2 id="actions-heading" className={styles.sectionTitle}>Quick Actions</h2>
           <div className={styles.actionsList}>
             {QUICK_ACTIONS.map((action) => (
-              <Link key={action.id} href={action.href} className={styles.actionItem}>
-                <div className={styles.actionIcon}>
+              <Link 
+                key={action.id} 
+                href={action.href} 
+                className={styles.actionItem}
+                aria-label={`${action.label}: ${action.description}`}
+              >
+                <div className={styles.actionIcon} aria-hidden="true">
                   <action.icon size={22} />
                 </div>
                 <div className={styles.actionContent}>
@@ -222,7 +400,7 @@ export default function DashboardPage() {
                 {action.badge && (
                   <span className={styles.actionBadge}>{action.badge}</span>
                 )}
-                <ChevronRight size={18} className={styles.actionArrow} />
+                <ChevronRight size={18} className={styles.actionArrow} aria-hidden="true" />
               </Link>
             ))}
           </div>
