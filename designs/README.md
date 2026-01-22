@@ -9,16 +9,17 @@ designs/
 ├── components/          # Component library designs
 │   ├── ui/              # Base UI components (Button, Input, Card, etc.)
 │   ├── features/        # Feature-specific components
-│   │   └── package-tier-cards.pen  # Package tier card designs
-│   └── layout/          # Layout components (Header, Footer, etc.)
+│   │   └── package-tier-cards.pen
+│   ├── feedback/        # Feedback components (Toast, Modal, Skeleton, Spinner)
+│   └── navigation/      # Navigation components (Progress Indicator)
 ├── screens/             # Full screen designs
-│   ├── quote-flow/      # Quote flow screens (Address → Estimate → Packages → Checkout)
-│   └── portal/          # Customer portal screens
-├── system/              # Design system
-│   └── tokens.pen       # Visual design tokens reference
-└── flows/               # User flow diagrams
-    └── quote-journey.pen # Complete quote-to-contract flow visualization
+│   ├── quote-flow/      # Quote flow screens (Steps 1-9, desktop + mobile)
+│   └── portal/          # Customer portal screens (Dashboard, Documents, etc.)
+└── system/              # Design system
+    └── design-tokens-style-guide.pen  # Visual design tokens reference
 ```
+
+**Note:** User flows are documented in `docs/planning/05-ui-ux-design.md` rather than as separate design files.
 
 ## Design File Organization
 

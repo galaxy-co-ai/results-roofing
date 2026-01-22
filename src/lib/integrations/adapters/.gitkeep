@@ -1,0 +1,10 @@
+# Integration Adapters
+# Placeholder for external service adapters:
+# - measurement/ (Roofr)
+# - crm/ (JobNimbus)
+# - esignature/ (Documenso)
+# - booking/ (Cal.com)
+# - financing/ (Wisetack)
+# - sms/ (SignalWire)
+# - email/ (Resend)
+# Pending Sprint 4 implementation

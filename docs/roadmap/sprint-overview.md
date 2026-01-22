@@ -2,85 +2,117 @@
 
 High-level view of project phases, sprints, and milestones.
 
+**Last Updated:** 2026-01-22
+
 <!-- AI: This document provides a bird's-eye view of the project timeline. Update as phases complete and sprints are planned. This is a living document that evolves throughout the project. -->
 
 ---
 
 ## Project Phases
 
-<!-- AI: Track phase progress. Update status as work progresses:
-- Not Started: Phase hasn't begun
-- In Progress: Currently working on this phase
-- Complete: All phase deliverables done and verified -->
-
 | Phase | Status | Description |
 |-------|--------|-------------|
-| Phase 0 | <!-- AI: In Progress / Complete --> | Project Setup |
-| Phase 1 | <!-- AI: Not Started / In Progress / Complete --> | Discovery (docs 01-04) |
-| Phase 2A | <!-- AI: Not Started / In Progress / Complete --> | Design - UI/UX |
-| Phase 2B | <!-- AI: Not Started / In Progress / Complete --> | Design - Technical |
-| Phase 2C | <!-- AI: Not Started / In Progress / Complete --> | Design - Quality |
-| Phase 3 | <!-- AI: Not Started / In Progress / Complete --> | Sprint Planning |
-| Phase 4+ | <!-- AI: Not Started / In Progress / Complete --> | Execution |
+| Phase 0 | ✅ Complete | Project Setup |
+| Phase 1 | ✅ Complete | Discovery (docs 01-04) |
+| Phase 2A | ✅ Complete | Design - UI/UX (docs 05, 06, 13, 16) |
+| Phase 2B | ✅ Complete | Design - Technical (docs 07, 08, 09, 15, 17) |
+| Phase 2C | ⏸️ Deferred | Design - Quality (docs 10, 11, 12, 14) |
+| Phase 3 | 🔄 In Progress | Sprint Planning & Execution |
+| Phase 4+ | ⏳ Pending | Full Execution |
 
 ---
 
 ## Sprint List
 
-<!-- AI: Add sprints during Phase 3 (Sprint Planning). For each sprint:
-- Number sequentially
-- Give descriptive name based on primary focus
-- Track status: Pending, In Progress, Complete
-- Summarize what the sprint accomplishes
-
-Example:
-| 01 | Foundation | 4 | Complete | Core app structure and routing |
-| 02 | Data Layer | 4 | In Progress | Database models and API scaffolding |
--->
-
-| Sprint | Name | Phase | Status | Summary |
+| Sprint | Name | Focus | Status | Summary |
 |--------|------|-------|--------|---------|
-| <!-- AI: Add sprints as they are planned --> | | | | |
-
-*Sprints will be defined during Phase 3 (Sprint Planning)*
+| 0 | Infrastructure | Setup | ✅ Complete | Next.js project, GitHub repo, Vercel, Neon PostgreSQL, CI/CD |
+| 1 | Quote Flow | Core Funnel | 🔄 In Progress | Homepage, quote pages, API routes, pricing tiers |
+| 2 | Checkout | Conversion | ⏳ Pending | Financing, scheduling, contract, payment pages |
+| 3 | Portal | Customer Access | ⏳ Pending | Authentication, dashboard, documents, schedule management |
+| 4 | Integrations | External Services | ⏳ Pending | Roofr, Stripe, Cal.com, Documenso, Wisetack |
 
 ---
 
 ## Milestones
 
-<!-- AI: Define key milestones for the project. Milestones are significant checkpoints that represent meaningful progress. Examples:
-- MVP: Minimum viable product ready for testing
-- Alpha: Feature complete, internal testing
-- Beta: Ready for external user testing
-- v1.0: Production release
-
-For each milestone:
-- Name: Short, memorable name
-- Target: Sprint number or date when expected
-- Description: What must be true for milestone to be reached -->
-
-| Milestone | Target | Description |
-|-----------|--------|-------------|
-| <!-- AI: Define project milestones --> | <!-- AI: Sprint number or date --> | <!-- AI: Milestone criteria --> |
+| Milestone | Target | Description | Status |
+|-----------|--------|-------------|--------|
+| Foundation | Sprint 0 | Project setup, repo, CI/CD, database | ✅ Complete |
+| Quote Flow MVP | Sprint 1 | Address → Packages flow working | 🔄 In Progress |
+| Checkout MVP | Sprint 2 | Complete quote-to-deposit flow | ⏳ Pending |
+| Portal MVP | Sprint 3 | Customer can log in and view project | ⏳ Pending |
+| Full Integration | Sprint 4 | All external services connected | ⏳ Pending |
+| MVP Launch | Post-Sprint 4 | Production deployment for testing | ⏳ Pending |
 
 ---
 
 ## Phase Gate Criteria
-
-<!-- AI: Reference phase-gates.md for detailed criteria. Summary: -->
 
 Before moving to the next phase, verify:
 - All required documents are complete (see [Phase Gates](./phase-gates.md))
 - No blocking issues remain
 - Stakeholder approval obtained (if required)
 
+### Completed Gates
+- ✅ **Gate 0:** Ready to Discover - Tech stack confirmed
+- ✅ **Gate 1:** Ready to Design - Docs 01-04 complete
+- ✅ **Gate 2:** Ready to Plan Sprints - Phase 2A/2B complete
+- ✅ **Gate 3:** Ready to Execute - Sprint 1 started
+
 ---
 
-## Dependencies
+## Sprint Dependencies
 
-See [DEPENDENCIES.md](../planning/DEPENDENCIES.md) for document dependencies.
+```
+Sprint 0 (Infrastructure)
+    ↓
+Sprint 1 (Quote Flow) ← Current
+    ↓
+Sprint 2 (Checkout)
+    ↓
+Sprint 3 (Portal)
+    ↓
+Sprint 4 (Integrations)
+```
 
-<!-- AI: Add sprint dependencies here after Phase 3. Document which sprints must complete before others can begin. -->
+**Critical Path:** Quote flow must work before checkout can be tested.
+
+---
+
+## Current Sprint: Sprint 1 - Quote Flow
+
+### Completed
+- [x] Homepage with hero, trust bar, value props
+- [x] `/quote/new` - Address entry
+- [x] `/quote/[id]/measuring` - Satellite progress
+- [x] `/quote/[id]/packages` - Tier selection
+- [x] `/api/quotes` - Quote CRUD API
+- [x] Database seeded with pricing tiers
+
+### Remaining
+- [ ] `/api/quotes/[id]/select-tier` - Tier selection API
+- [ ] `/quote/[id]/financing` - Financing options
+- [ ] `/quote/[id]/schedule` - Appointment booking
+- [ ] `/quote/[id]/contract` - E-signature
+- [ ] `/quote/[id]/payment` - Deposit payment
+- [ ] `/quote/[id]/confirmation` - Success page
+
+### Blockers
+None - using mock data for measurements until Roofr integration.
+
+---
+
+## Key Dates
+
+| Event | Date | Notes |
+|-------|------|-------|
+| Project Start | 2026-01-21 | Session 1 |
+| Infrastructure Complete | 2026-01-21 | Session 17 |
+| Self-Pay Pivot | 2026-01-21 | Sessions 15-16 |
+| Design System Complete | 2026-01-21 | 31 .pen files |
+| First UI Sprint Start | 2026-01-21 | Session 18 |
+| Project Assessment | 2026-01-22 | This update |
 
 ---
 
@@ -90,7 +122,7 @@ See [DEPENDENCIES.md](../planning/DEPENDENCIES.md) for document dependencies.
 |----------|--------------|
 | [Phase Gates](./phase-gates.md) | Criteria for completing each phase |
 | [Progress Tracker](./progress-tracker.md) | Detailed task tracking |
-| [DEPENDENCIES.md](../planning/DEPENDENCIES.md) | Document dependency graph |
+| [SESSION-CONTEXT.md](../SESSION-CONTEXT.md) | Full session history |
 | [04. Feature Breakdown](../planning/04-feature-breakdown.md) | Features that inform sprint planning |
 
 ---
@@ -101,7 +133,7 @@ When working with this sprint overview:
 
 1. **During Planning**
    - Update phase statuses as work progresses
-   - Add sprints during Phase 3
+   - Add sprints as they are defined
    - Define meaningful milestones based on project goals
 
 2. **During Execution**
@@ -115,7 +147,7 @@ When working with this sprint overview:
    - Cross-reference with progress-tracker.md
 
 ### Quality Checklist
-- [ ] All phases have accurate status
-- [ ] Sprints are defined with clear scope
-- [ ] Milestones represent meaningful checkpoints
-- [ ] Dependencies documented where needed
+- [x] All phases have accurate status
+- [x] Sprints are defined with clear scope
+- [x] Milestones represent meaningful checkpoints
+- [x] Dependencies documented where needed
