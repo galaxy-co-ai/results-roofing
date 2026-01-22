@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { db, schema } from '@/db/index';
+import { logger } from '@/lib/utils';
 
 export async function POST(request: NextRequest) {
   try {
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
       id: lead.id,
     });
   } catch (error) {
-    console.error('Error saving out-of-area lead:', error);
+    logger.error('Error saving out-of-area lead', error);
     return NextResponse.json(
       { error: 'Failed to save your information' },
       { status: 500 }

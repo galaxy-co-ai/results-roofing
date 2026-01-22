@@ -1,0 +1,283 @@
+/* =================================================
+   CHECKOUT PAGE STYLES
+   Clean order summary and checkout flow
+   ================================================= */
+
+.main {
+  min-height: 100vh;
+  background-color: var(--rr-color-bg-primary);
+  padding: var(--rr-space-8) var(--rr-space-page-gutter);
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ========================================
+   BACK LINK
+   ======================================== */
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rr-space-1);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-tertiary);
+  text-decoration: none;
+  margin-bottom: var(--rr-space-6);
+  transition: var(--rr-transition-colors);
+}
+
+.backLink:hover {
+  color: var(--rr-color-text-secondary);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+  margin-bottom: var(--rr-space-8);
+}
+
+.title {
+  font-size: var(--rr-font-size-2xl);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.subtitle {
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-secondary);
+  margin-bottom: 0;
+}
+
+/* ========================================
+   SUMMARY CARD
+   ======================================== */
+
+.summaryCard {
+  background-color: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--rr-space-8);
+}
+
+.summaryHeader {
+  padding: var(--rr-space-4) var(--rr-space-5);
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.summaryTitle {
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin: 0;
+}
+
+.summaryContent {
+  padding: var(--rr-space-5);
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--rr-space-3);
+}
+
+.summaryRow:last-child {
+  margin-bottom: 0;
+}
+
+.summaryLabel {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+}
+
+.summaryValue {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  text-align: right;
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--rr-color-border-default);
+  margin: var(--rr-space-4) 0;
+}
+
+.summaryTotal {
+  font-size: var(--rr-font-size-lg);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+}
+
+.summaryDeposit {
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-sandstone);
+}
+
+/* ========================================
+   STEPS SECTION
+   ======================================== */
+
+.stepsSection {
+  margin-bottom: var(--rr-space-8);
+}
+
+.stepsTitle {
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-4);
+}
+
+.stepsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-3);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-3);
+  padding: var(--rr-space-4);
+  background-color: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+}
+
+.stepNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-sand-light);
+  color: var(--rr-color-text-secondary);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+}
+
+.stepContent {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-3);
+}
+
+.stepIcon {
+  color: var(--rr-color-stone);
+}
+
+.stepLabel {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+}
+
+/* ========================================
+   NOTICE
+   ======================================== */
+
+.notice {
+  display: flex;
+  gap: var(--rr-space-3);
+  padding: var(--rr-space-4);
+  background-color: var(--rr-color-success-light);
+  border-radius: var(--rr-radius-md);
+  margin-bottom: var(--rr-space-8);
+}
+
+.noticeIcon {
+  color: var(--rr-color-success);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.noticeTitle {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-1);
+}
+
+.noticeText {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  margin-bottom: 0;
+}
+
+/* ========================================
+   INCLUDED SECTION
+   ======================================== */
+
+.includedSection {
+  padding-top: var(--rr-space-6);
+  border-top: 1px solid var(--rr-color-border-default);
+}
+
+.includedTitle {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-4);
+}
+
+.includedList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.includedItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rr-space-2);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.includedItem:last-child {
+  margin-bottom: 0;
+}
+
+.includedIcon {
+  color: var(--rr-color-success);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 640px) {
+  .main {
+    padding: var(--rr-space-12) var(--rr-space-page-gutter);
+  }
+
+  .stepsList {
+    flex-direction: row;
+  }
+
+  .step {
+    flex: 1;
+    flex-direction: column;
+    text-align: center;
+    padding: var(--rr-space-5);
+  }
+
+  .stepContent {
+    flex-direction: column;
+  }
+}

@@ -8,12 +8,18 @@ import styles from './page.module.css';
 
 const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ'];
 
+const TCPA_CONSENT_TEXT = 
+  'I agree to receive text message updates about my roofing project. ' +
+  'Message & data rates may apply. Reply STOP to unsubscribe.';
+
 export default function NewQuoteForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialAddress = searchParams.get('address') || '';
 
   const [selectedAddress, setSelectedAddress] = useState<ParsedAddress | null>(null);
+  const [phone, setPhone] = useState('');
+  const [smsConsent, setSmsConsent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [outOfAreaState, setOutOfAreaState] = useState<string | null>(null);
@@ -52,6 +58,12 @@ export default function NewQuoteForm() {
           lat: selectedAddress.lat,
           lng: selectedAddress.lng,
           placeId: selectedAddress.placeId,
+          phone: phone || undefined,
+          smsConsent: smsConsent && phone ? {
+            consented: true,
+            consentText: TCPA_CONSENT_TEXT,
+            timestamp: new Date().toISOString(),
+          } : undefined,
         }),
       });
 
@@ -117,6 +129,43 @@ export default function NewQuoteForm() {
               serviceStates={SERVICE_STATES}
             />
           </div>
+
+          <div className={styles.inputGroup}>
+            <label htmlFor="phone" className={styles.label}>
+              Phone Number <span className={styles.optional}>(optional)</span>
+            </label>
+            <input
+              id="phone"
+              type="tel"
+              className={styles.input}
+              placeholder="(555) 555-5555"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              disabled={isLoading}
+              autoComplete="tel"
+            />
+          </div>
+
+          {phone && (
+            <div className={styles.consentGroup}>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  className={styles.checkbox}
+                  checked={smsConsent}
+                  onChange={(e) => setSmsConsent(e.target.checked)}
+                  disabled={isLoading}
+                  aria-describedby="sms-consent-text"
+                />
+                <span className={styles.checkboxText}>
+                  Text me updates about my quote
+                </span>
+              </label>
+              <p id="sms-consent-text" className={styles.consentDisclaimer}>
+                {TCPA_CONSENT_TEXT}
+              </p>
+            </div>
+          )}
 
           {error && (
             <div className={styles.error}>

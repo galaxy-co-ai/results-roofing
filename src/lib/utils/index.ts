@@ -2,6 +2,8 @@
  * Utility functions for Results Roofing
  */
 
+export { logger } from './logger';
+
 /**
  * Combines class names, filtering out falsy values
  */

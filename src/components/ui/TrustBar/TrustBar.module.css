@@ -1,0 +1,94 @@
+/* =================================================
+   TRUST BAR COMPONENT
+   Clean, understated trust signals
+   ================================================= */
+
+.trustBar {
+  padding: var(--rr-space-3) var(--rr-space-page-gutter);
+}
+
+.trustBar_light {
+  background-color: var(--rr-color-bg-tertiary);
+}
+
+.trustBar_dark {
+  background-color: var(--rr-color-charcoal);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rr-space-3);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+}
+
+.trustBar_light .icon {
+  color: var(--rr-color-sandstone);
+}
+
+.trustBar_dark .icon {
+  color: var(--rr-color-sandstone);
+}
+
+.text {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+}
+
+.trustBar_light .text {
+  color: var(--rr-color-text-primary);
+}
+
+.trustBar_dark .text {
+  color: var(--rr-color-text-inverse);
+}
+
+.subtext {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-normal);
+}
+
+.trustBar_light .subtext {
+  color: var(--rr-color-text-tertiary);
+}
+
+.trustBar_dark .subtext {
+  color: var(--rr-color-stone);
+}
+
+.divider {
+  display: none;
+  width: 1px;
+  height: 16px;
+}
+
+.trustBar_light .divider {
+  background-color: var(--rr-color-border-default);
+}
+
+.trustBar_dark .divider {
+  background-color: var(--rr-color-slate);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 640px) {
+  .container {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .divider {
+    display: block;
+  }
+}

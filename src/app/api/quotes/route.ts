@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { db, schema, eq } from '@/db/index';
 import { estimateRoofSqft, calculatePriceRanges } from '@/lib/pricing';
+import { logger } from '@/lib/utils';
 
 const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ'];
 
@@ -20,6 +21,12 @@ interface StructuredAddress {
   lat?: number;
   lng?: number;
   placeId?: string;
+  phone?: string;
+  smsConsent?: {
+    consented: boolean;
+    consentText: string;
+    timestamp: string;
+  };
 }
 
 /**
@@ -126,6 +133,16 @@ export async function POST(request: NextRequest) {
       pricingTiers
     );
 
+    // Extract phone and SMS consent from body
+    const phone = isStructuredAddress(body) ? body.phone : undefined;
+    const smsConsentData = isStructuredAddress(body) ? body.smsConsent : undefined;
+
+    // Get IP and user agent for TCPA compliance tracking
+    const ipAddress = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      request.headers.get('x-real-ip') ||
+      'unknown';
+    const userAgent = request.headers.get('user-agent') || 'unknown';
+
     // Create lead first
     const [lead] = await db
       .insert(schema.leads)
@@ -134,8 +151,23 @@ export async function POST(request: NextRequest) {
         city: addressData.city,
         state: addressData.state,
         zip: addressData.zip,
+        phone: phone || null,
       })
       .returning();
+
+    // Create SMS consent record if provided (F26: TCPA Compliance)
+    if (smsConsentData?.consented && phone) {
+      await db.insert(schema.smsConsents).values({
+        leadId: lead.id,
+        phone: phone,
+        consentGiven: true,
+        consentSource: 'web_form',
+        consentText: smsConsentData.consentText,
+        ipAddress,
+        userAgent,
+      });
+      logger.info('SMS consent recorded', { leadId: lead.id, phone });
+    }
 
     // Create quote linked to lead with preliminary estimate
     const [quote] = await db
@@ -179,7 +211,7 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Error creating quote:', error);
+    logger.error('Error creating quote', error);
     return NextResponse.json(
       { error: 'Failed to create quote' },
       { status: 500 }
@@ -212,7 +244,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(quote);
   } catch (error) {
-    console.error('Error fetching quote:', error);
+    logger.error('Error fetching quote', error);
     return NextResponse.json(
       { error: 'Failed to fetch quote' },
       { status: 500 }

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Check, Star, ChevronRight } from 'lucide-react';
 import { db, schema, eq } from '@/db/index';
+import { TrustBar } from '@/components/ui';
 import styles from './page.module.css';
 
 interface PackagesPageProps {
@@ -195,6 +196,9 @@ export default async function PackagesPage({ params }: PackagesPageProps) {
             All prices are valid for 30 days. Financing options available on the next step.
           </p>
         </div>
+
+        {/* Trust Credentials */}
+        <TrustBar variant="light" />
       </div>
     </main>
   );

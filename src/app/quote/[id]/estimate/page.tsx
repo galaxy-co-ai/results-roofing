@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Check, ChevronRight, Zap, Clock, Shield } from 'lucide-react';
 import { db, schema, eq } from '@/db/index';
+import { TrustBar } from '@/components/ui';
 import styles from './page.module.css';
 
 interface EstimatePageProps {
@@ -153,6 +154,9 @@ export default async function EstimatePage({ params }: EstimatePageProps) {
             permits, and full cleanup.
           </p>
         </div>
+
+        {/* Trust Credentials */}
+        <TrustBar variant="light" />
       </div>
     </main>
   );
