@@ -7,15 +7,6 @@ import styles from './page.module.css';
 
 const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ'];
 
-interface AddressValidation {
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  isValid: boolean;
-  errorMessage?: string;
-}
-
 export default function NewQuotePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -62,8 +53,8 @@ export default function NewQuotePage() {
           </div>
           <h1 className={styles.title}>Get Your Instant Quote</h1>
           <p className={styles.subtitle}>
-            Enter your home address and we'll measure your roof using satellite imagery.
-            You'll get pricing options in minutes.
+            Enter your home address and we&apos;ll measure your roof using satellite imagery.
+            You&apos;ll get pricing options in minutes.
           </p>
         </div>
 

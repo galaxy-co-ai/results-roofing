@@ -9,7 +9,6 @@ interface PackagesPageProps {
 
 // Mock measurement data - in production this would come from the quote
 const MOCK_SQFT = 2450;
-const MOCK_COMPLEXITY = 'moderate';
 
 interface TierCard {
   tier: string;

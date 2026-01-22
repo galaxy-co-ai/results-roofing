@@ -26,7 +26,6 @@ export default function MeasuringPage() {
 
   const [steps, setSteps] = useState(MEASUREMENT_STEPS);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Simulate measurement progress
@@ -82,7 +81,7 @@ export default function MeasuringPage() {
         {/* Header */}
         <h1 className={styles.title}>Measuring Your Roof</h1>
         <p className={styles.subtitle}>
-          We're using satellite imagery to measure your roof. This typically
+          We&apos;re using satellite imagery to measure your roof. This typically
           takes less than a minute.
         </p>
 
@@ -120,7 +119,6 @@ export default function MeasuringPage() {
           ))}
         </div>
 
-        {error && <p className={styles.error}>{error}</p>}
       </div>
     </main>
   );
