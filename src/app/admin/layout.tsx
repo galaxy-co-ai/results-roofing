@@ -10,6 +10,7 @@ import {
   LogOut,
   Zap,
   ClipboardList,
+  Database,
 } from 'lucide-react';
 import styles from './layout.module.css';
 
@@ -30,6 +31,7 @@ export const dynamic = 'force-dynamic';
 
 const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { id: 'database', label: 'Database', href: '/admin/database', icon: Database },
   { id: 'sow', label: 'SOW Tracker', href: '/admin/sow', icon: ClipboardList },
   { id: 'feedback', label: 'Feedback', href: '/admin/feedback', icon: MessageSquareText },
   { id: 'tasks', label: 'Tasks', href: '/admin/tasks', icon: ListTodo },
