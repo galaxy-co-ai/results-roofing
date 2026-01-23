@@ -146,24 +146,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Value Propositions */}
-      <section className={styles.valueProps}>
-        <div className={styles.sectionContainer}>
-          <h2 className={styles.sectionTitle}>Why Homeowners Choose Us</h2>
-          <div className={styles.valuePropsGrid}>
-            {VALUE_PROPS.map((prop) => (
-              <div key={prop.title} className={styles.valuePropCard}>
-                <div className={styles.valuePropIcon}>
-                  <prop.icon size={28} />
-                </div>
-                <h3 className={styles.valuePropTitle}>{prop.title}</h3>
-                <p className={styles.valuePropDescription}>{prop.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* How It Works */}
       <section className={styles.howItWorks}>
         <div className={styles.sectionContainer}>
@@ -191,6 +173,24 @@ export default function HomePage() {
                     </svg>
                   </div>
                 )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Value Propositions */}
+      <section className={styles.valueProps}>
+        <div className={styles.sectionContainer}>
+          <h2 className={styles.sectionTitle}>Why Homeowners Choose Us</h2>
+          <div className={styles.valuePropsGrid}>
+            {VALUE_PROPS.map((prop) => (
+              <div key={prop.title} className={styles.valuePropCard}>
+                <div className={styles.valuePropIcon}>
+                  <prop.icon size={28} />
+                </div>
+                <h3 className={styles.valuePropTitle}>{prop.title}</h3>
+                <p className={styles.valuePropDescription}>{prop.description}</p>
               </div>
             ))}
           </div>
