@@ -342,7 +342,7 @@ export default function NotesPage() {
         <div className={styles.empty}>
           <FileText size={32} />
           <p>No notes yet</p>
-          <span>Click "Add Note" to get started</span>
+          <span>Click &quot;Add Note&quot; to get started</span>
         </div>
       )}
 

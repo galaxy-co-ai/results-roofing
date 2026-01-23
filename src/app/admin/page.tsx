@@ -8,7 +8,6 @@ import {
   FileText,
   AlertCircle,
   Clock,
-  CheckCircle,
   TrendingUp,
   Users,
   FileCheck,

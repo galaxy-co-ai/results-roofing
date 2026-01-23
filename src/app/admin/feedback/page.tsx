@@ -5,15 +5,10 @@ import {
   Bug, 
   Lightbulb, 
   MessageCircle,
-  Clock,
-  CheckCircle,
-  XCircle,
   AlertCircle,
-  Eye,
   ChevronDown,
   ChevronUp,
   RefreshCw,
-  Plus,
   Loader2,
 } from 'lucide-react';
 import styles from './page.module.css';

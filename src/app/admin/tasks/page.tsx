@@ -5,9 +5,7 @@ import {
   Plus, 
   RefreshCw,
   AlertCircle,
-  ChevronRight,
   X,
-  GripVertical,
   Flag,
   Loader2,
 } from 'lucide-react';

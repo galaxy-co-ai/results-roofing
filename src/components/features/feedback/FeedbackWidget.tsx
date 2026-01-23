@@ -250,7 +250,7 @@ export function FeedbackWidget() {
                 <Check size={32} strokeWidth={3} />
               </div>
               <p className={styles.successText}>
-                We've received your feedback and will review it shortly.
+                We&apos;ve received your feedback and will review it shortly.
               </p>
             </div>
           )}

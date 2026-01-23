@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { db, desc, eq } from '@/db';
 import { feedback, type NewFeedback } from '@/db/schema';
@@ -69,7 +70,7 @@ export async function GET(request: NextRequest) {
     const reason = searchParams.get('reason');
     const limit = parseInt(searchParams.get('limit') || '50', 10);
 
-    let query = db.select().from(feedback);
+    const query = db.select().from(feedback);
 
     // Apply filters if provided
     const conditions = [];
