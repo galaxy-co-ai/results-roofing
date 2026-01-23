@@ -53,6 +53,7 @@ export function ChatWidget() {
     if (isOpen && initialMessage && messages.length === 1) {
       handleSendMessage(initialMessage);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- Only trigger on chat open/initial message, not on every messages change
   }, [isOpen, initialMessage]);
 
   const handleSendMessage = async (content: string) => {

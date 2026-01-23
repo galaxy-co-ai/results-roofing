@@ -10,6 +10,12 @@ import { SidebarSupport } from '@/components/features/support';
 import { PortalUserCard } from '@/components/features/portal';
 import styles from './layout.module.css';
 
+/**
+ * Force dynamic rendering for all portal pages
+ * Required because portal uses Clerk's useUser() hook which needs runtime context
+ */
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: {
     default: 'Customer Portal',
