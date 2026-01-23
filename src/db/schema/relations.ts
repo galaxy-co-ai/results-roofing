@@ -22,7 +22,7 @@ export const leadsRelations = relations(leads, ({ many }) => ({
 /**
  * Quote relations
  */
-export const quotesRelations = relations(quotes, ({ one, many }) => ({
+export const quotesRelations = relations(quotes, ({ one }) => ({
   lead: one(leads, {
     fields: [quotes.leadId],
     references: [leads.id],

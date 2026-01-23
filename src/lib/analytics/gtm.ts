@@ -52,10 +52,7 @@ export function pushToDataLayer<T extends AnalyticsEventName>(
 
   dataLayer.push(event);
 
-  // Log in development for debugging
-  if (process.env.NODE_ENV === 'development') {
-    console.debug('[Analytics]', eventName, params);
-  }
+  // Development logging handled by tracker debug mode
 }
 
 /**

@@ -67,9 +67,7 @@ export function trackEvent<T extends AnalyticsEventName>(
   params: T extends keyof EventParamsMap ? EventParamsMap[T] : BaseEventParams
 ): void {
   if (!canTrack()) {
-    if (trackerConfig.debug) {
-      console.debug('[Analytics] Tracking blocked (no consent):', eventName);
-    }
+    // Tracking blocked due to missing consent
     return;
   }
 
@@ -213,9 +211,7 @@ async function sendToServer(eventName: string, params: Record<string, unknown>):
     if (!response.ok) {
       throw new Error(`Analytics server error: ${response.status}`);
     }
-  } catch (error) {
-    if (trackerConfig.debug) {
-      console.warn('[Analytics] Server tracking failed:', error);
-    }
+  } catch (_error) {
+    // Silent failure for non-critical analytics
   }
 }

@@ -55,21 +55,9 @@ export function useTrackEvent() {
  * Returns memoized funnel tracking functions
  */
 export function useFunnelTracker() {
-  const tracker = {
-    quoteStarted: useCallback(funnelTracker.quoteStarted, []),
-    addressEntered: useCallback(funnelTracker.addressEntered, []),
-    measurementRequested: useCallback(funnelTracker.measurementRequested, []),
-    measurementCompleted: useCallback(funnelTracker.measurementCompleted, []),
-    measurementTimeout: useCallback(funnelTracker.measurementTimeout, []),
-    packageSelected: useCallback(funnelTracker.packageSelected, []),
-    financingStarted: useCallback(funnelTracker.financingStarted, []),
-    financingCompleted: useCallback(funnelTracker.financingCompleted, []),
-    appointmentBooked: useCallback(funnelTracker.appointmentBooked, []),
-    contractSigned: useCallback(funnelTracker.contractSigned, []),
-    depositPaid: useCallback(funnelTracker.depositPaid, []),
-  };
-
-  return tracker;
+  // Return funnel tracker directly - these are stable module-level functions
+  // that don't need to be wrapped in useCallback
+  return funnelTracker;
 }
 
 /**
