@@ -89,13 +89,8 @@ export default function HomePage() {
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <h1 className={styles.title}>
-            Your Roof Quote
-            <br />
-            <span className={styles.highlight}>In Minutes</span>
+            Your Roof Quote <span className={styles.highlight}>In Minutes</span>
           </h1>
-          <p className={styles.subtitle}>
-            Get an instant estimate, compare packages, and schedule your roof replacement online. No phone calls, no pressure, no hassle.
-          </p>
 
           {/* Address Input Form */}
           <form className={styles.addressForm} action="/quote/new">
