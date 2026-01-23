@@ -100,10 +100,18 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
+.reviewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--rr-space-3);
+}
+
 .reviewStars {
   display: flex;
   gap: 2px;
   color: var(--rr-color-terracotta);
+  flex-shrink: 0;
 }
 
 .reviewText {
@@ -121,7 +129,6 @@
   display: flex;
   align-items: center;
   gap: var(--rr-space-3);
-  margin-top: auto;
 }
 
 .reviewAvatar {

@@ -126,21 +126,23 @@ export default function HomePage() {
           {/* Duplicate reviews for seamless infinite scroll */}
           {[...REVIEWS, ...REVIEWS].map((review, index) => (
             <article key={`review-${index}`} className={styles.reviewCard}>
-              <div className={styles.reviewStars} aria-label="5 out of 5 stars">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={14} fill="currentColor" />
-                ))}
+              <div className={styles.reviewHeader}>
+                <div className={styles.reviewAuthor}>
+                  <div className={styles.reviewAvatar} aria-hidden="true">
+                    {review.initials}
+                  </div>
+                  <div className={styles.reviewMeta}>
+                    <span className={styles.reviewName}>{review.author}</span>
+                    <span className={styles.reviewLocation}>{review.location}</span>
+                  </div>
+                </div>
+                <div className={styles.reviewStars} aria-label="5 out of 5 stars">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={14} fill="currentColor" />
+                  ))}
+                </div>
               </div>
               <p className={styles.reviewText}>&ldquo;{review.text}&rdquo;</p>
-              <div className={styles.reviewAuthor}>
-                <div className={styles.reviewAvatar} aria-hidden="true">
-                  {review.initials}
-                </div>
-                <div className={styles.reviewMeta}>
-                  <span className={styles.reviewName}>{review.author}</span>
-                  <span className={styles.reviewLocation}>{review.location}</span>
-                </div>
-              </div>
             </article>
           ))}
         </div>
