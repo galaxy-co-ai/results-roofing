@@ -1,0 +1,248 @@
+/* =================================================
+   ADMIN LAYOUT - Dark, minimal developer dashboard
+   ================================================= */
+
+.adminLayout {
+  display: flex;
+  min-height: 100vh;
+  background: #0f0f0f;
+  color: #F5F0E8;
+}
+
+/* ========================================
+   SIDEBAR
+   ======================================== */
+
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: #1a1a1a;
+  border-right: 1px solid #2a2a2a;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+}
+
+.sidebarHeader {
+  padding: 20px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #F5F0E8;
+}
+
+.logoIcon {
+  color: #C4A77D;
+}
+
+.logoText {
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+
+/* Navigation */
+.nav {
+  flex: 1;
+  padding: 16px 0;
+}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #888;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border-left: 2px solid transparent;
+  font-size: 0.875rem;
+}
+
+.navLink:hover {
+  background: #242424;
+  color: #F5F0E8;
+}
+
+.navLink:focus-visible {
+  outline: none;
+  background: #242424;
+  border-left-color: #C4A77D;
+}
+
+.navIcon {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.navLink:hover .navIcon {
+  opacity: 1;
+}
+
+.navLabel {
+  font-weight: 500;
+}
+
+/* Sidebar Footer */
+.sidebarFooter {
+  padding: 16px 20px;
+  border-top: 1px solid #2a2a2a;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.backLink {
+  font-size: 0.8125rem;
+  color: #666;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.backLink:hover {
+  color: #C4A77D;
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  
+  background: transparent;
+  border: 1px solid #333;
+  border-radius: 8px;
+  
+  color: #888;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.logoutButton:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* ========================================
+   MAIN CONTENT
+   ======================================== */
+
+.mainContent {
+  flex: 1;
+  margin-left: 240px;
+  padding: 32px;
+  min-height: 100vh;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 64px;
+  }
+
+  .logoText,
+  .navLabel,
+  .backLink,
+  .logoutButton span {
+    display: none;
+  }
+
+  .sidebarHeader {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .navLink {
+    padding: 14px;
+    justify-content: center;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+  }
+
+  .navLink:hover,
+  .navLink:focus-visible {
+    border-left: none;
+    border-bottom-color: #C4A77D;
+  }
+
+  .logoutButton {
+    padding: 10px;
+    justify-content: center;
+  }
+
+  .mainContent {
+    margin-left: 64px;
+    padding: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    min-height: auto;
+    flex-direction: row;
+    border-right: none;
+    border-bottom: 1px solid #2a2a2a;
+    padding: 8px 0;
+  }
+
+  .sidebarHeader,
+  .sidebarFooter {
+    display: none;
+  }
+
+  .nav {
+    flex: 1;
+    padding: 0;
+  }
+
+  .navList {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .navLink {
+    flex-direction: column;
+    padding: 10px 16px;
+    gap: 4px;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+  }
+
+  .navLabel {
+    display: block;
+    font-size: 0.6875rem;
+  }
+
+  .mainContent {
+    margin-left: 0;
+    padding: 16px;
+  }
+}

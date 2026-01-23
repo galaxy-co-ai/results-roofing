@@ -5,6 +5,8 @@ import { Providers } from '@/components/providers/Providers';
 import { ChatProvider, ChatWidget } from '@/components/features/support';
 import { DocumentProvider, DocumentViewer } from '@/components/features/documents';
 import { FAQProvider, FAQModal } from '@/components/features/faq';
+import { FeedbackProvider, FeedbackWidget } from '@/components/features/feedback';
+import { AdminAccessTrigger } from '@/components/features/admin';
 import '@/styles/globals.css';
 
 const inter = Inter({
@@ -69,10 +71,14 @@ export default function RootLayout({
           <ChatProvider>
             <DocumentProvider>
               <FAQProvider>
-                {children}
-                <ChatWidget />
-                <DocumentViewer />
-                <FAQModal />
+                <FeedbackProvider>
+                  {children}
+                  <ChatWidget />
+                  <DocumentViewer />
+                  <FAQModal />
+                  <FeedbackWidget />
+                  <AdminAccessTrigger />
+                </FeedbackProvider>
               </FAQProvider>
             </DocumentProvider>
           </ChatProvider>

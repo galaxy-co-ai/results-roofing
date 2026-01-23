@@ -1,0 +1,1 @@
+export { AdminAccessTrigger } from './AdminAccessTrigger';

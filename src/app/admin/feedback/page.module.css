@@ -1,0 +1,337 @@
+/* =================================================
+   ADMIN FEEDBACK PAGE
+   ================================================= */
+
+.page {
+  max-width: 900px;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #F5F0E8;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.8125rem;
+  color: #666;
+  margin: 4px 0 0;
+}
+
+.refreshButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.refreshButton:hover {
+  background: #242424;
+  color: #F5F0E8;
+}
+
+/* ========================================
+   FILTERS
+   ======================================== */
+
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.filterSelect {
+  padding: 8px 12px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #F5F0E8;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #C4A77D;
+}
+
+/* ========================================
+   STATES
+   ======================================== */
+
+.loading,
+.error,
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 48px;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error {
+  color: #ef4444;
+}
+
+.empty span {
+  font-size: 0.75rem;
+  color: #555;
+}
+
+/* ========================================
+   FEEDBACK LIST
+   ======================================== */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+
+.card:hover {
+  border-color: #333;
+}
+
+/* Card Header */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.cardLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.reasonIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cardTitle {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #F5F0E8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardMeta {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.cardRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #555;
+}
+
+.statusBadge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* Card Body */
+.cardBody {
+  padding: 0 16px 16px;
+  border-top: 1px solid #252525;
+  margin-top: 0;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section {
+  padding-top: 16px;
+}
+
+.sectionLabel {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.userNotes {
+  font-size: 0.875rem;
+  color: #ccc;
+  line-height: 1.5;
+  margin: 0;
+  padding: 12px;
+  background: #151515;
+  border-radius: 8px;
+}
+
+/* Status Buttons */
+.statusButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.statusButton {
+  padding: 6px 12px;
+  background: #151515;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #888;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.statusButton:hover {
+  background: #1f1f1f;
+  color: var(--status-color);
+  border-color: var(--status-color);
+}
+
+.statusButton.statusActive {
+  background: color-mix(in srgb, var(--status-color) 15%, transparent);
+  color: var(--status-color);
+  border-color: var(--status-color);
+}
+
+.statusButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Admin Notes */
+.adminNotes {
+  width: 100%;
+  padding: 12px;
+  background: #0f0f0f;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #F5F0E8;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.adminNotes:focus {
+  outline: none;
+  border-color: #C4A77D;
+}
+
+.adminNotes::placeholder {
+  color: #555;
+}
+
+/* Metadata */
+.metadata {
+  display: flex;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #252525;
+  margin-top: 16px;
+  font-size: 0.6875rem;
+  color: #555;
+  font-family: ui-monospace, monospace;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 640px) {
+  .filters {
+    flex-direction: column;
+  }
+  
+  .filterSelect {
+    width: 100%;
+  }
+  
+  .cardMeta {
+    display: none;
+  }
+  
+  .statusButtons {
+    flex-wrap: wrap;
+  }
+}
