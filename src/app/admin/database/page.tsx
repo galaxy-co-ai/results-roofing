@@ -14,6 +14,7 @@ import {
   Loader2,
   RefreshCw,
   AlertCircle,
+  type LucideIcon,
 } from 'lucide-react';
 import styles from './page.module.css';
 
@@ -21,7 +22,7 @@ interface TableInfo {
   name: string;
   displayName: string;
   description: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: LucideIcon;
   recordCount: number;
   category: 'core' | 'config' | 'events' | 'dev';
 }

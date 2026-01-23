@@ -81,7 +81,6 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const totalCount = Number(countResult[0]?.count ?? 0);
 
     // Get records with pagination
-    // @ts-expect-error - Dynamic table access
     const records = await db
       .select()
       .from(table)
@@ -150,12 +149,10 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       updatedAt: new Date(),
     };
 
-    // @ts-expect-error - Dynamic table access
     const result = await db
       .update(table)
       .set(updateData)
-      // @ts-expect-error - Dynamic table access
-      .where(eq(table.id, id))
+      .where(eq((table as typeof schema.leads).id, id))
       .returning();
 
     if (result.length === 0) {
@@ -203,11 +200,9 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Missing record ID' }, { status: 400 });
     }
 
-    // @ts-expect-error - Dynamic table access
     const result = await db
       .delete(table)
-      // @ts-expect-error - Dynamic table access
-      .where(eq(table.id, id))
+      .where(eq((table as typeof schema.leads).id, id))
       .returning();
 
     if (result.length === 0) {
@@ -260,7 +255,6 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     // Remove id if present (let DB generate it)
     delete insertData.id;
 
-    // @ts-expect-error - Dynamic table access
     const result = await db.insert(table).values(insertData).returning();
 
     return NextResponse.json({ success: true, record: result[0] }, { status: 201 });
