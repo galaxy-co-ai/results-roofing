@@ -7,6 +7,12 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(
+    to bottom,
+    var(--rr-color-bg-primary) 0%,
+    var(--rr-color-sand-light) 50%,
+    var(--rr-color-bg-primary) 100%
+  );
 }
 
 /* ========================================
@@ -21,11 +27,6 @@
   text-align: center;
   padding: var(--rr-space-6) var(--rr-space-page-gutter) var(--rr-space-8);
   min-height: auto;
-  background: linear-gradient(
-    to bottom,
-    var(--rr-color-bg-primary) 0%,
-    var(--rr-color-sand-light) 100%
-  );
 }
 
 /* ========================================
@@ -372,7 +373,6 @@
 
 .valueProps {
   padding: var(--rr-space-layout-lg) 0;
-  background-color: var(--rr-color-bg-secondary);
 }
 
 .valuePropsGrid {
@@ -423,7 +423,6 @@
 
 .howItWorks {
   padding: var(--rr-space-layout-lg) 0;
-  background-color: var(--rr-color-bg-primary);
 }
 
 .stepsGrid {
