@@ -1,43 +1,36 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { NextResponse, type NextRequest } from 'next/server';
 
 /**
- * Define routes that require authentication
- * - Portal routes require user to be signed in
- * - API routes for portal data require authentication
+ * DEVELOPMENT BYPASS: Set to true to skip Clerk auth entirely
+ * WARNING: Never enable in production!
  */
-const isProtectedRoute = createRouteMatcher([
-  '/portal(.*)',
-  '/api/portal(.*)',
-]);
+const BYPASS_AUTH = process.env.NODE_ENV === 'development' && process.env.BYPASS_CLERK === 'true';
 
 /**
- * Define public routes that never require auth
- * - Landing page, quote flow, marketing pages
- * - Public API endpoints (quotes, leads)
+ * Middleware that bypasses Clerk entirely in development
+ * or uses Clerk authentication in production
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const _isPublicRoute = createRouteMatcher([
-  '/',
-  '/quote(.*)',
-  '/api/quotes(.*)',
-  '/api/leads(.*)',
-  '/api/payments/webhook(.*)',
-  '/api/pricing-tiers(.*)',
-  '/sign-in(.*)',
-  '/sign-up(.*)',
-]);
-
-/**
- * Clerk middleware for authentication
- * Public routes: landing, quote flow, marketing pages
- * Protected routes: customer portal
- */
-export default clerkMiddleware(async (auth, req) => {
-  // Protect portal routes
-  if (isProtectedRoute(req)) {
-    await auth.protect();
+export default async function middleware(req: NextRequest) {
+  // In bypass mode, skip all Clerk authentication
+  if (BYPASS_AUTH) {
+    return NextResponse.next();
   }
-});
+
+  // Dynamic import Clerk middleware only when not bypassing
+  const { clerkMiddleware, createRouteMatcher } = await import('@clerk/nextjs/server');
+  
+  const isProtectedRoute = createRouteMatcher([
+    '/portal(.*)',
+    '/api/portal(.*)',
+  ]);
+
+  // Use Clerk middleware with protection for portal routes
+  return clerkMiddleware(async (auth, request) => {
+    if (isProtectedRoute(request)) {
+      await auth.protect();
+    }
+  })(req, {} as never);
+}
 
 export const config = {
   matcher: [

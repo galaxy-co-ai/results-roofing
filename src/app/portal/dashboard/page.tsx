@@ -18,6 +18,7 @@ import {
 import { useOrders, useOrderDetails } from '@/hooks';
 import { FAQBar } from '@/components/features/faq';
 import { Skeleton } from '@/components/ui';
+import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import styles from './page.module.css';
 
 const QUICK_ACTIONS = [
@@ -209,12 +210,28 @@ function NoOrdersState() {
   );
 }
 
-export default function DashboardPage() {
-  const [detailsExpanded, setDetailsExpanded] = useState(false);
-  
-  // Get authenticated user from Clerk
-  const { user, isLoaded: userLoaded } = useUser();
+/**
+ * Dashboard with Clerk authentication
+ */
+function ClerkDashboard() {
+  const { user, isLoaded } = useUser();
   const userEmail = user?.primaryEmailAddress?.emailAddress ?? null;
+  return <DashboardContent userEmail={userEmail} userLoaded={isLoaded} />;
+}
+
+/**
+ * Dashboard with mock user (dev bypass)
+ */
+function DevDashboard() {
+  const userEmail = MOCK_USER.primaryEmailAddress.emailAddress;
+  return <DashboardContent userEmail={userEmail} userLoaded={true} />;
+}
+
+/**
+ * Main dashboard content
+ */
+function DashboardContent({ userEmail, userLoaded }: { userEmail: string | null; userLoaded: boolean }) {
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
 
   // Fetch user's orders
   const { 
@@ -411,4 +428,14 @@ export default function DashboardPage() {
       <FAQBar />
     </div>
   );
+}
+
+/**
+ * Dashboard page - switches between Clerk and Dev modes
+ */
+export default function DashboardPage() {
+  if (DEV_BYPASS_ENABLED) {
+    return <DevDashboard />;
+  }
+  return <ClerkDashboard />;
 }

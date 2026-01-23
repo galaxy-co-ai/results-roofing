@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
+import { ClerkProvider } from '@clerk/nextjs';
+import { Providers } from '@/components/providers/Providers';
 import { ChatProvider, ChatWidget } from '@/components/features/support';
 import { DocumentProvider, DocumentViewer } from '@/components/features/documents';
 import { FAQProvider, FAQModal } from '@/components/features/faq';
@@ -10,6 +12,11 @@ const inter = Inter({
   display: 'swap',
   variable: '--font-inter',
 });
+
+/**
+ * Check if Clerk bypass is enabled for development
+ */
+const BYPASS_CLERK = process.env.BYPASS_CLERK === 'true';
 
 export const metadata: Metadata = {
   title: {
@@ -55,20 +62,29 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
+  const content = (
     <html lang="en" className={inter.variable}>
       <body>
-        <ChatProvider>
-          <DocumentProvider>
-            <FAQProvider>
-              {children}
-              <ChatWidget />
-              <DocumentViewer />
-              <FAQModal />
-            </FAQProvider>
-          </DocumentProvider>
-        </ChatProvider>
+        <Providers>
+          <ChatProvider>
+            <DocumentProvider>
+              <FAQProvider>
+                {children}
+                <ChatWidget />
+                <DocumentViewer />
+                <FAQModal />
+              </FAQProvider>
+            </DocumentProvider>
+          </ChatProvider>
+        </Providers>
       </body>
     </html>
   );
+
+  // Skip ClerkProvider in bypass mode for development
+  if (BYPASS_CLERK) {
+    return content;
+  }
+
+  return <ClerkProvider>{content}</ClerkProvider>;
 }

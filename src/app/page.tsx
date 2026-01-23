@@ -1,4 +1,5 @@
 import { MapPin, Clock, Shield, DollarSign, CheckCircle, ChevronRight } from 'lucide-react';
+import { Header } from '@/components/layout';
 import styles from './page.module.css';
 
 const SERVICE_STATES = ['Texas', 'Georgia', 'North Carolina', 'Arizona'];
@@ -22,36 +23,22 @@ const VALUE_PROPS = [
 ];
 
 const PROCESS_STEPS = [
-  {
-    number: '1',
-    title: 'Enter Your Address',
-    description: 'We use satellite imagery to measure your roof instantly.',
-  },
-  {
-    number: '2',
-    title: 'Choose Your Package',
-    description: 'Compare Good, Better, and Best options with transparent pricing.',
-  },
-  {
-    number: '3',
-    title: 'Schedule Installation',
-    description: 'Pick a date that works for you. Sign digitally and pay your deposit online.',
-  },
-  {
-    number: '4',
-    title: 'Get Your New Roof',
-    description: 'Our licensed crews install your roof. Most jobs complete in 1-2 days.',
-  },
+  { number: '1', title: 'Enter Your Address' },
+  { number: '2', title: 'Choose Your Package' },
+  { number: '3', title: 'Schedule Installation' },
+  { number: '4', title: 'Get Your New Roof' },
 ];
 
 export default function HomePage() {
   return (
-    <main className={styles.main}>
+    <>
+      <Header />
+      <main className={styles.main}>
       {/* Hero Section */}
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <h1 className={styles.title}>
-            Your New Roof Quote
+            Your Roof Quote
             <br />
             <span className={styles.highlight}>In Minutes</span>
           </h1>
@@ -75,7 +62,7 @@ export default function HomePage() {
             </div>
             <button type="submit" className={styles.submitButton}>
               Get My Quote
-              <ChevronRight size={20} />
+              <ChevronRight size={16} />
             </button>
           </form>
 
@@ -132,14 +119,23 @@ export default function HomePage() {
           </p>
           <div className={styles.stepsGrid}>
             {PROCESS_STEPS.map((step, index) => (
-              <div key={step.number} className={styles.step}>
-                <div className={styles.stepNumber}>{step.number}</div>
-                <div className={styles.stepContent}>
+              <div key={step.number} className={styles.stepWrapper}>
+                <div className={styles.step}>
+                  <div className={styles.stepNumber}>{step.number}</div>
                   <h3 className={styles.stepTitle}>{step.title}</h3>
-                  <p className={styles.stepDescription}>{step.description}</p>
                 </div>
                 {index < PROCESS_STEPS.length - 1 && (
-                  <div className={styles.stepConnector} />
+                  <div className={styles.stepArrow} aria-hidden="true">
+                    <svg viewBox="0 0 50 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path 
+                        d="M2 10C10 9 20 11 30 10C36 9.5 42 9 46 10M46 10L40 5M46 10L40 15" 
+                        stroke="currentColor" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
                 )}
               </div>
             ))}
@@ -161,5 +157,6 @@ export default function HomePage() {
         </div>
       </section>
     </main>
+    </>
   );
 }
