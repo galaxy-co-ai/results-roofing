@@ -151,24 +151,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Trust Bar */}
-      <section className={styles.trustBar}>
-        <div className={styles.trustBarContent}>
-          <div className={styles.trustItem}>
-            <CheckCircle size={20} className={styles.trustIcon} />
-            <span>Self-pay customers only</span>
-          </div>
-          <div className={styles.trustItem}>
-            <CheckCircle size={20} className={styles.trustIcon} />
-            <span>No insurance claims</span>
-          </div>
-          <div className={styles.trustItem}>
-            <CheckCircle size={20} className={styles.trustIcon} />
-            <span>Instant satellite measurements</span>
-          </div>
-        </div>
-      </section>
-
       {/* Value Propositions */}
       <section className={styles.valueProps}>
         <div className={styles.sectionContainer}>
@@ -234,6 +216,24 @@ export default function HomePage() {
         </div>
       </section>
     </main>
+
+    {/* Sticky Trust Bar Footer */}
+    <footer className={styles.stickyTrustBar} role="contentinfo">
+      <div className={styles.trustBarContent}>
+        <div className={styles.trustItem}>
+          <CheckCircle size={18} className={styles.trustIcon} />
+          <span>Self-pay customers only</span>
+        </div>
+        <div className={styles.trustItem}>
+          <CheckCircle size={18} className={styles.trustIcon} />
+          <span>No insurance claims</span>
+        </div>
+        <div className={styles.trustItem}>
+          <CheckCircle size={18} className={styles.trustIcon} />
+          <span>Instant satellite measurements</span>
+        </div>
+      </div>
+    </footer>
     </>
   );
 }

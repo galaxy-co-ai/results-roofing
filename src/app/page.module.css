@@ -297,19 +297,27 @@
 }
 
 /* ========================================
-   TRUST BAR
+   STICKY TRUST BAR FOOTER
    ======================================== */
 
-.trustBar {
+.stickyTrustBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background-color: var(--rr-color-charcoal);
-  padding: var(--rr-space-4) var(--rr-space-page-gutter);
+  padding: var(--rr-space-3) var(--rr-space-page-gutter);
+  z-index: var(--rr-z-sticky);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
 }
 
 .trustBarContent {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--rr-gap-sm);
+  justify-content: center;
+  gap: var(--rr-gap-xs);
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -317,13 +325,14 @@
 .trustItem {
   display: flex;
   align-items: center;
-  gap: var(--rr-gap-xs);
+  gap: 6px;
   color: var(--rr-color-text-inverse);
-  font-size: var(--rr-font-size-sm);
+  font-size: var(--rr-font-size-xs);
 }
 
 .trustIcon {
   color: var(--rr-color-sandstone);
+  flex-shrink: 0;
 }
 
 /* ========================================
@@ -480,6 +489,7 @@
 
 .bottomCta {
   padding: var(--rr-space-layout-lg) 0;
+  padding-bottom: calc(var(--rr-space-layout-lg) + 60px); /* Extra space for sticky footer */
   background-color: var(--rr-color-charcoal);
   text-align: center;
 }
@@ -539,7 +549,11 @@
   .trustBarContent {
     flex-direction: row;
     justify-content: center;
-    gap: var(--rr-gap-xl);
+    gap: var(--rr-gap-lg);
+  }
+  
+  .trustItem {
+    font-size: var(--rr-font-size-sm);
   }
 }
 
