@@ -36,11 +36,6 @@
   width: 100%;
   overflow: hidden;
   padding: var(--rr-space-6) 0;
-  background: linear-gradient(
-    to bottom,
-    var(--rr-color-sand-light) 0%,
-    var(--rr-color-bg-secondary) 100%
-  );
   position: relative;
 }
 
@@ -50,19 +45,19 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 100px;
+  width: 80px;
   z-index: 2;
   pointer-events: none;
 }
 
 .reviewsTicker::before {
   left: 0;
-  background: linear-gradient(to right, var(--rr-color-sand-light) 0%, transparent 100%);
+  background: linear-gradient(to right, var(--rr-color-bg-primary) 0%, transparent 100%);
 }
 
 .reviewsTicker::after {
   right: 0;
-  background: linear-gradient(to left, var(--rr-color-bg-secondary) 0%, transparent 100%);
+  background: linear-gradient(to left, var(--rr-color-bg-primary) 0%, transparent 100%);
 }
 
 .tickerTrack {
