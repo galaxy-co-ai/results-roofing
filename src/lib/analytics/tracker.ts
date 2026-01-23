@@ -211,7 +211,7 @@ async function sendToServer(eventName: string, params: Record<string, unknown>):
     if (!response.ok) {
       throw new Error(`Analytics server error: ${response.status}`);
     }
-  } catch (_error) {
+  } catch {
     // Silent failure for non-critical analytics
   }
 }
