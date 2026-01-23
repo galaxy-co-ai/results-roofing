@@ -194,6 +194,196 @@
 }
 
 /* ========================================
+   DELAYED STATE (Taking Longer)
+   ======================================== */
+
+.delayedBanner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-4);
+  margin-top: var(--rr-space-6);
+  padding: var(--rr-space-5);
+  background-color: var(--rr-color-warning-light);
+  border: 1px solid var(--rr-color-warning);
+  border-radius: var(--rr-radius-lg);
+  text-align: left;
+}
+
+.delayedHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-3);
+}
+
+.delayedIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-warning);
+  color: var(--rr-color-charcoal);
+}
+
+.delayedContent {
+  flex: 1;
+}
+
+.delayedTitle {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-1);
+}
+
+.delayedText {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  margin: 0;
+}
+
+.delayedActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-2);
+}
+
+@media (min-width: 480px) {
+  .delayedActions {
+    flex-direction: row;
+    gap: var(--rr-space-3);
+  }
+}
+
+.keepWaitingButton {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--rr-button-height-md);
+  padding: 0 var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  background-color: var(--rr-color-bg-primary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: var(--rr-transition-colors);
+}
+
+.keepWaitingButton:hover {
+  background-color: var(--rr-color-bg-secondary);
+}
+
+.keepWaitingButton:focus-visible {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: var(--rr-focus-ring-offset);
+}
+
+.manualEntryButton {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--rr-button-height-md);
+  padding: 0 var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-charcoal);
+  background-color: var(--rr-color-sandstone);
+  border: none;
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: var(--rr-transition-colors);
+}
+
+.manualEntryButton:hover {
+  background-color: var(--rr-color-terracotta);
+  color: var(--rr-color-white);
+}
+
+.manualEntryButton:focus-visible {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: var(--rr-focus-ring-offset);
+}
+
+/* ========================================
+   TIMEOUT STATE
+   ======================================== */
+
+.timeoutBanner {
+  margin-top: var(--rr-space-6);
+  padding: var(--rr-space-5);
+  background-color: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+  text-align: center;
+}
+
+.timeoutTitle {
+  font-size: var(--rr-font-size-lg);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.timeoutText {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  margin-bottom: var(--rr-space-5);
+}
+
+.timeoutActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-3);
+}
+
+@media (min-width: 480px) {
+  .timeoutActions {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.retryButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--rr-button-height-md);
+  padding: 0 var(--rr-space-5);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  background-color: transparent;
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: var(--rr-transition-colors);
+}
+
+.retryButton:hover {
+  background-color: var(--rr-color-bg-secondary);
+  border-color: var(--rr-color-border-hover);
+}
+
+.retryButton:focus-visible {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: var(--rr-focus-ring-offset);
+}
+
+/* ========================================
+   MANUAL ENTRY OVERLAY
+   ======================================== */
+
+.manualEntrySection {
+  margin-top: var(--rr-space-8);
+}
+
+/* ========================================
    RESPONSIVE
    ======================================== */
 

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { Check, Star, ChevronRight } from 'lucide-react';
 import { db, schema, eq } from '@/db/index';
 import { TrustBar } from '@/components/ui';
+import { PackageViewTracker } from '@/components/features/quote/PackageViewTracker';
 import styles from './page.module.css';
 
 interface PackagesPageProps {
@@ -107,6 +108,9 @@ export default async function PackagesPage({ params }: PackagesPageProps) {
 
   return (
     <main className={styles.main}>
+      {/* Track page view */}
+      <PackageViewTracker quoteId={quoteId} />
+      
       <div className={styles.container}>
         {/* Header */}
         <div className={styles.header}>

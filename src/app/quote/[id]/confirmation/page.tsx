@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { CheckCircle, Calendar, Mail, MessageCircle, Home } from 'lucide-react';
+import { CheckCircle, Calendar, Mail, MessageCircle, Home, User } from 'lucide-react';
 import { db, schema, eq } from '@/db/index';
 import { ConfirmationSupport } from '@/components/features/support';
+import { ConfirmationTracker } from '@/components/features/quote/ConfirmationTracker';
 import styles from './page.module.css';
 
 interface ConfirmationPageProps {
@@ -18,14 +19,14 @@ function formatCurrency(amount: number): string {
   }).format(amount);
 }
 
-// Generate a mock confirmation number
-function generateConfirmationNumber(): string {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let result = 'RR-';
-  for (let i = 0; i < 8; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
+function formatDate(date: Date | null): string {
+  if (!date) return 'To be scheduled';
+  return date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
 }
 
 const NEXT_STEPS = [
@@ -49,9 +50,13 @@ const NEXT_STEPS = [
 export default async function ConfirmationPage({ params }: ConfirmationPageProps) {
   const { id: quoteId } = await params;
 
-  const [quote, pricingTiers] = await Promise.all([
+  // Fetch quote, order (if exists), and pricing tiers
+  const [quote, order, pricingTiers] = await Promise.all([
     db.query.quotes.findFirst({
       where: eq(schema.quotes.id, quoteId),
+    }),
+    db.query.orders.findFirst({
+      where: eq(schema.orders.quoteId, quoteId),
     }),
     db.query.pricingTiers.findMany({
       where: eq(schema.pricingTiers.isActive, true),
@@ -63,12 +68,32 @@ export default async function ConfirmationPage({ params }: ConfirmationPageProps
   }
 
   const selectedTier = pricingTiers.find((t) => t.tier === quote.selectedTier);
-  const totalPrice = quote.totalPrice ? parseFloat(quote.totalPrice) : 0;
-  const depositAmount = quote.depositAmount ? parseFloat(quote.depositAmount) : 0;
-  const confirmationNumber = generateConfirmationNumber();
+  
+  // Use real order data if available, otherwise fall back to quote data
+  const totalPrice = order 
+    ? parseFloat(order.totalPrice) 
+    : (quote.totalPrice ? parseFloat(quote.totalPrice) : 0);
+  const depositAmount = order 
+    ? parseFloat(order.depositAmount) 
+    : (quote.depositAmount ? parseFloat(quote.depositAmount) : 0);
+  const balanceDue = order 
+    ? parseFloat(order.balanceDue) 
+    : (totalPrice - depositAmount);
+  const confirmationNumber = order?.confirmationNumber || 'Pending';
+  const scheduledDate = order?.scheduledStartDate || quote.scheduledDate;
 
   return (
     <main className={styles.main}>
+      {/* Track confirmation and conversion */}
+      <ConfirmationTracker
+        quoteId={quoteId}
+        orderId={order?.id || null}
+        confirmationNumber={confirmationNumber}
+        depositAmount={depositAmount}
+        totalPrice={totalPrice}
+        tier={quote.selectedTier}
+      />
+      
       <div className={styles.container}>
         {/* Success Header */}
         <div className={styles.successHeader}>
@@ -105,7 +130,7 @@ export default async function ConfirmationPage({ params }: ConfirmationPageProps
 
           <div className={styles.summaryRow}>
             <span className={styles.summaryLabel}>Installation Date</span>
-            <span className={styles.summaryValue}>Monday, January 27, 2026</span>
+            <span className={styles.summaryValue}>{formatDate(scheduledDate)}</span>
           </div>
 
           <div className={styles.divider} />
@@ -122,7 +147,7 @@ export default async function ConfirmationPage({ params }: ConfirmationPageProps
 
           <div className={styles.summaryRow}>
             <span className={styles.summaryLabel}>Balance Due</span>
-            <span className={styles.summaryValue}>{formatCurrency(totalPrice - depositAmount)}</span>
+            <span className={styles.summaryValue}>{formatCurrency(balanceDue)}</span>
           </div>
         </div>
 
@@ -146,6 +171,12 @@ export default async function ConfirmationPage({ params }: ConfirmationPageProps
 
         {/* Actions */}
         <div className={styles.actions}>
+          {order && (
+            <Link href="/portal/dashboard" className={styles.portalButton}>
+              <User size={18} />
+              View Your Portal
+            </Link>
+          )}
           <Link href="/" className={styles.homeButton}>
             <Home size={18} />
             Return Home

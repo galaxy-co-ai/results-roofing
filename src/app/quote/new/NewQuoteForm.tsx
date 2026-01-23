@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Loader2, AlertCircle, Home, ChevronRight } from 'lucide-react';
 import { AddressAutocomplete, OutOfAreaCapture, type ParsedAddress } from '@/components/features/address';
+import { useFunnelTracker } from '@/hooks';
 import styles from './page.module.css';
 
 const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ'];
@@ -16,6 +17,7 @@ export default function NewQuoteForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialAddress = searchParams.get('address') || '';
+  const funnelTracker = useFunnelTracker();
 
   const [selectedAddress, setSelectedAddress] = useState<ParsedAddress | null>(null);
   const [phone, setPhone] = useState('');
@@ -23,6 +25,17 @@ export default function NewQuoteForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [outOfAreaState, setOutOfAreaState] = useState<string | null>(null);
+
+  // Track quote started on mount
+  useEffect(() => {
+    funnelTracker.quoteStarted({
+      source: 'new_quote_page',
+      utmCampaign: searchParams.get('utm_campaign') || undefined,
+      utmSource: searchParams.get('utm_source') || undefined,
+      utmMedium: searchParams.get('utm_medium') || undefined,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleAddressSelect = useCallback((address: ParsedAddress) => {
     setSelectedAddress(address);
@@ -77,6 +90,13 @@ export default function NewQuoteForm() {
         }
         throw new Error(data.error || 'Failed to create quote');
       }
+
+      // Track address entered
+      funnelTracker.addressEntered({
+        quoteId: data.id,
+        state: selectedAddress.state,
+        city: selectedAddress.city,
+      });
 
       // Redirect to estimate page with preliminary pricing
       router.push(`/quote/${data.id}/estimate`);

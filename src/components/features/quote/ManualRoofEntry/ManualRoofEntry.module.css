@@ -1,0 +1,339 @@
+/* =================================================
+   MANUAL ROOF ENTRY STYLES
+   Form for entering roof measurements manually
+   ================================================= */
+
+.form {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--rr-space-6);
+  background-color: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+  text-align: center;
+  margin-bottom: var(--rr-space-6);
+}
+
+.iconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-sand-light);
+  color: var(--rr-color-sandstone);
+  margin-bottom: var(--rr-space-4);
+}
+
+.title {
+  font-size: var(--rr-font-size-xl);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.subtitle {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  margin-bottom: 0;
+}
+
+/* ========================================
+   FORM FIELDS
+   ======================================== */
+
+.field {
+  margin-bottom: var(--rr-space-5);
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.helpButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--rr-color-text-tertiary);
+  cursor: pointer;
+  transition: var(--rr-transition-colors);
+}
+
+.helpButton:hover {
+  color: var(--rr-color-sandstone);
+}
+
+.helpText {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-secondary);
+  background-color: var(--rr-color-bg-tertiary);
+  padding: var(--rr-space-3);
+  border-radius: var(--rr-radius-md);
+  margin-bottom: var(--rr-space-3);
+}
+
+.input {
+  width: 100%;
+  height: var(--rr-input-height);
+  padding: 0 var(--rr-space-4);
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-primary);
+  background-color: var(--rr-color-bg-primary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  transition: var(--rr-transition-colors);
+}
+
+.input:hover {
+  border-color: var(--rr-color-border-hover);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--rr-color-sandstone);
+  box-shadow: 0 0 0 3px var(--rr-color-sand-light);
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--rr-color-error);
+}
+
+.input::placeholder {
+  color: var(--rr-color-text-tertiary);
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  margin-top: var(--rr-space-2);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-error);
+}
+
+/* ========================================
+   OPTION CARDS
+   ======================================== */
+
+.radioHidden {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.optionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--rr-space-3);
+}
+
+.optionCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-1);
+  padding: var(--rr-space-4);
+  background-color: var(--rr-color-bg-primary);
+  border: 2px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: var(--rr-transition-colors);
+}
+
+.optionCard:hover {
+  border-color: var(--rr-color-border-hover);
+}
+
+.optionCard:has(.radioHidden:focus-visible) {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: var(--rr-focus-ring-offset);
+}
+
+.optionSelected {
+  border-color: var(--rr-color-sandstone);
+  background-color: var(--rr-color-sand-light);
+}
+
+.optionLabel {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+}
+
+.optionDescription {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-secondary);
+}
+
+/* ========================================
+   COMPLEXITY OPTIONS
+   ======================================== */
+
+.complexityOptions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-3);
+}
+
+.complexityCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-1);
+  padding: var(--rr-space-4);
+  background-color: var(--rr-color-bg-primary);
+  border: 2px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: var(--rr-transition-colors);
+}
+
+.complexityCard:hover {
+  border-color: var(--rr-color-border-hover);
+}
+
+.complexityCard:has(.radioHidden:focus-visible) {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: var(--rr-focus-ring-offset);
+}
+
+/* ========================================
+   ACTIONS
+   ======================================== */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-3);
+  margin-top: var(--rr-space-6);
+}
+
+.submitButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--rr-button-height-lg);
+  padding: 0 var(--rr-space-6);
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-charcoal);
+  background-color: var(--rr-color-sandstone);
+  border: none;
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: var(--rr-transition-colors);
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: var(--rr-color-terracotta);
+  color: var(--rr-color-white);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.submitButton:focus-visible {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: var(--rr-focus-ring-offset);
+}
+
+.defaultsButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--rr-button-height-md);
+  padding: 0 var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-sandstone);
+  background-color: transparent;
+  border: 1px solid var(--rr-color-sandstone);
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: var(--rr-transition-colors);
+}
+
+.defaultsButton:hover:not(:disabled) {
+  background-color: var(--rr-color-sand-light);
+}
+
+.defaultsButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.defaultsButton:focus-visible {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: var(--rr-focus-ring-offset);
+}
+
+.cancelButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--rr-button-height-md);
+  padding: 0 var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-secondary);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: var(--rr-transition-colors);
+}
+
+.cancelButton:hover:not(:disabled) {
+  color: var(--rr-color-text-primary);
+}
+
+.cancelButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancelButton:focus-visible {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: var(--rr-focus-ring-offset);
+}
+
+/* ========================================
+   DISCLAIMER
+   ======================================== */
+
+.disclaimer {
+  margin-top: var(--rr-space-4);
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-tertiary);
+  text-align: center;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 480px) {
+  .form {
+    padding: var(--rr-space-4);
+  }
+
+  .optionGrid {
+    grid-template-columns: 1fr;
+  }
+}

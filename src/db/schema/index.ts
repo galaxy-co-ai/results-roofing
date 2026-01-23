@@ -16,6 +16,9 @@ export * from './quote-shares';
 export * from './webhook-events';
 export * from './pricing-tiers';
 
+// Relations
+export * from './relations';
+
 // Admin/Dev tools
 export * from './feedback';
 export * from './dev-tasks';

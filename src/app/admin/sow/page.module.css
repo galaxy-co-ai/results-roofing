@@ -1,0 +1,396 @@
+/* =================================================
+   ADMIN SOW PAGE - Scope of Work Tracker
+   ================================================= */
+
+.page {
+  max-width: 1400px;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #F5F0E8;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.8125rem;
+  color: #666;
+  margin: 4px 0 0;
+}
+
+.docLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #888;
+  font-size: 0.8125rem;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.docLink:hover {
+  background: #1f1f1f;
+  color: #F5F0E8;
+  border-color: #444;
+}
+
+/* ========================================
+   OVERVIEW CARD
+   ======================================== */
+
+.overviewCard {
+  background: linear-gradient(135deg, #1a1a1a 0%, #151515 100%);
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.overviewStats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 20px;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.statValue {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #C4A77D;
+}
+
+.statLabel {
+  font-size: 0.6875rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.statDivider {
+  width: 1px;
+  height: 40px;
+  background: #333;
+}
+
+.overviewProgress {
+  height: 8px;
+  background: #252525;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.overviewProgressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #C4A77D 0%, #D4B78D 100%);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* ========================================
+   PHASES GRID
+   ======================================== */
+
+.phasesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.phaseCard {
+  background: #151515;
+  border: 1px solid #252525;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.15s ease;
+}
+
+.phaseCard:hover {
+  border-color: #333;
+}
+
+.phase_complete {
+  border-left: 3px solid #22C55E;
+}
+
+.phase_in_progress {
+  border-left: 3px solid #F59E0B;
+}
+
+.phase_blocked {
+  border-left: 3px solid #EF4444;
+}
+
+.phase_pending {
+  border-left: 3px solid #444;
+}
+
+.phaseHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.phaseNumber {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.phaseBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge_complete {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22C55E;
+}
+
+.badge_in_progress {
+  background: rgba(245, 158, 11, 0.15);
+  color: #F59E0B;
+}
+
+.badge_blocked {
+  background: rgba(239, 68, 68, 0.15);
+  color: #EF4444;
+}
+
+.badge_pending {
+  background: rgba(102, 102, 102, 0.15);
+  color: #666;
+}
+
+.phaseName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #F5F0E8;
+  margin: 0 0 12px;
+}
+
+.phaseProgress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.phaseProgressBar {
+  flex: 1;
+  height: 4px;
+  background: #252525;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.phaseProgressFill {
+  height: 100%;
+  background: #C4A77D;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.phaseProgressText {
+  font-size: 0.6875rem;
+  color: #555;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* ========================================
+   DELIVERABLES LIST
+   ======================================== */
+
+.deliverablesList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.deliverable {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 8px;
+  background: #1a1a1a;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.deliverableIcon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.deliverable_complete .deliverableIcon {
+  color: #22C55E;
+}
+
+.deliverable_in_progress .deliverableIcon {
+  color: #F59E0B;
+}
+
+.deliverable_blocked .deliverableIcon {
+  color: #EF4444;
+}
+
+.deliverable_pending .deliverableIcon {
+  color: #444;
+}
+
+.deliverableName {
+  flex: 1;
+  color: #aaa;
+}
+
+.deliverable_complete .deliverableName {
+  color: #888;
+}
+
+.deliverableNote {
+  font-size: 0.625rem;
+  color: #555;
+  background: #252525;
+  padding: 2px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+/* ========================================
+   BLOCKERS SECTION
+   ======================================== */
+
+.blockersSection {
+  background: #151515;
+  border: 1px solid #252525;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #EF4444;
+  margin: 0 0 16px;
+}
+
+.blockersTable {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: #252525;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.blockersHeader {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  gap: 16px;
+  padding: 10px 14px;
+  background: #1a1a1a;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.blockerRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  gap: 16px;
+  padding: 12px 14px;
+  background: #151515;
+  font-size: 0.8125rem;
+  transition: background 0.15s ease;
+}
+
+.blockerRow:hover {
+  background: #1a1a1a;
+}
+
+.blockerItem {
+  color: #F5F0E8;
+  font-weight: 500;
+}
+
+.blockerOwner {
+  color: #F59E0B;
+  font-weight: 500;
+}
+
+.blockerImpact {
+  color: #888;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+  .overviewStats {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .statDivider {
+    display: none;
+  }
+
+  .phasesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .blockersHeader,
+  .blockerRow {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .blockersHeader span:not(:first-child),
+  .blockerRow span:not(:first-child) {
+    padding-left: 12px;
+  }
+}

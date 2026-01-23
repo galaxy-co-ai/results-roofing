@@ -35,3 +35,14 @@ export {
   type Appointment,
   type Contract,
 } from './useOrders';
+
+// Analytics hooks
+export {
+  useTrackPageView,
+  useTrackEvent,
+  useFunnelTracker,
+  useTrackConversion,
+  useTrackCta,
+  useTrackForm,
+  useTrackError,
+} from './useAnalytics';

@@ -18,6 +18,18 @@ function getStripeClient(): Stripe | null {
 }
 
 /**
+ * Generate a unique confirmation number in format RR-XXXXXXXX
+ */
+function generateConfirmationNumber(): string {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let result = 'RR-';
+  for (let i = 0; i < 8; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
+/**
  * POST /api/payments/webhook
  * Handle Stripe webhook events
  * 
@@ -104,16 +116,113 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
 
   logger.info(`Payment succeeded for quote ${quoteId}: ${paymentIntent.id}`);
 
-  // Update quote status to 'signed' (or next appropriate status after payment)
+  // Fetch the quote with its lead
+  const quote = await db.query.quotes.findFirst({
+    where: eq(schema.quotes.id, quoteId),
+    with: {
+      lead: true,
+    },
+  });
+
+  if (!quote) {
+    logger.error(`Quote not found for payment: ${quoteId}`);
+    return;
+  }
+
+  // Check if order already exists (idempotency)
+  const existingOrder = await db.query.orders.findFirst({
+    where: eq(schema.orders.quoteId, quoteId),
+  });
+
+  if (existingOrder) {
+    logger.info(`Order already exists for quote ${quoteId}: ${existingOrder.confirmationNumber}`);
+    return;
+  }
+
+  // Look up or create a contract for this quote
+  let contract = await db.query.contracts.findFirst({
+    where: eq(schema.contracts.quoteId, quoteId),
+  });
+
+  if (!contract) {
+    // Create a placeholder contract if none exists
+    // This handles cases where e-signature is pending but payment went through
+    const customerEmail = quote.lead?.email || paymentIntent.receipt_email || 'customer@example.com';
+    
+    const [newContract] = await db
+      .insert(schema.contracts)
+      .values({
+        quoteId,
+        customerEmail,
+        status: 'pending',
+        templateVersion: '1.0',
+      })
+      .returning();
+    
+    contract = newContract;
+    logger.info(`Created placeholder contract for quote ${quoteId}`);
+  }
+
+  // Calculate amounts
+  const totalPrice = quote.totalPrice ? parseFloat(quote.totalPrice) : 0;
+  const depositAmount = paymentIntent.amount / 100; // Convert from cents
+  const balanceDue = totalPrice - depositAmount;
+
+  // Generate unique confirmation number
+  const confirmationNumber = generateConfirmationNumber();
+
+  // Create the order
+  const [order] = await db
+    .insert(schema.orders)
+    .values({
+      quoteId,
+      contractId: contract.id,
+      confirmationNumber,
+      status: 'deposit_paid',
+      customerEmail: contract.customerEmail,
+      customerPhone: quote.lead?.phone || null,
+      customerName: quote.lead?.firstName && quote.lead?.lastName 
+        ? `${quote.lead.firstName} ${quote.lead.lastName}` 
+        : null,
+      propertyAddress: quote.address,
+      propertyCity: quote.city,
+      propertyState: quote.state,
+      propertyZip: quote.zip,
+      selectedTier: quote.selectedTier || 'better',
+      totalPrice: totalPrice.toString(),
+      depositAmount: depositAmount.toString(),
+      balanceDue: balanceDue.toString(),
+      financingUsed: quote.financingStatus === 'approved' ? 'wisetack' : 'none',
+      scheduledStartDate: quote.scheduledDate || null,
+    })
+    .returning();
+
+  logger.info(`Created order ${order.confirmationNumber} for quote ${quoteId}`);
+
+  // Create the payment record
+  await db.insert(schema.payments).values({
+    orderId: order.id,
+    type: 'deposit',
+    amount: depositAmount.toString(),
+    currency: 'usd',
+    stripePaymentIntentId: paymentIntent.id,
+    stripeChargeId: paymentIntent.latest_charge as string || null,
+    status: 'succeeded',
+    paymentMethod: 'card',
+    processedAt: new Date(),
+  });
+
+  logger.info(`Recorded deposit payment for order ${order.confirmationNumber}`);
+
+  // Update quote status to 'converted'
   await db
     .update(schema.quotes)
     .set({
-      status: 'signed',
+      status: 'converted',
       updatedAt: new Date(),
     })
     .where(eq(schema.quotes.id, quoteId));
 
-  // TODO: Create order record
   // TODO: Send confirmation email via Resend
   // TODO: Send confirmation SMS if consent given
   // TODO: Sync to JobNimbus CRM

@@ -6,11 +6,25 @@
  */
 
 import { logger } from '@/lib/utils';
+import { 
+  MEASUREMENT_TIMINGS, 
+  calculateBackoff,
+  type MeasurementData 
+} from '@/lib/measurement';
 
 // Configuration from environment
 const ROOFR_API_KEY = process.env.ROOFR_API_KEY || '';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const _ROOFR_API_URL = process.env.ROOFR_API_URL || 'https://api.roofr.com/v1';
+const ROOFR_API_URL = process.env.ROOFR_API_URL || 'https://api.roofr.com/v1';
+
+/**
+ * Custom error for measurement timeout
+ */
+export class MeasurementTimeoutError extends Error {
+  constructor(message: string = 'Measurement timed out') {
+    super(message);
+    this.name = 'MeasurementTimeoutError';
+  }
+}
 
 /**
  * Measurement request
@@ -63,52 +77,61 @@ export const roofrAdapter = {
    * Request a new roof measurement
    * STUB - Returns mock data
    */
-  async requestMeasurement(request: MeasurementRequest): Promise<MeasurementReport> {
+  async requestMeasurement(
+    request: MeasurementRequest,
+    options?: { signal?: AbortSignal }
+  ): Promise<MeasurementReport> {
     if (!this.isConfigured()) {
       logger.warn('Roofr not configured - returning mock measurement');
+      // Simulate some delay for realistic testing
+      await simulateDelay(2000, options?.signal);
       return generateMockMeasurement(request);
     }
 
-    // TODO: Implement actual Roofr API call
-    // const response = await fetch(`${ROOFR_API_URL}/measurements`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Authorization': `Bearer ${ROOFR_API_KEY}`,
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(request),
-    // });
+    // Actual API implementation (when credentials available)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(
+      () => controller.abort(),
+      MEASUREMENT_TIMINGS.TIMEOUT_THRESHOLD
+    );
 
-    logger.warn('Roofr integration not implemented - returning mock');
-    return generateMockMeasurement(request);
+    try {
+      const response = await fetch(`${ROOFR_API_URL}/measurements`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${ROOFR_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(request),
+        signal: options?.signal || controller.signal,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Roofr API error: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw new MeasurementTimeoutError('Measurement request timed out');
+      }
+      throw error;
+    } finally {
+      clearTimeout(timeoutId);
+    }
   },
 
   /**
    * Get measurement status/report
    * STUB - Returns mock data
    */
-  async getMeasurement(_measurementId: string): Promise<MeasurementReport | null> {
-    if (!this.isConfigured()) {
-      logger.warn('Roofr not configured');
-      return null;
-    }
-
-    // TODO: Implement actual API call
-    logger.warn('Roofr getMeasurement not implemented');
-    return null;
-  },
-
-  /**
-   * Poll for measurement completion
-   * STUB - Returns completed mock immediately
-   */
-  async pollUntilComplete(
+  async getMeasurement(
     measurementId: string,
-    _maxAttempts: number = 10,
-    _intervalMs: number = 5000
+    options?: { signal?: AbortSignal }
   ): Promise<MeasurementReport | null> {
     if (!this.isConfigured()) {
-      // Return mock "completed" measurement
+      // Return mock in-progress or completed based on time
+      logger.warn('Roofr not configured - returning mock status');
       return {
         id: measurementId,
         status: 'completed',
@@ -121,10 +144,128 @@ export const roofrAdapter = {
       };
     }
 
-    // TODO: Implement actual polling logic
-    return null;
+    try {
+      const response = await fetch(`${ROOFR_API_URL}/measurements/${measurementId}`, {
+        headers: {
+          'Authorization': `Bearer ${ROOFR_API_KEY}`,
+        },
+        signal: options?.signal,
+      });
+
+      if (!response.ok) {
+        if (response.status === 404) return null;
+        throw new Error(`Roofr API error: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw new MeasurementTimeoutError('Get measurement request aborted');
+      }
+      throw error;
+    }
+  },
+
+  /**
+   * Poll for measurement completion with exponential backoff
+   * Throws MeasurementTimeoutError if timeout is reached
+   */
+  async pollUntilComplete(
+    measurementId: string,
+    options?: {
+      maxAttempts?: number;
+      timeoutMs?: number;
+      onProgress?: (attempt: number, status: string) => void;
+    }
+  ): Promise<MeasurementReport> {
+    const maxAttempts = options?.maxAttempts || MEASUREMENT_TIMINGS.MAX_POLL_ATTEMPTS;
+    const timeoutMs = options?.timeoutMs || MEASUREMENT_TIMINGS.TIMEOUT_THRESHOLD;
+    const startTime = Date.now();
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      // Check if we've exceeded the timeout
+      if (Date.now() - startTime >= timeoutMs) {
+        throw new MeasurementTimeoutError(
+          `Measurement timed out after ${timeoutMs / 1000} seconds`
+        );
+      }
+
+      // Calculate backoff delay
+      const delay = calculateBackoff(attempt);
+
+      // Wait before polling (skip on first attempt)
+      if (attempt > 0) {
+        await sleep(delay);
+      }
+
+      try {
+        const report = await this.getMeasurement(measurementId);
+
+        if (!report) {
+          options?.onProgress?.(attempt, 'not_found');
+          continue;
+        }
+
+        options?.onProgress?.(attempt, report.status);
+
+        if (report.status === 'completed') {
+          return report;
+        }
+
+        if (report.status === 'failed') {
+          throw new Error('Measurement failed');
+        }
+
+        // Continue polling for 'pending' or 'processing' status
+      } catch (error) {
+        if (error instanceof MeasurementTimeoutError) {
+          throw error;
+        }
+        // Log error but continue polling
+        logger.warn(`Poll attempt ${attempt + 1} failed`, { error });
+      }
+    }
+
+    throw new MeasurementTimeoutError(
+      `Measurement did not complete after ${maxAttempts} attempts`
+    );
+  },
+
+  /**
+   * Convert Roofr report to internal MeasurementData format
+   */
+  toMeasurementData(report: MeasurementReport): MeasurementData {
+    return {
+      sqftTotal: report.sqftTotal || 2500,
+      pitchPrimary: report.pitchPrimary || 6,
+      complexity: report.complexity || 'moderate',
+      source: 'roofr',
+    };
   },
 };
+
+/**
+ * Sleep helper
+ */
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Simulate delay with abort signal support
+ */
+async function simulateDelay(ms: number, signal?: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const timeoutId = setTimeout(resolve, ms);
+    
+    if (signal) {
+      signal.addEventListener('abort', () => {
+        clearTimeout(timeoutId);
+        reject(new MeasurementTimeoutError('Request aborted'));
+      });
+    }
+  });
+}
 
 /**
  * Generate mock measurement for development
