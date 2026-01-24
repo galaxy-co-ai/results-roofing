@@ -14,13 +14,13 @@
 }
 
 .card:hover {
-  border-color: var(--rr-color-sandstone);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: var(--rr-color-blue);
+  box-shadow: var(--rr-shadow-charcoal-medium);
   transform: translateY(-2px);
 }
 
 .card:focus-visible {
-  outline: 2px solid var(--rr-color-sandstone);
+  outline: 2px solid var(--rr-color-blue);
   outline-offset: 2px;
 }
 
@@ -28,15 +28,22 @@
   width: 48px;
   height: 48px;
   min-width: 48px;
-  background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover .iconWrapper {
+  box-shadow: var(--rr-shadow-charcoal-medium);
 }
 
 .icon {
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
 }
 
 .content {
@@ -77,8 +84,8 @@
 }
 
 .status.active {
-  background: rgba(196, 167, 125, 0.15);
-  color: var(--rr-color-sandstone);
+  background: rgba(74, 126, 194, 0.12);
+  color: var(--rr-color-blue);
 }
 
 .status.paid {
@@ -133,7 +140,7 @@
 
 .card:hover .viewHint {
   opacity: 1;
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
 }
 
 .downloadButton {

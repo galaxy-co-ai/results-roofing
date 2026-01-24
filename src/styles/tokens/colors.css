@@ -10,9 +10,9 @@
      ======================================== */
 
   /* Brand Colors */
-  --rr-color-blue: #1E6CFF;            /* Primary brand - CTAs, accents */
-  --rr-color-blue-light: #4D8CFF;      /* Hover states, highlights */
-  --rr-color-blue-dark: #1554CC;       /* Active states, shadows */
+  --rr-color-blue: #4A7EC2;            /* Primary brand - CTAs, accents (matte) */
+  --rr-color-blue-light: #6B9AD4;      /* Hover states, highlights */
+  --rr-color-blue-dark: #3A6499;       /* Active states, shadows */
   --rr-color-charcoal: #1E2329;        /* Primary text, strong contrast */
   --rr-color-charcoal-light: #2A3038;  /* Secondary dark */
   --rr-color-charcoal-dark: #14181D;   /* Deepest dark */
@@ -89,7 +89,11 @@
 
   /* Focus Ring */
   --rr-color-focus-ring: var(--rr-color-blue);
-  --rr-color-focus-ring-alpha: rgba(30, 108, 255, 0.15);
+  --rr-color-focus-ring-alpha: rgba(74, 126, 194, 0.15);
+
+  /* Shadows */
+  --rr-shadow-charcoal-subtle: 0 2px 8px rgba(30, 35, 41, 0.12);
+  --rr-shadow-charcoal-medium: 0 4px 12px rgba(30, 35, 41, 0.15);
 
   /* ========================================
      LEGACY ALIASES (backwards compatibility)
