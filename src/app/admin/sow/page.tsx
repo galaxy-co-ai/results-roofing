@@ -1,27 +1,37 @@
 'use client';
 
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { 
   CheckCircle2, 
   Circle, 
   Clock, 
   AlertTriangle,
-  ExternalLink,
+  FileText,
+  RefreshCw,
+  Loader2,
 } from 'lucide-react';
+import { SegmentedProgress } from '@/components/ui/segmented-progress';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody } from '@/components/ui/dialog';
 import styles from './page.module.css';
 
-type Status = 'complete' | 'in_progress' | 'pending' | 'blocked';
+type TaskStatus = 'backlog' | 'todo' | 'in_progress' | 'review' | 'done';
+type SOWStatus = 'complete' | 'in_progress' | 'pending' | 'blocked';
 
-interface Deliverable {
-  name: string;
-  status: Status;
-  note?: string;
+interface Task {
+  id: string;
+  title: string;
+  description: string | null;
+  status: TaskStatus;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  phaseId: string | null;
+  phaseName: string | null;
+  sowDeliverable: string | null;
 }
 
 interface Phase {
-  id: number;
+  id: string;
   name: string;
-  status: Status;
-  deliverables: Deliverable[];
+  tasks: Task[];
 }
 
 interface Blocker {
@@ -30,99 +40,37 @@ interface Blocker {
   impact: string;
 }
 
-// SOW Data - In production, this could come from a database
-const PHASES: Phase[] = [
-  {
-    id: 1,
-    name: 'Discovery & Kickoff',
-    status: 'complete',
-    deliverables: [
-      { name: 'Kickoff meeting', status: 'complete' },
-      { name: 'Access handoff (hosting, DNS, APIs)', status: 'pending', note: 'Awaiting client' },
-      { name: 'Confirm domain & hosting', status: 'pending', note: 'Awaiting client' },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Foundations',
-    status: 'in_progress',
-    deliverables: [
-      { name: 'Neon PostgreSQL setup', status: 'complete' },
-      { name: 'Drizzle ORM migrations', status: 'complete' },
-      { name: 'Clerk authentication', status: 'complete' },
-      { name: 'JobNimbus CRM adapter', status: 'blocked', note: 'Awaiting API credentials' },
-      { name: 'Roofr measurement adapter', status: 'blocked', note: 'Awaiting API credentials' },
-      { name: 'Analytics infrastructure', status: 'complete' },
-      { name: 'Event taxonomy defined', status: 'complete' },
-    ],
-  },
-  {
-    id: 3,
-    name: 'Core Build',
-    status: 'in_progress',
-    deliverables: [
-      { name: 'Address entry page', status: 'complete' },
-      { name: 'Preliminary estimate', status: 'complete' },
-      { name: 'Measuring (satellite)', status: 'complete', note: 'With timeout fallback' },
-      { name: 'Package selection', status: 'complete' },
-      { name: 'Financing options', status: 'pending', note: 'UI only - Wisetack stub' },
-      { name: 'Appointment booking', status: 'pending', note: 'UI only - Cal.com stub' },
-      { name: 'Contract signing', status: 'pending', note: 'UI only - Documenso stub' },
-      { name: 'Payment (deposit)', status: 'complete', note: 'Stripe integration' },
-      { name: 'Confirmation page', status: 'complete' },
-      { name: 'Customer portal', status: 'in_progress', note: 'Dashboard done, others pending' },
-    ],
-  },
-  {
-    id: 4,
-    name: 'Analytics & Tracking',
-    status: 'complete',
-    deliverables: [
-      { name: 'GTM container loader', status: 'complete' },
-      { name: 'dataLayer integration', status: 'complete' },
-      { name: 'sGTM collection endpoint', status: 'complete' },
-      { name: 'Funnel event tracking', status: 'complete' },
-      { name: 'Conversion tracking', status: 'complete' },
-      { name: 'Consent management', status: 'complete' },
-    ],
-  },
-  {
-    id: 5,
-    name: 'Testing & QA',
-    status: 'pending',
-    deliverables: [
-      { name: 'Cross-browser testing', status: 'pending' },
-      { name: 'Mobile responsiveness', status: 'pending' },
-      { name: 'Accessibility audit', status: 'pending' },
-      { name: 'Performance optimization', status: 'pending' },
-      { name: 'E2E test suite', status: 'in_progress' },
-    ],
-  },
-  {
-    id: 6,
-    name: 'Launch Prep',
-    status: 'pending',
-    deliverables: [
-      { name: 'Staging deployment', status: 'pending' },
-      { name: 'DNS configuration', status: 'pending' },
-      { name: 'SSL certificates', status: 'pending' },
-      { name: 'Production deployment', status: 'pending' },
-      { name: 'Monitoring setup', status: 'pending' },
-    ],
-  },
-  {
-    id: 7,
-    name: 'Post-Launch',
-    status: 'pending',
-    deliverables: [
-      { name: '30-day support period', status: 'pending' },
-      { name: 'Bug fixes', status: 'pending' },
-      { name: 'Feature flag system', status: 'pending' },
-      { name: 'Documentation handoff', status: 'pending' },
-    ],
-  },
-];
+// Map task status to SOW status for display
+function taskStatusToSOWStatus(status: TaskStatus): SOWStatus {
+  switch (status) {
+    case 'done':
+    case 'review': // Review is close enough to complete for SOW purposes
+      return 'complete';
+    case 'in_progress':
+      return 'in_progress';
+    case 'backlog':
+      return 'blocked'; // Backlog items are typically blocked/waiting
+    default:
+      return 'pending';
+  }
+}
 
+function getPhaseStatus(tasks: Task[]): SOWStatus {
+  if (tasks.length === 0) return 'pending';
+  
+  const allComplete = tasks.every(t => t.status === 'done' || t.status === 'review');
+  if (allComplete) return 'complete';
+  
+  const anyInProgress = tasks.some(t => t.status === 'in_progress');
+  if (anyInProgress) return 'in_progress';
+  
+  const anyBlocked = tasks.some(t => t.status === 'backlog' && t.priority === 'high');
+  if (anyBlocked) return 'blocked';
+  
+  return 'pending';
+}
+
+// Static blockers - these could also be derived from tasks with certain criteria
 const BLOCKERS: Blocker[] = [
   { item: 'JobNimbus API credentials', owner: 'Client', impact: 'CRM sync blocked' },
   { item: 'Roofr API credentials', owner: 'Client', impact: 'Live measurements blocked' },
@@ -133,7 +81,7 @@ const BLOCKERS: Blocker[] = [
   { item: 'SignalWire account', owner: 'Client', impact: 'SMS notifications blocked' },
 ];
 
-function getStatusIcon(status: Status) {
+function getStatusIcon(status: SOWStatus) {
   switch (status) {
     case 'complete':
       return <CheckCircle2 size={14} />;
@@ -146,7 +94,7 @@ function getStatusIcon(status: Status) {
   }
 }
 
-function getStatusLabel(status: Status) {
+function getStatusLabel(status: SOWStatus) {
   switch (status) {
     case 'complete':
       return 'Complete';
@@ -159,21 +107,87 @@ function getStatusLabel(status: Status) {
   }
 }
 
-function calculatePhaseProgress(deliverables: Deliverable[]): number {
-  const completed = deliverables.filter(d => d.status === 'complete').length;
-  return Math.round((completed / deliverables.length) * 100);
-}
-
-function calculateOverallProgress(): number {
-  const allDeliverables = PHASES.flatMap(p => p.deliverables);
-  const completed = allDeliverables.filter(d => d.status === 'complete').length;
-  return Math.round((completed / allDeliverables.length) * 100);
-}
-
 export default function SOWPage() {
-  const overallProgress = calculateOverallProgress();
-  const completedPhases = PHASES.filter(p => p.status === 'complete').length;
-  const inProgressPhases = PHASES.filter(p => p.status === 'in_progress').length;
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showSowDialog, setShowSowDialog] = useState(false);
+
+  const fetchTasks = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/admin/tasks');
+      if (!response.ok) throw new Error('Failed to fetch');
+      const data = await response.json();
+      setTasks(data.tasks || []);
+    } catch {
+      // Silent fail - show empty state
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchTasks();
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(fetchTasks, 30000);
+    return () => clearInterval(interval);
+  }, [fetchTasks]);
+
+  // Group tasks by phase
+  const phases = useMemo(() => {
+    const phaseMap = new Map<string, Phase>();
+    
+    // Only include tasks that have phase information
+    const sowTasks = tasks.filter(t => t.phaseId && t.phaseName);
+    
+    sowTasks.forEach(task => {
+      const phaseId = task.phaseId!;
+      if (!phaseMap.has(phaseId)) {
+        phaseMap.set(phaseId, {
+          id: phaseId,
+          name: task.phaseName!,
+          tasks: [],
+        });
+      }
+      phaseMap.get(phaseId)!.tasks.push(task);
+    });
+
+    // Sort phases by ID and return as array
+    return Array.from(phaseMap.values()).sort((a, b) => 
+      parseInt(a.id) - parseInt(b.id)
+    );
+  }, [tasks]);
+
+  // Calculate statistics
+  const stats = useMemo(() => {
+    const sowTasks = tasks.filter(t => t.phaseId);
+    const total = sowTasks.length;
+    const complete = sowTasks.filter(t => t.status === 'done' || t.status === 'review').length;
+    const inProgress = sowTasks.filter(t => t.status === 'in_progress').length;
+    const blocked = sowTasks.filter(t => t.status === 'backlog').length;
+    const pending = sowTasks.filter(t => t.status === 'todo').length;
+    const progress = total > 0 ? Math.round((complete / total) * 100) : 0;
+
+    return { total, complete, inProgress, blocked, pending, progress };
+  }, [tasks]);
+
+  const progressSegments = [
+    { label: 'Complete', value: stats.complete, color: '#10B981' },
+    { label: 'In Progress', value: stats.inProgress, color: '#1E6CFF' },
+    { label: 'Pending', value: stats.pending, color: '#F59E0B' },
+    { label: 'Blocked', value: stats.blocked, color: '#EF4444' },
+  ];
+
+  if (isLoading) {
+    return (
+      <div className={styles.page}>
+        <div className="flex items-center justify-center py-20 text-muted-foreground">
+          <Loader2 size={20} className="animate-spin mr-2" />
+          Loading SOW data...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
@@ -181,63 +195,169 @@ export default function SOWPage() {
       <header className={styles.header}>
         <div>
           <h1 className={styles.title}>Scope of Work</h1>
-          <p className={styles.subtitle}>MVP B Progress Tracker</p>
+          <p className={styles.subtitle}>
+            MVP B Progress Tracker
+            <span className="text-xs text-emerald-600 ml-2">● Live</span>
+          </p>
         </div>
-        <a
-          href="/docs/SOW-PROGRESS-TRACKER.md"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.docLink}
-        >
-          <ExternalLink size={14} />
-          View Full Doc
-        </a>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={fetchTasks}
+            className={styles.refreshButton}
+            title="Refresh"
+          >
+            <RefreshCw size={14} />
+          </button>
+          <button
+            onClick={() => setShowSowDialog(true)}
+            className={styles.docLink}
+          >
+            <FileText size={14} />
+            View Full SOW
+          </button>
+        </div>
       </header>
 
-      {/* Overall Progress */}
-      <div className={styles.overviewCard}>
-        <div className={styles.overviewStats}>
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>{overallProgress}%</span>
-            <span className={styles.statLabel}>Complete</span>
-          </div>
-          <div className={styles.statDivider} />
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>{completedPhases}/{PHASES.length}</span>
-            <span className={styles.statLabel}>Phases Done</span>
-          </div>
-          <div className={styles.statDivider} />
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>{inProgressPhases}</span>
-            <span className={styles.statLabel}>In Progress</span>
-          </div>
-          <div className={styles.statDivider} />
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>{BLOCKERS.length}</span>
-            <span className={styles.statLabel}>Blockers</span>
-          </div>
-        </div>
-        <div className={styles.overviewProgress}>
-          <div 
-            className={styles.overviewProgressFill} 
-            style={{ width: `${overallProgress}%` }}
-          />
-        </div>
-      </div>
+      {/* SOW Document Dialog */}
+      <Dialog open={showSowDialog} onOpenChange={setShowSowDialog}>
+        <DialogContent size="md" className="max-h-[65vh]">
+          <DialogHeader className="border-b pb-4">
+            <div>
+              <DialogTitle className="text-xl">Results Roofing Website Overhaul</DialogTitle>
+              <p className="text-sm text-muted-foreground mt-1">Scope of Work - MVP B</p>
+            </div>
+          </DialogHeader>
+          <DialogBody className="p-6 overflow-y-auto">
+            {/* Phases */}
+            <section className="mb-8">
+              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">Deliverables by Phase</h3>
+              <div className="space-y-4">
+                {phases.map((phase) => {
+                  const phaseComplete = phase.tasks.filter(t => t.status === 'done' || t.status === 'review').length;
+                  const phaseTotal = phase.tasks.length;
+                  const phaseProgress = phaseTotal > 0 ? Math.round((phaseComplete / phaseTotal) * 100) : 0;
+                  const phaseStatus = getPhaseStatus(phase.tasks);
+                  
+                  return (
+                    <div key={phase.id} className="border rounded-lg overflow-hidden">
+                      {/* Phase Header */}
+                      <div className="bg-muted/50 px-4 py-3 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <span className="text-xs font-medium text-muted-foreground">Phase {phase.id}</span>
+                          <span className="font-medium">{phase.name}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="w-24 h-2 bg-muted rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-primary rounded-full transition-all"
+                              style={{ width: `${phaseProgress}%` }}
+                            />
+                          </div>
+                          <span className="text-sm text-muted-foreground tabular-nums">
+                            {phaseComplete}/{phaseTotal}
+                          </span>
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                            phaseStatus === 'complete' ? 'bg-emerald-100 text-emerald-700' :
+                            phaseStatus === 'in_progress' ? 'bg-blue-100 text-blue-700' :
+                            phaseStatus === 'blocked' ? 'bg-rose-100 text-rose-700' :
+                            'bg-muted text-muted-foreground'
+                          }`}>
+                            {getStatusLabel(phaseStatus)}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      {/* Tasks as Deliverables */}
+                      <div className="divide-y">
+                        {phase.tasks.map((task) => {
+                          const sowStatus = taskStatusToSOWStatus(task.status);
+                          return (
+                            <div 
+                              key={task.id}
+                              className="px-4 py-2.5 flex items-center gap-3 hover:bg-muted/30 transition-colors"
+                            >
+                              <span className={`flex-shrink-0 ${
+                                sowStatus === 'complete' ? 'text-emerald-500' :
+                                sowStatus === 'in_progress' ? 'text-blue-500' :
+                                sowStatus === 'blocked' ? 'text-rose-500' :
+                                'text-muted-foreground'
+                              }`}>
+                                {getStatusIcon(sowStatus)}
+                              </span>
+                              <span className={`flex-1 text-sm ${
+                                sowStatus === 'complete' ? 'text-muted-foreground' : ''
+                              }`}>
+                                {task.title}
+                              </span>
+                              {task.description && (
+                                <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                                  {task.description}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+
+            {/* Blockers */}
+            <section>
+              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4 flex items-center gap-2">
+                <AlertTriangle size={14} className="text-rose-500" />
+                Active Blockers
+              </h3>
+              <div className="border rounded-lg overflow-hidden">
+                <div className="grid grid-cols-3 gap-4 px-4 py-2 bg-muted/50 text-xs font-medium text-muted-foreground">
+                  <span>Item</span>
+                  <span>Owner</span>
+                  <span>Impact</span>
+                </div>
+                <div className="divide-y">
+                  {BLOCKERS.map((blocker, idx) => (
+                    <div key={idx} className="grid grid-cols-3 gap-4 px-4 py-3 text-sm">
+                      <span className="font-medium">{blocker.item}</span>
+                      <span className="text-amber-600">{blocker.owner}</span>
+                      <span className="text-muted-foreground">{blocker.impact}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </DialogBody>
+        </DialogContent>
+      </Dialog>
+
+      {/* Overall Progress - Segmented */}
+      <SegmentedProgress
+        title="Project Progress"
+        value={stats.complete}
+        max={stats.total}
+        valueLabel={`${stats.progress}% Complete`}
+        maxLabel={`${stats.total} deliverables`}
+        segments={progressSegments}
+        className="mb-6"
+      />
 
       {/* Phases Grid */}
       <div className={styles.phasesGrid}>
-        {PHASES.map((phase) => {
-          const progress = calculatePhaseProgress(phase.deliverables);
-          const completedCount = phase.deliverables.filter(d => d.status === 'complete').length;
+        {phases.map((phase) => {
+          const phaseComplete = phase.tasks.filter(t => t.status === 'done' || t.status === 'review').length;
+          const phaseProgress = phase.tasks.length > 0 
+            ? Math.round((phaseComplete / phase.tasks.length) * 100) 
+            : 0;
+          const phaseStatus = getPhaseStatus(phase.tasks);
           
           return (
-            <div key={phase.id} className={`${styles.phaseCard} ${styles[`phase_${phase.status}`]}`}>
+            <div key={phase.id} className={`${styles.phaseCard} ${styles[`phase_${phaseStatus}`]}`}>
               <div className={styles.phaseHeader}>
                 <span className={styles.phaseNumber}>Phase {phase.id}</span>
-                <span className={`${styles.phaseBadge} ${styles[`badge_${phase.status}`]}`}>
-                  {getStatusIcon(phase.status)}
-                  {getStatusLabel(phase.status)}
+                <span className={`${styles.phaseBadge} ${styles[`badge_${phaseStatus}`]}`}>
+                  {getStatusIcon(phaseStatus)}
+                  {getStatusLabel(phaseStatus)}
                 </span>
               </div>
               
@@ -247,29 +367,32 @@ export default function SOWPage() {
                 <div className={styles.phaseProgressBar}>
                   <div 
                     className={styles.phaseProgressFill} 
-                    style={{ width: `${progress}%` }}
+                    style={{ width: `${phaseProgress}%` }}
                   />
                 </div>
                 <span className={styles.phaseProgressText}>
-                  {completedCount}/{phase.deliverables.length}
+                  {phaseComplete}/{phase.tasks.length}
                 </span>
               </div>
               
               <ul className={styles.deliverablesList}>
-                {phase.deliverables.map((deliverable, idx) => (
-                  <li 
-                    key={idx} 
-                    className={`${styles.deliverable} ${styles[`deliverable_${deliverable.status}`]}`}
-                  >
-                    <span className={styles.deliverableIcon}>
-                      {getStatusIcon(deliverable.status)}
-                    </span>
-                    <span className={styles.deliverableName}>{deliverable.name}</span>
-                    {deliverable.note && (
-                      <span className={styles.deliverableNote}>{deliverable.note}</span>
-                    )}
-                  </li>
-                ))}
+                {phase.tasks.map((task) => {
+                  const sowStatus = taskStatusToSOWStatus(task.status);
+                  return (
+                    <li 
+                      key={task.id} 
+                      className={`${styles.deliverable} ${styles[`deliverable_${sowStatus}`]}`}
+                    >
+                      <span className={styles.deliverableIcon}>
+                        {getStatusIcon(sowStatus)}
+                      </span>
+                      <span className={styles.deliverableName}>{task.title}</span>
+                      {task.description && (
+                        <span className={styles.deliverableNote}>{task.description}</span>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           );

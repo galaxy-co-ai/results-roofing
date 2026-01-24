@@ -1,5 +1,6 @@
 /* =================================================
    ADMIN TASKS PAGE - Kanban Board
+   Using admin design tokens
    ================================================= */
 
 .page {
@@ -12,65 +13,43 @@
 
 .header {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 24px;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--admin-space-4);
+  margin-bottom: var(--admin-space-6);
+  text-align: center;
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #F5F0E8;
+  font-size: var(--admin-text-xl);
+  font-weight: var(--admin-font-semibold);
+  color: var(--admin-text-primary);
   margin: 0;
 }
 
 .subtitle {
-  font-size: 0.8125rem;
-  color: #666;
-  margin: 4px 0 0;
-}
-
-.headerActions {
-  display: flex;
-  gap: 8px;
+  font-size: var(--admin-text-base);
+  color: var(--admin-text-secondary);
+  margin: var(--admin-space-1) 0 0;
 }
 
 .addButton {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  background: #C4A77D;
+  gap: var(--admin-space-1);
+  padding: var(--admin-space-2) var(--admin-space-3);
+  background: var(--admin-interactive-primary);
   border: none;
-  border-radius: 8px;
-  color: #1a1a1a;
-  font-size: 0.8125rem;
-  font-weight: 600;
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-interactive-primary-text);
+  font-size: var(--admin-text-base);
+  font-weight: var(--admin-font-medium);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: background var(--admin-transition-base);
 }
 
 .addButton:hover {
-  background: #d4b78d;
-}
-
-.refreshButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  color: #888;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.refreshButton:hover {
-  background: #242424;
-  color: #F5F0E8;
+  background: var(--admin-interactive-primary-hover);
 }
 
 /* ========================================
@@ -82,10 +61,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 48px;
-  color: #666;
-  font-size: 0.875rem;
+  gap: var(--admin-space-2);
+  padding: var(--admin-space-12);
+  color: var(--admin-text-secondary);
+  font-size: var(--admin-text-md);
 }
 
 .spinner {
@@ -97,7 +76,7 @@
 }
 
 .error {
-  color: #ef4444;
+  color: var(--admin-status-error);
 }
 
 /* ========================================
@@ -107,34 +86,35 @@
 .modalOverlay {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: var(--admin-z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(15, 17, 21, 0.6);
   backdrop-filter: blur(4px);
 }
 
 .addForm {
   width: 440px;
-  max-width: calc(100vw - 32px);
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 16px;
-  padding: 24px;
+  max-width: calc(100vw - var(--admin-space-8));
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-xl);
+  padding: var(--admin-space-6);
+  box-shadow: var(--admin-shadow-xl);
 }
 
 .formHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: var(--admin-space-5);
 }
 
 .formHeader h2 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #F5F0E8;
+  font-size: var(--admin-text-lg);
+  font-weight: var(--admin-font-semibold);
+  color: var(--admin-text-primary);
   margin: 0;
 }
 
@@ -146,49 +126,48 @@
   height: 32px;
   background: transparent;
   border: none;
-  border-radius: 8px;
-  color: #666;
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-secondary);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--admin-transition-base);
 }
 
 .closeButton:hover {
-  background: #242424;
-  color: #F5F0E8;
+  background: var(--admin-bg-hover);
+  color: var(--admin-text-primary);
 }
 
 .formField {
-  margin-bottom: 16px;
+  margin-bottom: var(--admin-space-4);
 }
 
 .formField label {
   display: block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #666;
-  margin-bottom: 6px;
+  font-size: var(--admin-text-sm);
+  font-weight: var(--admin-font-medium);
+  color: var(--admin-text-secondary);
+  margin-bottom: var(--admin-space-1);
 }
 
 .formField input,
 .formField textarea,
 .formField select {
   width: 100%;
-  padding: 10px 12px;
-  background: #0f0f0f;
-  border: 1px solid #333;
-  border-radius: 8px;
-  color: #F5F0E8;
+  padding: var(--admin-space-2) var(--admin-space-3);
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-primary);
   font-family: inherit;
-  font-size: 0.875rem;
+  font-size: var(--admin-text-md);
 }
 
 .formField input:focus,
 .formField textarea:focus,
 .formField select:focus {
   outline: none;
-  border-color: #C4A77D;
+  border-color: var(--admin-border-focus);
+  box-shadow: var(--admin-shadow-focus);
 }
 
 .formField textarea {
@@ -199,30 +178,30 @@
 .formRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: var(--admin-space-3);
 }
 
 .formActions {
   display: flex;
-  gap: 12px;
-  margin-top: 20px;
+  gap: var(--admin-space-3);
+  margin-top: var(--admin-space-5);
 }
 
 .cancelButton {
   flex: 1;
-  padding: 10px;
+  padding: var(--admin-space-2);
   background: transparent;
-  border: 1px solid #333;
-  border-radius: 8px;
-  color: #888;
-  font-size: 0.875rem;
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-secondary);
+  font-size: var(--admin-text-md);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--admin-transition-base);
 }
 
 .cancelButton:hover {
-  background: #1f1f1f;
-  color: #F5F0E8;
+  background: var(--admin-bg-subtle);
+  color: var(--admin-text-primary);
 }
 
 .submitButton {
@@ -230,20 +209,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 10px;
-  background: #C4A77D;
+  gap: var(--admin-space-1);
+  padding: var(--admin-space-2);
+  background: var(--admin-interactive-primary);
   border: none;
-  border-radius: 8px;
-  color: #1a1a1a;
-  font-size: 0.875rem;
-  font-weight: 600;
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-interactive-primary-text);
+  font-size: var(--admin-text-md);
+  font-weight: var(--admin-font-medium);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: background var(--admin-transition-base);
 }
 
 .submitButton:hover:not(:disabled) {
-  background: #d4b78d;
+  background: var(--admin-interactive-primary-hover);
 }
 
 .submitButton:disabled {
@@ -258,7 +237,7 @@
 .board {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
+  gap: var(--admin-space-4);
   min-height: 500px;
 }
 
@@ -277,49 +256,51 @@
 .column {
   display: flex;
   flex-direction: column;
-  background: #151515;
-  border: 1px solid #252525;
-  border-radius: 12px;
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-lg);
   overflow: hidden;
 }
 
 .columnHeader {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 14px 16px;
-  border-bottom: 1px solid #252525;
+  gap: var(--admin-space-2);
+  padding: var(--admin-space-3);
+  border-bottom: 1px solid var(--admin-border-default);
+  background: var(--admin-bg-subtle);
 }
 
 .columnDot {
   width: 8px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: var(--admin-radius-full);
 }
 
 .columnLabel {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: #F5F0E8;
+  font-size: var(--admin-text-base);
+  font-weight: var(--admin-font-semibold);
+  color: var(--admin-text-primary);
 }
 
 .columnCount {
   margin-left: auto;
-  font-size: 0.6875rem;
-  color: #555;
-  background: #1f1f1f;
-  padding: 2px 8px;
-  border-radius: 4px;
+  font-size: var(--admin-text-xs);
+  color: var(--admin-text-secondary);
+  background: var(--admin-bg-muted);
+  padding: 2px var(--admin-space-2);
+  border-radius: var(--admin-radius-sm);
 }
 
 .columnContent {
   flex: 1;
-  padding: 12px;
+  padding: var(--admin-space-3);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--admin-space-2);
   overflow-y: auto;
   max-height: 600px;
+  background: var(--admin-bg-subtle);
 }
 
 .emptyColumn {
@@ -327,8 +308,11 @@
   align-items: center;
   justify-content: center;
   height: 80px;
-  font-size: 0.75rem;
-  color: #444;
+  font-size: var(--admin-text-sm);
+  color: var(--admin-text-tertiary);
+  border: 2px dashed var(--admin-border-default);
+  border-radius: var(--admin-radius-lg);
+  background: var(--admin-bg-subtle);
 }
 
 /* ========================================
@@ -336,99 +320,473 @@
    ======================================== */
 
 .taskCard {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  border-radius: 10px;
-  padding: 12px;
-  transition: all 0.15s ease;
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-lg);
+  padding: var(--admin-space-2);
+  transition: all var(--admin-transition-base);
+  box-shadow: var(--admin-shadow-sm);
+  cursor: default;
 }
 
 .taskCard:hover {
-  border-color: #333;
+  border-color: var(--admin-border-strong);
+  box-shadow: var(--admin-shadow-md);
 }
 
-.taskHeader {
+.taskCardDragging {
+  opacity: 0.5;
+}
+
+.taskCardOverlay {
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-focus);
+  border-radius: var(--admin-radius-lg);
+  padding: var(--admin-space-2);
+  box-shadow: var(--admin-shadow-lg);
+  transform: rotate(2deg);
+  cursor: grabbing;
+}
+
+.taskCardHeader {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
+  gap: var(--admin-space-1);
+  margin-bottom: var(--admin-space-2);
+}
+
+.dragHandle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  border-radius: var(--admin-radius-sm);
+  color: var(--admin-text-disabled);
+  cursor: grab;
+  transition: all var(--admin-transition-base);
+  flex-shrink: 0;
+}
+
+.dragHandle:hover {
+  background: var(--admin-bg-hover);
+  color: var(--admin-text-secondary);
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+  color: var(--admin-interactive-primary);
+}
+
+.taskBadges {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-1);
+  flex: 1;
+  min-width: 0;
 }
 
 .priorityBadge {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.6rem;
-  font-weight: 600;
+  padding: 2px var(--admin-space-1);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-text-xs);
+  font-weight: var(--admin-font-semibold);
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .categoryBadge {
-  padding: 2px 6px;
-  background: #252525;
-  border-radius: 4px;
-  font-size: 0.6rem;
-  color: #888;
+  padding: 2px var(--admin-space-1);
+  background: var(--admin-bg-muted);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-text-xs);
+  color: var(--admin-text-secondary);
+  white-space: nowrap;
 }
 
 .taskTitle {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: #F5F0E8;
-  margin: 0 0 6px;
-  line-height: 1.4;
+  font-size: var(--admin-text-base);
+  font-weight: var(--admin-font-medium);
+  color: var(--admin-text-primary);
+  margin: 0;
+  line-height: var(--admin-leading-snug);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.expandButton {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-1);
+  margin-top: var(--admin-space-2);
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity var(--admin-transition-base);
+}
+
+.expandButton:hover {
+  opacity: 0.7;
 }
 
 .taskDescription {
-  font-size: 0.75rem;
-  color: #666;
-  margin: 0 0 10px;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.taskActions {
-  display: flex;
-  gap: 6px;
-}
-
-.statusSelect {
-  flex: 1;
-  padding: 6px 8px;
-  background: #0f0f0f;
-  border: 1px solid #333;
-  border-radius: 6px;
-  color: #888;
-  font-size: 0.6875rem;
-  cursor: pointer;
-}
-
-.statusSelect:focus {
-  outline: none;
-  border-color: #C4A77D;
+  font-size: var(--admin-text-sm);
+  color: var(--admin-text-secondary);
+  margin: var(--admin-space-2) 0 0;
+  padding: var(--admin-space-2);
+  background: var(--admin-bg-subtle);
+  border-radius: var(--admin-radius-md);
+  line-height: var(--admin-leading-normal);
 }
 
 .deleteButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   background: transparent;
-  border: 1px solid #333;
-  border-radius: 6px;
-  color: #666;
+  border: none;
+  border-radius: var(--admin-radius-sm);
+  color: var(--admin-text-disabled);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--admin-transition-base);
+  flex-shrink: 0;
 }
 
 .deleteButton:hover {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: #ef4444;
-  color: #ef4444;
+  background: var(--admin-interactive-destructive-muted);
+  color: var(--admin-interactive-destructive);
+}
+
+.checklistBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px var(--admin-space-1);
+  background: var(--admin-bg-muted);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-text-xs);
+  color: var(--admin-text-secondary);
+  white-space: nowrap;
+}
+
+/* ========================================
+   HEADER CONTROLS
+   ======================================== */
+
+.headerControls {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-3);
+}
+
+/* ========================================
+   ACTIVE SPRINT BUTTON + PANEL
+   ======================================== */
+
+.sprintTrigger {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-1);
+  padding: var(--admin-space-2) var(--admin-space-2);
+  background: var(--admin-status-success);
+  border: 1px solid var(--admin-status-success);
+  border-radius: var(--admin-radius-lg);
+  font-size: var(--admin-text-xs);
+  font-weight: var(--admin-font-semibold);
+  color: var(--admin-text-inverse);
+  cursor: pointer;
+  transition: all var(--admin-transition-base);
+  white-space: nowrap;
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.sprintTrigger:hover {
+  background: #16A34A;
+  border-color: #16A34A;
+}
+
+.sprintBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 var(--admin-space-1);
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: var(--admin-radius-lg);
+  font-size: 10px;
+  font-weight: var(--admin-font-bold);
+  color: var(--admin-text-inverse);
+}
+
+.sprintProgress {
+  width: 28px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.sprintProgressFill {
+  height: 100%;
+  background: var(--admin-text-inverse);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.sprintBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: var(--admin-z-overlay);
+}
+
+.sprintPanel {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100vh - 160px);
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-xl);
+  box-shadow: var(--admin-shadow-2xl);
+  z-index: var(--admin-z-modal);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sprintPanelHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-2);
+  padding: var(--admin-space-4) var(--admin-space-5);
+  border-bottom: 1px solid var(--admin-border-default);
+  background: var(--admin-bg-subtle);
+}
+
+.sprintClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-secondary);
+  cursor: pointer;
+  transition: all var(--admin-transition-base);
+}
+
+.sprintClose:hover {
+  background: var(--admin-bg-hover);
+  color: var(--admin-text-primary);
+}
+
+.sprintPanelContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--admin-space-4) var(--admin-space-5);
+}
+
+.emptySprintState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--admin-space-8);
+  text-align: center;
+}
+
+.activeTasksList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--admin-space-4);
+  padding-top: var(--admin-space-4);
+  margin-top: var(--admin-space-3);
+  border-top: 1px solid var(--admin-border-default);
+}
+
+.activeTaskItem {
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-lg);
+  padding: var(--admin-space-3);
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.activeTaskHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-2);
+  margin-bottom: var(--admin-space-3);
+}
+
+.statusIndicator {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--admin-radius-full);
+  flex-shrink: 0;
+}
+
+.phaseBadge {
+  padding: 2px var(--admin-space-1);
+  background: var(--admin-blue-100);
+  border-radius: var(--admin-radius-sm);
+  font-size: var(--admin-text-xs);
+  font-weight: var(--admin-font-semibold);
+  color: var(--admin-blue-600);
+  white-space: nowrap;
+}
+
+.activeTaskTitle {
+  font-size: var(--admin-text-md);
+  font-weight: var(--admin-font-semibold);
+  color: var(--admin-text-primary);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.progressPill {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-1);
+  padding: var(--admin-space-1) var(--admin-space-2);
+  background: var(--admin-bg-subtle);
+  border-radius: var(--admin-radius-full);
+  flex-shrink: 0;
+}
+
+.checklistContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--admin-space-1);
+}
+
+.checklistItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--admin-space-2);
+  padding: var(--admin-space-2) var(--admin-space-2);
+  background: var(--admin-bg-subtle);
+  border: 1px solid transparent;
+  border-radius: var(--admin-radius-lg);
+  font-size: var(--admin-text-base);
+  color: var(--admin-text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--admin-transition-base);
+  line-height: var(--admin-leading-snug);
+}
+
+.checklistItem:hover {
+  background: var(--admin-bg-hover);
+  border-color: var(--admin-border-default);
+}
+
+.checklistItemCompleted {
+  background: var(--admin-status-success-muted);
+  border-color: transparent;
+}
+
+.checklistItemCompleted:hover {
+  background: #BBF7D0;
+}
+
+.addChecklistButton {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-1);
+  padding: var(--admin-space-2) var(--admin-space-2);
+  background: transparent;
+  border: 1px dashed var(--admin-border-strong);
+  border-radius: var(--admin-radius-lg);
+  font-size: var(--admin-text-sm);
+  color: var(--admin-text-secondary);
+  cursor: pointer;
+  transition: all var(--admin-transition-base);
+}
+
+.addChecklistButton:hover {
+  background: var(--admin-bg-subtle);
+  border-color: var(--admin-border-focus);
+  color: var(--admin-text-link);
+}
+
+.addItemForm {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-2);
+}
+
+.addItemInput {
+  flex: 1;
+  padding: var(--admin-space-2) var(--admin-space-2);
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-lg);
+  font-size: var(--admin-text-base);
+  color: var(--admin-text-primary);
+}
+
+.addItemInput:focus {
+  outline: none;
+  border-color: var(--admin-border-focus);
+  box-shadow: var(--admin-shadow-focus);
+}
+
+.addItemSubmit {
+  padding: var(--admin-space-2) var(--admin-space-3);
+  background: var(--admin-interactive-primary);
+  border: none;
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-text-sm);
+  font-weight: var(--admin-font-medium);
+  color: var(--admin-interactive-primary-text);
+  cursor: pointer;
+  transition: background var(--admin-transition-base);
+}
+
+.addItemSubmit:hover:not(:disabled) {
+  background: var(--admin-interactive-primary-hover);
+}
+
+.addItemSubmit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.addItemCancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-secondary);
+  cursor: pointer;
+  transition: all var(--admin-transition-base);
+}
+
+.addItemCancel:hover {
+  background: var(--admin-bg-hover);
+  border-color: var(--admin-border-strong);
 }

@@ -1,5 +1,6 @@
 /* =================================================
    ADMIN SOW PAGE - Scope of Work Tracker
+   Using admin design tokens
    ================================================= */
 
 .page {
@@ -14,40 +15,59 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: var(--admin-space-6);
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #F5F0E8;
+  font-size: var(--admin-text-xl);
+  font-weight: var(--admin-font-semibold);
+  color: var(--admin-text-primary);
   margin: 0;
 }
 
 .subtitle {
-  font-size: 0.8125rem;
-  color: #666;
-  margin: 4px 0 0;
+  font-size: var(--admin-text-base);
+  color: var(--admin-text-secondary);
+  margin: var(--admin-space-1) 0 0;
 }
 
 .docLink {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
+  gap: var(--admin-space-1);
+  padding: var(--admin-space-2) var(--admin-space-3);
   background: transparent;
-  border: 1px solid #333;
-  border-radius: 8px;
-  color: #888;
-  font-size: 0.8125rem;
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-secondary);
+  font-size: var(--admin-text-base);
   text-decoration: none;
-  transition: all 0.15s ease;
+  transition: all var(--admin-transition-base);
 }
 
 .docLink:hover {
-  background: #1f1f1f;
-  color: #F5F0E8;
-  border-color: #444;
+  background: var(--admin-bg-subtle);
+  color: var(--admin-text-primary);
+  border-color: var(--admin-border-strong);
+}
+
+.refreshButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-secondary);
+  cursor: pointer;
+  transition: all var(--admin-transition-base);
+}
+
+.refreshButton:hover {
+  background: var(--admin-bg-subtle);
+  color: var(--admin-text-primary);
 }
 
 /* ========================================
@@ -55,37 +75,38 @@
    ======================================== */
 
 .overviewCard {
-  background: linear-gradient(135deg, #1a1a1a 0%, #151515 100%);
-  border: 1px solid #2a2a2a;
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 24px;
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-xl);
+  padding: var(--admin-space-6);
+  margin-bottom: var(--admin-space-6);
+  box-shadow: var(--admin-shadow-sm);
 }
 
 .overviewStats {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 32px;
-  margin-bottom: 20px;
+  gap: var(--admin-space-8);
+  margin-bottom: var(--admin-space-5);
 }
 
 .statItem {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: var(--admin-space-1);
 }
 
 .statValue {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #C4A77D;
+  font-size: var(--admin-text-3xl);
+  font-weight: var(--admin-font-bold);
+  color: var(--admin-interactive-primary);
 }
 
 .statLabel {
-  font-size: 0.6875rem;
-  color: #666;
+  font-size: var(--admin-text-xs);
+  color: var(--admin-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -93,20 +114,20 @@
 .statDivider {
   width: 1px;
   height: 40px;
-  background: #333;
+  background: var(--admin-border-default);
 }
 
 .overviewProgress {
   height: 8px;
-  background: #252525;
-  border-radius: 4px;
+  background: var(--admin-bg-muted);
+  border-radius: var(--admin-radius-sm);
   overflow: hidden;
 }
 
 .overviewProgressFill {
   height: 100%;
-  background: linear-gradient(90deg, #C4A77D 0%, #D4B78D 100%);
-  border-radius: 4px;
+  background: var(--admin-interactive-primary);
+  border-radius: var(--admin-radius-sm);
   transition: width 0.5s ease;
 }
 
@@ -117,49 +138,42 @@
 .phasesGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 16px;
-  margin-bottom: 32px;
+  gap: var(--admin-space-4);
+  margin-bottom: var(--admin-space-8);
 }
 
 .phaseCard {
-  background: #151515;
-  border: 1px solid #252525;
-  border-radius: 12px;
-  padding: 16px;
-  transition: all 0.15s ease;
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-lg);
+  padding: var(--admin-space-4);
+  transition: all var(--admin-transition-base);
+  box-shadow: var(--admin-shadow-sm);
 }
 
 .phaseCard:hover {
-  border-color: #333;
+  border-color: var(--admin-border-strong);
+  box-shadow: var(--admin-shadow-md);
 }
 
-.phase_complete {
-  border-left: 3px solid #22C55E;
-}
-
-.phase_in_progress {
-  border-left: 3px solid #F59E0B;
-}
-
-.phase_blocked {
-  border-left: 3px solid #EF4444;
-}
-
+.phase_complete,
+.phase_in_progress,
+.phase_blocked,
 .phase_pending {
-  border-left: 3px solid #444;
+  /* Clean look - status indicated by badge only */
 }
 
 .phaseHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: var(--admin-space-2);
 }
 
 .phaseNumber {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: #555;
+  font-size: var(--admin-text-xs);
+  font-weight: var(--admin-font-semibold);
+  color: var(--admin-text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -167,66 +181,66 @@
 .phaseBadge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 0.625rem;
-  font-weight: 600;
+  gap: var(--admin-space-1);
+  padding: 3px var(--admin-space-2);
+  border-radius: var(--admin-radius-sm);
+  font-size: 10px;
+  font-weight: var(--admin-font-semibold);
   text-transform: uppercase;
 }
 
 .badge_complete {
-  background: rgba(34, 197, 94, 0.15);
-  color: #22C55E;
+  background: var(--admin-status-success-muted);
+  color: var(--admin-status-success);
 }
 
 .badge_in_progress {
-  background: rgba(245, 158, 11, 0.15);
-  color: #F59E0B;
+  background: var(--admin-status-warning-muted);
+  color: var(--admin-status-warning);
 }
 
 .badge_blocked {
-  background: rgba(239, 68, 68, 0.15);
-  color: #EF4444;
+  background: var(--admin-status-error-muted);
+  color: var(--admin-status-error);
 }
 
 .badge_pending {
-  background: rgba(102, 102, 102, 0.15);
-  color: #666;
+  background: var(--admin-bg-muted);
+  color: var(--admin-text-secondary);
 }
 
 .phaseName {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #F5F0E8;
-  margin: 0 0 12px;
+  font-size: var(--admin-text-md);
+  font-weight: var(--admin-font-semibold);
+  color: var(--admin-text-primary);
+  margin: 0 0 var(--admin-space-3);
 }
 
 .phaseProgress {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
+  gap: var(--admin-space-2);
+  margin-bottom: var(--admin-space-3);
 }
 
 .phaseProgressBar {
   flex: 1;
   height: 4px;
-  background: #252525;
+  background: var(--admin-bg-muted);
   border-radius: 2px;
   overflow: hidden;
 }
 
 .phaseProgressFill {
   height: 100%;
-  background: #C4A77D;
+  background: var(--admin-interactive-primary);
   border-radius: 2px;
   transition: width 0.3s ease;
 }
 
 .phaseProgressText {
-  font-size: 0.6875rem;
-  color: #555;
+  font-size: var(--admin-text-xs);
+  color: var(--admin-text-tertiary);
   min-width: 32px;
   text-align: right;
 }
@@ -241,18 +255,18 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--admin-space-1);
 }
 
 .deliverable {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  padding: 6px 8px;
-  background: #1a1a1a;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  line-height: 1.4;
+  gap: var(--admin-space-2);
+  padding: var(--admin-space-1) var(--admin-space-2);
+  background: var(--admin-bg-subtle);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-text-sm);
+  line-height: var(--admin-leading-snug);
 }
 
 .deliverableIcon {
@@ -261,35 +275,35 @@
 }
 
 .deliverable_complete .deliverableIcon {
-  color: #22C55E;
+  color: var(--admin-status-success);
 }
 
 .deliverable_in_progress .deliverableIcon {
-  color: #F59E0B;
+  color: var(--admin-status-warning);
 }
 
 .deliverable_blocked .deliverableIcon {
-  color: #EF4444;
+  color: var(--admin-status-error);
 }
 
 .deliverable_pending .deliverableIcon {
-  color: #444;
+  color: var(--admin-text-disabled);
 }
 
 .deliverableName {
   flex: 1;
-  color: #aaa;
+  color: var(--admin-gray-600);
 }
 
 .deliverable_complete .deliverableName {
-  color: #888;
+  color: var(--admin-text-secondary);
 }
 
 .deliverableNote {
-  font-size: 0.625rem;
-  color: #555;
-  background: #252525;
-  padding: 2px 6px;
+  font-size: 10px;
+  color: var(--admin-text-tertiary);
+  background: var(--admin-bg-muted);
+  padding: 2px var(--admin-space-1);
   border-radius: 3px;
   white-space: nowrap;
 }
@@ -299,40 +313,41 @@
    ======================================== */
 
 .blockersSection {
-  background: #151515;
-  border: 1px solid #252525;
-  border-radius: 12px;
-  padding: 20px;
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-lg);
+  padding: var(--admin-space-5);
+  box-shadow: var(--admin-shadow-sm);
 }
 
 .sectionTitle {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #EF4444;
-  margin: 0 0 16px;
+  gap: var(--admin-space-2);
+  font-size: var(--admin-text-md);
+  font-weight: var(--admin-font-semibold);
+  color: var(--admin-status-error);
+  margin: 0 0 var(--admin-space-4);
 }
 
 .blockersTable {
   display: flex;
   flex-direction: column;
   gap: 1px;
-  background: #252525;
-  border-radius: 8px;
+  background: var(--admin-border-default);
+  border-radius: var(--admin-radius-md);
   overflow: hidden;
 }
 
 .blockersHeader {
   display: grid;
   grid-template-columns: 2fr 1fr 2fr;
-  gap: 16px;
-  padding: 10px 14px;
-  background: #1a1a1a;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: #555;
+  gap: var(--admin-space-4);
+  padding: var(--admin-space-2) var(--admin-space-3);
+  background: var(--admin-bg-subtle);
+  font-size: var(--admin-text-xs);
+  font-weight: var(--admin-font-semibold);
+  color: var(--admin-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -340,29 +355,29 @@
 .blockerRow {
   display: grid;
   grid-template-columns: 2fr 1fr 2fr;
-  gap: 16px;
-  padding: 12px 14px;
-  background: #151515;
-  font-size: 0.8125rem;
-  transition: background 0.15s ease;
+  gap: var(--admin-space-4);
+  padding: var(--admin-space-3);
+  background: var(--admin-bg-card);
+  font-size: var(--admin-text-base);
+  transition: background var(--admin-transition-base);
 }
 
 .blockerRow:hover {
-  background: #1a1a1a;
+  background: var(--admin-bg-subtle);
 }
 
 .blockerItem {
-  color: #F5F0E8;
-  font-weight: 500;
+  color: var(--admin-text-primary);
+  font-weight: var(--admin-font-medium);
 }
 
 .blockerOwner {
-  color: #F59E0B;
-  font-weight: 500;
+  color: var(--admin-status-warning);
+  font-weight: var(--admin-font-medium);
 }
 
 .blockerImpact {
-  color: #888;
+  color: var(--admin-text-secondary);
 }
 
 /* ========================================
@@ -372,7 +387,7 @@
 @media (max-width: 768px) {
   .overviewStats {
     flex-wrap: wrap;
-    gap: 20px;
+    gap: var(--admin-space-5);
   }
 
   .statDivider {
@@ -386,11 +401,11 @@
   .blockersHeader,
   .blockerRow {
     grid-template-columns: 1fr;
-    gap: 4px;
+    gap: var(--admin-space-1);
   }
 
   .blockersHeader span:not(:first-child),
   .blockerRow span:not(:first-child) {
-    padding-left: 12px;
+    padding-left: var(--admin-space-3);
   }
 }

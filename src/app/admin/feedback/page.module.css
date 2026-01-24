@@ -1,5 +1,6 @@
 /* =================================================
    ADMIN FEEDBACK PAGE
+   Using admin design tokens
    ================================================= */
 
 .page {
@@ -14,20 +15,20 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: var(--admin-space-6);
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #F5F0E8;
+  font-size: var(--admin-text-xl);
+  font-weight: var(--admin-font-semibold);
+  color: var(--admin-text-primary);
   margin: 0;
 }
 
 .subtitle {
-  font-size: 0.8125rem;
-  color: #666;
-  margin: 4px 0 0;
+  font-size: var(--admin-text-base);
+  color: var(--admin-text-secondary);
+  margin: var(--admin-space-1) 0 0;
 }
 
 .refreshButton {
@@ -36,17 +37,17 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  color: #888;
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-secondary);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--admin-transition-base);
 }
 
 .refreshButton:hover {
-  background: #242424;
-  color: #F5F0E8;
+  background: var(--admin-bg-subtle);
+  color: var(--admin-text-primary);
 }
 
 /* ========================================
@@ -55,24 +56,25 @@
 
 .filters {
   display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: var(--admin-space-3);
+  margin-bottom: var(--admin-space-6);
 }
 
 .filterSelect {
-  padding: 8px 12px;
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  color: #F5F0E8;
-  font-size: 0.8125rem;
+  padding: var(--admin-space-2) var(--admin-space-3);
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-primary);
+  font-size: var(--admin-text-base);
   cursor: pointer;
   min-width: 140px;
 }
 
 .filterSelect:focus {
   outline: none;
-  border-color: #C4A77D;
+  border-color: var(--admin-border-focus);
+  box-shadow: var(--admin-shadow-focus);
 }
 
 /* ========================================
@@ -86,10 +88,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 48px;
-  color: #666;
-  font-size: 0.875rem;
+  gap: var(--admin-space-2);
+  padding: var(--admin-space-12);
+  color: var(--admin-text-secondary);
+  font-size: var(--admin-text-md);
 }
 
 .spinner {
@@ -101,12 +103,12 @@
 }
 
 .error {
-  color: #ef4444;
+  color: var(--admin-status-error);
 }
 
 .empty span {
-  font-size: 0.75rem;
-  color: #555;
+  font-size: var(--admin-text-sm);
+  color: var(--admin-text-tertiary);
 }
 
 /* ========================================
@@ -116,19 +118,20 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--admin-space-3);
 }
 
 .card {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  border-radius: 12px;
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-lg);
   overflow: hidden;
-  transition: border-color 0.15s ease;
+  transition: border-color var(--admin-transition-base);
+  box-shadow: var(--admin-shadow-sm);
 }
 
 .card:hover {
-  border-color: #333;
+  border-color: var(--admin-border-strong);
 }
 
 /* Card Header */
@@ -137,7 +140,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 16px;
+  padding: var(--admin-space-4);
   background: transparent;
   border: none;
   cursor: pointer;
@@ -147,7 +150,7 @@
 .cardLeft {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--admin-space-3);
   flex: 1;
   min-width: 0;
 }
@@ -158,7 +161,7 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  border-radius: 8px;
+  border-radius: var(--admin-radius-lg);
   flex-shrink: 0;
 }
 
@@ -170,39 +173,39 @@
 }
 
 .cardTitle {
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: #F5F0E8;
+  font-size: var(--admin-text-md);
+  font-weight: var(--admin-font-medium);
+  color: var(--admin-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .cardMeta {
-  font-size: 0.75rem;
-  color: #666;
+  font-size: var(--admin-text-sm);
+  color: var(--admin-text-secondary);
 }
 
 .cardRight {
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: #555;
+  gap: var(--admin-space-3);
+  color: var(--admin-text-tertiary);
 }
 
 .statusBadge {
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 0.6875rem;
-  font-weight: 600;
+  padding: var(--admin-space-1) var(--admin-space-2);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-text-xs);
+  font-weight: var(--admin-font-semibold);
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
 
 /* Card Body */
 .cardBody {
-  padding: 0 16px 16px;
-  border-top: 1px solid #252525;
+  padding: 0 var(--admin-space-4) var(--admin-space-4);
+  border-top: 1px solid var(--admin-border-default);
   margin-top: 0;
   animation: slideDown 0.2s ease;
 }
@@ -219,56 +222,56 @@
 }
 
 .section {
-  padding-top: 16px;
+  padding-top: var(--admin-space-4);
 }
 
 .sectionLabel {
   display: block;
-  font-size: 0.6875rem;
-  font-weight: 600;
+  font-size: var(--admin-text-xs);
+  font-weight: var(--admin-font-semibold);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #555;
-  margin-bottom: 8px;
+  color: var(--admin-text-secondary);
+  margin-bottom: var(--admin-space-2);
 }
 
 .userNotes {
-  font-size: 0.875rem;
-  color: #ccc;
-  line-height: 1.5;
+  font-size: var(--admin-text-md);
+  color: var(--admin-gray-600);
+  line-height: var(--admin-leading-normal);
   margin: 0;
-  padding: 12px;
-  background: #151515;
-  border-radius: 8px;
+  padding: var(--admin-space-3);
+  background: var(--admin-bg-subtle);
+  border-radius: var(--admin-radius-md);
 }
 
 /* Status Buttons */
 .statusButtons {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--admin-space-2);
 }
 
 .statusButton {
-  padding: 6px 12px;
-  background: #151515;
-  border: 1px solid #333;
-  border-radius: 6px;
-  color: #888;
-  font-size: 0.75rem;
-  font-weight: 500;
+  padding: var(--admin-space-1) var(--admin-space-3);
+  background: var(--admin-bg-subtle);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-secondary);
+  font-size: var(--admin-text-sm);
+  font-weight: var(--admin-font-medium);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--admin-transition-base);
 }
 
 .statusButton:hover {
-  background: #1f1f1f;
+  background: var(--admin-bg-card);
   color: var(--status-color);
   border-color: var(--status-color);
 }
 
 .statusButton.statusActive {
-  background: color-mix(in srgb, var(--status-color) 15%, transparent);
+  background: color-mix(in srgb, var(--status-color) 10%, var(--admin-bg-card));
   color: var(--status-color);
   border-color: var(--status-color);
 }
@@ -281,37 +284,38 @@
 /* Admin Notes */
 .adminNotes {
   width: 100%;
-  padding: 12px;
-  background: #0f0f0f;
-  border: 1px solid #333;
-  border-radius: 8px;
-  color: #F5F0E8;
+  padding: var(--admin-space-3);
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-primary);
   font-family: inherit;
-  font-size: 0.8125rem;
-  line-height: 1.5;
+  font-size: var(--admin-text-base);
+  line-height: var(--admin-leading-normal);
   resize: vertical;
   min-height: 80px;
 }
 
 .adminNotes:focus {
   outline: none;
-  border-color: #C4A77D;
+  border-color: var(--admin-border-focus);
+  box-shadow: var(--admin-shadow-focus);
 }
 
 .adminNotes::placeholder {
-  color: #555;
+  color: var(--admin-text-tertiary);
 }
 
 /* Metadata */
 .metadata {
   display: flex;
-  gap: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #252525;
-  margin-top: 16px;
-  font-size: 0.6875rem;
-  color: #555;
-  font-family: ui-monospace, monospace;
+  gap: var(--admin-space-4);
+  padding-top: var(--admin-space-4);
+  border-top: 1px solid var(--admin-border-default);
+  margin-top: var(--admin-space-4);
+  font-size: var(--admin-text-xs);
+  color: var(--admin-text-tertiary);
+  font-family: var(--admin-font-mono);
 }
 
 /* ========================================
@@ -322,15 +326,15 @@
   .filters {
     flex-direction: column;
   }
-  
+
   .filterSelect {
     width: 100%;
   }
-  
+
   .cardMeta {
     display: none;
   }
-  
+
   .statusButtons {
     flex-wrap: wrap;
   }

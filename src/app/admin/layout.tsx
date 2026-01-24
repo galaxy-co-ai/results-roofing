@@ -8,11 +8,12 @@ import {
   ListTodo, 
   FileText,
   LogOut,
-  Zap,
   ClipboardList,
   Database,
+  History,
 } from 'lucide-react';
-import styles from './layout.module.css';
+import { Button } from '@/components/ui/button';
+import '@/styles/globals.css';
 
 export const metadata: Metadata = {
   title: {
@@ -33,6 +34,7 @@ const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { id: 'database', label: 'Database', href: '/admin/database', icon: Database },
   { id: 'sow', label: 'SOW Tracker', href: '/admin/sow', icon: ClipboardList },
+  { id: 'changelog', label: 'Changelog', href: '/admin/changelog', icon: History },
   { id: 'feedback', label: 'Feedback', href: '/admin/feedback', icon: MessageSquareText },
   { id: 'tasks', label: 'Tasks', href: '/admin/tasks', icon: ListTodo },
   { id: 'notes', label: 'Notes', href: '/admin/notes', icon: FileText },
@@ -48,10 +50,10 @@ async function LogoutButton() {
 
   return (
     <form action={handleLogout}>
-      <button type="submit" className={styles.logoutButton}>
-        <LogOut size={18} />
+      <Button type="submit" variant="ghost" size="sm" className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground">
+        <LogOut size={16} />
         <span>Exit Admin</span>
-      </button>
+      </Button>
     </form>
   );
 }
@@ -77,24 +79,31 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className={styles.adminLayout}>
-      {/* Sidebar */}
-      <aside className={styles.sidebar} aria-label="Admin navigation">
-        <div className={styles.sidebarHeader}>
-          <Link href="/admin" className={styles.logo}>
-            <Zap size={20} className={styles.logoIcon} />
-            <span className={styles.logoText}>Dev Dashboard</span>
+    <div className="flex h-screen bg-background">
+        {/* Sidebar */}
+        <aside className="flex w-48 flex-col border-r bg-background" aria-label="Admin navigation">
+        {/* Logo */}
+        <div className="flex h-14 items-center border-b px-4">
+          <Link href="/admin" className="flex items-center">
+            <img
+              src="/brand/logos/light/logo-horizontal.png"
+              alt="Results Roofing"
+              style={{ height: '28px', width: 'auto' }}
+            />
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className={styles.nav}>
-          <ul className={styles.navList}>
+        <nav className="flex-1 overflow-y-auto py-4">
+          <ul className="space-y-1 px-2">
             {NAV_ITEMS.map((item) => (
               <li key={item.id}>
-                <Link href={item.href} className={styles.navLink}>
-                  <item.icon size={18} className={styles.navIcon} />
-                  <span className={styles.navLabel}>{item.label}</span>
+                <Link
+                  href={item.href}
+                  className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                >
+                  <item.icon size={16} />
+                  <span>{item.label}</span>
                 </Link>
               </li>
             ))}
@@ -102,8 +111,11 @@ export default async function AdminLayout({
         </nav>
 
         {/* Footer */}
-        <div className={styles.sidebarFooter}>
-          <Link href="/" className={styles.backLink}>
+        <div className="border-t p-2">
+          <Link
+            href="/"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+          >
             ← Back to Site
           </Link>
           <LogoutButton />
@@ -111,8 +123,10 @@ export default async function AdminLayout({
       </aside>
 
       {/* Main Content */}
-      <main className={styles.mainContent}>
-        {children}
+      <main className="flex-1 overflow-y-auto bg-muted/30">
+        <div className="p-6">
+          {children}
+        </div>
       </main>
     </div>
   );

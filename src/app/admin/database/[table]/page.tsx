@@ -1,22 +1,23 @@
 'use client';
 
-import { useState, useEffect, useCallback, use } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   ArrowLeft,
   RefreshCw,
-  Loader2,
   AlertCircle,
-  Edit2,
-  Trash2,
+  Plus,
   Save,
   X,
-  Plus,
-  ChevronLeft,
-  ChevronRight,
   Lock,
+  Loader2,
 } from 'lucide-react';
-import styles from './page.module.css';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DataTable } from '@/components/features/admin/DataTable';
 
 interface TableData {
   table: string;
@@ -47,51 +48,24 @@ const TABLE_DISPLAY_NAMES: Record<string, string> = {
   dev_notes: 'Dev Notes',
 };
 
-// Columns to hide from the table view (too long or not useful)
 const HIDDEN_COLUMNS = ['rawResponse', 'pricingData', 'metadata'];
-
-// Columns that shouldn't be edited
 const READ_ONLY_COLUMNS = ['id', 'createdAt', 'updatedAt'];
 
-function formatCellValue(value: unknown): string {
-  if (value === null || value === undefined) return '—';
-  if (typeof value === 'boolean') return value ? 'Yes' : 'No';
-  if (value instanceof Date) return value.toLocaleString();
-  if (typeof value === 'string' && value.match(/^\d{4}-\d{2}-\d{2}/)) {
-    return new Date(value).toLocaleString();
-  }
-  if (typeof value === 'object') return JSON.stringify(value).slice(0, 50) + '...';
-  if (typeof value === 'string' && value.length > 100) return value.slice(0, 100) + '...';
-  return String(value);
-}
-
-function truncateId(id: string): string {
-  if (!id || id.length < 12) return id;
-  return `${id.slice(0, 8)}...`;
-}
-
-export default function TableViewerPage({
-  params,
-}: {
-  params: Promise<{ table: string }>;
-}) {
-  const { table: tableName } = use(params);
+export default function TableViewerPage() {
+  const params = useParams();
+  const tableName = params.table as string;
   const [data, setData] = useState<TableData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editingData, setEditingData] = useState<Record<string, unknown>>({});
-  const [saving, setSaving] = useState(false);
-  const [deleting, setDeleting] = useState<string | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newRecordData, setNewRecordData] = useState<Record<string, unknown>>({});
+  const [saving, setSaving] = useState(false);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/admin/tables/${tableName}?page=${page}&limit=25`);
+      const response = await fetch(`/api/admin/tables/${tableName}?page=1&limit=1000`);
       if (!response.ok) throw new Error('Failed to fetch table data');
       const result = await response.json();
       setData(result);
@@ -100,60 +74,30 @@ export default function TableViewerPage({
     } finally {
       setLoading(false);
     }
-  }, [tableName, page]);
+  }, [tableName]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  const handleEdit = (record: Record<string, unknown>) => {
-    setEditingId(record.id as string);
-    setEditingData({ ...record });
-  };
-
-  const handleCancelEdit = () => {
-    setEditingId(null);
-    setEditingData({});
-  };
-
-  const handleSave = async () => {
-    if (!editingId) return;
-    setSaving(true);
-    try {
-      const response = await fetch(`/api/admin/tables/${tableName}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editingData),
-      });
-      if (!response.ok) throw new Error('Failed to save changes');
-      await fetchData();
-      setEditingId(null);
-      setEditingData({});
-    } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to save');
-    } finally {
-      setSaving(false);
-    }
+  const handleSave = async (record: Record<string, unknown>) => {
+    const response = await fetch(`/api/admin/tables/${tableName}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(record),
+    });
+    if (!response.ok) throw new Error('Failed to save changes');
+    await fetchData();
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this record? This action cannot be undone.')) {
-      return;
-    }
-    setDeleting(id);
-    try {
-      const response = await fetch(`/api/admin/tables/${tableName}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
-      });
-      if (!response.ok) throw new Error('Failed to delete record');
-      await fetchData();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to delete');
-    } finally {
-      setDeleting(null);
-    }
+    const response = await fetch(`/api/admin/tables/${tableName}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    });
+    if (!response.ok) throw new Error('Failed to delete record');
+    await fetchData();
   };
 
   const handleCreate = async () => {
@@ -179,220 +123,125 @@ export default function TableViewerPage({
   const visibleColumns = data?.columns.filter((col) => !HIDDEN_COLUMNS.includes(col)) || [];
 
   return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <div className={styles.headerLeft}>
-          <Link href="/admin/database" className={styles.backButton} aria-label="Back to database overview">
-            <ArrowLeft size={18} />
-          </Link>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+            <Link href="/admin/database">
+              <ArrowLeft className="h-4 w-4" />
+            </Link>
+          </Button>
           <div>
-            <h1 className={styles.title}>{displayName}</h1>
-            <p className={styles.subtitle}>
-              {data?.pagination.totalCount.toLocaleString() || 0} records
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-semibold">{displayName}</h1>
               {!data?.editable && (
-                <span className={styles.readOnlyBadge}>
-                  <Lock size={12} />
+                <Badge variant="secondary" className="gap-1 text-xs">
+                  <Lock className="h-3 w-3" />
                   Read-only
-                </span>
+                </Badge>
               )}
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {data?.pagination.totalCount.toLocaleString() || 0} records
             </p>
           </div>
         </div>
-        <div className={styles.headerActions}>
+        <div className="flex items-center gap-2">
           {data?.editable && (
-            <button
+            <Button
+              variant="default"
+              size="sm"
               onClick={() => setShowCreateForm(true)}
-              className={styles.createButton}
               disabled={showCreateForm}
             >
-              <Plus size={18} />
-              Add Record
-            </button>
+              <Plus className="mr-1 h-4 w-4" />
+              Add
+            </Button>
           )}
-          <button
-            onClick={fetchData}
-            className={styles.refreshButton}
-            disabled={loading}
-            aria-label="Refresh data"
-          >
-            <RefreshCw size={18} className={loading ? styles.spinning : ''} />
-          </button>
+          <Button variant="outline" size="icon" className="h-8 w-8" onClick={fetchData} disabled={loading}>
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+          </Button>
         </div>
-      </header>
+      </div>
 
       {error && (
-        <div className={styles.errorBanner}>
-          <AlertCircle size={18} />
+        <div className="flex items-center gap-2 rounded-md border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
+          <AlertCircle className="h-4 w-4" />
           <span>{error}</span>
         </div>
       )}
 
       {/* Create Form */}
       {showCreateForm && data?.editable && (
-        <div className={styles.createForm}>
-          <h3 className={styles.formTitle}>Create New Record</h3>
-          <div className={styles.formGrid}>
-            {visibleColumns
-              .filter((col) => col !== 'id' && col !== 'createdAt' && col !== 'updatedAt')
-              .map((column) => (
-                <div key={column} className={styles.formField}>
-                  <label htmlFor={`new-${column}`}>{column}</label>
-                  <input
-                    id={`new-${column}`}
-                    type="text"
-                    value={String(newRecordData[column] ?? '')}
-                    onChange={(e) =>
-                      setNewRecordData((prev) => ({ ...prev, [column]: e.target.value }))
-                    }
-                  />
-                </div>
-              ))}
-          </div>
-          <div className={styles.formActions}>
-            <button
-              onClick={() => {
-                setShowCreateForm(false);
-                setNewRecordData({});
-              }}
-              className={styles.cancelButton}
-              disabled={saving}
-            >
-              Cancel
-            </button>
-            <button onClick={handleCreate} className={styles.saveButton} disabled={saving}>
-              {saving ? <Loader2 size={16} className={styles.spinning} /> : <Save size={16} />}
-              Create
-            </button>
-          </div>
-        </div>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium">Create New Record</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+              {visibleColumns
+                .filter((col) => col !== 'id' && col !== 'createdAt' && col !== 'updatedAt')
+                .map((column) => (
+                  <div key={column} className="space-y-1">
+                    <label htmlFor={`new-${column}`} className="text-xs font-medium text-muted-foreground">
+                      {column}
+                    </label>
+                    <Input
+                      id={`new-${column}`}
+                      type="text"
+                      className="h-8 text-sm"
+                      value={String(newRecordData[column] ?? '')}
+                      onChange={(e) =>
+                        setNewRecordData((prev) => ({ ...prev, [column]: e.target.value }))
+                      }
+                    />
+                  </div>
+                ))}
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setShowCreateForm(false);
+                  setNewRecordData({});
+                }}
+                disabled={saving}
+              >
+                <X className="mr-1 h-3 w-3" />
+                Cancel
+              </Button>
+              <Button size="sm" onClick={handleCreate} disabled={saving}>
+                {saving ? (
+                  <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                ) : (
+                  <Save className="mr-1 h-3 w-3" />
+                )}
+                Create
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       )}
 
       {loading && !data ? (
-        <div className={styles.loadingState}>
-          <Loader2 size={32} className={styles.spinning} />
-          <span>Loading records...</span>
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+          <span className="ml-2 text-sm text-muted-foreground">Loading...</span>
         </div>
-      ) : (
-        <>
-          {/* Data Table */}
-          <div className={styles.tableWrapper}>
-            <table className={styles.dataTable}>
-              <thead>
-                <tr>
-                  {visibleColumns.map((column) => (
-                    <th key={column}>{column}</th>
-                  ))}
-                  {data?.editable && <th className={styles.actionsColumn}>Actions</th>}
-                </tr>
-              </thead>
-              <tbody>
-                {data?.records.map((record) => (
-                  <tr key={record.id as string}>
-                    {visibleColumns.map((column) => (
-                      <td key={column}>
-                        {editingId === record.id && !READ_ONLY_COLUMNS.includes(column) ? (
-                          <input
-                            type="text"
-                            className={styles.editInput}
-                            value={String(editingData[column] ?? '')}
-                            onChange={(e) =>
-                              setEditingData((prev) => ({ ...prev, [column]: e.target.value }))
-                            }
-                          />
-                        ) : column === 'id' ? (
-                          <span className={styles.idCell} title={record[column] as string}>
-                            {truncateId(record[column] as string)}
-                          </span>
-                        ) : (
-                          formatCellValue(record[column])
-                        )}
-                      </td>
-                    ))}
-                    {data?.editable && (
-                      <td className={styles.actionsCell}>
-                        {editingId === record.id ? (
-                          <>
-                            <button
-                              onClick={handleSave}
-                              className={styles.iconButton}
-                              disabled={saving}
-                              aria-label="Save changes"
-                            >
-                              {saving ? <Loader2 size={16} className={styles.spinning} /> : <Save size={16} />}
-                            </button>
-                            <button
-                              onClick={handleCancelEdit}
-                              className={styles.iconButton}
-                              disabled={saving}
-                              aria-label="Cancel editing"
-                            >
-                              <X size={16} />
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <button
-                              onClick={() => handleEdit(record)}
-                              className={styles.iconButton}
-                              aria-label="Edit record"
-                            >
-                              <Edit2 size={16} />
-                            </button>
-                            <button
-                              onClick={() => handleDelete(record.id as string)}
-                              className={`${styles.iconButton} ${styles.deleteButton}`}
-                              disabled={deleting === record.id}
-                              aria-label="Delete record"
-                            >
-                              {deleting === record.id ? (
-                                <Loader2 size={16} className={styles.spinning} />
-                              ) : (
-                                <Trash2 size={16} />
-                              )}
-                            </button>
-                          </>
-                        )}
-                      </td>
-                    )}
-                  </tr>
-                ))}
-                {data?.records.length === 0 && (
-                  <tr>
-                    <td colSpan={visibleColumns.length + (data.editable ? 1 : 0)} className={styles.emptyRow}>
-                      No records found
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Pagination */}
-          {data && data.pagination.totalPages > 1 && (
-            <div className={styles.pagination}>
-              <button
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                disabled={page === 1}
-                className={styles.paginationButton}
-                aria-label="Previous page"
-              >
-                <ChevronLeft size={18} />
-              </button>
-              <span className={styles.paginationInfo}>
-                Page {page} of {data.pagination.totalPages}
-              </span>
-              <button
-                onClick={() => setPage((p) => Math.min(data.pagination.totalPages, p + 1))}
-                disabled={page === data.pagination.totalPages}
-                className={styles.paginationButton}
-                aria-label="Next page"
-              >
-                <ChevronRight size={18} />
-              </button>
-            </div>
-          )}
-        </>
-      )}
+      ) : data ? (
+        <DataTable
+          data={data.records}
+          columns={data.columns}
+          editable={data.editable}
+          hiddenColumns={HIDDEN_COLUMNS}
+          readOnlyColumns={READ_ONLY_COLUMNS}
+          onSave={handleSave}
+          onDelete={handleDelete}
+          pageSize={25}
+        />
+      ) : null}
     </div>
   );
 }

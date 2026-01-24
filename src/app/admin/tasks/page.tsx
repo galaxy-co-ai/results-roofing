@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Plus, 
   RefreshCw,
@@ -8,8 +9,39 @@ import {
   X,
   Flag,
   Loader2,
+  GripVertical,
+  ChevronDown,
+  Square,
+  CheckSquare,
+  Sparkles,
 } from 'lucide-react';
+import {
+  DndContext,
+  DragOverlay,
+  closestCorners,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+  type DragStartEvent,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { Progress } from '@/components/ui/progress';
+import { staggerContainer, fadeInUp } from '@/lib/animation-variants';
+import { CommandBar } from '@/components/features/admin/CommandBar';
 import styles from './page.module.css';
+
+interface ChecklistItem {
+  id: string;
+  text: string;
+  completed: boolean;
+}
 
 interface Task {
   id: string;
@@ -18,22 +50,27 @@ interface Task {
   status: 'backlog' | 'todo' | 'in_progress' | 'review' | 'done';
   priority: 'low' | 'medium' | 'high' | 'urgent';
   category: 'feature' | 'bug' | 'refactor' | 'design' | 'docs' | 'test' | 'chore';
+  checklist: ChecklistItem[];
   feedbackId: string | null;
   dueDate: string | null;
   completedAt: string | null;
   createdAt: string;
+  // SOW fields
+  phaseId: string | null;
+  phaseName: string | null;
+  sowDeliverable: string | null;
 }
 
 const COLUMNS = [
-  { id: 'backlog', label: 'Backlog', color: '#666' },
+  { id: 'backlog', label: 'Backlog', color: '#64748B' },
   { id: 'todo', label: 'To Do', color: '#3B82F6' },
   { id: 'in_progress', label: 'In Progress', color: '#F59E0B' },
   { id: 'review', label: 'Review', color: '#A855F7' },
   { id: 'done', label: 'Done', color: '#22C55E' },
-];
+] as const;
 
 const PRIORITY_COLORS = {
-  low: '#666',
+  low: '#64748B',
   medium: '#3B82F6',
   high: '#F59E0B',
   urgent: '#EF4444',
@@ -49,6 +86,402 @@ const CATEGORY_LABELS = {
   chore: 'Chore',
 };
 
+// ============================================
+// Active Sprint Button + Dialog
+// ============================================
+interface ActiveSprintButtonProps {
+  tasks: Task[];
+  onChecklistChange: (taskId: string, checklist: ChecklistItem[]) => void;
+  onAddChecklistItem: (taskId: string, text: string) => void;
+}
+
+function ActiveSprintButton({ tasks, onChecklistChange, onAddChecklistItem }: ActiveSprintButtonProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [newItemText, setNewItemText] = useState('');
+  const [addingToTaskId, setAddingToTaskId] = useState<string | null>(null);
+
+  // Get active tasks: in_progress first, then todo
+  const activeTasks = tasks
+    .filter(t => t.status === 'in_progress' || t.status === 'todo')
+    .sort((a, b) => {
+      if (a.status === 'in_progress' && b.status !== 'in_progress') return -1;
+      if (b.status === 'in_progress' && a.status !== 'in_progress') return 1;
+      const priorityOrder = { urgent: 0, high: 1, medium: 2, low: 3 };
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    })
+    .slice(0, 5);
+
+  const handleToggleItem = (task: Task, itemId: string) => {
+    const updatedChecklist = task.checklist.map(item =>
+      item.id === itemId ? { ...item, completed: !item.completed } : item
+    );
+    onChecklistChange(task.id, updatedChecklist);
+  };
+
+  const handleAddItem = (taskId: string) => {
+    if (!newItemText.trim()) return;
+    onAddChecklistItem(taskId, newItemText.trim());
+    setNewItemText('');
+    setAddingToTaskId(null);
+  };
+
+  const getCompletionPercent = (task: Task) => {
+    if (!task.checklist || task.checklist.length === 0) return 0;
+    const completed = task.checklist.filter(i => i.completed).length;
+    return Math.round((completed / task.checklist.length) * 100);
+  };
+
+  // Calculate overall stats
+  const totalItems = activeTasks.reduce((acc, t) => acc + (t.checklist?.length || 0), 0);
+  const completedItems = activeTasks.reduce((acc, t) => acc + (t.checklist?.filter(i => i.completed).length || 0), 0);
+  const overallProgress = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+
+  return (
+    <>
+      {/* Trigger Button */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className={styles.sprintTrigger}
+        aria-label="Open Active Sprint"
+      >
+        <Sparkles size={12} />
+        <span>Sprint</span>
+        {activeTasks.length > 0 && (
+          <span className={styles.sprintBadge}>{activeTasks.length}</span>
+        )}
+        {totalItems > 0 && (
+          <div className={styles.sprintProgress}>
+            <div 
+              className={styles.sprintProgressFill}
+              style={{ width: `${overallProgress}%` }}
+            />
+          </div>
+        )}
+      </button>
+
+      {/* Dialog */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              className={styles.sprintBackdrop}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+            />
+            
+            {/* Panel */}
+            <motion.div
+              className={styles.sprintPanel}
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.15 }}
+            >
+              {/* Header */}
+              <div className={styles.sprintPanelHeader}>
+                <Sparkles size={16} className="text-slate-400" />
+                <h2 className="text-sm font-semibold flex-1">Active Sprint</h2>
+                <span className="text-xs text-muted-foreground">
+                  {activeTasks.length} task{activeTasks.length !== 1 ? 's' : ''}
+                </span>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className={styles.sprintClose}
+                  aria-label="Close"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+
+              {/* Content */}
+              <div className={styles.sprintPanelContent}>
+                {activeTasks.length === 0 ? (
+                  <div className={styles.emptySprintState}>
+                    <p className="text-sm text-muted-foreground">No active tasks</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Move tasks to &quot;To Do&quot; or &quot;In Progress&quot;
+                    </p>
+                  </div>
+                ) : (
+                  <div className={styles.activeTasksList}>
+                    {activeTasks.map((task) => {
+                      const completionPercent = getCompletionPercent(task);
+                      const statusColor = COLUMNS.find(c => c.id === task.status)?.color || '#666';
+
+                      return (
+                        <div key={task.id} className={styles.activeTaskItem}>
+                          <div className={styles.activeTaskHeader}>
+                            <div 
+                              className={styles.statusIndicator}
+                              style={{ background: statusColor }}
+                            />
+                            {task.phaseName && (
+                              <span className={styles.phaseBadge}>P{task.phaseId}</span>
+                            )}
+                            <span 
+                              className={styles.priorityBadge}
+                              style={{ 
+                                background: `${PRIORITY_COLORS[task.priority]}15`, 
+                                color: PRIORITY_COLORS[task.priority] 
+                              }}
+                            >
+                              <Flag size={9} />
+                              {task.priority.toUpperCase()}
+                            </span>
+                            <h3 className={styles.activeTaskTitle}>{task.title}</h3>
+                            {task.checklist.length > 0 && (
+                              <div className={styles.progressPill}>
+                                <Progress value={completionPercent} className="w-12 h-1.5" />
+                                <span className="text-[10px] text-muted-foreground ml-1">
+                                  {completionPercent}%
+                                </span>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className={styles.checklistContainer}>
+                            {task.checklist.map((item) => (
+                              <button
+                                key={item.id}
+                                className={`${styles.checklistItem} ${item.completed ? styles.checklistItemCompleted : ''}`}
+                                onClick={() => handleToggleItem(task, item.id)}
+                              >
+                                {item.completed ? (
+                                  <CheckSquare size={14} className="text-emerald-500 flex-shrink-0" />
+                                ) : (
+                                  <Square size={14} className="text-muted-foreground flex-shrink-0" />
+                                )}
+                                <span className={item.completed ? 'line-through text-muted-foreground' : ''}>
+                                  {item.text}
+                                </span>
+                              </button>
+                            ))}
+
+                            {addingToTaskId === task.id ? (
+                              <div className={styles.addItemForm}>
+                                <input
+                                  type="text"
+                                  value={newItemText}
+                                  onChange={(e) => setNewItemText(e.target.value)}
+                                  placeholder="Add checklist item..."
+                                  className={styles.addItemInput}
+                                  autoFocus
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') handleAddItem(task.id);
+                                    if (e.key === 'Escape') setAddingToTaskId(null);
+                                  }}
+                                />
+                                <button
+                                  onClick={() => handleAddItem(task.id)}
+                                  className={styles.addItemSubmit}
+                                  disabled={!newItemText.trim()}
+                                >
+                                  Add
+                                </button>
+                                <button
+                                  onClick={() => setAddingToTaskId(null)}
+                                  className={styles.addItemCancel}
+                                >
+                                  <X size={14} />
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                className={styles.addChecklistButton}
+                                onClick={() => setAddingToTaskId(task.id)}
+                              >
+                                <Plus size={12} />
+                                Add item
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+// ============================================
+// Draggable Task Card Component
+// ============================================
+interface TaskCardProps {
+  task: Task;
+  isExpanded: boolean;
+  onToggleExpand: () => void;
+  onDelete: (id: string) => void;
+  isDragging?: boolean;
+  isOverlay?: boolean;
+}
+
+function TaskCard({ task, isExpanded, onToggleExpand, onDelete, isDragging, isOverlay }: TaskCardProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: task.id, data: { task } });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  // Calculate checklist progress
+  const checklistProgress = task.checklist?.length > 0
+    ? `${task.checklist.filter(i => i.completed).length}/${task.checklist.length}`
+    : null;
+
+  const cardContent = (
+    <div
+      ref={!isOverlay ? setNodeRef : undefined}
+      style={!isOverlay ? style : undefined}
+      className={`${styles.taskCard} ${isDragging ? styles.taskCardDragging : ''} ${isOverlay ? styles.taskCardOverlay : ''}`}
+    >
+      {/* Drag Handle + Header Row */}
+      <div className={styles.taskCardHeader}>
+        <button
+          className={styles.dragHandle}
+          {...attributes}
+          {...listeners}
+          aria-label="Drag to move task"
+        >
+          <GripVertical size={14} />
+        </button>
+        <div className={styles.taskBadges}>
+          <span 
+            className={styles.priorityBadge}
+            style={{ background: `${PRIORITY_COLORS[task.priority]}15`, color: PRIORITY_COLORS[task.priority] }}
+          >
+            <Flag size={9} />
+            {task.priority}
+          </span>
+          <span className={styles.categoryBadge}>
+            {CATEGORY_LABELS[task.category]}
+          </span>
+        </div>
+        {checklistProgress && (
+          <span className={styles.checklistBadge}>
+            <CheckSquare size={10} />
+            {checklistProgress}
+          </span>
+        )}
+        <button
+          className={styles.deleteButton}
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(task.id);
+          }}
+          aria-label="Delete task"
+        >
+          <X size={12} />
+        </button>
+      </div>
+      
+      {/* Title - Always Visible */}
+      <h3 className={styles.taskTitle}>{task.title}</h3>
+      
+      {/* Expandable Description */}
+      {task.description && (
+        <>
+          <button
+            className={styles.expandButton}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleExpand();
+            }}
+            aria-expanded={isExpanded}
+          >
+            <span className="text-xs text-muted-foreground">
+              {isExpanded ? 'Hide details' : 'Show details'}
+            </span>
+            <ChevronDown 
+              size={12} 
+              className={`text-muted-foreground transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+            />
+          </button>
+          <AnimatePresence>
+            {isExpanded && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="overflow-hidden"
+              >
+                <p className={styles.taskDescription}>{task.description}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
+      )}
+    </div>
+  );
+
+  return cardContent;
+}
+
+// ============================================
+// Droppable Column Component
+// ============================================
+interface ColumnProps {
+  column: typeof COLUMNS[number];
+  tasks: Task[];
+  expandedTaskId: string | null;
+  onToggleExpand: (id: string) => void;
+  onDeleteTask: (id: string) => void;
+}
+
+function Column({ column, tasks, expandedTaskId, onToggleExpand, onDeleteTask }: ColumnProps) {
+  return (
+    <div className={styles.column}>
+      <div className={styles.columnHeader}>
+        <span 
+          className={styles.columnDot}
+          style={{ background: column.color }}
+        />
+        <span className={styles.columnLabel}>{column.label}</span>
+        <span className={styles.columnCount}>{tasks.length}</span>
+      </div>
+      
+      <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
+        <div className={styles.columnContent} data-column-id={column.id}>
+          {tasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              isExpanded={expandedTaskId === task.id}
+              onToggleExpand={() => onToggleExpand(task.id)}
+              onDelete={onDeleteTask}
+            />
+          ))}
+          
+          {tasks.length === 0 && (
+            <div className={styles.emptyColumn}>
+              Drop tasks here
+            </div>
+          )}
+        </div>
+      </SortableContext>
+    </div>
+  );
+}
+
+// ============================================
+// Main Tasks Page Component
+// ============================================
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -62,7 +495,18 @@ export default function TasksPage() {
     status: 'backlog' as Task['status'],
   });
   const [isAdding, setIsAdding] = useState(false);
-  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
+  const [activeTask, setActiveTask] = useState<Task | null>(null);
+
+  // DnD Sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor)
+  );
 
   const fetchTasks = useCallback(async () => {
     setIsLoading(true);
@@ -73,7 +517,12 @@ export default function TasksPage() {
       if (!response.ok) throw new Error('Failed to fetch');
       
       const data = await response.json();
-      setTasks(data.tasks || []);
+      // Ensure checklist is always an array
+      const tasksWithChecklist = (data.tasks || []).map((t: Task) => ({
+        ...t,
+        checklist: t.checklist || [],
+      }));
+      setTasks(tasksWithChecklist);
     } catch {
       setError('Could not load tasks');
     } finally {
@@ -100,7 +549,7 @@ export default function TasksPage() {
       
       if (response.ok) {
         const { task } = await response.json();
-        setTasks((prev) => [task, ...prev]);
+        setTasks((prev) => [{ ...task, checklist: task.checklist || [] }, ...prev]);
         setNewTask({ title: '', description: '', priority: 'medium', category: 'feature', status: 'backlog' });
         setShowAddForm(false);
       }
@@ -112,7 +561,8 @@ export default function TasksPage() {
   };
 
   const handleStatusChange = async (taskId: string, newStatus: Task['status']) => {
-    setUpdatingId(taskId);
+    // Optimistic update
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t)));
     
     try {
       const response = await fetch(`/api/admin/tasks/${taskId}`, {
@@ -121,28 +571,60 @@ export default function TasksPage() {
         body: JSON.stringify({ status: newStatus }),
       });
       
-      if (response.ok) {
-        const { task } = await response.json();
-        setTasks((prev) => prev.map((t) => (t.id === taskId ? task : t)));
+      if (!response.ok) {
+        fetchTasks();
       }
     } catch {
-      // Silent fail
-    } finally {
-      setUpdatingId(null);
+      fetchTasks();
     }
   };
 
-  const handleDeleteTask = async (taskId: string) => {
+  const handleChecklistChange = async (taskId: string, checklist: ChecklistItem[]) => {
+    // Optimistic update
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, checklist } : t)));
+    
     try {
       const response = await fetch(`/api/admin/tasks/${taskId}`, {
-        method: 'DELETE',
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ checklist, autoAdvance: true }),
       });
       
       if (response.ok) {
-        setTasks((prev) => prev.filter((t) => t.id !== taskId));
+        const { task } = await response.json();
+        // Update with server response (may have auto-advanced)
+        setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...task, checklist: task.checklist || [] } : t)));
+      } else {
+        fetchTasks();
       }
     } catch {
-      // Silent fail
+      fetchTasks();
+    }
+  };
+
+  const handleAddChecklistItem = async (taskId: string, text: string) => {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+    
+    const newItem: ChecklistItem = {
+      id: crypto.randomUUID(),
+      text,
+      completed: false,
+    };
+    
+    const updatedChecklist = [...task.checklist, newItem];
+    handleChecklistChange(taskId, updatedChecklist);
+  };
+
+  const handleDeleteTask = async (taskId: string) => {
+    setTasks((prev) => prev.filter((t) => t.id !== taskId));
+    
+    try {
+      await fetch(`/api/admin/tasks/${taskId}`, {
+        method: 'DELETE',
+      });
+    } catch {
+      fetchTasks();
     }
   };
 
@@ -150,27 +632,85 @@ export default function TasksPage() {
     return tasks.filter((t) => t.status === status);
   };
 
+  const toggleExpand = (taskId: string) => {
+    setExpandedTaskId(prev => prev === taskId ? null : taskId);
+  };
+
+  // Drag and Drop Handlers
+  const handleDragStart = (event: DragStartEvent) => {
+    const task = tasks.find(t => t.id === event.active.id);
+    if (task) setActiveTask(task);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    setActiveTask(null);
+
+    if (!over) return;
+
+    const taskId = active.id as string;
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    const overElement = document.querySelector(`[data-column-id="${over.id}"]`);
+    let newStatus: Task['status'] | null = null;
+
+    if (overElement) {
+      newStatus = over.id as Task['status'];
+    } else {
+      const overTask = tasks.find(t => t.id === over.id);
+      if (overTask) {
+        newStatus = overTask.status;
+      }
+    }
+
+    if (!newStatus) {
+      for (const col of COLUMNS) {
+        const colElement = document.querySelector(`[data-column-id="${col.id}"]`);
+        if (colElement) {
+          const rect = colElement.getBoundingClientRect();
+          const { activatorEvent } = event;
+          if (activatorEvent && 'clientX' in activatorEvent && 'clientY' in activatorEvent) {
+            const x = (activatorEvent as MouseEvent).clientX;
+            const y = (activatorEvent as MouseEvent).clientY;
+            if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+              newStatus = col.id as Task['status'];
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    if (newStatus && newStatus !== task.status) {
+      handleStatusChange(taskId, newStatus);
+    }
+  };
+
   return (
-    <div className={styles.page}>
+    <motion.div 
+      className={styles.page}
+      initial="initial"
+      animate="animate"
+      variants={staggerContainer}
+    >
       {/* Header */}
-      <header className={styles.header}>
+      <motion.header className={styles.header} variants={fadeInUp}>
         <div>
-          <h1 className={styles.title}>Task Board</h1>
-          <p className={styles.subtitle}>{tasks.length} tasks</p>
+          <h1 className="text-heading-24 tracking-tight">Task Board</h1>
+          <p className="text-copy-14 text-subtle mt-1">
+            AI-powered sprint management
+          </p>
         </div>
-        <div className={styles.headerActions}>
-          <button
-            onClick={() => setShowAddForm(true)}
-            className={styles.addButton}
-          >
-            <Plus size={16} />
-            Add Task
-          </button>
-          <button onClick={fetchTasks} className={styles.refreshButton} aria-label="Refresh">
-            <RefreshCw size={16} />
-          </button>
+        <div className={styles.headerControls}>
+          <ActiveSprintButton 
+            tasks={tasks}
+            onChecklistChange={handleChecklistChange}
+            onAddChecklistItem={handleAddChecklistItem}
+          />
+          <CommandBar onRefreshTasks={fetchTasks} onAddTask={() => setShowAddForm(true)} />
         </div>
-      </header>
+      </motion.header>
 
       {/* Add Task Modal */}
       {showAddForm && (
@@ -271,78 +811,42 @@ export default function TasksPage() {
         </div>
       )}
 
-      {/* Kanban Board */}
+      {/* Kanban Board with Drag and Drop */}
       {!isLoading && !error && (
-        <div className={styles.board}>
-          {COLUMNS.map((column) => {
-            const columnTasks = getTasksByStatus(column.id);
-            
-            return (
-              <div key={column.id} className={styles.column}>
-                <div className={styles.columnHeader}>
-                  <span 
-                    className={styles.columnDot}
-                    style={{ background: column.color }}
-                  />
-                  <span className={styles.columnLabel}>{column.label}</span>
-                  <span className={styles.columnCount}>{columnTasks.length}</span>
-                </div>
-                
-                <div className={styles.columnContent}>
-                  {columnTasks.map((task) => (
-                    <div key={task.id} className={styles.taskCard}>
-                      <div className={styles.taskHeader}>
-                        <span 
-                          className={styles.priorityBadge}
-                          style={{ background: `${PRIORITY_COLORS[task.priority]}20`, color: PRIORITY_COLORS[task.priority] }}
-                        >
-                          <Flag size={10} />
-                          {task.priority}
-                        </span>
-                        <span className={styles.categoryBadge}>
-                          {CATEGORY_LABELS[task.category]}
-                        </span>
-                      </div>
-                      
-                      <h3 className={styles.taskTitle}>{task.title}</h3>
-                      
-                      {task.description && (
-                        <p className={styles.taskDescription}>{task.description}</p>
-                      )}
-                      
-                      <div className={styles.taskActions}>
-                        <select
-                          className={styles.statusSelect}
-                          value={task.status}
-                          onChange={(e) => handleStatusChange(task.id, e.target.value as Task['status'])}
-                          disabled={updatingId === task.id}
-                        >
-                          {COLUMNS.map((col) => (
-                            <option key={col.id} value={col.id}>{col.label}</option>
-                          ))}
-                        </select>
-                        <button
-                          className={styles.deleteButton}
-                          onClick={() => handleDeleteTask(task.id)}
-                          aria-label="Delete task"
-                        >
-                          <X size={14} />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                  
-                  {columnTasks.length === 0 && (
-                    <div className={styles.emptyColumn}>
-                      No tasks
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <motion.div className={styles.board} variants={fadeInUp}>
+            {COLUMNS.map((column) => (
+              <Column
+                key={column.id}
+                column={column}
+                tasks={getTasksByStatus(column.id)}
+                expandedTaskId={expandedTaskId}
+                onToggleExpand={toggleExpand}
+                onDeleteTask={handleDeleteTask}
+              />
+            ))}
+          </motion.div>
+
+          {/* Drag Overlay */}
+          <DragOverlay>
+            {activeTask && (
+              <TaskCard
+                task={activeTask}
+                isExpanded={false}
+                onToggleExpand={() => {}}
+                onDelete={() => {}}
+                isOverlay
+              />
+            )}
+          </DragOverlay>
+        </DndContext>
       )}
-    </div>
+
+    </motion.div>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
+import { motion } from 'motion/react';
 import { 
   Bug, 
   Lightbulb, 
@@ -10,7 +11,13 @@ import {
   ChevronUp,
   RefreshCw,
   Loader2,
+  CheckCircle2,
+  Clock,
 } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { DonutChart, BarList } from '@/components/ui/charts';
+import { staggerContainer, cardItem, fadeInUp } from '@/lib/animation-variants';
 import styles from './page.module.css';
 
 interface FeedbackItem {
@@ -98,6 +105,43 @@ export default function FeedbackPage() {
     fetchFeedback();
   }, [fetchFeedback]);
 
+  // Calculate analytics from feedback data
+  const analytics = useMemo(() => {
+    const total = feedback.length;
+    const byStatus = {
+      new: feedback.filter(f => f.status === 'new').length,
+      reviewed: feedback.filter(f => f.status === 'reviewed').length,
+      in_progress: feedback.filter(f => f.status === 'in_progress').length,
+      resolved: feedback.filter(f => f.status === 'resolved').length,
+      wont_fix: feedback.filter(f => f.status === 'wont_fix').length,
+    };
+    const byReason = {
+      bug: feedback.filter(f => f.reason === 'bug').length,
+      suggestion: feedback.filter(f => f.reason === 'suggestion').length,
+      general: feedback.filter(f => f.reason === 'general').length,
+    };
+    const resolutionRate = total > 0 
+      ? Math.round(((byStatus.resolved + byStatus.wont_fix) / total) * 100) 
+      : 0;
+
+    return { total, byStatus, byReason, resolutionRate };
+  }, [feedback]);
+
+  // Prepare chart data
+  const statusChartData = useMemo(() => [
+    { name: 'New', value: analytics.byStatus.new },
+    { name: 'Reviewed', value: analytics.byStatus.reviewed },
+    { name: 'In Progress', value: analytics.byStatus.in_progress },
+    { name: 'Resolved', value: analytics.byStatus.resolved },
+    { name: "Won't Fix", value: analytics.byStatus.wont_fix },
+  ].filter(d => d.value > 0), [analytics.byStatus]);
+
+  const reasonBarListData = useMemo(() => [
+    { name: 'Bug Reports', value: analytics.byReason.bug, color: 'rose' as const },
+    { name: 'Feature Ideas', value: analytics.byReason.suggestion, color: 'violet' as const },
+    { name: 'General Feedback', value: analytics.byReason.general, color: 'blue' as const },
+  ].sort((a, b) => b.value - a.value), [analytics.byReason]);
+
   const handleStatusChange = async (id: string, newStatus: string) => {
     setUpdatingId(id);
     
@@ -138,22 +182,140 @@ export default function FeedbackPage() {
   };
 
   return (
-    <div className={styles.page}>
+    <motion.div 
+      className={styles.page}
+      initial="initial"
+      animate="animate"
+      variants={staggerContainer}
+    >
       {/* Header */}
-      <header className={styles.header}>
+      <motion.header className={styles.header} variants={fadeInUp}>
         <div>
-          <h1 className={styles.title}>Feedback Log</h1>
-          <p className={styles.subtitle}>
-            {feedback.length} feedback items
+          <h1 className="text-heading-24 tracking-tight">Feedback</h1>
+          <p className="text-copy-14 text-subtle mt-1">
+            User feedback and bug reports
           </p>
         </div>
         <button onClick={fetchFeedback} className={styles.refreshButton} aria-label="Refresh">
           <RefreshCw size={16} />
         </button>
-      </header>
+      </motion.header>
+
+      {/* Analytics Section */}
+      <motion.div 
+        className="grid gap-4 md:grid-cols-4 mb-6"
+        variants={staggerContainer}
+      >
+        {/* Total Feedback */}
+        <motion.div variants={cardItem}>
+          <Card className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-blue-50">
+                <MessageCircle size={18} className="text-blue-600" />
+              </div>
+              <div>
+                <span className="text-xs text-muted-foreground">Total</span>
+                <div className="text-2xl font-bold">{analytics.total}</div>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* New/Unreviewed */}
+        <motion.div variants={cardItem}>
+          <Card className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-rose-50">
+                <AlertCircle size={18} className="text-rose-600" />
+              </div>
+              <div>
+                <span className="text-xs text-muted-foreground">Needs Review</span>
+                <div className="text-2xl font-bold">{analytics.byStatus.new}</div>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* In Progress */}
+        <motion.div variants={cardItem}>
+          <Card className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-amber-50">
+                <Clock size={18} className="text-amber-600" />
+              </div>
+              <div>
+                <span className="text-xs text-muted-foreground">In Progress</span>
+                <div className="text-2xl font-bold">{analytics.byStatus.in_progress}</div>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* Resolved */}
+        <motion.div variants={cardItem}>
+          <Card className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-emerald-50">
+                <CheckCircle2 size={18} className="text-emerald-600" />
+              </div>
+              <div>
+                <span className="text-xs text-muted-foreground">Resolved</span>
+                <div className="text-2xl font-bold">{analytics.byStatus.resolved}</div>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+      </motion.div>
+
+      {/* Charts Row */}
+      <motion.div 
+        className="grid gap-4 md:grid-cols-2 mb-6"
+        variants={staggerContainer}
+      >
+        {/* Status Distribution */}
+        <motion.div variants={cardItem}>
+          <Card className="p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-medium">Status Distribution</h3>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">Resolution Rate</span>
+                <Progress value={analytics.resolutionRate} className="w-20 h-2" />
+                <span className="text-xs font-medium">{analytics.resolutionRate}%</span>
+              </div>
+            </div>
+            {statusChartData.length > 0 ? (
+              <DonutChart
+                data={statusChartData}
+                category="value"
+                index="name"
+                colors={['rose', 'blue', 'amber', 'emerald', 'slate']}
+                className="h-40"
+              />
+            ) : (
+              <div className="h-40 flex items-center justify-center text-muted-foreground text-sm">
+                No feedback data
+              </div>
+            )}
+          </Card>
+        </motion.div>
+
+        {/* Feedback by Type */}
+        <motion.div variants={cardItem}>
+          <Card className="p-5">
+            <h3 className="text-sm font-medium mb-4">Feedback by Type</h3>
+            {reasonBarListData.length > 0 ? (
+              <BarList data={reasonBarListData} className="mt-2" />
+            ) : (
+              <div className="h-40 flex items-center justify-center text-muted-foreground text-sm">
+                No feedback data
+              </div>
+            )}
+          </Card>
+        </motion.div>
+      </motion.div>
 
       {/* Filters */}
-      <div className={styles.filters}>
+      <motion.div className={styles.filters} variants={fadeInUp}>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
@@ -177,7 +339,7 @@ export default function FeedbackPage() {
           <option value="suggestion">Suggestions</option>
           <option value="general">General</option>
         </select>
-      </div>
+      </motion.div>
 
       {/* Loading/Error States */}
       {isLoading && (
@@ -205,14 +367,14 @@ export default function FeedbackPage() {
 
       {/* Feedback List */}
       {!isLoading && feedback.length > 0 && (
-        <div className={styles.list}>
+        <motion.div className={styles.list} variants={staggerContainer}>
           {feedback.map((item) => {
             const ReasonIcon = REASON_ICONS[item.reason];
             const isExpanded = expandedId === item.id;
             const statusOption = STATUS_OPTIONS.find((s) => s.value === item.status);
 
             return (
-              <div key={item.id} className={styles.card}>
+              <motion.div key={item.id} className={styles.card} variants={cardItem}>
                 {/* Card Header */}
                 <button
                   className={styles.cardHeader}
@@ -314,11 +476,11 @@ export default function FeedbackPage() {
                     </div>
                   </div>
                 )}
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }

@@ -11,12 +11,13 @@ import {
   CreditCard,
   Calendar,
   MessageSquare,
-  Loader2,
   RefreshCw,
   AlertCircle,
   type LucideIcon,
 } from 'lucide-react';
-import styles from './page.module.css';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 interface TableInfo {
   name: string;
@@ -80,7 +81,7 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
   pricing_tiers: {
     name: 'pricing_tiers',
     displayName: 'Pricing Tiers',
-    description: 'Good/Better/Best package configuration — changes affect live pricing!',
+    description: 'Good/Better/Best package configuration',
     icon: CreditCard,
     category: 'config',
   },
@@ -94,7 +95,7 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
   webhook_events: {
     name: 'webhook_events',
     displayName: 'Webhook Events',
-    description: 'Incoming webhook payloads from integrations',
+    description: 'Incoming webhook payloads',
     icon: Database,
     category: 'events',
   },
@@ -115,17 +116,17 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
   dev_notes: {
     name: 'dev_notes',
     displayName: 'Dev Notes',
-    description: 'Development notes and documentation',
+    description: 'Development notes',
     icon: FileText,
     category: 'dev',
   },
 };
 
 const CATEGORY_LABELS = {
-  core: 'Core Business Tables',
-  config: 'Configuration Tables',
+  core: 'Core Business',
+  config: 'Configuration',
   events: 'Event Logs',
-  dev: 'Development Tables',
+  dev: 'Development',
 };
 
 export default function DatabasePage() {
@@ -147,7 +148,7 @@ export default function DatabasePage() {
           name,
           recordCount: count as number,
         })
-      ).filter(t => t.displayName); // Only show tables we have metadata for
+      ).filter(t => t.displayName);
 
       setTables(enrichedTables);
     } catch (err) {
@@ -171,97 +172,112 @@ export default function DatabasePage() {
   const totalRecords = tables.reduce((sum, t) => sum + t.recordCount, 0);
 
   return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <div className={styles.headerLeft}>
-          <Database size={28} className={styles.headerIcon} />
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Database size={20} className="text-muted-foreground" />
           <div>
-            <h1 className={styles.title}>Database Management</h1>
-            <p className={styles.subtitle}>
-              View and manage application data. Changes here directly affect the live site.
+            <h1 className="text-lg font-semibold">Database</h1>
+            <p className="text-sm text-muted-foreground">
+              Manage application data
             </p>
           </div>
         </div>
-        <button
-          onClick={fetchTableCounts}
-          className={styles.refreshButton}
-          disabled={loading}
-          aria-label="Refresh table counts"
-        >
-          <RefreshCw size={18} className={loading ? styles.spinning : ''} />
-          Refresh
-        </button>
-      </header>
+        <Button variant="outline" size="sm" onClick={fetchTableCounts} disabled={loading}>
+          <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+          <span className="ml-1">Refresh</span>
+        </Button>
+      </div>
 
-      {/* Stats Overview */}
-      <div className={styles.statsRow}>
-        <div className={styles.statCard}>
-          <span className={styles.statLabel}>Total Tables</span>
-          <span className={styles.statValue}>{tables.length}</span>
-        </div>
-        <div className={styles.statCard}>
-          <span className={styles.statLabel}>Total Records</span>
-          <span className={styles.statValue}>{totalRecords.toLocaleString()}</span>
-        </div>
-        <div className={styles.statCard}>
-          <span className={styles.statLabel}>Database</span>
-          <span className={styles.statValue}>PostgreSQL (Neon)</span>
-        </div>
+      {/* Stats */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Tables</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{tables.length}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Records</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{totalRecords.toLocaleString()}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Database</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-lg font-medium">PostgreSQL</div>
+          </CardContent>
+        </Card>
       </div>
 
       {error && (
-        <div className={styles.errorBanner}>
-          <AlertCircle size={18} />
+        <div className="flex items-center gap-2 rounded-md border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
+          <AlertCircle size={16} />
           <span>{error}</span>
         </div>
       )}
 
       {loading ? (
-        <div className={styles.loadingState}>
-          <Loader2 size={32} className={styles.spinning} />
-          <span>Loading tables...</span>
+        <div className="flex items-center justify-center py-12">
+          <RefreshCw size={20} className="animate-spin text-muted-foreground" />
+          <span className="ml-2 text-sm text-muted-foreground">Loading tables...</span>
         </div>
       ) : (
-        <div className={styles.categorySections}>
+        <div className="space-y-6">
           {(['core', 'config', 'events', 'dev'] as const).map((category) => {
             const categoryTables = groupedTables[category] || [];
             if (categoryTables.length === 0) return null;
 
             return (
-              <section key={category} className={styles.categorySection}>
-                <h2 className={styles.categoryTitle}>{CATEGORY_LABELS[category]}</h2>
-                <div className={styles.tableGrid}>
+              <div key={category}>
+                <h2 className="mb-3 text-sm font-medium text-muted-foreground">
+                  {CATEGORY_LABELS[category]}
+                </h2>
+                <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                   {categoryTables.map((table) => (
-                    <Link
-                      key={table.name}
-                      href={`/admin/database/${table.name}`}
-                      className={styles.tableCard}
-                    >
-                      <div className={styles.tableCardHeader}>
-                        <table.icon size={24} className={styles.tableIcon} />
-                        <span className={styles.tableName}>{table.displayName}</span>
-                      </div>
-                      <p className={styles.tableDescription}>{table.description}</p>
-                      <div className={styles.tableCardFooter}>
-                        <span className={styles.recordCount}>
-                          {table.recordCount.toLocaleString()} records
-                        </span>
-                        <span className={styles.viewLink}>View &rarr;</span>
-                      </div>
+                    <Link key={table.name} href={`/admin/database/${table.name}`}>
+                      <Card className="h-full transition-colors hover:bg-accent/50">
+                        <CardHeader className="pb-2">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <table.icon size={16} className="text-muted-foreground" />
+                              <CardTitle className="text-sm font-medium">
+                                {table.displayName}
+                              </CardTitle>
+                            </div>
+                            <Badge variant="secondary" className="text-xs">
+                              {table.recordCount}
+                            </Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <CardDescription className="text-xs">
+                            {table.description}
+                          </CardDescription>
+                        </CardContent>
+                      </Card>
                     </Link>
                   ))}
                 </div>
-              </section>
+              </div>
             );
           })}
         </div>
       )}
 
-      <div className={styles.warningBanner}>
-        <AlertCircle size={18} />
-        <div>
+      {/* Warning */}
+      <div className="flex items-start gap-2 rounded-md border border-yellow-500/50 bg-yellow-500/10 p-3 text-sm">
+        <AlertCircle size={16} className="mt-0.5 shrink-0 text-yellow-600" />
+        <div className="text-yellow-800 dark:text-yellow-200">
           <strong>Caution:</strong> Editing data here directly affects the live application.
-          Changes to <strong>Pricing Tiers</strong> will immediately update front-end pricing.
         </div>
       </div>
     </div>
