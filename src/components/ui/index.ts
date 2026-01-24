@@ -1,21 +1,65 @@
-/**
- * UI Components
- * Shared, reusable UI primitives
- */
-
-// Feedback
-export { ErrorBoundary } from './ErrorBoundary';
-export { ToastProvider, useToast } from './Toast';
-export { Modal } from './Modal';
-export { Skeleton } from './Skeleton';
-
-// Display
-export { ProgressIndicator } from './ProgressIndicator';
-export { TrustBar } from './TrustBar';
-export { Badge } from './Badge';
-
-// Layout
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './Card';
-
-// Actions
-export { Button } from './Button';
+export { Button, buttonVariants } from "./button";
+export { Badge, badgeVariants } from "./badge";
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "./card";
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuRadioGroup,
+} from "./dropdown-menu";
+export { Input } from "./input";
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
+} from "./table";
+export { SegmentedProgress } from "./segmented-progress";
+export {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+  SelectScrollUpButton,
+  SelectScrollDownButton,
+} from "./select";
+export {
+  Command,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandSeparator,
+  CommandShortcut,
+} from "./command";
+export { Skeleton } from "./Skeleton/Skeleton";
+export { ProgressIndicator } from "./ProgressIndicator/ProgressIndicator";
+export { TrustBar } from "./TrustBar/TrustBar";
