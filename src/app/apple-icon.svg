@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Results Roofing - App Icon
+  RR mark in rounded-square container
+  Framer-style with soft depth
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Container gradient -->
+    <linearGradient id="containerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F7F9FC"/>
+    </linearGradient>
+    
+    <!-- Charcoal gradient for left R -->
+    <linearGradient id="iconCharcoal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2A3038"/>
+      <stop offset="35%" stop-color="#1E2329"/>
+      <stop offset="100%" stop-color="#14181D"/>
+    </linearGradient>
+    
+    <!-- Blue gradient for right R -->
+    <linearGradient id="iconBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4D8CFF"/>
+      <stop offset="45%" stop-color="#1E6CFF"/>
+      <stop offset="100%" stop-color="#1554CC"/>
+    </linearGradient>
+    
+    <!-- Container shadow -->
+    <filter id="containerShadow" x="-10%" y="-5%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#14181D" flood-opacity="0.15"/>
+    </filter>
+    
+    <!-- Soft inner shadow for charcoal R -->
+    <filter id="charcoalDepth" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0A0D10" flood-opacity="0.2"/>
+    </filter>
+    
+    <!-- Soft glow for blue R -->
+    <filter id="blueDepth" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#1554CC" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  
+  <!-- Rounded square container -->
+  <rect 
+    x="24" y="24" 
+    width="464" height="464" 
+    rx="96" ry="96"
+    fill="url(#containerGrad)"
+    filter="url(#containerShadow)"
+    stroke="#E8EDF5"
+    stroke-width="1"
+  />
+  
+  <!-- RR Mark centered -->
+  <g transform="translate(110, 140) scale(2.8)">
+    <!-- Left R (Charcoal) -->
+    <g filter="url(#charcoalDepth)">
+      <path 
+        d="M48 0 L48 12 C48 16.4183 44.4183 20 40 20 L20 20 L20 40 L35 40 L48 58 C50.6667 61.6 52 66.6667 52 70 L52 80 C52 84.4183 48.4183 88 44 88 L36 88 C32.6863 88 30 85.3137 30 82 L30 74 L30 66 L20 52 L20 88 L8 88 C3.58172 88 0 84.4183 0 80 L0 8 C0 3.58172 3.58172 0 8 0 Z M20 8 L20 32 L32 32 C36.4183 32 40 28.4183 40 24 L40 16 C40 11.5817 36.4183 8 32 8 Z" 
+        fill="url(#iconCharcoal)"
+      />
+    </g>
+    
+    <!-- Right R (Blue) -->
+    <g transform="translate(56, 0)" filter="url(#blueDepth)">
+      <path 
+        d="M0 0 L40 0 C44.4183 0 48 3.58172 48 8 L48 32 C48 40 44 46 36 50 L52 80 C52 84.4183 48.4183 88 44 88 L32 88 L32 74 L20 52 L20 88 L8 88 C3.58172 88 0 84.4183 0 80 Z M20 8 L20 40 L28 40 C35.732 40 40 35.732 40 28 L40 20 C40 12.268 35.732 8 28 8 Z" 
+        fill="url(#iconBlue)"
+      />
+    </g>
+  </g>
+</svg>

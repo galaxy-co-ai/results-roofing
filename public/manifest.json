@@ -1,0 +1,33 @@
+{
+  "name": "Results Roofing",
+  "short_name": "Results",
+  "description": "Get your roof replacement quote in minutes. Compare packages, schedule installation, and pay online.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F7F9FC",
+  "theme_color": "#1E6CFF",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/brand/logo/icon/results-roofing-favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/brand/logo/icon/results-roofing-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/brand/logo/icon/results-roofing-icon-dark.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "monochrome"
+    }
+  ],
+  "categories": ["business", "lifestyle"],
+  "lang": "en-US",
+  "dir": "ltr"
+}

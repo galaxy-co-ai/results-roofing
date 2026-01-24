@@ -45,18 +45,33 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'Results Roofing',
+    images: [
+      {
+        url: '/brand/github/github-banner.png',
+        width: 1200,
+        height: 630,
+        alt: 'Results Roofing - Instant Roof Replacement Quotes',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Results Roofing | Instant Roof Replacement Quotes',
+    description: 'Get your roof replacement quote in minutes.',
+    images: ['/brand/github/github-banner.png'],
   },
   robots: {
     index: true,
     follow: true,
   },
+  manifest: '/manifest.json',
 };
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#C4A77D',
+  themeColor: '#1E6CFF',
 };
 
 export default function RootLayout({
