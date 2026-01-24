@@ -15,6 +15,13 @@
       "when": 1769148226725,
       "tag": "0001_loud_maginty",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1769225222599,
+      "tag": "0002_add_task_checklist",
+      "breakpoints": true
     }
   ]
 }

@@ -1,5 +1,14 @@
-import { pgTable, uuid, text, timestamp, index, pgEnum } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, timestamp, index, pgEnum, jsonb } from 'drizzle-orm/pg-core';
 import { feedback } from './feedback';
+
+/**
+ * Checklist item type for task sub-items
+ */
+export interface ChecklistItem {
+  id: string;
+  text: string;
+  completed: boolean;
+}
 
 /**
  * Task status enum - kanban-style workflow
@@ -45,6 +54,12 @@ export const devTasks = pgTable(
     // Task details
     title: text('title').notNull(),
     description: text('description'),
+    // Checklist items - array of { id: string, text: string, completed: boolean }
+    checklist: jsonb('checklist').$type<ChecklistItem[]>().default([]),
+    // SOW Phase tracking - links task to a phase in the scope of work
+    phaseId: text('phase_id'), // e.g., "1", "2", "3"
+    phaseName: text('phase_name'), // e.g., "Discovery & Kickoff", "Foundations"
+    sowDeliverable: text('sow_deliverable'), // Original SOW deliverable name for reference
     // Classification
     status: taskStatusEnum('status').default('backlog').notNull(),
     priority: taskPriorityEnum('priority').default('medium').notNull(),
