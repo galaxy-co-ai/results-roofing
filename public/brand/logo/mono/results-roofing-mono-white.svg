@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Results Roofing - Monochrome White Logo
+  For use on dark backgrounds
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 160" width="400" height="160">
+  <defs>
+    <style>
+      .mono-white { fill: #FFFFFF; }
+    </style>
+  </defs>
+  
+  <!-- RR Mark Group -->
+  <g transform="translate(32, 28)" class="mono-white">
+    <path 
+      d="M48 0 L48 12 C48 16.4183 44.4183 20 40 20 L20 20 L20 40 L35 40 L48 58 C50.6667 61.6 52 66.6667 52 70 L52 80 C52 84.4183 48.4183 88 44 88 L36 88 C32.6863 88 30 85.3137 30 82 L30 74 L30 66 L20 52 L20 88 L8 88 C3.58172 88 0 84.4183 0 80 L0 8 C0 3.58172 3.58172 0 8 0 Z M20 8 L20 32 L32 32 C36.4183 32 40 28.4183 40 24 L40 16 C40 11.5817 36.4183 8 32 8 Z"
+    />
+    <path 
+      transform="translate(56, 0)"
+      d="M0 0 L40 0 C44.4183 0 48 3.58172 48 8 L48 32 C48 40 44 46 36 50 L52 80 C52 84.4183 48.4183 88 44 88 L32 88 L32 74 L20 52 L20 88 L8 88 C3.58172 88 0 84.4183 0 80 Z M20 8 L20 40 L28 40 C35.732 40 40 35.732 40 28 L40 20 C40 12.268 35.732 8 28 8 Z"
+    />
+  </g>
+  
+  <!-- Wordmark -->
+  <g transform="translate(152, 44)" class="mono-white">
+    <text 
+      x="0" 
+      y="32" 
+      font-family="'Sora', 'Manrope', 'Inter', sans-serif" 
+      font-size="38" 
+      font-weight="600" 
+      letter-spacing="0.02em"
+    >RESULTS</text>
+    <text 
+      x="0" 
+      y="68" 
+      font-family="'Sora', 'Manrope', 'Inter', sans-serif" 
+      font-size="22" 
+      font-weight="400" 
+      letter-spacing="0.12em"
+      opacity="0.8"
+    >ROOFING</text>
+  </g>
+</svg>

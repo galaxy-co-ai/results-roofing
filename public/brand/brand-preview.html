@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results Roofing - Brand Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue-primary: #1E6CFF;
+      --charcoal: #1E2329;
+      --soft-white: #F7F9FC;
+      --gray-100: #E8EDF5;
+      --gray-500: #4A5568;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--soft-white);
+      color: var(--charcoal);
+      line-height: 1.6;
+      padding: 48px 24px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: 36px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--blue-primary);
+    }
+    
+    .subtitle {
+      font-size: 18px;
+      color: var(--gray-500);
+      margin-bottom: 48px;
+    }
+    
+    h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      color: var(--charcoal);
+      border-bottom: 1px solid var(--gray-100);
+      padding-bottom: 12px;
+    }
+    
+    .section {
+      margin-bottom: 64px;
+    }
+    
+    .logo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    
+    .logo-card {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 4px 12px rgba(30, 35, 41, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .logo-card.dark {
+      background: var(--charcoal);
+    }
+    
+    .logo-card img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 16px;
+    }
+    
+    .logo-card .label {
+      font-size: 14px;
+      color: var(--gray-500);
+      text-align: center;
+    }
+    
+    .logo-card.dark .label {
+      color: #9BA8BD;
+    }
+    
+    .color-swatches {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .swatch {
+      width: 120px;
+    }
+    
+    .swatch-color {
+      height: 80px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .swatch-name {
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    .swatch-hex {
+      font-size: 12px;
+      color: var(--gray-500);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .typography-sample {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 4px 12px rgba(30, 35, 41, 0.08);
+    }
+    
+    .font-sample {
+      margin-bottom: 24px;
+    }
+    
+    .font-label {
+      font-size: 12px;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+    
+    .font-sora {
+      font-family: 'Sora', sans-serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--blue-primary);
+    }
+    
+    .font-inter {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      color: var(--charcoal);
+    }
+    
+    .checklist {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(30, 35, 41, 0.08);
+    }
+    
+    .checklist ul {
+      list-style: none;
+    }
+    
+    .checklist li {
+      padding: 8px 0;
+      padding-left: 28px;
+      position: relative;
+    }
+    
+    .checklist li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #10B981;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Results Roofing</h1>
+    <p class="subtitle">Brand Identity System • Framer-Inspired Polish</p>
+    
+    <section class="section">
+      <h2>Primary Logo</h2>
+      <div class="logo-grid">
+        <div class="logo-card">
+          <img src="logo/primary/results-roofing-primary.svg" alt="Primary Logo">
+          <span class="label">Primary Full-Color (Stacked)</span>
+        </div>
+        <div class="logo-card">
+          <img src="logo/primary/results-roofing-primary-horizontal.svg" alt="Horizontal Logo">
+          <span class="label">Primary Horizontal</span>
+        </div>
+      </div>
+    </section>
+    
+    <section class="section">
+      <h2>RR Mark</h2>
+      <div class="logo-grid">
+        <div class="logo-card">
+          <img src="logo/primary/rr-mark-only.svg" alt="RR Mark">
+          <span class="label">Full-Color Mark (Gradients + Shadows)</span>
+        </div>
+        <div class="logo-card">
+          <img src="logo/primary/rr-mark-only-flat.svg" alt="RR Mark Flat">
+          <span class="label">Flat Mark (No Effects)</span>
+        </div>
+      </div>
+    </section>
+    
+    <section class="section">
+      <h2>Monochrome Variants</h2>
+      <div class="logo-grid">
+        <div class="logo-card">
+          <img src="logo/mono/results-roofing-mono.svg" alt="Mono Logo">
+          <span class="label">Monochrome Charcoal</span>
+        </div>
+        <div class="logo-card dark">
+          <img src="logo/mono/results-roofing-mono-white.svg" alt="Mono White Logo">
+          <span class="label">Monochrome White (Reversed)</span>
+        </div>
+      </div>
+    </section>
+    
+    <section class="section">
+      <h2>App Icons & Social</h2>
+      <div class="logo-grid">
+        <div class="logo-card">
+          <img src="logo/icon/results-roofing-icon.svg" alt="App Icon" style="max-width: 200px;">
+          <span class="label">App Icon (Light)</span>
+        </div>
+        <div class="logo-card dark">
+          <img src="logo/icon/results-roofing-icon-dark.svg" alt="App Icon Dark" style="max-width: 200px;">
+          <span class="label">App Icon (Dark)</span>
+        </div>
+        <div class="logo-card">
+          <img src="logo/icon/results-roofing-social.svg" alt="Social Avatar" style="max-width: 160px;">
+          <span class="label">Social Avatar</span>
+        </div>
+        <div class="logo-card">
+          <img src="logo/icon/results-roofing-favicon.svg" alt="Favicon" style="max-width: 64px;">
+          <span class="label">Favicon (32x32)</span>
+        </div>
+      </div>
+    </section>
+    
+    <section class="section">
+      <h2>Color Palette</h2>
+      <div class="color-swatches">
+        <div class="swatch">
+          <div class="swatch-color" style="background: linear-gradient(135deg, #4D8CFF, #1E6CFF, #1554CC);"></div>
+          <div class="swatch-name">Blue Primary</div>
+          <div class="swatch-hex">#1E6CFF</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #4D8CFF;"></div>
+          <div class="swatch-name">Blue Highlight</div>
+          <div class="swatch-hex">#4D8CFF</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #1554CC;"></div>
+          <div class="swatch-name">Blue Shadow</div>
+          <div class="swatch-hex">#1554CC</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: linear-gradient(135deg, #2A3038, #1E2329, #14181D);"></div>
+          <div class="swatch-name">Charcoal</div>
+          <div class="swatch-hex">#1E2329</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #2A3038;"></div>
+          <div class="swatch-name">Charcoal Highlight</div>
+          <div class="swatch-hex">#2A3038</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #14181D;"></div>
+          <div class="swatch-name">Charcoal Shadow</div>
+          <div class="swatch-hex">#14181D</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #F7F9FC; border: 1px solid #E8EDF5;"></div>
+          <div class="swatch-name">Soft White</div>
+          <div class="swatch-hex">#F7F9FC</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #4A5568;"></div>
+          <div class="swatch-name">Gray 600</div>
+          <div class="swatch-hex">#4A5568</div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="section">
+      <h2>Typography</h2>
+      <div class="typography-sample">
+        <div class="font-sample">
+          <div class="font-label">Primary Headlines — Sora SemiBold</div>
+          <div class="font-sora">RESULTS ROOFING</div>
+        </div>
+        <div class="font-sample">
+          <div class="font-label">Body & UI — Inter Regular</div>
+          <div class="font-inter">Professional roofing solutions backed by technology. Get an instant quote in minutes, not days.</div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="section">
+      <h2>Quality Checklist</h2>
+      <div class="checklist">
+        <ul>
+          <li>Charcoal is deep and matte (no metallic/chrome effects)</li>
+          <li>Gradients are subtle and controlled</li>
+          <li>Shadows feel natural and minimal</li>
+          <li>Mark reads clearly at small sizes</li>
+          <li>Wordmark is professionally kerned and balanced</li>
+          <li>Consistent 8px corner radius system</li>
+          <li>Framer-level polish achieved</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

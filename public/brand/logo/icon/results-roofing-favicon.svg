@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Results Roofing - Favicon
+  Simplified RR mark for small sizes (16x16, 32x32)
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="favCharcoal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2A3038"/>
+      <stop offset="100%" stop-color="#14181D"/>
+    </linearGradient>
+    <linearGradient id="favBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4D8CFF"/>
+      <stop offset="100%" stop-color="#1554CC"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Simplified mark - designed for favicon legibility -->
+  <g transform="translate(2, 4)">
+    <!-- Left R simplified -->
+    <path 
+      d="M12 0 L12 3 C12 4 11 5 10 5 L5 5 L5 10 L8 10 L12 16 L12 22 C12 23 11 24 10 24 L8 24 L7 20 L5 16 L5 24 L2 24 C1 24 0 23 0 22 L0 2 C0 1 1 0 2 0 Z M5 2 L5 8 L8 8 C9 8 10 7 10 6 L10 4 C10 3 9 2 8 2 Z" 
+      fill="url(#favCharcoal)"
+    />
+    
+    <!-- Right R simplified -->
+    <path 
+      transform="translate(14, 0)"
+      d="M0 0 L10 0 C11 0 12 1 12 2 L12 8 C12 11 10 13 8 14 L12 22 C12 23 11 24 10 24 L7 24 L7 18 L5 14 L5 24 L2 24 C1 24 0 23 0 22 Z M5 2 L5 11 L7 11 C9 11 10 9 10 7 L10 5 C10 3 9 2 7 2 Z" 
+      fill="url(#favBlue)"
+    />
+  </g>
+</svg>

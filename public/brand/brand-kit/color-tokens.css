@@ -1,0 +1,195 @@
+/**
+ * Results Roofing - Brand Color Tokens
+ * Framer-inspired visual system
+ * 
+ * Version: 2.0
+ * Last Updated: January 2026
+ */
+
+:root {
+  /* ========================================
+     PRIMARY BRAND COLORS
+     ======================================== */
+  
+  --rr-brand-blue: #1E6CFF;
+  --rr-brand-charcoal: #1E2329;
+  --rr-brand-white: #F7F9FC;
+
+  /* ========================================
+     BLUE SCALE
+     ======================================== */
+  
+  --rr-blue-50: #EFF6FF;
+  --rr-blue-100: #DBEAFE;
+  --rr-blue-200: #BFDBFE;
+  --rr-blue-300: #93C5FD;
+  --rr-blue-400: #4D8CFF;   /* Highlight */
+  --rr-blue-500: #1E6CFF;   /* Primary */
+  --rr-blue-600: #1554CC;   /* Shadow */
+  --rr-blue-700: #0D3D99;   /* Dark */
+  --rr-blue-800: #0A2D73;
+  --rr-blue-900: #071E4D;
+
+  /* ========================================
+     CHARCOAL SCALE
+     ======================================== */
+  
+  --rr-charcoal-50: #F7F9FC;
+  --rr-charcoal-100: #E8EDF5;
+  --rr-charcoal-200: #D1D9E6;
+  --rr-charcoal-300: #9BA8BD;
+  --rr-charcoal-400: #6B7A94;
+  --rr-charcoal-500: #4A5568;   /* Secondary text */
+  --rr-charcoal-600: #2D3748;   /* Body text */
+  --rr-charcoal-700: #2A3038;   /* Highlight */
+  --rr-charcoal-800: #1E2329;   /* Base */
+  --rr-charcoal-900: #14181D;   /* Shadow */
+  --rr-charcoal-950: #0A0D10;   /* Deep */
+
+  /* ========================================
+     SEMANTIC COLORS - LIGHT MODE
+     ======================================== */
+  
+  /* Backgrounds */
+  --rr-bg-primary: var(--rr-charcoal-50);
+  --rr-bg-secondary: #FFFFFF;
+  --rr-bg-tertiary: #F2F4F8;
+  --rr-bg-inverse: var(--rr-charcoal-800);
+  
+  /* Surfaces */
+  --rr-surface-default: #FFFFFF;
+  --rr-surface-hover: #F2F4F8;
+  --rr-surface-active: var(--rr-charcoal-100);
+  
+  /* Text */
+  --rr-text-primary: var(--rr-charcoal-800);
+  --rr-text-secondary: var(--rr-charcoal-600);
+  --rr-text-tertiary: var(--rr-charcoal-500);
+  --rr-text-muted: var(--rr-charcoal-400);
+  --rr-text-inverse: var(--rr-charcoal-50);
+  
+  /* Borders */
+  --rr-border-default: var(--rr-charcoal-100);
+  --rr-border-strong: var(--rr-charcoal-200);
+  --rr-border-focus: var(--rr-blue-500);
+  
+  /* Brand interactive */
+  --rr-brand-primary: var(--rr-blue-500);
+  --rr-brand-primary-hover: var(--rr-blue-400);
+  --rr-brand-primary-active: var(--rr-blue-700);
+  
+  /* ========================================
+     LOGO COLORS
+     ======================================== */
+  
+  /* Left R - Charcoal gradient stops */
+  --rr-logo-charcoal-highlight: #2A3038;
+  --rr-logo-charcoal-base: #1E2329;
+  --rr-logo-charcoal-shadow: #14181D;
+  
+  /* Right R - Blue gradient stops */
+  --rr-logo-blue-highlight: #4D8CFF;
+  --rr-logo-blue-base: #1E6CFF;
+  --rr-logo-blue-shadow: #1554CC;
+  
+  /* Wordmark */
+  --rr-wordmark-primary: var(--rr-blue-500);
+  --rr-wordmark-secondary: var(--rr-charcoal-500);
+  
+  /* ========================================
+     SHADOWS
+     Soft, color-matched, low contrast
+     ======================================== */
+  
+  --rr-shadow-sm: 0 1px 2px rgba(30, 35, 41, 0.05);
+  --rr-shadow-md: 0 4px 12px rgba(30, 35, 41, 0.08);
+  --rr-shadow-lg: 0 8px 24px rgba(30, 35, 41, 0.12);
+  --rr-shadow-xl: 0 16px 48px rgba(30, 35, 41, 0.16);
+  
+  /* Logo-specific shadows */
+  --rr-shadow-charcoal: 0 2px 4px rgba(20, 24, 29, 0.12);
+  --rr-shadow-blue: 0 3px 5px rgba(21, 84, 204, 0.20);
+  
+  /* Focus ring */
+  --rr-shadow-focus: 0 0 0 3px rgba(30, 108, 255, 0.2);
+
+  /* ========================================
+     STATUS COLORS
+     ======================================== */
+  
+  --rr-success: #10B981;
+  --rr-success-bg: #ECFDF5;
+  --rr-warning: #F59E0B;
+  --rr-warning-bg: #FFFBEB;
+  --rr-error: #EF4444;
+  --rr-error-bg: #FEF2F2;
+  --rr-info: #3B82F6;
+  --rr-info-bg: #EFF6FF;
+}
+
+/* ========================================
+   DARK MODE OVERRIDES
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Backgrounds */
+    --rr-bg-primary: #0F1419;
+    --rr-bg-secondary: var(--rr-charcoal-800);
+    --rr-bg-tertiary: #151B22;
+    --rr-bg-inverse: var(--rr-charcoal-50);
+    
+    /* Surfaces */
+    --rr-surface-default: var(--rr-charcoal-800);
+    --rr-surface-hover: var(--rr-charcoal-700);
+    --rr-surface-active: var(--rr-charcoal-900);
+    
+    /* Text */
+    --rr-text-primary: var(--rr-charcoal-50);
+    --rr-text-secondary: var(--rr-charcoal-300);
+    --rr-text-tertiary: var(--rr-charcoal-400);
+    --rr-text-muted: var(--rr-charcoal-500);
+    --rr-text-inverse: var(--rr-charcoal-800);
+    
+    /* Borders */
+    --rr-border-default: var(--rr-charcoal-700);
+    --rr-border-strong: var(--rr-charcoal-600);
+    
+    /* Shadows - darker in dark mode */
+    --rr-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --rr-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --rr-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --rr-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.5);
+    
+    /* Status backgrounds - muted for dark mode */
+    --rr-success-bg: rgba(16, 185, 129, 0.15);
+    --rr-warning-bg: rgba(245, 158, 11, 0.15);
+    --rr-error-bg: rgba(239, 68, 68, 0.15);
+    --rr-info-bg: rgba(59, 130, 246, 0.15);
+  }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.rr-text-brand {
+  color: var(--rr-brand-primary);
+}
+
+.rr-bg-brand {
+  background-color: var(--rr-brand-primary);
+}
+
+.rr-border-brand {
+  border-color: var(--rr-brand-primary);
+}
+
+/* Logo shadow utilities */
+.rr-shadow-charcoal {
+  filter: drop-shadow(var(--rr-shadow-charcoal));
+}
+
+.rr-shadow-blue {
+  filter: drop-shadow(var(--rr-shadow-blue));
+}
