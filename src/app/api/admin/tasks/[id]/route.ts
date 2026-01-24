@@ -64,6 +64,12 @@ export async function PATCH(
     const { id } = await params;
     const body = await request.json();
 
+    const checklistItemSchema = z.object({
+      id: z.string(),
+      text: z.string(),
+      completed: z.boolean(),
+    });
+
     const schema = z.object({
       title: z.string().min(1).max(200).optional(),
       description: z.string().nullable().optional(),
@@ -71,6 +77,8 @@ export async function PATCH(
       priority: z.enum(['low', 'medium', 'high', 'urgent']).optional(),
       category: z.enum(['feature', 'bug', 'refactor', 'design', 'docs', 'test', 'chore']).optional(),
       dueDate: z.string().datetime().nullable().optional(),
+      checklist: z.array(checklistItemSchema).optional(),
+      autoAdvance: z.boolean().optional(), // If true, auto-advance status when all checklist items complete
     });
 
     const validated = schema.parse(body);
@@ -81,12 +89,43 @@ export async function PATCH(
 
     if (validated.title !== undefined) updateData.title = validated.title;
     if (validated.description !== undefined) updateData.description = validated.description;
+    if (validated.checklist !== undefined) updateData.checklist = validated.checklist;
+    
+    // Handle status changes
     if (validated.status !== undefined) {
       updateData.status = validated.status;
       if (validated.status === 'done') {
         updateData.completedAt = new Date();
       }
     }
+    
+    // Auto-advance logic: if all checklist items are complete, advance to next status
+    if (validated.autoAdvance && validated.checklist) {
+      const allComplete = validated.checklist.length > 0 && 
+        validated.checklist.every(item => item.completed);
+      
+      if (allComplete) {
+        // Get current task to determine next status
+        const [currentTask] = await db
+          .select()
+          .from(devTasks)
+          .where(eq(devTasks.id, id))
+          .limit(1);
+        
+        if (currentTask) {
+          const statusOrder = ['backlog', 'todo', 'in_progress', 'review', 'done'];
+          const currentIndex = statusOrder.indexOf(currentTask.status);
+          if (currentIndex < statusOrder.length - 1) {
+            const nextStatus = statusOrder[currentIndex + 1];
+            updateData.status = nextStatus;
+            if (nextStatus === 'done') {
+              updateData.completedAt = new Date();
+            }
+          }
+        }
+      }
+    }
+    
     if (validated.priority !== undefined) updateData.priority = validated.priority;
     if (validated.category !== undefined) updateData.category = validated.category;
     if (validated.dueDate !== undefined) {
