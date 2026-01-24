@@ -1,93 +1,357 @@
 /* =================================================
    RESULTS ROOFING - GLOBAL STYLES
-   Base resets and global styling
+   Typography system inspired by Vercel/Geist
    ================================================= */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @import './tokens/index.css';
 
 /* ========================================
-   CSS RESET & BASE STYLES
+   SHADCN/UI CSS VARIABLES
+   Results Roofing Brand: Blue (#1E6CFF) + Charcoal (#1E2329)
    ======================================== */
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+@layer base {
+  :root {
+    /* Brand-aligned light theme */
+    --background: 220 33% 98%;       /* #F7F9FC - soft white */
+    --foreground: 216 14% 14%;       /* #1E2329 - charcoal */
+    --card: 0 0% 100%;               /* #FFFFFF */
+    --card-foreground: 216 14% 14%; /* #1E2329 */
+    --popover: 0 0% 100%;
+    --popover-foreground: 216 14% 14%;
+    
+    /* Primary: Brand Blue #1E6CFF */
+    --primary: 217 100% 56%;         /* #1E6CFF */
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary: Light gray */
+    --secondary: 220 23% 95%;        /* #F2F4F8 */
+    --secondary-foreground: 215 16% 47%; /* #6B7A94 */
+    
+    /* Muted: Subtle grays */
+    --muted: 220 23% 95%;            /* #F2F4F8 */
+    --muted-foreground: 215 16% 47%; /* #6B7A94 */
+    
+    /* Accent: Brand blue tint */
+    --accent: 217 100% 96%;          /* #EFF6FF - blue tint */
+    --accent-foreground: 217 100% 56%; /* #1E6CFF */
+    
+    /* Status */
+    --destructive: 0 84% 60%;        /* #EF4444 */
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Borders */
+    --border: 220 20% 91%;           /* #E8EDF5 */
+    --input: 220 20% 91%;
+    --ring: 217 100% 56%;            /* #1E6CFF */
+    --radius: 0.375rem;
 
-html {
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
+    /* Typography */
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", monospace;
+    
+    /* Brand colors as CSS variables for direct use */
+    --brand-blue: #1E6CFF;
+    --brand-blue-light: #4D8CFF;
+    --brand-blue-dark: #1554CC;
+    --brand-charcoal: #1E2329;
+    --brand-charcoal-light: #2A3038;
+  }
 
-body {
-  font-family: var(--rr-font-family-sans);
-  font-size: var(--rr-font-size-base);
-  font-weight: var(--rr-font-weight-normal);
-  line-height: var(--rr-line-height-normal);
-  color: var(--rr-color-text-primary);
-  background-color: var(--rr-color-bg-primary);
-  min-height: 100vh;
+  .dark {
+    /* Brand-aligned dark theme */
+    --background: 220 20% 7%;        /* #0F1419 */
+    --foreground: 220 33% 98%;       /* #F7F9FC */
+    --card: 216 14% 14%;             /* #1E2329 */
+    --card-foreground: 220 33% 98%;
+    --popover: 216 14% 14%;
+    --popover-foreground: 220 33% 98%;
+    
+    /* Primary: Brand Blue */
+    --primary: 217 100% 56%;         /* #1E6CFF */
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary: Dark charcoal */
+    --secondary: 216 18% 16%;        /* #2A3038 */
+    --secondary-foreground: 220 23% 95%;
+    
+    /* Muted */
+    --muted: 216 18% 16%;
+    --muted-foreground: 215 16% 55%;
+    
+    /* Accent */
+    --accent: 217 100% 15%;          /* Dark blue tint */
+    --accent-foreground: 217 100% 70%;
+    
+    /* Status */
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Borders */
+    --border: 216 18% 18%;           /* #2A3038 */
+    --input: 216 18% 18%;
+    --ring: 217 100% 56%;
+  }
+
+  /* Base resets */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 0.875rem; /* 14px - base size like Vercel */
+    font-weight: 400;
+    line-height: 1.5;
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--background));
+  }
 }
 
 /* ========================================
-   TYPOGRAPHY BASE
+   GEIST-INSPIRED TYPOGRAPHY UTILITIES
+   Following Vercel's pattern: 
+   - Headings: page titles
+   - Labels: single-line, icon pairing (most common)
+   - Copy: multi-line paragraphs
    ======================================== */
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: var(--rr-font-weight-semibold);
-  line-height: var(--rr-line-height-tight);
-  letter-spacing: var(--rr-letter-spacing-tight);
-  color: var(--rr-color-text-primary);
+@layer utilities {
+  /* Headings - for page/section titles */
+  .text-heading-32 {
+    font-size: 2rem;      /* 32px */
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+  }
+  
+  .text-heading-24 {
+    font-size: 1.5rem;    /* 24px */
+    line-height: 1.33;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+  }
+  
+  .text-heading-20 {
+    font-size: 1.25rem;   /* 20px */
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+  }
+  
+  .text-heading-16 {
+    font-size: 1rem;      /* 16px */
+    line-height: 1.5;
+    letter-spacing: -0.006em;
+    font-weight: 600;
+  }
+
+  /* Labels - single-line text, pairs with icons */
+  .text-label-16 {
+    font-size: 1rem;      /* 16px */
+    line-height: 1.5;
+    letter-spacing: 0;
+    font-weight: 500;
+  }
+  
+  .text-label-14 {
+    font-size: 0.875rem;  /* 14px - MOST COMMON */
+    line-height: 1.43;
+    letter-spacing: 0;
+    font-weight: 500;
+  }
+  
+  .text-label-13 {
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.38;
+    letter-spacing: 0;
+    font-weight: 500;
+  }
+  
+  .text-label-12 {
+    font-size: 0.75rem;   /* 12px */
+    line-height: 1.33;
+    letter-spacing: 0.01em;
+    font-weight: 500;
+  }
+
+  /* Copy - multi-line text with more line-height */
+  .text-copy-16 {
+    font-size: 1rem;      /* 16px */
+    line-height: 1.625;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+  
+  .text-copy-14 {
+    font-size: 0.875rem;  /* 14px - MOST COMMON */
+    line-height: 1.57;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+  
+  .text-copy-13 {
+    font-size: 0.8125rem; /* 13px - secondary text */
+    line-height: 1.54;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+
+  /* Mono variants for code/IDs */
+  .text-mono-14 {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;  /* 14px */
+    line-height: 1.43;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+  
+  .text-mono-13 {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.38;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+  
+  .text-mono-12 {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;   /* 12px */
+    line-height: 1.33;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+
+  /* Strong modifier - use with nested <strong> */
+  .text-label-14 strong,
+  .text-copy-14 strong {
+    font-weight: 600;
+  }
+
+  /* Subtle modifier - muted color */
+  .text-subtle {
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ==========================================
+     REFINED TYPOGRAPHY UTILITIES
+     Enhanced for dashboard & data visualization
+     ========================================== */
+
+  /* Metric display - for KPI numbers */
+  .text-metric-lg {
+    font-size: 2.25rem;   /* 36px */
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .text-metric-md {
+    font-size: 1.875rem;  /* 30px */
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .text-metric-sm {
+    font-size: 1.5rem;    /* 24px */
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Chart labels - small, uppercase */
+  .text-chart-label {
+    font-size: 0.6875rem; /* 11px */
+    line-height: 1.27;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  /* Data values - tabular nums for alignment */
+  .text-data {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Tight heading - for compact cards */
+  .tracking-tight {
+    letter-spacing: -0.015em;
+  }
+
+  /* Loose label - for chart legends */
+  .tracking-loose {
+    letter-spacing: 0.02em;
+  }
 }
 
-h1 {
-  font-size: var(--rr-font-size-4xl);
+/* ==========================================
+   RECHARTS STYLING
+   Consistent chart styling with brand
+   ========================================== */
+
+/* Chart axis labels */
+.recharts-cartesian-axis-tick-value {
+  font-size: 0.6875rem;
+  fill: hsl(var(--muted-foreground));
 }
 
-h2 {
-  font-size: var(--rr-font-size-3xl);
+/* Chart legend text */
+.recharts-legend-item-text {
+  font-size: 0.75rem !important;
+  color: hsl(var(--muted-foreground)) !important;
 }
 
-h3 {
-  font-size: var(--rr-font-size-2xl);
-}
-
-h4 {
-  font-size: var(--rr-font-size-xl);
-}
-
-p {
-  margin-bottom: var(--rr-space-4);
-  color: var(--rr-color-text-secondary);
-}
-
-a {
-  color: var(--rr-color-text-link);
-  text-decoration: none;
-  transition: var(--rr-transition-colors);
-}
-
-a:hover {
-  color: var(--rr-color-text-link-hover);
-}
-
-/* ========================================
-   FOCUS STATES
-   ======================================== */
-
-:focus-visible {
-  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
-  outline-offset: var(--rr-focus-ring-offset);
-}
-
-/* Remove default focus for mouse users */
-:focus:not(:focus-visible) {
+/* Chart tooltip */
+.recharts-tooltip-wrapper {
   outline: none;
+}
+
+/* ========================================
+   SCROLLBAR STYLING
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* ========================================
+   SELECTION STYLING
+   ======================================== */
+
+::selection {
+  background-color: hsl(var(--primary) / 0.2);
+  color: hsl(var(--foreground));
 }
 
 /* ========================================
@@ -103,78 +367,24 @@ textarea {
   line-height: inherit;
 }
 
-button {
-  cursor: pointer;
-  border: none;
-  background: none;
-}
-
-/* ========================================
-   UTILITY CLASSES
-   ======================================== */
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* ========================================
-   SCROLLBAR STYLING
-   ======================================== */
-
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--rr-color-bg-tertiary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--rr-color-stone);
-  border-radius: var(--rr-radius-full);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--rr-color-slate);
-}
-
-/* ========================================
-   SELECTION STYLING
-   ======================================== */
-
-::selection {
-  background-color: var(--rr-color-sandstone);
-  color: var(--rr-color-charcoal);
-}
-
 /* ========================================
    GOOGLE PLACES AUTOCOMPLETE STYLING
    ======================================== */
 
 .pac-container {
-  font-family: var(--rr-font-family-sans);
-  border-radius: var(--rr-radius-md);
-  border: 1px solid var(--rr-color-border);
-  box-shadow: var(--rr-shadow-lg);
-  margin-top: var(--rr-space-1);
+  font-family: var(--font-sans);
+  border-radius: 0.375rem;
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  margin-top: 0.25rem;
   z-index: 9999;
 }
 
 .pac-item {
-  padding: var(--rr-space-3) var(--rr-space-4);
-  font-size: var(--rr-font-size-sm);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
   cursor: pointer;
-  transition: var(--rr-transition-colors);
-  border-top: 1px solid var(--rr-color-border);
+  border-top: 1px solid hsl(var(--border));
 }
 
 .pac-item:first-child {
@@ -183,18 +393,5 @@ button {
 
 .pac-item:hover,
 .pac-item-selected {
-  background-color: var(--rr-color-bg-secondary);
-}
-
-.pac-icon {
-  margin-right: var(--rr-space-3);
-}
-
-.pac-item-query {
-  font-weight: var(--rr-font-weight-medium);
-  color: var(--rr-color-text-primary);
-}
-
-.pac-matched {
-  font-weight: var(--rr-font-weight-semibold);
+  background-color: hsl(var(--accent));
 }

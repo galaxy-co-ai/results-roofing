@@ -3,6 +3,7 @@
    Single import point for all design tokens
    ================================================= */
 
+/* Customer-facing app tokens (Dune aesthetic) */
 @import './colors.css';
 @import './typography.css';
 @import './spacing.css';
@@ -11,3 +12,6 @@
 @import './animations.css';
 @import './z-index.css';
 @import './components.css';
+
+/* Admin panel tokens (Blue/Charcoal/White) */
+@import './admin.css';
