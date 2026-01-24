@@ -52,7 +52,7 @@ export function QuickActionCard({
         )}
       </div>
       {badge && (
-        <Badge variant="primary" size="sm" className={styles.badge}>
+        <Badge variant="default" className={styles.badge}>
           {badge}
         </Badge>
       )}

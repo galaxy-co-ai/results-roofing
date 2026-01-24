@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { Send, Minimize2 } from 'lucide-react';
 import { useChat } from './ChatContext';
 import styles from './ChatWidget.module.css';
@@ -30,31 +31,43 @@ const QUICK_REPLIES = [
 
 export function ChatWidget() {
   const { isOpen, closeChat, initialMessage } = useChat();
+  const pathname = usePathname();
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Check if on admin page
+  const isAdminPage = pathname?.startsWith('/admin');
+
   // Scroll to bottom when messages change
   useEffect(() => {
+    if (isAdminPage) return;
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, isAdminPage]);
 
   // Focus input when chat opens
   useEffect(() => {
+    if (isAdminPage) return;
     if (isOpen && inputRef.current) {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
-  }, [isOpen]);
+  }, [isOpen, isAdminPage]);
 
   // Handle initial message from context
   useEffect(() => {
+    if (isAdminPage) return;
     if (isOpen && initialMessage && messages.length === 1) {
       handleSendMessage(initialMessage);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- Only trigger on chat open/initial message, not on every messages change
-  }, [isOpen, initialMessage]);
+  }, [isOpen, initialMessage, isAdminPage]);
+
+  // Don't render on admin pages
+  if (isAdminPage) {
+    return null;
+  }
 
   const handleSendMessage = async (content: string) => {
     if (!content.trim()) return;

@@ -98,7 +98,7 @@ export function PackageTierCard({
         <div className={styles.headerContent}>
           <h3 className={styles.tierName}>{name}</h3>
           {recommended && (
-            <Badge variant="primary" size="sm">
+            <Badge variant="default">
               Most Popular
             </Badge>
           )}

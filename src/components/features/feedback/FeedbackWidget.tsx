@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { X, MessageSquareText, Bug, Lightbulb, MessageCircle, ChevronRight, Check, ArrowLeft, MoreHorizontal } from 'lucide-react';
 import { useFeedback, type FeedbackReason } from './FeedbackContext';
 import styles from './FeedbackWidget.module.css';
@@ -81,20 +82,26 @@ export function FeedbackWidget() {
     isSubmitted,
   } = useFeedback();
 
+  const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const customReasonRef = useRef<HTMLInputElement>(null);
   const [showOtherInput, setShowOtherInput] = useState(false);
 
+  // Check if on admin page
+  const isAdminPage = pathname?.startsWith('/admin');
+
   // Focus textarea when reaching notes step
   useEffect(() => {
+    if (isAdminPage) return;
     if (step === 3 && textareaRef.current) {
       setTimeout(() => textareaRef.current?.focus(), 100);
     }
-  }, [step]);
+  }, [step, isAdminPage]);
 
   // Handle keyboard events
   useEffect(() => {
+    if (isAdminPage) return;
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -105,7 +112,12 @@ export function FeedbackWidget() {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, closeFeedback]);
+  }, [isOpen, closeFeedback, isAdminPage]);
+
+  // Don't render on admin pages
+  if (isAdminPage) {
+    return null;
+  }
 
   const handleReasonSelect = (reason: FeedbackReason) => {
     setReason(reason);
@@ -212,7 +224,7 @@ export function FeedbackWidget() {
               <h2 className={styles.title}>
                 {isSubmitted ? 'Thank you!' : getStepTitle()}
               </h2>
-              <p className={styles.meta}>
+              <p className={styles.meta} suppressHydrationWarning>
                 {isSubmitted ? 'Your feedback helps us improve' : formatTimestamp()}
               </p>
             </div>

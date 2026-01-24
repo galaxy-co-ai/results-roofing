@@ -42,8 +42,12 @@ export default function PortalLayout({
       <aside className={styles.sidebar} aria-label="Portal sidebar">
         <div className={styles.sidebarHeader}>
           <Link href="/" className={styles.logo} aria-label="Results Roofing Home">
-            <span className={styles.logoIcon} aria-hidden="true">RR</span>
-            <span className={styles.logoText}>Results Roofing</span>
+            <img
+              src="/brand/logos/light/logo-horizontal.png"
+              alt="Results Roofing"
+              style={{ height: '32px', width: 'auto' }}
+              className={styles.logoImage}
+            />
           </Link>
         </div>
 

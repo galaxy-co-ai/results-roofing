@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { X, Search, ChevronDown, HelpCircle, FileText, CreditCard, Calendar, Shield, Wrench, MessageCircle } from 'lucide-react';
 import { useFAQ } from './FAQContext';
 import { useChat } from '@/components/features/support';
@@ -88,14 +89,19 @@ const FAQ_ITEMS: FAQItem[] = [
 export function FAQModal() {
   const { isOpen, closeFAQ } = useFAQ();
   const { openChat } = useChat();
+  const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const modalRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
+  // Check if on admin page
+  const isAdminPage = pathname?.startsWith('/admin');
+
   // Handle escape key
   useEffect(() => {
+    if (isAdminPage) return;
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
         closeFAQ();
@@ -103,17 +109,19 @@ export function FAQModal() {
     };
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [isOpen, closeFAQ]);
+  }, [isOpen, closeFAQ, isAdminPage]);
 
   // Focus search on open
   useEffect(() => {
+    if (isAdminPage) return;
     if (isOpen && searchRef.current) {
       setTimeout(() => searchRef.current?.focus(), 100);
     }
-  }, [isOpen]);
+  }, [isOpen, isAdminPage]);
 
   // Lock body scroll
   useEffect(() => {
+    if (isAdminPage) return;
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -122,7 +130,12 @@ export function FAQModal() {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isOpen]);
+  }, [isOpen, isAdminPage]);
+
+  // Don't render on admin pages
+  if (isAdminPage) {
+    return null;
+  }
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === modalRef.current) {

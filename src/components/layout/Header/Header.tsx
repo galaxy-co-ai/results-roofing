@@ -20,9 +20,13 @@ export function Header({ transparent = false }: HeaderProps) {
       role="banner"
     >
       <div className={styles.container}>
-        {/* Logo */}
+        {/* Logo - Using official brand asset */}
         <Link href="/" className={styles.logo} aria-label="Results Roofing - Home">
-          <span className={styles.logoText}>Results Roofing</span>
+          <img
+            src="/brand/logos/light/logo-horizontal.png"
+            alt="Results Roofing"
+            className={styles.logoImage}
+          />
         </Link>
 
         {/* Dashboard Button - Right aligned */}
