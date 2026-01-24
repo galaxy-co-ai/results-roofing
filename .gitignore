@@ -73,6 +73,8 @@ Thumbs.db
 # secrets/
 # *.pem
 # *.key
+brand-import/
+pnpm-lock.yaml
 
 .vercel
 .env*.local
