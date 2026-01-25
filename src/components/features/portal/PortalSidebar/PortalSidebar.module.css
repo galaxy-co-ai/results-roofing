@@ -1,0 +1,384 @@
+/* =================================================
+   PORTAL SIDEBAR - Collapsible Premium Design
+   ================================================= */
+
+.sidebar {
+  width: 240px;
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-left: none;
+  border-radius: 0 16px 16px 0;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  z-index: 100;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: width 0.2s ease;
+}
+
+.sidebar.collapsed {
+  width: 72px;
+}
+
+/* ----------------------------------------
+   TOGGLE BUTTON
+   ---------------------------------------- */
+
+.toggleButton {
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rr-color-text-tertiary);
+  cursor: pointer;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: all 0.15s ease;
+  z-index: 10;
+  opacity: 0;
+}
+
+.sidebar:hover .toggleButton {
+  opacity: 1;
+}
+
+.toggleButton:hover {
+  background: var(--rr-color-blue);
+  border-color: var(--rr-color-blue);
+  color: var(--rr-color-white);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.toggleButton:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
+}
+
+/* ----------------------------------------
+   HEADER / LOGO
+   ---------------------------------------- */
+
+.sidebarHeader {
+  padding: 1.25rem 1rem;
+}
+
+.collapsed .sidebarHeader {
+  padding: 1rem 0.75rem;
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--rr-color-text-primary);
+  padding: 0.5rem;
+  margin: -0.5rem;
+  border-radius: 12px;
+  transition: background 0.15s ease;
+}
+
+.collapsed .logo {
+  padding: 0.375rem;
+  margin: 0;
+  gap: 0;
+}
+
+.logo:hover {
+  background: var(--rr-color-bg-tertiary);
+}
+
+.logoIcon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rr-color-blue);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.logo:hover .logoIcon {
+  box-shadow: var(--rr-shadow-charcoal-medium);
+  transform: scale(1.02);
+}
+
+.brandText {
+  display: inline;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.brandName {
+  font-weight: 700;
+  color: var(--rr-color-charcoal);
+}
+
+.brandSuffix {
+  font-weight: 500;
+  color: var(--rr-color-blue);
+}
+
+/* ----------------------------------------
+   NAVIGATION
+   ---------------------------------------- */
+
+.nav {
+  flex: 1;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.navSectionLabel {
+  padding: 0.75rem 1.25rem 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--rr-color-text-tertiary);
+}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  color: var(--rr-color-text-secondary);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.collapsed .navLink {
+  justify-content: center;
+  padding: 0.75rem;
+}
+
+.navLink:hover {
+  background: var(--rr-color-bg-tertiary);
+  color: var(--rr-color-text-primary);
+}
+
+.navLink:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: -2px;
+}
+
+/* Active state */
+.navLinkActive {
+  background: rgba(45, 98, 168, 0.08);
+  color: var(--rr-color-blue);
+  font-weight: 500;
+}
+
+.navLinkActive::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: var(--rr-color-blue);
+  border-radius: 0 3px 3px 0;
+}
+
+.collapsed .navLinkActive::before {
+  display: none;
+}
+
+.collapsed .navLinkActive {
+  background: rgba(45, 98, 168, 0.12);
+}
+
+.navIcon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.navLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ----------------------------------------
+   SUPPORT SECTION
+   ---------------------------------------- */
+
+.supportSection {
+  padding: 0.5rem;
+  margin-top: auto;
+}
+
+.supportButton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  background: transparent;
+  color: var(--rr-color-text-secondary);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.collapsed .supportButton {
+  justify-content: center;
+  padding: 0.75rem;
+}
+
+.supportButton:hover {
+  background: var(--rr-color-bg-tertiary);
+  color: var(--rr-color-text-primary);
+}
+
+.supportButton:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: -2px;
+}
+
+/* ----------------------------------------
+   FOOTER / USER CARD
+   ---------------------------------------- */
+
+.sidebarFooter {
+  border-top: 1px solid var(--rr-color-border-default);
+}
+
+/* Collapsed user section */
+.collapsedUserSection {
+  padding: 0.75rem 0.5rem;
+  border-top: 1px solid var(--rr-color-border-default);
+  display: flex;
+  justify-content: center;
+}
+
+.collapsedAvatar {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, rgba(45, 98, 168, 0.1) 0%, rgba(45, 98, 168, 0.05) 100%);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+}
+
+.collapsedAvatarText {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--rr-color-blue);
+  letter-spacing: -0.02em;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    width: 100% !important;
+    min-height: auto;
+    height: auto;
+    flex-direction: row;
+    border: none;
+    border-top: 1px solid var(--rr-color-border-default);
+    border-radius: 0;
+    padding: 0;
+    overflow-x: auto;
+    background: var(--rr-color-white);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .toggleButton,
+  .sidebarHeader,
+  .navSectionLabel,
+  .supportSection,
+  .sidebarFooter,
+  .collapsedUserSection {
+    display: none;
+  }
+
+  .nav {
+    flex: 1;
+    padding: 0;
+    width: 100%;
+  }
+
+  .navList {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    padding: 0;
+    gap: 0;
+  }
+
+  .navLink {
+    flex-direction: column;
+    padding: 0.75rem 0.5rem;
+    gap: 0.25rem;
+    border-radius: 0;
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .navLinkActive::before {
+    display: none;
+  }
+
+  .navLinkActive {
+    background: transparent;
+    color: var(--rr-color-blue);
+  }
+
+  .navLabel {
+    display: block !important;
+    font-size: 0.625rem;
+  }
+}

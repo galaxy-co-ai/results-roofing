@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Filter, Search } from 'lucide-react';
+import { Filter, Search, FileText } from 'lucide-react';
 import { DocumentCard } from '@/components/features/documents';
 import type { DocumentData } from '@/components/features/documents';
 import { HelpNoteSupport } from '@/components/features/support';
@@ -231,6 +231,9 @@ export default function DocumentsPage() {
         
         {filteredDocuments.length === 0 && (
           <div className={styles.emptyState}>
+            <div className={styles.emptyStateIcon}>
+              <FileText size={28} />
+            </div>
             <p>No documents found matching your search.</p>
           </div>
         )}

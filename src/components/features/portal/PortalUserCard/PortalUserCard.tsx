@@ -54,16 +54,7 @@ function UserCardContent({ user, isDevMode }: { user: UserData | null; isDevMode
         </div>
       </div>
 
-      {isDevMode ? (
-        <button 
-          className={styles.signOutButton}
-          aria-label="Sign out (disabled in dev mode)"
-          disabled
-        >
-          <LogOut size={18} aria-hidden="true" />
-          <span>Dev Mode</span>
-        </button>
-      ) : (
+      {!isDevMode && (
         <SignOutButton>
           <button 
             className={styles.signOutButton}

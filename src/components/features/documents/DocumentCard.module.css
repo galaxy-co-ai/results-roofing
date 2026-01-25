@@ -3,12 +3,13 @@
   align-items: center;
   gap: 16px;
   width: 100%;
-  padding: 16px 20px;
-  background: var(--rr-color-bg-secondary);
+  padding: 18px 22px;
+  background: var(--rr-color-white);
   border: 1px solid var(--rr-color-border-default);
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: all 0.15s ease;
   text-align: left;
   font-family: inherit;
 }
@@ -25,17 +26,17 @@
 }
 
 .iconWrapper {
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
   background: var(--rr-color-white);
   border: 1px solid var(--rr-color-border-default);
-  border-radius: 10px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: var(--rr-shadow-charcoal-subtle);
-  transition: box-shadow 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .card:hover .iconWrapper {
@@ -69,12 +70,12 @@
 }
 
 .status {
-  padding: 3px 8px;
-  border-radius: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
   font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
   flex-shrink: 0;
 }
 
@@ -149,18 +150,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--rr-color-bg-tertiary);
+  background: var(--rr-color-white);
   border: 1px solid var(--rr-color-border-default);
   border-radius: 8px;
   color: var(--rr-color-text-secondary);
   cursor: pointer;
-  transition: all 0.2s;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: all 0.15s ease;
 }
 
 .downloadButton:hover {
-  background: var(--rr-color-charcoal);
-  border-color: var(--rr-color-charcoal);
-  color: white;
+  background: var(--rr-color-blue);
+  border-color: var(--rr-color-blue);
+  color: var(--rr-color-white);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+  transform: translateY(-1px);
+}
+
+.downloadButton:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
 }
 
 /* Mobile */

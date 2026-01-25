@@ -40,15 +40,17 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  background-color: var(--rr-color-brand-primary-light, #f5f0e6);
-  border-radius: var(--rr-radius-md, 8px);
-  color: var(--rr-color-brand-primary, #c4a77d);
+  background-color: var(--rr-color-white, #ffffff);
+  border: 1px solid var(--rr-color-border-default, #e8edf5);
+  border-radius: 10px;
+  color: var(--rr-color-blue, #4a7ec2);
   flex-shrink: 0;
+  box-shadow: var(--rr-shadow-charcoal-subtle, 0 2px 8px rgba(30, 35, 41, 0.12));
+  transition: box-shadow 0.2s ease;
 }
 
 .card:hover .iconWrapper {
-  background-color: var(--rr-color-brand-primary, #c4a77d);
-  color: var(--rr-color-text-inverse, #ffffff);
+  box-shadow: var(--rr-shadow-charcoal-medium, 0 4px 12px rgba(30, 35, 41, 0.15));
 }
 
 /* Content */

@@ -12,7 +12,7 @@
   justify-content: space-between;
   align-items: flex-start;
   padding-bottom: 24px;
-  border-bottom: 2px solid var(--rr-color-charcoal);
+  border-bottom: 2px solid var(--rr-color-blue);
   margin-bottom: 32px;
 }
 
@@ -25,15 +25,17 @@
 .logoIcon {
   width: 48px;
   height: 48px;
-  background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
-  border-radius: 8px;
+  background: var(--rr-color-white);
+  border: 2px solid var(--rr-color-border-default);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
   font-weight: 700;
   font-size: 1rem;
   font-family: 'Inter', sans-serif;
+  box-shadow: 0 2px 4px rgba(45, 52, 54, 0.08);
 }
 
 .companyInfo {
@@ -88,14 +90,14 @@
 }
 
 .sectionTitle {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--rr-color-charcoal);
+  color: var(--rr-color-blue);
   margin: 0 0 12px;
   padding-bottom: 8px;
-  border-bottom: 1px solid var(--rr-color-sand);
+  border-bottom: 1px solid var(--rr-color-border-default);
   font-family: 'Inter', sans-serif;
 }
 
@@ -148,7 +150,7 @@
 }
 
 .table th {
-  background: var(--rr-color-sand-light);
+  background: rgba(45, 98, 168, 0.06);
   font-weight: 600;
   color: var(--rr-color-charcoal);
   text-transform: uppercase;
@@ -162,7 +164,7 @@
 
 .tableTotal {
   font-weight: 600;
-  background: var(--rr-color-sand-light);
+  background: rgba(45, 98, 168, 0.06);
 }
 
 .tableTotal td {
@@ -171,8 +173,8 @@
 
 /* Highlight Box */
 .highlightBox {
-  background: var(--rr-color-sand-light);
-  border-left: 4px solid var(--rr-color-sandstone);
+  background: rgba(45, 98, 168, 0.06);
+  border-left: 4px solid var(--rr-color-blue);
   padding: 16px 20px;
   margin: 20px 0;
   border-radius: 0 8px 8px 0;
@@ -199,7 +201,7 @@
 }
 
 .signatureLine {
-  border-bottom: 1px solid var(--rr-color-charcoal);
+  border-bottom: 2px solid var(--rr-color-charcoal);
   height: 60px;
   margin-bottom: 8px;
   display: flex;
@@ -244,16 +246,17 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
+  gap: 8px;
+  padding: 10px 18px;
   background: var(--rr-color-success-light);
   border: 1px solid var(--rr-color-success);
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--rr-color-success);
   font-weight: 600;
   font-size: 0.875rem;
   font-family: 'Inter', sans-serif;
   margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(74, 124, 89, 0.1);
 }
 
 /* Terms List */
@@ -284,12 +287,12 @@
 /* Certificate styling */
 .certificateWrapper {
   position: relative;
-  border: 3px double var(--rr-color-sandstone);
+  border: 3px double var(--rr-color-blue);
   padding: 8px;
 }
 
 .certificateInner {
-  border: 1px solid var(--rr-color-sand);
+  border: 1px solid rgba(45, 98, 168, 0.2);
   padding: 40px;
 }
 
@@ -318,18 +321,18 @@
 .seal {
   width: 100px;
   height: 100px;
-  border: 3px solid var(--rr-color-sandstone);
+  border: 3px solid var(--rr-color-blue);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--rr-color-sand-light);
+  background: rgba(45, 98, 168, 0.06);
 }
 
 .sealInner {
   width: 80px;
   height: 80px;
-  border: 2px solid var(--rr-color-sandstone);
+  border: 2px solid var(--rr-color-blue);
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -338,7 +341,7 @@
   text-align: center;
   font-size: 0.625rem;
   font-weight: 600;
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-family: 'Inter', sans-serif;

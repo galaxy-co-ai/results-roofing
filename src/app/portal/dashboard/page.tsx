@@ -10,7 +10,6 @@ import {
   CheckCircle,
   Clock,
   Home,
-  Wrench,
   ChevronRight,
   ChevronDown,
   AlertCircle
@@ -291,7 +290,7 @@ function DashboardContent({ userEmail, userLoaded }: { userEmail: string | null;
         
         <div className={styles.statusHeader}>
           <div className={styles.statusBadge}>
-            <Wrench size={16} aria-hidden="true" />
+            <Calendar size={16} aria-hidden="true" />
             <span>{getStatusDisplayName(order.status)}</span>
           </div>
           <span className={styles.statusPhase}>{getCurrentPhase(order.status)}</span>

@@ -8,7 +8,7 @@
 .text {
   background: none;
   border: none;
-  color: var(--rr-color-primary-500);
+  color: var(--rr-color-blue);
   padding: 0;
   font-size: inherit;
   font-weight: 500;
@@ -18,7 +18,7 @@
 }
 
 .text:hover {
-  color: var(--rr-color-primary-600);
+  color: var(--rr-color-charcoal);
   text-decoration-color: currentColor;
 }
 
@@ -28,18 +28,21 @@
   align-items: center;
   gap: 8px;
   padding: 10px 18px;
-  background: var(--rr-color-bg-secondary);
-  border: 1px solid var(--rr-color-border-primary);
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
   border-radius: 8px;
-  color: var(--rr-color-text-secondary);
+  color: var(--rr-color-blue);
   font-size: 0.875rem;
   font-weight: 500;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .button:hover {
-  background: var(--rr-color-primary-50);
-  border-color: var(--rr-color-primary-200);
-  color: var(--rr-color-primary-600);
+  background: var(--rr-color-blue);
+  border-color: var(--rr-color-blue);
+  color: var(--rr-color-white);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+  transform: translateY(-1px);
 }
 
 /* Link variant - looks like a standard link */
@@ -53,11 +56,11 @@
 }
 
 .link:hover {
-  color: var(--rr-color-primary-500);
+  color: var(--rr-color-blue);
 }
 
 /* Focus states for all variants */
 .supportButton:focus-visible {
-  outline: 2px solid var(--rr-color-primary-300);
+  outline: 2px solid var(--rr-color-blue);
   outline-offset: 2px;
 }

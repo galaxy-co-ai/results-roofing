@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { X, MessageSquareText, Bug, Lightbulb, MessageCircle, ChevronRight, Check, ArrowLeft, MoreHorizontal } from 'lucide-react';
+import { X, Bug, Lightbulb, MessageCircle, ChevronRight, Check, ArrowLeft, MoreHorizontal } from 'lucide-react';
 import { useFeedback, type FeedbackReason } from './FeedbackContext';
 import styles from './FeedbackWidget.module.css';
 
@@ -194,7 +194,6 @@ export function FeedbackWidget() {
         aria-expanded={isOpen}
         aria-controls="feedback-panel"
       >
-        <MessageSquareText size={16} aria-hidden="true" />
         <span className={styles.tabLabel}>Feedback</span>
       </button>
 

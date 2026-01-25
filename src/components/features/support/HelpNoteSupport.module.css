@@ -2,13 +2,14 @@
   display: flex;
   gap: 12px;
   padding: 16px;
-  background: var(--rr-color-bg-secondary);
-  border: 1px solid var(--rr-color-border-primary);
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
   border-radius: 8px;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .helpIcon {
-  color: var(--rr-color-text-tertiary);
+  color: var(--rr-color-blue);
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -38,7 +39,7 @@
   padding: 0;
   background: none;
   border: none;
-  color: var(--rr-color-primary-500);
+  color: var(--rr-color-blue);
   font-size: 0.8125rem;
   font-weight: 500;
   font-family: inherit;
@@ -47,11 +48,11 @@
 }
 
 .chatLink:hover {
-  color: var(--rr-color-primary-600);
+  color: var(--rr-color-charcoal);
   text-decoration: underline;
 }
 
 .chatLink:focus-visible {
-  outline: 2px solid var(--rr-color-primary-300);
+  outline: 2px solid var(--rr-color-blue);
   outline-offset: 2px;
 }

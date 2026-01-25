@@ -66,8 +66,9 @@
 
 .searchInput:focus {
   outline: none;
-  border-color: var(--rr-color-sandstone);
-  box-shadow: 0 0 0 3px var(--rr-color-focus-ring-alpha);
+  border-color: var(--rr-color-blue);
+  background: var(--rr-color-white);
+  box-shadow: 0 0 0 3px rgba(45, 98, 168, 0.12);
 }
 
 .searchInput::placeholder {
@@ -84,18 +85,28 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  background: var(--rr-color-bg-secondary);
+  background: var(--rr-color-white);
   border: 1px solid var(--rr-color-border-default);
   border-radius: 10px;
   font-size: 0.875rem;
+  font-weight: 500;
   color: var(--rr-color-text-secondary);
   cursor: pointer;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
   transition: all 0.15s ease;
 }
 
 .filterButton:hover {
-  background: var(--rr-color-surface-hover);
-  color: var(--rr-color-text-primary);
+  background: var(--rr-color-blue);
+  border-color: var(--rr-color-blue);
+  color: var(--rr-color-white);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+  transform: translateY(-1px);
+}
+
+.filterButton:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
 }
 
 /* ========================================
@@ -116,30 +127,31 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.625rem 1rem;
-  background: none;
+  background: var(--rr-color-white);
   border: 1px solid var(--rr-color-border-default);
   border-radius: 8px;
   font-size: 0.875rem;
   color: var(--rr-color-text-secondary);
   cursor: pointer;
   white-space: nowrap;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
   transition: all 0.15s ease;
 }
 
 .categoryTab:hover {
-  background: var(--rr-color-surface-hover);
-  color: var(--rr-color-text-primary);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+  transform: translateY(-1px);
 }
 
 .categoryTabActive {
-  background: var(--rr-color-charcoal);
-  border-color: var(--rr-color-charcoal);
-  color: var(--rr-color-sand-light);
+  background: var(--rr-color-blue);
+  border-color: var(--rr-color-blue);
+  color: var(--rr-color-white);
+  box-shadow: var(--rr-shadow-charcoal-medium);
 }
 
 .categoryTabActive:hover {
-  background: var(--rr-color-charcoal);
-  color: var(--rr-color-sand-light);
+  transform: translateY(-1px);
 }
 
 .categoryCount {
@@ -151,7 +163,8 @@
 }
 
 .categoryTabActive .categoryCount {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);
+  color: var(--rr-color-white);
 }
 
 /* ========================================
@@ -167,10 +180,27 @@
 
 .emptyState {
   text-align: center;
-  padding: 3rem 2rem;
-  background: var(--rr-color-bg-secondary);
+  padding: 4rem 2rem;
+  background: var(--rr-color-white);
   border: 1px dashed var(--rr-color-border-default);
-  border-radius: 12px;
+  border-radius: 16px;
+  color: var(--rr-color-text-tertiary);
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.emptyStateIcon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  background: var(--rr-color-bg-tertiary);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--rr-color-text-tertiary);
 }
 

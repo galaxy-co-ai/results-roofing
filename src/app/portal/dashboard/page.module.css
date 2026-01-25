@@ -34,11 +34,12 @@
    ======================================== */
 
 .statusCard {
-  background: var(--rr-color-bg-secondary);
+  background: var(--rr-color-white);
   border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   border: 1px solid var(--rr-color-border-default);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .statusHeader {
@@ -53,11 +54,13 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
-  color: var(--rr-color-sandstone);
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  color: var(--rr-color-blue);
   border-radius: 24px;
   font-size: 0.875rem;
   font-weight: 500;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .statusPhase {
@@ -76,7 +79,7 @@
 }
 
 .propertyIcon {
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
 }
 
 .propertyAddress {
@@ -90,14 +93,14 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  background: var(--rr-color-bg-tertiary);
-  border: 1px solid var(--rr-color-sandstone);
-  border-radius: 8px;
+  background: rgba(45, 98, 168, 0.06);
+  border: 1px solid var(--rr-color-blue);
+  border-radius: 10px;
   margin-bottom: 1rem;
 }
 
 .milestoneIcon {
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
   flex-shrink: 0;
 }
 
@@ -132,7 +135,7 @@
 }
 
 .detailsToggle:hover {
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
 }
 
 .detailsChevron {
@@ -230,10 +233,11 @@
    ======================================== */
 
 .timelineCard {
-  background: var(--rr-color-bg-secondary);
+  background: var(--rr-color-white);
   border-radius: 16px;
   padding: 1.5rem;
   border: 1px solid var(--rr-color-border-default);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .timeline {
@@ -260,7 +264,7 @@
 }
 
 .statusCurrent {
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
 }
 
 .statusPending {
@@ -287,7 +291,7 @@
 .timeline_current .timelineConnector {
   background: linear-gradient(
     to bottom,
-    var(--rr-color-sandstone) 0%,
+    var(--rr-color-blue) 0%,
     var(--rr-color-border-default) 100%
   );
 }
@@ -310,7 +314,7 @@
 }
 
 .timeline_current .timelineLabel {
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
 }
 
 .timelineDate {
@@ -323,10 +327,11 @@
    ======================================== */
 
 .actionsCard {
-  background: var(--rr-color-bg-secondary);
+  background: var(--rr-color-white);
   border-radius: 16px;
   padding: 1.5rem;
   border: 1px solid var(--rr-color-border-default);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .actionsList {
@@ -341,26 +346,36 @@
   gap: 1rem;
   padding: 1rem;
   background: var(--rr-color-bg-tertiary);
+  border: 1px solid transparent;
   border-radius: 12px;
   text-decoration: none;
   transition: all 0.15s ease;
 }
 
 .actionItem:hover {
-  background: var(--rr-color-surface-hover);
-  transform: translateX(4px);
+  background: var(--rr-color-white);
+  border-color: var(--rr-color-blue);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transform: translateY(-1px);
 }
 
 .actionIcon {
   width: 44px;
   height: 44px;
-  background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
   flex-shrink: 0;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: box-shadow 0.2s ease;
+}
+
+.actionItem:hover .actionIcon {
+  box-shadow: var(--rr-shadow-charcoal-medium);
 }
 
 .actionContent {
@@ -382,10 +397,10 @@
 
 .actionBadge {
   padding: 0.25rem 0.625rem;
-  background: var(--rr-color-sandstone);
+  background: var(--rr-color-blue);
   color: white;
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
   border-radius: 12px;
 }
 
@@ -440,24 +455,29 @@
   align-items: center;
   justify-content: center;
   padding: 0.75rem 1.5rem;
-  background: var(--rr-color-sandstone);
-  color: white;
+  background: var(--rr-color-white);
+  color: var(--rr-color-blue);
+  border: 1px solid var(--rr-color-border-default);
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
   border-radius: 8px;
-  transition: background-color 0.2s, transform 0.15s;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .retryLink:hover,
 .ctaButton:hover {
-  background: var(--rr-color-terracotta);
   transform: translateY(-1px);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+  background: var(--rr-color-blue);
+  border-color: var(--rr-color-blue);
+  color: var(--rr-color-white);
 }
 
 .retryLink:focus-visible,
 .ctaButton:focus-visible {
-  outline: 2px solid var(--rr-color-sandstone);
+  outline: 2px solid var(--rr-color-blue);
   outline-offset: 2px;
 }
 

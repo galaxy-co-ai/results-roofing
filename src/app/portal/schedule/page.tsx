@@ -90,61 +90,68 @@ export default function SchedulePage() {
         </div>
       </header>
 
-      {/* Installation Card */}
+      {/* Installation Card - Compact Horizontal Layout */}
       <section className={styles.installationCard}>
-        <div className={styles.installationBadge}>
-          <Calendar size={16} />
-          <span>Confirmed</span>
-        </div>
-
-        <div className={styles.installationMain}>
-          <div className={styles.installationDate}>
-            <h2 className={styles.dateTitle}>Installation Date</h2>
-            <p className={styles.dateValue}>{PROJECT_SCHEDULE.installationDate}</p>
+        <div className={styles.installationHeader}>
+          <div className={styles.installationBadge}>
+            <Calendar size={16} />
+            <span>Confirmed</span>
           </div>
-          
-          <div className={styles.installationDetails}>
-            <div className={styles.detailItem}>
-              <Clock size={18} className={styles.detailIcon} />
-              <div className={styles.detailContent}>
-                <span className={styles.detailLabel}>Time Window</span>
-                <span className={styles.detailValue}>{PROJECT_SCHEDULE.installationTime}</span>
-              </div>
-            </div>
-            
-            <div className={styles.detailItem}>
-              <MapPin size={18} className={styles.detailIcon} />
-              <div className={styles.detailContent}>
-                <span className={styles.detailLabel}>Location</span>
-                <span className={styles.detailValue}>{PROJECT_SCHEDULE.address}</span>
-              </div>
-            </div>
-
-            <div className={styles.detailItem}>
-              <Sun size={18} className={styles.detailIcon} />
-              <div className={styles.detailContent}>
-                <span className={styles.detailLabel}>Weather Forecast</span>
-                <span className={styles.detailValue}>{PROJECT_SCHEDULE.weather}</span>
-              </div>
-            </div>
+          <div className={styles.dateHighlight}>
+            <span className={styles.dateLabel}>Installation</span>
+            <span className={styles.dateValue}>{PROJECT_SCHEDULE.installationDate}</span>
           </div>
         </div>
 
-        <div className={styles.crewInfo}>
-          <h3 className={styles.crewTitle}>Your Crew</h3>
-          <div className={styles.crewDetails}>
-            <div className={styles.crewItem}>
-              <span className={styles.crewLabel}>Crew Lead</span>
-              <span className={styles.crewValue}>{PROJECT_SCHEDULE.crewLead}</span>
+        <div className={styles.installationGrid}>
+          <div className={styles.gridItem}>
+            <div className={styles.gridHeader}>
+              <div className={styles.gridIcon}>
+                <Clock size={16} />
+              </div>
+              <span className={styles.gridLabel}>Time</span>
             </div>
-            <div className={styles.crewItem}>
-              <span className={styles.crewLabel}>Team Size</span>
-              <span className={styles.crewValue}>{PROJECT_SCHEDULE.crewSize}</span>
+            <span className={styles.gridValue}>{PROJECT_SCHEDULE.installationTime}</span>
+          </div>
+
+          <div className={styles.gridItem}>
+            <div className={styles.gridHeader}>
+              <div className={styles.gridIcon}>
+                <MapPin size={16} />
+              </div>
+              <span className={styles.gridLabel}>Location</span>
             </div>
-            <div className={styles.crewItem}>
-              <span className={styles.crewLabel}>Est. Duration</span>
-              <span className={styles.crewValue}>{PROJECT_SCHEDULE.estimatedDuration}</span>
+            <span className={styles.gridValue}>{PROJECT_SCHEDULE.address}</span>
+          </div>
+
+          <div className={styles.gridItem}>
+            <div className={styles.gridHeader}>
+              <div className={styles.gridIcon}>
+                <Sun size={16} />
+              </div>
+              <span className={styles.gridLabel}>Weather</span>
             </div>
+            <span className={styles.gridValue}>{PROJECT_SCHEDULE.weather}</span>
+          </div>
+
+          <div className={styles.gridItem}>
+            <div className={styles.gridHeader}>
+              <div className={styles.gridIcon}>
+                <HardHat size={16} />
+              </div>
+              <span className={styles.gridLabel}>Crew Lead</span>
+            </div>
+            <span className={styles.gridValue}>{PROJECT_SCHEDULE.crewLead}</span>
+          </div>
+
+          <div className={styles.gridItem}>
+            <div className={styles.gridHeader}>
+              <div className={styles.gridIcon}>
+                <Calendar size={16} />
+              </div>
+              <span className={styles.gridLabel}>Duration</span>
+            </div>
+            <span className={styles.gridValue}>{PROJECT_SCHEDULE.estimatedDuration}</span>
           </div>
         </div>
       </section>

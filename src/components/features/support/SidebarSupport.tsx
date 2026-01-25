@@ -18,7 +18,7 @@ export function SidebarSupport() {
         onClick={() => openChat()}
         aria-label="Open support chat"
       >
-        <MessageCircle size={18} />
+        <MessageCircle size={20} />
         <span>Support</span>
       </button>
     </div>

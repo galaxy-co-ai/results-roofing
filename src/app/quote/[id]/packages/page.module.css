@@ -93,7 +93,7 @@
 }
 
 .tierCard_popular {
-  border-color: var(--rr-color-sandstone);
+  border-color: var(--rr-color-blue);
   border-width: 2px;
 }
 
@@ -106,13 +106,14 @@
   align-items: center;
   gap: var(--rr-gap-xs);
   padding: var(--rr-space-1) var(--rr-space-3);
-  background-color: var(--rr-color-sandstone);
-  color: var(--rr-color-charcoal);
+  background-color: var(--rr-color-blue);
+  color: var(--rr-color-white);
   font-size: var(--rr-font-size-xs);
   font-weight: var(--rr-font-weight-semibold);
   border-radius: var(--rr-radius-full);
   text-transform: uppercase;
   letter-spacing: var(--rr-letter-spacing-wide);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .tierHeader {
@@ -246,33 +247,37 @@
   height: var(--rr-button-height-lg);
   font-size: var(--rr-button-font-size);
   font-weight: var(--rr-font-weight-medium);
-  color: var(--rr-color-text-primary);
-  background-color: transparent;
+  color: var(--rr-color-text-secondary);
+  background-color: var(--rr-color-white);
   border: 1px solid var(--rr-color-border-default);
   border-radius: var(--rr-radius-md);
   cursor: pointer;
-  transition: var(--rr-transition-colors);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .selectButton:hover {
-  background-color: var(--rr-color-surface-hover);
-  border-color: var(--rr-color-border-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+  background-color: var(--rr-color-blue);
+  border-color: var(--rr-color-blue);
+  color: var(--rr-color-white);
 }
 
 .selectButton:focus-visible {
-  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
-  outline-offset: var(--rr-focus-ring-offset);
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
 }
 
 .selectButton_primary {
-  color: var(--rr-color-charcoal);
-  background-color: var(--rr-color-sandstone);
-  border-color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
+  background-color: var(--rr-color-white);
+  border-color: var(--rr-color-blue);
 }
 
 .selectButton_primary:hover {
-  background-color: var(--rr-color-terracotta);
-  border-color: var(--rr-color-terracotta);
+  background-color: var(--rr-color-blue);
+  border-color: var(--rr-color-blue);
   color: var(--rr-color-white);
 }
 

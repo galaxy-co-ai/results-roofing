@@ -34,11 +34,12 @@
    ======================================== */
 
 .summaryCard {
-  background: var(--rr-color-bg-secondary);
+  background: var(--rr-color-white);
   border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   border: 1px solid var(--rr-color-border-default);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .summaryHeader {
@@ -91,8 +92,8 @@
 }
 
 .summaryValue {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: var(--rr-color-text-primary);
 }
 
@@ -101,7 +102,7 @@
 }
 
 .summaryPrimary {
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
 }
 
 /* Progress Bar */
@@ -126,7 +127,7 @@
 .progressPercent {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
 }
 
 .progressBar {
@@ -138,7 +139,7 @@
 
 .progressFill {
   height: 100%;
-  background: linear-gradient(90deg, var(--rr-color-sandstone), var(--rr-color-terracotta));
+  background: var(--rr-color-blue);
   border-radius: 4px;
   transition: width 0.3s ease;
 }
@@ -166,10 +167,11 @@
    ======================================== */
 
 .optionsCard {
-  background: var(--rr-color-bg-secondary);
+  background: var(--rr-color-white);
   border-radius: 16px;
   padding: 1.5rem;
   border: 1px solid var(--rr-color-border-default);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .optionsList {
@@ -194,37 +196,48 @@
 }
 
 .optionButton:hover {
-  border-color: var(--rr-color-sandstone);
+  border-color: var(--rr-color-blue);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--rr-shadow-charcoal-medium);
 }
 
 .optionPrimary {
-  background: linear-gradient(135deg, var(--rr-color-sandstone), var(--rr-color-terracotta));
-  border: none;
+  background: var(--rr-color-blue);
+  border: 1px solid var(--rr-color-blue);
   color: white;
 }
 
 .optionPrimary:hover {
+  background: var(--rr-color-blue-dark);
+  border-color: var(--rr-color-blue-dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(196, 167, 125, 0.3);
+  box-shadow: var(--rr-shadow-charcoal-medium);
 }
 
 .optionIcon {
   width: 44px;
   height: 44px;
-  background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
   flex-shrink: 0;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: box-shadow 0.2s ease;
+}
+
+.optionButton:hover .optionIcon {
+  box-shadow: var(--rr-shadow-charcoal-medium);
 }
 
 .optionPrimary .optionIcon {
   background: rgba(255, 255, 255, 0.2);
+  border: none;
   color: white;
+  box-shadow: none;
 }
 
 .optionContent {
@@ -285,12 +298,14 @@
 }
 
 .scheduledPayment:hover {
-  border-color: var(--rr-color-sandstone);
-  background: var(--rr-color-surface-hover);
+  border-color: var(--rr-color-blue);
+  background: var(--rr-color-white);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transform: translateY(-1px);
 }
 
 .scheduledIcon {
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
   flex-shrink: 0;
 }
 
@@ -311,7 +326,7 @@
 }
 
 .scheduledArrow {
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
 }
 
 /* ========================================
@@ -319,10 +334,11 @@
    ======================================== */
 
 .historyCard {
-  background: var(--rr-color-bg-secondary);
+  background: var(--rr-color-white);
   border-radius: 16px;
   padding: 1.5rem;
   border: 1px solid var(--rr-color-border-default);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .historyList {
@@ -336,20 +352,23 @@
   align-items: flex-start;
   gap: 1rem;
   padding: 1rem;
-  background: var(--rr-color-bg-tertiary);
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
   border-radius: 10px;
 }
 
 .historyIcon {
   width: 36px;
   height: 36px;
-  background: var(--rr-color-success-light);
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--rr-color-success);
   flex-shrink: 0;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .historyContent {
@@ -397,8 +416,8 @@
 .downloadButton {
   width: 36px;
   height: 36px;
-  background: var(--rr-color-bg-secondary);
-  border: none;
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
   border-radius: 8px;
   color: var(--rr-color-text-secondary);
   cursor: pointer;
@@ -407,11 +426,15 @@
   justify-content: center;
   transition: all 0.15s ease;
   flex-shrink: 0;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .downloadButton:hover {
-  background: var(--rr-color-sandstone);
+  background: var(--rr-color-blue);
+  border-color: var(--rr-color-blue);
   color: white;
+  box-shadow: var(--rr-shadow-charcoal-medium);
+  transform: translateY(-1px);
 }
 
 /* Empty State */
@@ -443,13 +466,13 @@
   display: flex;
   gap: 1rem;
   padding: 1.25rem;
-  background: var(--rr-color-bg-tertiary);
+  background: rgba(45, 98, 168, 0.06);
   border-radius: 12px;
-  border: 1px solid var(--rr-color-border-default);
+  border: 1px solid var(--rr-color-blue);
 }
 
 .infoIcon {
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
   flex-shrink: 0;
   margin-top: 0.125rem;
 }

@@ -162,10 +162,12 @@
   height: 28px;
   min-width: 28px;
   border-radius: var(--rr-radius-full);
-  background-color: var(--rr-color-sand-light);
-  color: var(--rr-color-text-secondary);
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  color: var(--rr-color-blue);
   font-size: var(--rr-font-size-sm);
   font-weight: var(--rr-font-weight-medium);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .stepContent {
@@ -270,22 +272,27 @@
   height: var(--rr-button-height-lg);
   font-size: var(--rr-font-size-base);
   font-weight: var(--rr-font-weight-medium);
-  color: var(--rr-color-charcoal);
-  background-color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
   border-radius: var(--rr-radius-md);
   text-decoration: none;
-  transition: var(--rr-transition-colors);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   margin-bottom: var(--rr-space-8);
 }
 
 .continueButton:hover {
-  background-color: var(--rr-color-terracotta);
+  transform: translateY(-1px);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+  background-color: var(--rr-color-blue);
+  border-color: var(--rr-color-blue);
   color: var(--rr-color-white);
 }
 
 .continueButton:focus-visible {
-  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
-  outline-offset: var(--rr-focus-ring-offset);
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
 }
 
 /* ========================================

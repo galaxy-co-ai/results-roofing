@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { LayoutDashboard } from 'lucide-react';
+import { LayoutDashboard, Home } from 'lucide-react';
 import styles from './Header.module.css';
 
 interface HeaderProps {
@@ -20,13 +20,15 @@ export function Header({ transparent = false }: HeaderProps) {
       role="banner"
     >
       <div className={styles.container}>
-        {/* Logo - Using official brand asset */}
+        {/* Logo - iOS-style app icon with branded text */}
         <Link href="/" className={styles.logo} aria-label="Results Roofing - Home">
-          <img
-            src="/brand/logos/light/logo-horizontal.png"
-            alt="Results Roofing"
-            className={styles.logoImage}
-          />
+          <div className={styles.appIcon} aria-hidden="true">
+            <Home size={22} strokeWidth={2.5} />
+          </div>
+          <span className={styles.brandText}>
+            <span className={styles.brandName}>Results</span>{' '}
+            <span className={styles.brandSuffix}>Roofing</span>
+          </span>
         </Link>
 
         {/* Dashboard Button - Right aligned */}

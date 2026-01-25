@@ -22,14 +22,20 @@
   justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--rr-space-4) var(--rr-space-page-gutter);
-  height: 64px;
+  padding: var(--rr-space-3) var(--rr-space-page-gutter);
+  min-height: 68px;
 }
 
 @media (min-width: 768px) {
   .container {
     padding: var(--rr-space-4) var(--rr-space-page-gutter-lg);
-    height: 72px;
+    min-height: 80px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    min-height: 88px;
   }
 }
 
@@ -40,16 +46,54 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: var(--rr-space-2);
+  gap: var(--rr-space-3);
   text-decoration: none;
   color: var(--rr-color-text-primary);
-  transition: opacity 0.15s ease;
+  transition: transform 0.15s ease;
 }
 
 .logo:hover {
-  opacity: 0.8;
+  transform: translateY(-1px);
 }
 
+.logo:hover .appIcon {
+  box-shadow: var(--rr-shadow-charcoal-medium);
+}
+
+/* iOS-style App Icon */
+.appIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: 10px;
+  color: var(--rr-color-blue);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: box-shadow 0.2s ease;
+}
+
+/* Brand Text */
+.brandText {
+  display: inline;
+  font-size: 1.375rem;
+  letter-spacing: -0.02em;
+}
+
+.brandName {
+  font-weight: 700;
+  color: var(--rr-color-charcoal);
+}
+
+.brandSuffix {
+  font-weight: 500;
+  color: var(--rr-color-blue);
+}
+
+/* Legacy logoImage support */
 .logoText {
   font-size: var(--rr-font-size-lg);
   font-weight: var(--rr-font-weight-semibold);
@@ -58,18 +102,63 @@
 }
 
 .logoImage {
-  height: 28px;
+  height: 36px;
   width: auto;
+  max-width: 180px;
   object-fit: contain;
 }
 
 @media (min-width: 768px) {
+  .appIcon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 12px;
+  }
+
+  .appIcon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .brandName {
+    font-size: var(--rr-font-size-xl);
+  }
+
+  .brandSuffix {
+    font-size: var(--rr-font-size-sm);
+  }
+
   .logoText {
     font-size: var(--rr-font-size-xl);
   }
 
   .logoImage {
-    height: 32px;
+    height: 44px;
+    max-width: 220px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .appIcon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 14px;
+  }
+
+  .appIcon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .brandName {
+    font-size: 1.375rem;
+  }
+
+  .logoImage {
+    height: 48px;
+    max-width: 260px;
   }
 }
 
@@ -84,27 +173,29 @@
   padding: var(--rr-space-2) var(--rr-space-4);
   font-size: var(--rr-font-size-sm);
   font-weight: var(--rr-font-weight-medium);
-  color: var(--rr-color-charcoal);
-  background-color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
   border-radius: var(--rr-radius-md);
   text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .dashboardButton:hover {
   transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-  background-color: var(--rr-color-terracotta);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+  background-color: var(--rr-color-blue);
+  border-color: var(--rr-color-blue);
   color: var(--rr-color-white);
 }
 
 .dashboardButton:active {
   transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .dashboardButton:focus-visible {
-  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
-  outline-offset: var(--rr-focus-ring-offset);
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
 }

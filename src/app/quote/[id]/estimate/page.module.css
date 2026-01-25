@@ -169,9 +169,11 @@
   width: 2.5rem;
   height: 2.5rem;
   flex-shrink: 0;
-  color: var(--color-primary, #3b82f6);
-  background-color: var(--color-bg-primary-subtle, #eff6ff);
+  color: var(--rr-color-blue, #4A7EC2);
+  background-color: var(--rr-color-white, #ffffff);
+  border: 1px solid var(--rr-color-border-default, #e5e7eb);
   border-radius: 0.5rem;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .valuePropTitle {
@@ -201,18 +203,22 @@
   padding: 1rem 2rem;
   font-size: 1.125rem;
   font-weight: 600;
-  color: #ffffff;
-  background-color: var(--color-primary, #3b82f6);
-  border: none;
+  color: var(--rr-color-blue, #4A7EC2);
+  background-color: var(--rr-color-white, #ffffff);
+  border: 1px solid var(--rr-color-border-default, #e5e7eb);
   border-radius: 0.5rem;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.15s ease;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .primaryCta:hover {
-  background-color: var(--color-primary-hover, #2563eb);
   transform: translateY(-1px);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+  background-color: var(--rr-color-blue, #4A7EC2);
+  border-color: var(--rr-color-blue, #4A7EC2);
+  color: var(--rr-color-white, #ffffff);
 }
 
 .ctaNote {
