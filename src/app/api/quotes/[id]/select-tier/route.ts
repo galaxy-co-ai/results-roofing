@@ -1,6 +1,5 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { db, schema, eq } from '@/db/index';
 import { logger } from '@/lib/utils';
@@ -106,8 +105,9 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     // For form submission, redirect to next step
     // For API calls, return JSON
     if (contentType.includes('application/x-www-form-urlencoded')) {
-      // Redirect to checkout/scheduling page (to be built)
-      redirect(`/quote/${quoteId}/checkout`);
+      // Redirect to checkout page
+      const baseUrl = request.nextUrl.origin;
+      return NextResponse.redirect(`${baseUrl}/quote/${quoteId}/checkout`);
     }
 
     return NextResponse.json({
@@ -119,11 +119,6 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       nextStep: `/quote/${quoteId}/checkout`,
     });
   } catch (error) {
-    // Handle redirect (it throws)
-    if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
-      throw error;
-    }
-
     logger.error('Error selecting tier', error);
     return NextResponse.json(
       { error: 'Failed to select package' },
