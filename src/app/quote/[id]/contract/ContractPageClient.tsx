@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, FileText, Check, AlertCircle, Loader2 } from 'lucide-react';
+import { ChevronLeft, FileText, Check, AlertCircle } from 'lucide-react';
 import { SignatureCapture } from '@/components/features/contract/SignatureCapture';
 import styles from './page.module.css';
 

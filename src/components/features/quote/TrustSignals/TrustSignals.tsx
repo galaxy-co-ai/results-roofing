@@ -1,6 +1,6 @@
 'use client';
 
-import { Shield, Award, Star, Lock, Users } from 'lucide-react';
+import { Shield, Star, Lock, Users } from 'lucide-react';
 import styles from './TrustSignals.module.css';
 
 type TrustSignalsVariant = 'compact' | 'full';
