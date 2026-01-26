@@ -7,7 +7,7 @@ import { AddressAutocomplete, OutOfAreaCapture, type ParsedAddress } from '@/com
 import { useFunnelTracker } from '@/hooks';
 import styles from './page.module.css';
 
-const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ'];
+const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ', 'OK'];
 
 const TCPA_CONSENT_TEXT = 
   'I agree to receive text message updates about my roofing project. ' +

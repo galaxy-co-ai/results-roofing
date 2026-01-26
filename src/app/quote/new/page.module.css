@@ -217,9 +217,9 @@
   padding: 0 var(--rr-button-padding-x-lg);
   font-size: var(--rr-button-font-size);
   font-weight: var(--rr-font-weight-medium);
-  color: var(--rr-color-blue);
-  background-color: var(--rr-color-white);
-  border: 1px solid var(--rr-color-border-default);
+  color: var(--rr-color-white);
+  background-color: var(--rr-color-blue);
+  border: 1px solid var(--rr-color-blue);
   border-radius: var(--rr-radius-md);
   cursor: pointer;
   box-shadow: var(--rr-shadow-charcoal-subtle);
@@ -229,8 +229,8 @@
 .submitButton:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: var(--rr-shadow-charcoal-medium);
-  background-color: var(--rr-color-blue);
-  border-color: var(--rr-color-blue);
+  background-color: var(--rr-color-blue-dark, #1a4a7a);
+  border-color: var(--rr-color-blue-dark, #1a4a7a);
   color: var(--rr-color-white);
 }
 
