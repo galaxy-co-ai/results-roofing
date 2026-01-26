@@ -12,9 +12,9 @@ interface PaymentPageClientProps {
   totalPrice: number;
   depositAmount: number;
   tierName: string;
-  address: string;
   scheduledDate: string | null;
-  scheduledTimeSlot: string | null;
+  scheduledTimeSlot: 'morning' | 'afternoon' | null;
+  customerEmail: string | null;
 }
 
 function formatCurrency(amount: number): string {
@@ -33,21 +33,14 @@ function generateConfirmationNumber(): string {
   return `${prefix}-${timestamp}-${random}`;
 }
 
-function formatTimeSlot(slot: string | null): string {
-  if (!slot) return '';
-  if (slot === 'morning') return '8:00 AM - 12:00 PM';
-  if (slot === 'afternoon') return '12:00 PM - 5:00 PM';
-  return slot;
-}
-
 export function PaymentPageClient({
   quoteId,
   totalPrice,
   depositAmount,
   tierName,
-  address,
   scheduledDate,
   scheduledTimeSlot,
+  customerEmail,
 }: PaymentPageClientProps) {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [confirmationNumber] = useState(() => generateConfirmationNumber());
@@ -63,10 +56,9 @@ export function PaymentPageClient({
         <div className={styles.container}>
           <InlineConfirmation
             confirmationNumber={confirmationNumber}
-            address={address}
-            scheduledDate={scheduledDate || 'To be scheduled'}
-            scheduledTime={formatTimeSlot(scheduledTimeSlot)}
-            depositAmount={depositAmount}
+            scheduledDate={scheduledDate ? new Date(scheduledDate) : null}
+            timeSlot={scheduledTimeSlot}
+            customerEmail={customerEmail || undefined}
             portalUrl={`/portal/${quoteId}`}
           />
         </div>

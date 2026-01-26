@@ -13,6 +13,9 @@ export default async function PaymentPage({ params }: PaymentPageProps) {
   const [quote, pricingTiers] = await Promise.all([
     db.query.quotes.findFirst({
       where: eq(schema.quotes.id, quoteId),
+      with: {
+        lead: true,
+      },
     }),
     db.query.pricingTiers.findMany({
       where: eq(schema.pricingTiers.isActive, true),
@@ -27,17 +30,14 @@ export default async function PaymentPage({ params }: PaymentPageProps) {
   const totalPrice = quote.totalPrice ? parseFloat(quote.totalPrice) : 0;
   const depositAmount = quote.depositAmount ? parseFloat(quote.depositAmount) : 0;
 
-  // Format scheduled date for display
-  const scheduledDate = quote.scheduledDate
-    ? new Date(quote.scheduledDate).toLocaleDateString('en-US', {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      })
+  // Extract time slot from scheduledSlotId (format: "{date}-{timeSlot}")
+  // The slot ID is like "2024-01-15T00:00:00.000Z-morning"
+  const rawTimeSlot = quote.scheduledSlotId
+    ? quote.scheduledSlotId.split('-').pop()
     : null;
-
-  const scheduledTimeSlot = quote.scheduledTimeSlot || null;
+  const scheduledTimeSlot = rawTimeSlot === 'morning' || rawTimeSlot === 'afternoon'
+    ? rawTimeSlot
+    : null;
 
   return (
     <>
@@ -47,9 +47,9 @@ export default async function PaymentPage({ params }: PaymentPageProps) {
         totalPrice={totalPrice}
         depositAmount={depositAmount}
         tierName={selectedTier?.displayName || 'Selected'}
-        address={`${quote.address}, ${quote.city}, ${quote.state}`}
-        scheduledDate={scheduledDate}
+        scheduledDate={quote.scheduledDate ? quote.scheduledDate.toISOString() : null}
         scheduledTimeSlot={scheduledTimeSlot}
+        customerEmail={quote.lead?.email || null}
       />
     </>
   );

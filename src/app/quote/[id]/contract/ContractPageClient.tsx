@@ -54,7 +54,7 @@ export function ContractPageClient({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSignatureSubmit = async (data: { signature: string; agreedToTerms: boolean }) => {
+  const handleSignatureSubmit = async (signature: string) => {
     setIsSubmitting(true);
     setError(null);
 
@@ -63,8 +63,8 @@ export function ContractPageClient({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          signature: data.signature,
-          agreedToTerms: data.agreedToTerms,
+          signature,
+          agreedToTerms: true,
           signedAt: new Date().toISOString(),
         }),
       });
@@ -185,8 +185,8 @@ export function ContractPageClient({
 
         {/* Signature Section */}
         <SignatureCapture
-          onSubmit={handleSignatureSubmit}
-          isSubmitting={isSubmitting}
+          onSignatureSubmit={handleSignatureSubmit}
+          disabled={isSubmitting}
           className={styles.signatureSection}
         />
 
