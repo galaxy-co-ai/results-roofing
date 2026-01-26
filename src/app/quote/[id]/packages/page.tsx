@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation';
-import { Check, Star, ChevronRight } from 'lucide-react';
+import { Check, Star, ChevronRight, Clock } from 'lucide-react';
 import { db, schema, eq } from '@/db/index';
 import { TrustBar } from '@/components/ui';
+import { QuoteProgressBar } from '@/components/features/quote/QuoteProgressBar';
+import { TrustSignals } from '@/components/features/quote/TrustSignals';
 import { PackageViewTracker } from '@/components/features/quote/PackageViewTracker';
 import styles from './page.module.css';
 
@@ -107,18 +109,29 @@ export default async function PackagesPage({ params }: PackagesPageProps) {
   const depositPercent = 10;
 
   return (
-    <main className={styles.main}>
-      {/* Track page view */}
-      <PackageViewTracker quoteId={quoteId} />
-      
-      <div className={styles.container}>
-        {/* Header */}
-        <div className={styles.header}>
-          <h1 className={styles.title}>Choose Your Package</h1>
-          <p className={styles.subtitle}>
-            Based on your {sqft.toLocaleString()} sq ft roof. All packages include professional installation, permits, and full cleanup.
-          </p>
-        </div>
+    <>
+      <QuoteProgressBar currentStep={2} />
+      <main className={styles.main}>
+        {/* Track page view */}
+        <PackageViewTracker quoteId={quoteId} />
+
+        <div className={styles.container}>
+          {/* Trust Signals */}
+          <TrustSignals variant="compact" className={styles.trustSignals} />
+
+          {/* Header */}
+          <div className={styles.header}>
+            <h1 className={styles.title}>Choose Your Package</h1>
+            <p className={styles.subtitle}>
+              Based on your {sqft.toLocaleString()} sq ft roof. All packages include professional installation, permits, and full cleanup.
+            </p>
+          </div>
+
+          {/* Urgency message */}
+          <div className={styles.urgencyBanner}>
+            <Clock size={16} />
+            <span>Pricing valid for 30 days</span>
+          </div>
 
         {/* Address Bar */}
         <div className={styles.addressBar}>
@@ -203,7 +216,8 @@ export default async function PackagesPage({ params }: PackagesPageProps) {
 
         {/* Trust Credentials */}
         <TrustBar variant="light" />
-      </div>
-    </main>
+        </div>
+      </main>
+    </>
   );
 }

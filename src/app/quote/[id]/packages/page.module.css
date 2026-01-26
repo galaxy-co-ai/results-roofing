@@ -15,6 +15,33 @@
 }
 
 /* ========================================
+   TRUST SIGNALS
+   ======================================== */
+
+.trustSignals {
+  margin-bottom: var(--rr-space-6);
+}
+
+/* ========================================
+   URGENCY BANNER
+   ======================================== */
+
+.urgencyBanner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-2) var(--rr-space-4);
+  background-color: var(--rr-color-warning-light, rgba(245, 158, 11, 0.1));
+  border: 1px solid var(--rr-color-warning-light, rgba(245, 158, 11, 0.2));
+  border-radius: var(--rr-radius-lg);
+  margin-bottom: var(--rr-space-6);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-warning, #b45309);
+}
+
+/* ========================================
    HEADER
    ======================================== */
 

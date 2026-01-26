@@ -21,12 +21,13 @@ interface PaymentFormProps {
   depositAmount: number;
   onSuccess?: () => void;
   onError?: (error: string) => void;
+  redirectOnSuccess?: boolean;
 }
 
 /**
  * Wrapper component that provides Stripe Elements context
  */
-export function PaymentForm({ quoteId, depositAmount, onSuccess, onError }: PaymentFormProps) {
+export function PaymentForm({ quoteId, depositAmount, onSuccess, onError, redirectOnSuccess = true }: PaymentFormProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -93,7 +94,7 @@ export function PaymentForm({ quoteId, depositAmount, onSuccess, onError }: Paym
 
   if (mockMode) {
     // Development mode - show mock payment form
-    return <MockPaymentForm quoteId={quoteId} depositAmount={depositAmount} onSuccess={onSuccess} />;
+    return <MockPaymentForm quoteId={quoteId} depositAmount={depositAmount} onSuccess={onSuccess} redirectOnSuccess={redirectOnSuccess} />;
   }
 
   if (!clientSecret) {
@@ -142,6 +143,7 @@ export function PaymentForm({ quoteId, depositAmount, onSuccess, onError }: Paym
         depositAmount={depositAmount}
         onSuccess={onSuccess}
         onError={onError}
+        redirectOnSuccess={redirectOnSuccess}
       />
     </Elements>
   );
@@ -150,7 +152,7 @@ export function PaymentForm({ quoteId, depositAmount, onSuccess, onError }: Paym
 /**
  * Inner form component with Stripe hooks
  */
-function CheckoutForm({ quoteId, depositAmount, onSuccess, onError }: PaymentFormProps) {
+function CheckoutForm({ quoteId, depositAmount, onSuccess, onError, redirectOnSuccess = true }: PaymentFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const router = useRouter();
@@ -188,10 +190,12 @@ function CheckoutForm({ quoteId, depositAmount, onSuccess, onError }: PaymentFor
         // Payment succeeded without redirect
         setIsComplete(true);
         onSuccess?.();
-        // Navigate to confirmation after a short delay
-        setTimeout(() => {
-          router.push(`/quote/${quoteId}/confirmation`);
-        }, 1500);
+        // Navigate to confirmation after a short delay (only if redirectOnSuccess is true)
+        if (redirectOnSuccess) {
+          setTimeout(() => {
+            router.push(`/quote/${quoteId}/confirmation`);
+          }, 1500);
+        }
       }
     } catch (err) {
       const message = 'An unexpected error occurred. Please try again.';
@@ -203,7 +207,7 @@ function CheckoutForm({ quoteId, depositAmount, onSuccess, onError }: PaymentFor
     }
   };
 
-  if (isComplete) {
+  if (isComplete && redirectOnSuccess) {
     return (
       <div className={styles.successContainer}>
         <CheckCircle size={48} className={styles.successIcon} />
@@ -211,6 +215,11 @@ function CheckoutForm({ quoteId, depositAmount, onSuccess, onError }: PaymentFor
         <p>Redirecting to your confirmation...</p>
       </div>
     );
+  }
+
+  // When not redirecting, parent handles the success UI
+  if (isComplete && !redirectOnSuccess) {
+    return null;
   }
 
   const formattedAmount = new Intl.NumberFormat('en-US', {
@@ -268,7 +277,7 @@ function CheckoutForm({ quoteId, depositAmount, onSuccess, onError }: PaymentFor
 /**
  * Mock payment form for development when Stripe is not configured
  */
-function MockPaymentForm({ quoteId, depositAmount, onSuccess }: PaymentFormProps) {
+function MockPaymentForm({ quoteId, depositAmount, onSuccess, redirectOnSuccess = true }: PaymentFormProps) {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -283,12 +292,14 @@ function MockPaymentForm({ quoteId, depositAmount, onSuccess }: PaymentFormProps
     setIsComplete(true);
     onSuccess?.();
 
-    setTimeout(() => {
-      router.push(`/quote/${quoteId}/confirmation`);
-    }, 1500);
+    if (redirectOnSuccess) {
+      setTimeout(() => {
+        router.push(`/quote/${quoteId}/confirmation`);
+      }, 1500);
+    }
   };
 
-  if (isComplete) {
+  if (isComplete && redirectOnSuccess) {
     return (
       <div className={styles.successContainer}>
         <CheckCircle size={48} className={styles.successIcon} />
@@ -296,6 +307,11 @@ function MockPaymentForm({ quoteId, depositAmount, onSuccess }: PaymentFormProps
         <p>Redirecting to your confirmation...</p>
       </div>
     );
+  }
+
+  // When not redirecting, parent handles the success UI
+  if (isComplete && !redirectOnSuccess) {
+    return null;
   }
 
   const formattedAmount = new Intl.NumberFormat('en-US', {

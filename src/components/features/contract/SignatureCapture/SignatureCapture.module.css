@@ -1,0 +1,270 @@
+/* =================================================
+   SIGNATURE CAPTURE STYLES
+   Typed signature input with validation
+   ================================================= */
+
+.container {
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-xl);
+  padding: var(--rr-space-6);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  margin-bottom: var(--rr-space-4);
+}
+
+.headerIcon {
+  color: var(--rr-color-sandstone);
+}
+
+.headerTitle {
+  font-size: var(--rr-font-size-lg);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin: 0;
+}
+
+.description {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  line-height: 1.5;
+  margin: 0 0 var(--rr-space-5) 0;
+}
+
+/* ========================================
+   NAME HINT
+   ======================================== */
+
+.nameHint {
+  padding: var(--rr-space-3);
+  background-color: var(--rr-color-info-light, rgba(59, 130, 246, 0.1));
+  border: 1px solid var(--rr-color-info-light, rgba(59, 130, 246, 0.2));
+  border-radius: var(--rr-radius-lg);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-info, #3b82f6);
+  margin-bottom: var(--rr-space-5);
+}
+
+.nameHint strong {
+  font-weight: var(--rr-font-weight-semibold);
+}
+
+/* ========================================
+   INPUT
+   ======================================== */
+
+.inputWrapper {
+  margin-bottom: var(--rr-space-5);
+}
+
+.inputLabel {
+  display: block;
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.inputContainer {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  height: 56px;
+  padding: 0 var(--rr-space-4);
+  padding-right: 48px;
+  border: 2px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-xl);
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: var(--rr-font-size-xl);
+  font-style: italic;
+  color: var(--rr-color-text-primary);
+  background-color: var(--rr-color-white);
+  transition: var(--rr-transition-colors);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--rr-color-sandstone);
+  box-shadow: 0 0 0 3px var(--rr-color-sandstone-light, rgba(214, 201, 181, 0.3));
+}
+
+.input:disabled {
+  background-color: var(--rr-color-bg-secondary);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.input::placeholder {
+  font-style: normal;
+  font-family: var(--rr-font-family-sans);
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-tertiary);
+}
+
+.validIcon {
+  position: absolute;
+  right: var(--rr-space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--rr-color-success);
+}
+
+.inputHelp {
+  margin-top: var(--rr-space-1-5);
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-tertiary);
+}
+
+/* ========================================
+   PREVIEW
+   ======================================== */
+
+.preview {
+  padding: var(--rr-space-4);
+  background-color: var(--rr-color-bg-secondary);
+  border: 1px dashed var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+  margin-bottom: var(--rr-space-5);
+}
+
+.previewLabel {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-tertiary);
+  margin: 0 0 var(--rr-space-2) 0;
+}
+
+.previewSignature {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 28px;
+  font-style: italic;
+  color: var(--rr-color-text-primary);
+  margin: 0;
+}
+
+/* ========================================
+   TERMS AGREEMENT
+   ======================================== */
+
+.termsLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rr-space-3);
+  cursor: pointer;
+  margin-bottom: var(--rr-space-5);
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  margin-top: 2px;
+  accent-color: var(--rr-color-sandstone);
+  cursor: pointer;
+}
+
+.termsText {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  line-height: 1.5;
+}
+
+.termsLink {
+  color: var(--rr-color-sandstone);
+  text-decoration: underline;
+}
+
+.termsLink:hover {
+  color: var(--rr-color-charcoal);
+}
+
+/* ========================================
+   ERROR
+   ======================================== */
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-3);
+  background-color: var(--rr-color-error-light, rgba(239, 68, 68, 0.1));
+  border: 1px solid var(--rr-color-error-light, rgba(239, 68, 68, 0.2));
+  border-radius: var(--rr-radius-lg);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-error);
+  margin-bottom: var(--rr-space-4);
+}
+
+/* ========================================
+   SUBMIT BUTTON
+   ======================================== */
+
+.submitButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  width: 100%;
+  height: 52px;
+  padding: 0 var(--rr-space-6);
+  border: none;
+  border-radius: var(--rr-radius-xl);
+  background-color: var(--rr-color-sandstone);
+  color: var(--rr-color-charcoal);
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-semibold);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: var(--rr-color-charcoal);
+  color: var(--rr-color-white);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   VALIDATION HINTS
+   ======================================== */
+
+.hints {
+  margin-top: var(--rr-space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-1);
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-1);
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-warning, #f59e0b);
+  margin: 0;
+}

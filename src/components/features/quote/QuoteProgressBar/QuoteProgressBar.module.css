@@ -1,0 +1,170 @@
+/* =================================================
+   QUOTE PROGRESS BAR STYLES
+   5-step progress: Address -> Package -> Checkout -> Contract -> Payment
+   ================================================= */
+
+.container {
+  width: 100%;
+  padding: var(--rr-space-4) var(--rr-space-page-gutter);
+  background-color: var(--rr-color-bg-secondary);
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+/* ========================================
+   MOBILE INDICATOR
+   ======================================== */
+
+.mobileIndicator {
+  display: block;
+  text-align: center;
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-secondary);
+}
+
+.progressBar {
+  display: none;
+}
+
+/* ========================================
+   DESKTOP PROGRESS BAR
+   ======================================== */
+
+@media (min-width: 640px) {
+  .mobileIndicator {
+    display: none;
+  }
+
+  .progressBar {
+    display: block;
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+}
+
+/* ========================================
+   TRACK (Progress Line)
+   ======================================== */
+
+.track {
+  position: absolute;
+  top: 14px;
+  left: 28px;
+  right: 28px;
+  height: 2px;
+  background-color: var(--rr-color-sand);
+  z-index: 0;
+}
+
+.trackFill {
+  height: 100%;
+  background-color: var(--rr-color-success);
+  transition: width 0.4s ease-out;
+}
+
+/* ========================================
+   STEPS LIST
+   ======================================== */
+
+.stepsList {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rr-space-2);
+}
+
+/* ========================================
+   STEP INDICATOR (Circle)
+   ======================================== */
+
+.stepIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: var(--rr-radius-full);
+  font-size: var(--rr-font-size-xs);
+  font-weight: var(--rr-font-weight-semibold);
+  transition: all 0.3s ease;
+  background-color: var(--rr-color-white);
+}
+
+.step_pending .stepIndicator {
+  background-color: var(--rr-color-sand);
+  color: var(--rr-color-text-tertiary);
+}
+
+.step_current .stepIndicator {
+  background-color: var(--rr-color-sandstone);
+  color: var(--rr-color-charcoal);
+  box-shadow: 0 0 0 4px var(--rr-color-sandstone-light, rgba(214, 201, 181, 0.3));
+}
+
+.step_completed .stepIndicator {
+  background-color: var(--rr-color-success);
+  color: var(--rr-color-white);
+}
+
+/* ========================================
+   STEP LABEL
+   ======================================== */
+
+.stepLabel {
+  font-size: var(--rr-font-size-xs);
+  font-weight: var(--rr-font-weight-medium);
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.step_pending .stepLabel {
+  color: var(--rr-color-text-tertiary);
+}
+
+.step_current .stepLabel {
+  color: var(--rr-color-text-primary);
+}
+
+.step_completed .stepLabel {
+  color: var(--rr-color-success);
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (min-width: 768px) {
+  .container {
+    padding: var(--rr-space-5) var(--rr-space-page-gutter);
+  }
+
+  .stepIndicator {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    font-size: var(--rr-font-size-sm);
+  }
+
+  .track {
+    top: 16px;
+    left: 32px;
+    right: 32px;
+  }
+
+  .stepLabel {
+    font-size: var(--rr-font-size-sm);
+  }
+}

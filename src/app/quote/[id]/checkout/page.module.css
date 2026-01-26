@@ -296,6 +296,65 @@
 }
 
 /* ========================================
+   SECTION SPACING
+   ======================================== */
+
+.section {
+  margin-bottom: var(--rr-space-6);
+}
+
+/* ========================================
+   ERROR MESSAGE
+   ======================================== */
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-3) var(--rr-space-4);
+  background-color: var(--rr-color-error-light, rgba(239, 68, 68, 0.1));
+  border: 1px solid var(--rr-color-error-light, rgba(239, 68, 68, 0.2));
+  border-radius: var(--rr-radius-md);
+  margin-bottom: var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-error, #dc2626);
+}
+
+/* ========================================
+   SPINNER ANIMATION
+   ======================================== */
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   DISABLED BUTTON STATE
+   ======================================== */
+
+.continueButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+}
+
+.continueButton:disabled:hover {
+  background-color: var(--rr-color-white);
+  border-color: var(--rr-color-border-default);
+  color: var(--rr-color-blue);
+}
+
+/* ========================================
    RESPONSIVE
    ======================================== */
 

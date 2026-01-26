@@ -1,0 +1,261 @@
+/* =================================================
+   SCHEDULE SELECTOR STYLES
+   Calendar date picker with time slot selection
+   ================================================= */
+
+.container {
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-xl);
+  padding: var(--rr-space-5);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  margin-bottom: var(--rr-space-5);
+}
+
+.headerIcon {
+  color: var(--rr-color-sandstone);
+}
+
+.headerTitle {
+  font-size: var(--rr-font-size-lg);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin: 0;
+}
+
+/* ========================================
+   CALENDAR
+   ======================================== */
+
+.calendar {
+  margin-bottom: var(--rr-space-5);
+}
+
+.monthNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--rr-space-4);
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: var(--rr-radius-lg);
+  background-color: var(--rr-color-bg-secondary);
+  color: var(--rr-color-text-secondary);
+  cursor: pointer;
+  transition: var(--rr-transition-colors);
+}
+
+.navButton:hover:not(:disabled) {
+  background-color: var(--rr-color-sand);
+}
+
+.navButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.monthLabel {
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+}
+
+/* ========================================
+   WEEKDAYS
+   ======================================== */
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: var(--rr-space-2);
+}
+
+.weekday {
+  text-align: center;
+  font-size: var(--rr-font-size-xs);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-tertiary);
+  padding: var(--rr-space-2) 0;
+}
+
+/* ========================================
+   DAYS GRID
+   ======================================== */
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.dayEmpty {
+  aspect-ratio: 1;
+}
+
+.day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--rr-radius-lg);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.day_available {
+  background-color: var(--rr-color-success-light, rgba(34, 197, 94, 0.1));
+  color: var(--rr-color-text-primary);
+}
+
+.day_available:hover {
+  background-color: var(--rr-color-success-light, rgba(34, 197, 94, 0.2));
+}
+
+.day_unavailable {
+  background-color: transparent;
+  color: var(--rr-color-text-tertiary);
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.day_selected {
+  background-color: var(--rr-color-sandstone) !important;
+  color: var(--rr-color-charcoal) !important;
+}
+
+/* ========================================
+   LEGEND
+   ======================================== */
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-4);
+  margin-top: var(--rr-space-3);
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-secondary);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-1-5);
+}
+
+.legendDot_available {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--rr-radius-sm);
+  background-color: var(--rr-color-success-light, rgba(34, 197, 94, 0.15));
+  border: 1px solid var(--rr-color-success-light, rgba(34, 197, 94, 0.3));
+}
+
+.legendDot_unavailable {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--rr-radius-sm);
+  background-color: var(--rr-color-bg-secondary);
+}
+
+/* ========================================
+   TIME SLOTS
+   ======================================== */
+
+.timeSlots {
+  border-top: 1px solid var(--rr-color-border-default);
+  padding-top: var(--rr-space-5);
+}
+
+.selectedDateText {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  margin: 0 0 var(--rr-space-3) 0;
+}
+
+.selectedDateText strong {
+  color: var(--rr-color-text-primary);
+}
+
+.timeSlotLabel {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin: 0 0 var(--rr-space-3) 0;
+}
+
+.timeSlotGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--rr-space-3);
+}
+
+.timeSlotButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-4);
+  border: 2px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-xl);
+  background-color: var(--rr-color-white);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.timeSlotButton:hover:not(:disabled) {
+  border-color: var(--rr-color-sandstone-light, rgba(214, 201, 181, 0.5));
+}
+
+.timeSlotButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.timeSlotButton_selected {
+  border-color: var(--rr-color-sandstone);
+  background-color: var(--rr-color-sandstone-light, rgba(214, 201, 181, 0.1));
+}
+
+.timeIconMorning {
+  color: var(--rr-color-warning, #f59e0b);
+}
+
+.timeIconAfternoon {
+  color: var(--rr-color-info, #3b82f6);
+}
+
+.timeIconSelected {
+  color: var(--rr-color-sandstone);
+}
+
+.timeSlotName {
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+}
+
+.timeSlotRange {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-secondary);
+}

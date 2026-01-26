@@ -4,6 +4,8 @@ import { useState, useCallback, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Loader2, AlertCircle, Home, ChevronRight } from 'lucide-react';
 import { AddressAutocomplete, OutOfAreaCapture, type ParsedAddress } from '@/components/features/address';
+import { QuoteProgressBar } from '@/components/features/quote/QuoteProgressBar';
+import { TrustSignals } from '@/components/features/quote/TrustSignals';
 import { useFunnelTracker } from '@/hooks';
 import styles from './page.module.css';
 
@@ -98,8 +100,8 @@ export default function NewQuoteForm() {
         city: selectedAddress.city,
       });
 
-      // Redirect to estimate page with preliminary pricing
-      router.push(`/quote/${data.id}/estimate`);
+      // Redirect directly to packages page (skip estimate)
+      router.push(`/quote/${data.id}/packages`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
       setIsLoading(false);
@@ -121,10 +123,15 @@ export default function NewQuoteForm() {
   }
 
   return (
-    <main className={styles.main}>
-      <div className={styles.container}>
-        {/* Header */}
-        <div className={styles.header}>
+    <>
+      <QuoteProgressBar currentStep={1} />
+      <main className={styles.main}>
+        <div className={styles.container}>
+          {/* Trust Signals */}
+          <TrustSignals variant="compact" showCounter className={styles.trustSignals} />
+
+          {/* Header */}
+          <div className={styles.header}>
           <div className={styles.iconWrapper}>
             <Home size={32} />
           </div>
@@ -222,7 +229,8 @@ export default function NewQuoteForm() {
             No insurance claims accepted.
           </p>
         </div>
-      </div>
-    </main>
+        </div>
+      </main>
+    </>
   );
 }

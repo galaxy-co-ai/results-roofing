@@ -1,8 +1,10 @@
 'use client';
 
+import { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, CreditCard } from 'lucide-react';
 import { PaymentForm } from '@/components/features/checkout';
+import { InlineConfirmation } from '@/components/features/payment/InlineConfirmation';
 import styles from './page.module.css';
 
 interface PaymentPageClientProps {
@@ -10,6 +12,9 @@ interface PaymentPageClientProps {
   totalPrice: number;
   depositAmount: number;
   tierName: string;
+  address: string;
+  scheduledDate: string | null;
+  scheduledTimeSlot: string | null;
 }
 
 function formatCurrency(amount: number): string {
@@ -21,12 +26,54 @@ function formatCurrency(amount: number): string {
   }).format(amount);
 }
 
+function generateConfirmationNumber(): string {
+  const prefix = 'RR';
+  const timestamp = Date.now().toString(36).toUpperCase();
+  const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+  return `${prefix}-${timestamp}-${random}`;
+}
+
+function formatTimeSlot(slot: string | null): string {
+  if (!slot) return '';
+  if (slot === 'morning') return '8:00 AM - 12:00 PM';
+  if (slot === 'afternoon') return '12:00 PM - 5:00 PM';
+  return slot;
+}
+
 export function PaymentPageClient({
   quoteId,
   totalPrice,
   depositAmount,
   tierName,
+  address,
+  scheduledDate,
+  scheduledTimeSlot,
 }: PaymentPageClientProps) {
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [confirmationNumber] = useState(() => generateConfirmationNumber());
+
+  const handlePaymentSuccess = useCallback(() => {
+    setPaymentSuccess(true);
+  }, []);
+
+  // Show inline confirmation on success
+  if (paymentSuccess) {
+    return (
+      <main className={styles.main}>
+        <div className={styles.container}>
+          <InlineConfirmation
+            confirmationNumber={confirmationNumber}
+            address={address}
+            scheduledDate={scheduledDate || 'To be scheduled'}
+            scheduledTime={formatTimeSlot(scheduledTimeSlot)}
+            depositAmount={depositAmount}
+            portalUrl={`/portal/${quoteId}`}
+          />
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className={styles.main}>
       <div className={styles.container}>
@@ -50,7 +97,7 @@ export function PaymentPageClient({
         {/* Order Summary */}
         <div className={styles.summaryCard}>
           <h2 className={styles.summaryTitle}>Order Summary</h2>
-          
+
           <div className={styles.summaryRow}>
             <span className={styles.summaryLabel}>{tierName} Package</span>
             <span className={styles.summaryValue}>{formatCurrency(totalPrice)}</span>
@@ -73,6 +120,8 @@ export function PaymentPageClient({
           <PaymentForm
             quoteId={quoteId}
             depositAmount={depositAmount}
+            onSuccess={handlePaymentSuccess}
+            redirectOnSuccess={false}
           />
         </div>
       </div>

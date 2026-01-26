@@ -1,0 +1,298 @@
+/* =================================================
+   INLINE CONFIRMATION STYLES
+   Success display for payment completion
+   ================================================= */
+
+.container {
+  text-align: center;
+  padding: var(--rr-space-6) var(--rr-space-4);
+}
+
+/* ========================================
+   CHECKMARK ANIMATION
+   ======================================== */
+
+.checkmarkWrapper {
+  margin-bottom: var(--rr-space-6);
+}
+
+.checkmark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-success-light, rgba(34, 197, 94, 0.1));
+  color: var(--rr-color-success);
+  transform: scale(0.5);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.checkmark_visible {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* ========================================
+   CONTENT
+   ======================================== */
+
+.content {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease-out;
+}
+
+.content_visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.title {
+  font-size: var(--rr-font-size-2xl);
+  font-weight: var(--rr-font-weight-bold);
+  color: var(--rr-color-text-primary);
+  margin: 0 0 var(--rr-space-2) 0;
+}
+
+.subtitle {
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-secondary);
+  margin: 0 0 var(--rr-space-6) 0;
+}
+
+/* ========================================
+   CONFIRMATION BOX
+   ======================================== */
+
+.confirmationBox {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--rr-space-1);
+  padding: var(--rr-space-4) var(--rr-space-6);
+  background-color: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-xl);
+  margin-bottom: var(--rr-space-6);
+}
+
+.confirmationLabel {
+  font-size: var(--rr-font-size-xs);
+  font-weight: var(--rr-font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--rr-color-text-tertiary);
+}
+
+.confirmationNumber {
+  font-size: var(--rr-font-size-xl);
+  font-weight: var(--rr-font-weight-bold);
+  font-family: var(--rr-font-family-mono, monospace);
+  color: var(--rr-color-sandstone);
+}
+
+/* ========================================
+   APPOINTMENT CARD
+   ======================================== */
+
+.appointmentCard {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rr-space-3);
+  padding: var(--rr-space-4);
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-xl);
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto var(--rr-space-5);
+}
+
+.appointmentIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-sandstone-light, rgba(214, 201, 181, 0.2));
+  color: var(--rr-color-sandstone);
+}
+
+.appointmentDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.appointmentTitle {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+}
+
+.appointmentDate {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+}
+
+.appointmentTime {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-tertiary);
+}
+
+/* ========================================
+   EMAIL NOTE
+   ======================================== */
+
+.emailNote {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  margin: 0 0 var(--rr-space-6) 0;
+}
+
+.emailNote strong {
+  color: var(--rr-color-text-primary);
+  font-weight: var(--rr-font-weight-medium);
+}
+
+/* ========================================
+   NEXT STEPS
+   ======================================== */
+
+.nextSteps {
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-xl);
+  padding: var(--rr-space-5);
+  text-align: left;
+  max-width: 500px;
+  margin: 0 auto var(--rr-space-6);
+}
+
+.nextStepsTitle {
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin: 0 0 var(--rr-space-4) 0;
+}
+
+.stepsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-4);
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rr-space-3);
+}
+
+.stepIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-bg-secondary);
+  color: var(--rr-color-text-secondary);
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stepTitle {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+}
+
+.stepDescription {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-secondary);
+  line-height: 1.4;
+}
+
+/* ========================================
+   ACTIONS
+   ======================================== */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-3);
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.primaryButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  height: 48px;
+  padding: 0 var(--rr-space-5);
+  background-color: var(--rr-color-sandstone);
+  color: var(--rr-color-charcoal);
+  border-radius: var(--rr-radius-xl);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-semibold);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.primaryButton:hover {
+  background-color: var(--rr-color-charcoal);
+  color: var(--rr-color-white);
+}
+
+.secondaryButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  height: 48px;
+  padding: 0 var(--rr-space-5);
+  background-color: transparent;
+  color: var(--rr-color-text-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-xl);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.secondaryButton:hover {
+  border-color: var(--rr-color-sandstone);
+  color: var(--rr-color-text-primary);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 640px) {
+  .actions {
+    flex-direction: row;
+    max-width: none;
+    justify-content: center;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    flex: 0 0 auto;
+  }
+}

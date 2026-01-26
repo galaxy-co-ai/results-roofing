@@ -298,6 +298,23 @@
 }
 
 /* ========================================
+   ERROR MESSAGE
+   ======================================== */
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-3) var(--rr-space-4);
+  background-color: var(--rr-color-error-light, rgba(239, 68, 68, 0.1));
+  border: 1px solid var(--rr-color-error-light, rgba(239, 68, 68, 0.2));
+  border-radius: var(--rr-radius-md);
+  margin-bottom: var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-error, #dc2626);
+}
+
+/* ========================================
    RESPONSIVE
    ======================================== */
 
