@@ -4,7 +4,7 @@ import { db, schema, eq } from '@/db/index';
 import { estimateRoofSqft, calculatePriceRanges } from '@/lib/pricing';
 import { logger } from '@/lib/utils';
 
-const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ'];
+const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ', 'OK'];
 
 interface AddressParts {
   address: string;

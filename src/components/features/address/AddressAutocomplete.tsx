@@ -24,7 +24,7 @@ interface AddressAutocompleteProps {
   serviceStates?: string[];
 }
 
-const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ'];
+const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ', 'OK'];
 
 declare global {
   interface Window {
