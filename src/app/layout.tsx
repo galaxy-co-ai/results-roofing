@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: '%s | Results Roofing',
   },
   description:
-    'Get your roof replacement quote in minutes. Compare packages, schedule installation, and pay online. Serving TX, GA, NC, and AZ.',
+    'Get your roof replacement quote in minutes. Compare packages, schedule installation, and pay online. Serving TX, GA, NC, AZ, and OK.',
   keywords: [
     'roof replacement',
     'roofing quote',
@@ -35,6 +35,7 @@ export const metadata: Metadata = {
     'Georgia roofing',
     'North Carolina roofing',
     'Arizona roofing',
+    'Oklahoma roofing',
   ],
   authors: [{ name: 'Results Roofing' }],
   creator: 'Results Roofing',

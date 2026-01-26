@@ -7,7 +7,7 @@ export { serverEnv, clientEnv, features } from './env';
 /**
  * Service area states
  */
-export const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ'] as const;
+export const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ', 'OK'] as const;
 export type ServiceState = (typeof SERVICE_STATES)[number];
 
 /**

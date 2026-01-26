@@ -89,6 +89,7 @@ export function Footer({ minimal = false }: FooterProps) {
               <li>Georgia (Atlanta Metro)</li>
               <li>North Carolina (Wilmington)</li>
               <li>Arizona (Phoenix, Scottsdale)</li>
+              <li>Oklahoma (OKC, Tulsa)</li>
             </ul>
           </div>
 

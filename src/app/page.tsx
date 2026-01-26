@@ -2,7 +2,7 @@ import { MapPin, Clock, Shield, DollarSign, CheckCircle, ChevronRight, Star } fr
 import { Header } from '@/components/layout';
 import styles from './page.module.css';
 
-const SERVICE_STATES = ['Texas', 'Georgia', 'North Carolina', 'Arizona'];
+const SERVICE_STATES = ['Texas', 'Georgia', 'North Carolina', 'Arizona', 'Oklahoma'];
 
 const REVIEWS = [
   {

@@ -30,6 +30,8 @@ const REGIONAL_AVERAGES: Record<string, { avgSqft: number; minSqft: number; maxS
   NC: { avgSqft: 2400, minSqft: 1500, maxSqft: 3800 },
   // Arizona - Phoenix metro
   AZ: { avgSqft: 2500, minSqft: 1600, maxSqft: 4000 },
+  // Oklahoma - OKC and Tulsa metros
+  OK: { avgSqft: 2400, minSqft: 1500, maxSqft: 3800 },
 };
 
 // Default for unknown states
