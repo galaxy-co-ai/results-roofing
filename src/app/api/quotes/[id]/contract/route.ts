@@ -21,6 +21,9 @@ export async function POST(
     // Verify quote exists and has a selected tier
     const quote = await db.query.quotes.findFirst({
       where: eq(schema.quotes.id, quoteId),
+      with: {
+        lead: true,
+      },
     });
 
     if (!quote) {
@@ -45,7 +48,10 @@ export async function POST(
       );
     }
 
-    const { signature, agreedToTerms, signedAt } = result.data;
+    const { signedAt } = result.data;
+
+    // Get customer email from lead or use placeholder
+    const customerEmail = quote.lead?.email || `quote-${quoteId}@placeholder.local`;
 
     // Check if contract already exists for this quote
     const existingContract = await db.query.contracts.findFirst({
@@ -57,8 +63,7 @@ export async function POST(
       await db
         .update(schema.contracts)
         .set({
-          signature,
-          agreedToTerms,
+          status: 'signed',
           signedAt: new Date(signedAt),
           updatedAt: new Date(),
         })
@@ -67,8 +72,8 @@ export async function POST(
       // Create new contract record
       await db.insert(schema.contracts).values({
         quoteId,
-        signature,
-        agreedToTerms,
+        customerEmail,
+        status: 'signed',
         signedAt: new Date(signedAt),
       });
     }
