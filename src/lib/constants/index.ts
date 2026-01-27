@@ -3,6 +3,7 @@
  */
 
 export { serverEnv, clientEnv, features } from './env';
+export { TCPA_CONSENT_TEXT, TCPA_DISCLOSURE_SHORT } from './tcpa';
 
 /**
  * Service area states

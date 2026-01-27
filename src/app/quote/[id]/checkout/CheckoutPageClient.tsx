@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, Check, Loader2 } from 'lucide-react';
 import { ScheduleSelector } from '@/components/features/checkout/ScheduleSelector';
 import { FinancingSelector } from '@/components/features/checkout/FinancingSelector';
 import { TrustSignals } from '@/components/features/quote/TrustSignals';
+import { TCPA_CONSENT_TEXT } from '@/lib/constants';
 import styles from './page.module.css';
 
 interface CheckoutPageClientProps {
@@ -49,10 +50,12 @@ export function CheckoutPageClient({
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(null);
   const [selectedFinancing, setSelectedFinancing] = useState<FinancingTerm | null>(null);
+  const [phone, setPhone] = useState('');
+  const [smsConsent, setSmsConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const canContinue = selectedDate && selectedTimeSlot && selectedFinancing;
+  const canContinue = selectedDate && selectedTimeSlot && selectedFinancing && phone.trim();
 
   const handleContinue = async () => {
     if (!canContinue || isSubmitting) return;
@@ -61,6 +64,21 @@ export function CheckoutPageClient({
     setError(null);
 
     try {
+      // Save contact info
+      const contactRes = await fetch(`/api/quotes/${quoteId}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: phone.trim(),
+          smsConsent,
+        }),
+      });
+
+      if (!contactRes.ok) {
+        const data = await contactRes.json();
+        throw new Error(data.error || 'Failed to save contact info');
+      }
+
       // Save schedule
       const scheduleRes = await fetch(`/api/quotes/${quoteId}/schedule`, {
         method: 'POST',
@@ -174,6 +192,50 @@ export function CheckoutPageClient({
           disabled={isSubmitting}
           className={styles.section}
         />
+
+        {/* Contact Information */}
+        <div className={styles.contactSection}>
+          <h2 className={styles.contactTitle}>Contact Information</h2>
+          <p className={styles.contactSubtitle}>
+            We&apos;ll use this to send you updates about your installation.
+          </p>
+
+          <div className={styles.inputGroup}>
+            <label htmlFor="phone" className={styles.inputLabel}>
+              Phone Number <span className={styles.inputRequired}>*</span>
+            </label>
+            <input
+              id="phone"
+              type="tel"
+              className={styles.input}
+              placeholder="(555) 555-5555"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              disabled={isSubmitting}
+              autoComplete="tel"
+              required
+            />
+          </div>
+
+          <div className={styles.consentGroup}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                className={styles.checkbox}
+                checked={smsConsent}
+                onChange={(e) => setSmsConsent(e.target.checked)}
+                disabled={isSubmitting}
+                aria-describedby="sms-consent-text"
+              />
+              <span className={styles.checkboxText}>
+                Text me updates about my installation
+              </span>
+            </label>
+            <p id="sms-consent-text" className={styles.consentDisclaimer}>
+              {TCPA_CONSENT_TEXT}
+            </p>
+          </div>
+        </div>
 
         {/* Trust Signals */}
         <TrustSignals variant="full" className={styles.section} />

@@ -3,17 +3,15 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Loader2, AlertCircle, Home, ChevronRight } from 'lucide-react';
-import { AddressAutocomplete, OutOfAreaCapture, type ParsedAddress } from '@/components/features/address';
+import { AddressAutocomplete, OutOfAreaCapture, PropertyConfirmation, type ParsedAddress } from '@/components/features/address';
 import { QuoteProgressBar } from '@/components/features/quote/QuoteProgressBar';
 import { TrustSignals } from '@/components/features/quote/TrustSignals';
+import { PriceRangePreview } from '@/components/features/quote/PriceRangePreview';
+import type { PriceRangeResult } from '@/lib/pricing';
 import { useFunnelTracker } from '@/hooks';
 import styles from './page.module.css';
 
 const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ', 'OK'];
-
-const TCPA_CONSENT_TEXT = 
-  'I agree to receive text message updates about my roofing project. ' +
-  'Message & data rates may apply. Reply STOP to unsubscribe.';
 
 export default function NewQuoteForm() {
   const router = useRouter();
@@ -22,8 +20,8 @@ export default function NewQuoteForm() {
   const funnelTracker = useFunnelTracker();
 
   const [selectedAddress, setSelectedAddress] = useState<ParsedAddress | null>(null);
-  const [phone, setPhone] = useState('');
-  const [smsConsent, setSmsConsent] = useState(false);
+  const [showPropertyConfirmation, setShowPropertyConfirmation] = useState(false);
+  const [quoteData, setQuoteData] = useState<{ id: string; priceRanges: PriceRangeResult[] } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [outOfAreaState, setOutOfAreaState] = useState<string | null>(null);
@@ -43,15 +41,19 @@ export default function NewQuoteForm() {
     setSelectedAddress(address);
     setError(null);
     setOutOfAreaState(null);
+    setShowPropertyConfirmation(true);
+  }, []);
+
+  const handlePropertyRetry = useCallback(() => {
+    setSelectedAddress(null);
+    setShowPropertyConfirmation(false);
   }, []);
 
   const handleServiceAreaError = useCallback((state: string) => {
     setOutOfAreaState(state);
   }, []);
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-
+  const createQuote = useCallback(async () => {
     if (!selectedAddress) {
       setError('Please select an address from the dropdown');
       return;
@@ -73,12 +75,6 @@ export default function NewQuoteForm() {
           lat: selectedAddress.lat,
           lng: selectedAddress.lng,
           placeId: selectedAddress.placeId,
-          phone: phone || undefined,
-          smsConsent: smsConsent && phone ? {
-            consented: true,
-            consentText: TCPA_CONSENT_TEXT,
-            timestamp: new Date().toISOString(),
-          } : undefined,
         }),
       });
 
@@ -100,12 +96,28 @@ export default function NewQuoteForm() {
         city: selectedAddress.city,
       });
 
-      // Redirect directly to packages page (skip estimate)
-      router.push(`/quote/${data.id}/packages`);
+      // Store quote data and show price preview
+      setQuoteData({
+        id: data.id,
+        priceRanges: data.estimate.tiers,
+      });
+      setShowPropertyConfirmation(false);
+      setIsLoading(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
       setIsLoading(false);
     }
+  }, [selectedAddress, funnelTracker]);
+
+  const handleContinueToPackages = useCallback(() => {
+    if (quoteData) {
+      router.push(`/quote/${quoteData.id}/packages`);
+    }
+  }, [quoteData, router]);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    await createQuote();
   }
 
   // Show out-of-area capture form if address is outside service area
@@ -119,6 +131,44 @@ export default function NewQuoteForm() {
           />
         </div>
       </main>
+    );
+  }
+
+  // Show price range preview after quote is created
+  if (quoteData) {
+    return (
+      <>
+        <QuoteProgressBar currentStep={1} />
+        <main className={styles.main}>
+          <div className={styles.container}>
+            <TrustSignals variant="compact" showCounter className={styles.trustSignals} />
+            <PriceRangePreview
+              priceRanges={quoteData.priceRanges}
+              onContinue={handleContinueToPackages}
+            />
+          </div>
+        </main>
+      </>
+    );
+  }
+
+  // Show property confirmation after address selection
+  if (showPropertyConfirmation && selectedAddress) {
+    return (
+      <>
+        <QuoteProgressBar currentStep={1} />
+        <main className={styles.main}>
+          <div className={styles.container}>
+            <TrustSignals variant="compact" showCounter className={styles.trustSignals} />
+            <PropertyConfirmation
+              address={selectedAddress}
+              onConfirm={createQuote}
+              onRetry={handlePropertyRetry}
+              isLoading={isLoading}
+            />
+          </div>
+        </main>
+      </>
     );
   }
 
@@ -138,7 +188,7 @@ export default function NewQuoteForm() {
           <h1 className={styles.title}>Get Your Instant Quote</h1>
           <p className={styles.subtitle}>
             Enter your home address to see estimated pricing in seconds.
-            No phone calls, no waiting.
+            No salesperson visit required.
           </p>
         </div>
 
@@ -156,43 +206,6 @@ export default function NewQuoteForm() {
               serviceStates={SERVICE_STATES}
             />
           </div>
-
-          <div className={styles.inputGroup}>
-            <label htmlFor="phone" className={styles.label}>
-              Phone Number <span className={styles.optional}>(optional)</span>
-            </label>
-            <input
-              id="phone"
-              type="tel"
-              className={styles.input}
-              placeholder="(555) 555-5555"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              disabled={isLoading}
-              autoComplete="tel"
-            />
-          </div>
-
-          {phone && (
-            <div className={styles.consentGroup}>
-              <label className={styles.checkboxLabel}>
-                <input
-                  type="checkbox"
-                  className={styles.checkbox}
-                  checked={smsConsent}
-                  onChange={(e) => setSmsConsent(e.target.checked)}
-                  disabled={isLoading}
-                  aria-describedby="sms-consent-text"
-                />
-                <span className={styles.checkboxText}>
-                  Text me updates about my quote
-                </span>
-              </label>
-              <p id="sms-consent-text" className={styles.consentDisclaimer}>
-                {TCPA_CONSENT_TEXT}
-              </p>
-            </div>
-          )}
 
           {error && (
             <div className={styles.error}>

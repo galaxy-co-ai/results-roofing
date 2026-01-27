@@ -304,6 +304,109 @@
 }
 
 /* ========================================
+   CONTACT SECTION
+   ======================================== */
+
+.contactSection {
+  background-color: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+  padding: var(--rr-space-5);
+  margin-bottom: var(--rr-space-6);
+}
+
+.contactTitle {
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-1);
+}
+
+.contactSubtitle {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  margin-bottom: var(--rr-space-4);
+}
+
+.inputGroup {
+  margin-bottom: var(--rr-space-4);
+}
+
+.inputGroup:last-child {
+  margin-bottom: 0;
+}
+
+.inputLabel {
+  display: block;
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.inputRequired {
+  color: var(--rr-color-error, #dc2626);
+}
+
+.input {
+  width: 100%;
+  padding: var(--rr-space-3) var(--rr-space-4);
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-primary);
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input::placeholder {
+  color: var(--rr-color-text-tertiary);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--rr-color-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input:disabled {
+  background-color: var(--rr-color-bg-muted, #f3f4f6);
+  cursor: not-allowed;
+}
+
+.consentGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-2);
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rr-space-2);
+  cursor: pointer;
+}
+
+.checkbox {
+  margin-top: 2px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.checkboxText {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-primary);
+}
+
+.consentDisclaimer {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-tertiary);
+  margin: 0;
+  padding-left: 26px;
+}
+
+/* ========================================
    ERROR MESSAGE
    ======================================== */
 

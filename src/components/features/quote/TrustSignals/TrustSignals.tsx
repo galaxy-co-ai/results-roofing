@@ -1,6 +1,6 @@
 'use client';
 
-import { Shield, Star, Lock, Users } from 'lucide-react';
+import { Shield, Star, Lock, Users, UserX } from 'lucide-react';
 import styles from './TrustSignals.module.css';
 
 type TrustSignalsVariant = 'compact' | 'full';
@@ -11,7 +11,7 @@ interface TrustSignalsProps {
   className?: string;
 }
 
-const HOMEOWNER_COUNT = '2,847';
+const ROOFS_INSTALLED = '5,000+';
 
 /**
  * TrustSignals - Enhanced trust and social proof display
@@ -31,11 +31,16 @@ export function TrustSignals({
           <>
             <div className={styles.compactItem}>
               <Users size={14} className={styles.compactIcon} aria-hidden="true" />
-              <span>{HOMEOWNER_COUNT} homeowners quoted this month</span>
+              <span>{ROOFS_INSTALLED} roofs installed</span>
             </div>
             <div className={styles.compactDivider} aria-hidden="true" />
           </>
         )}
+        <div className={styles.compactItem}>
+          <UserX size={14} className={styles.compactIcon} aria-hidden="true" />
+          <span>No salesperson visit</span>
+        </div>
+        <div className={styles.compactDivider} aria-hidden="true" />
         <div className={styles.compactItem}>
           <Lock size={14} className={styles.compactIconSecure} aria-hidden="true" />
           <span>256-bit SSL</span>
@@ -58,8 +63,19 @@ export function TrustSignals({
             <Users size={20} className={styles.fullIconPrimary} aria-hidden="true" />
           </div>
           <div className={styles.fullContent}>
-            <span className={styles.fullValue}>{HOMEOWNER_COUNT}</span>
-            <span className={styles.fullLabel}>Quotes this month</span>
+            <span className={styles.fullValue}>{ROOFS_INSTALLED}</span>
+            <span className={styles.fullLabel}>Roofs installed</span>
+          </div>
+        </div>
+
+        {/* No salesperson */}
+        <div className={styles.fullItem}>
+          <div className={styles.fullIconWrapper}>
+            <UserX size={20} className={styles.fullIconPrimary} aria-hidden="true" />
+          </div>
+          <div className={styles.fullContent}>
+            <span className={styles.fullValue}>No Salesperson</span>
+            <span className={styles.fullLabel}>100% online quotes</span>
           </div>
         </div>
 

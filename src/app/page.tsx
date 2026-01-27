@@ -1,4 +1,4 @@
-import { MapPin, Clock, Shield, DollarSign, CheckCircle, ChevronRight, Star } from 'lucide-react';
+import { MapPin, Clock, Shield, DollarSign, CheckCircle, ChevronRight, Star, UserX } from 'lucide-react';
 import { Header } from '@/components/layout';
 import styles from './page.module.css';
 
@@ -57,9 +57,14 @@ const REVIEWS = [
 
 const VALUE_PROPS = [
   {
+    icon: UserX,
+    title: 'No Salesperson Visit',
+    description: 'Get your price without talking to anyone. No home visits, no pushy sales calls.',
+  },
+  {
     icon: Clock,
     title: 'Instant Quotes',
-    description: 'Get your roof measurement and quote in minutes, not days. No waiting for a salesperson.',
+    description: 'Get your roof measurement and quote in minutes, not days.',
   },
   {
     icon: DollarSign,
@@ -91,6 +96,9 @@ export default function HomePage() {
           <h1 className={styles.title}>
             Your Roof Quote <span className={styles.highlight}>In Minutes</span>
           </h1>
+          <p className={styles.heroSubtitle}>
+            No salesperson visit required. Get your price online.
+          </p>
 
           {/* Address Input Form */}
           <form className={styles.addressForm} action="/quote/new">
