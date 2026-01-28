@@ -11,6 +11,7 @@ import {
   Edit2,
   Loader2,
   FileText,
+  StickyNote,
 } from 'lucide-react';
 import styles from './page.module.css';
 
@@ -175,9 +176,14 @@ export default function NotesPage() {
     <div className={styles.page}>
       {/* Header */}
       <header className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Notes</h1>
-          <p className={styles.subtitle}>{notes.length} notes</p>
+        <div className={styles.headerLeft}>
+          <div className={styles.headerIcon}>
+            <StickyNote size={24} />
+          </div>
+          <div>
+            <h1 className={styles.title}>Notes</h1>
+            <p className={styles.subtitle}>{notes.length} notes</p>
+          </div>
         </div>
         <div className={styles.headerActions}>
           <button

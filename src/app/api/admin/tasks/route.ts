@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { db, desc, eq } from '@/db';
 import { devTasks, type NewDevTask } from '@/db/schema';
+import { logTaskCreated } from '@/lib/changelog';
 
 /**
  * Helper to verify admin authentication
@@ -90,6 +91,9 @@ export async function POST(request: NextRequest) {
     };
 
     const [created] = await db.insert(devTasks).values(newTask).returning();
+
+    // Log to changelog (async, non-blocking)
+    logTaskCreated(created.title).catch(() => {});
 
     return NextResponse.json({ success: true, task: created }, { status: 201 });
   } catch (error) {

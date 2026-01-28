@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Database,
   Table2,
@@ -13,11 +14,17 @@ import {
   MessageSquare,
   RefreshCw,
   AlertCircle,
+  Search,
+  ChevronDown,
+  ExternalLink,
+  Copy,
+  Check,
+  TrendingUp,
+  HardDrive,
+  Layers,
   type LucideIcon,
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import styles from './page.module.css';
 
 interface TableInfo {
   name: string;
@@ -26,6 +33,7 @@ interface TableInfo {
   icon: LucideIcon;
   recordCount: number;
   category: 'core' | 'config' | 'events' | 'dev';
+  emptyMessage?: string;
 }
 
 const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
@@ -35,6 +43,7 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
     description: 'Customer contact information and addresses',
     icon: Users,
     category: 'core',
+    emptyMessage: 'Leads appear when customers start a quote',
   },
   quotes: {
     name: 'quotes',
@@ -42,6 +51,7 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
     description: 'Roofing quotes with pricing and status',
     icon: FileText,
     category: 'core',
+    emptyMessage: 'Quotes are created during the quoting flow',
   },
   orders: {
     name: 'orders',
@@ -49,6 +59,7 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
     description: 'Confirmed jobs after contract signing',
     icon: Package,
     category: 'core',
+    emptyMessage: 'Orders appear after contract signing',
   },
   contracts: {
     name: 'contracts',
@@ -56,6 +67,7 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
     description: 'E-signature contracts and status',
     icon: FileText,
     category: 'core',
+    emptyMessage: 'Awaiting Documenso integration',
   },
   payments: {
     name: 'payments',
@@ -63,6 +75,7 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
     description: 'Payment records from Stripe',
     icon: CreditCard,
     category: 'core',
+    emptyMessage: 'Payment records sync from Stripe',
   },
   appointments: {
     name: 'appointments',
@@ -70,6 +83,7 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
     description: 'Scheduled installations and inspections',
     icon: Calendar,
     category: 'core',
+    emptyMessage: 'Awaiting Cal.com integration',
   },
   measurements: {
     name: 'measurements',
@@ -77,6 +91,7 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
     description: 'Roof measurement data from Roofr or manual entry',
     icon: Table2,
     category: 'core',
+    emptyMessage: 'Awaiting Roofr API credentials',
   },
   pricing_tiers: {
     name: 'pricing_tiers',
@@ -122,17 +137,29 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
   },
 };
 
-const CATEGORY_LABELS = {
-  core: 'Core Business',
-  config: 'Configuration',
-  events: 'Event Logs',
-  dev: 'Development',
+const CATEGORY_CONFIG = {
+  core: { label: 'Core Business', icon: Package, color: '#3B82F6' },
+  config: { label: 'Configuration', icon: Layers, color: '#8B5CF6' },
+  events: { label: 'Event Logs', icon: TrendingUp, color: '#10B981' },
+  dev: { label: 'Development', icon: Database, color: '#F59E0B' },
 };
+
+type CategoryKey = keyof typeof CATEGORY_CONFIG;
+
+function getHealthStatus(count: number): 'healthy' | 'empty' | 'active' {
+  if (count === 0) return 'empty';
+  if (count > 10) return 'active';
+  return 'healthy';
+}
 
 export default function DatabasePage() {
   const [tables, setTables] = useState<TableInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState<CategoryKey | 'all'>('all');
+  const [collapsedCategories, setCollapsedCategories] = useState<Set<string>>(new Set());
+  const [copiedTable, setCopiedTable] = useState<string | null>(null);
 
   const fetchTableCounts = async () => {
     setLoading(true);
@@ -162,124 +189,355 @@ export default function DatabasePage() {
     fetchTableCounts();
   }, []);
 
-  const groupedTables = tables.reduce((acc, table) => {
-    const category = table.category || 'core';
-    if (!acc[category]) acc[category] = [];
-    acc[category].push(table);
-    return acc;
-  }, {} as Record<string, TableInfo[]>);
+  // Filter and search tables
+  const filteredTables = useMemo(() => {
+    return tables.filter(table => {
+      const matchesSearch = searchQuery === '' || 
+        table.displayName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        table.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesFilter = activeFilter === 'all' || table.category === activeFilter;
+      return matchesSearch && matchesFilter;
+    });
+  }, [tables, searchQuery, activeFilter]);
+
+  // Group filtered tables by category
+  const groupedTables = useMemo(() => {
+    return filteredTables.reduce((acc, table) => {
+      const category = table.category || 'core';
+      if (!acc[category]) acc[category] = [];
+      acc[category].push(table);
+      return acc;
+    }, {} as Record<string, TableInfo[]>);
+  }, [filteredTables]);
 
   const totalRecords = tables.reduce((sum, t) => sum + t.recordCount, 0);
+  const activeTablesCount = tables.filter(t => t.recordCount > 0).length;
+
+  const toggleCategory = (category: string) => {
+    setCollapsedCategories(prev => {
+      const next = new Set(prev);
+      if (next.has(category)) {
+        next.delete(category);
+      } else {
+        next.add(category);
+      }
+      return next;
+    });
+  };
+
+  const copyTableName = async (tableName: string) => {
+    try {
+      await navigator.clipboard.writeText(tableName);
+      setCopiedTable(tableName);
+      setTimeout(() => setCopiedTable(null), 2000);
+    } catch {
+      // Fallback
+    }
+  };
+
+  // Keyboard shortcut for search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
+        const target = e.target as HTMLElement;
+        if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          document.getElementById('table-search')?.focus();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
-    <div className="space-y-6">
+    <motion.div 
+      className={styles.page}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Database size={20} className="text-muted-foreground" />
+      <header className={styles.header}>
+        <div className={styles.headerLeft}>
+          <div className={styles.headerIcon}>
+            <Database size={24} />
+          </div>
           <div>
-            <h1 className="text-lg font-semibold">Database</h1>
-            <p className="text-sm text-muted-foreground">
-              Manage application data
-            </p>
+            <h1 className={styles.title}>Database</h1>
+            <p className={styles.subtitle}>Manage application data</p>
           </div>
         </div>
-        <Button variant="outline" size="sm" onClick={fetchTableCounts} disabled={loading}>
-          <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
-          <span className="ml-1">Refresh</span>
-        </Button>
+        <button 
+          onClick={fetchTableCounts} 
+          disabled={loading}
+          className={styles.refreshButton}
+        >
+          <RefreshCw size={14} className={loading ? styles.spinning : ''} />
+          Refresh
+        </button>
+      </header>
+
+      {/* Stats Row */}
+      <div className={styles.statsRow}>
+        <motion.div 
+          className={styles.statCard}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <div className={styles.statIcon} style={{ background: '#DBEAFE', color: '#2563EB' }}>
+            <Layers size={18} />
+          </div>
+          <div className={styles.statContent}>
+            <span className={styles.statValue}>{tables.length}</span>
+            <span className={styles.statLabel}>Tables</span>
+          </div>
+        </motion.div>
+        
+        <motion.div 
+          className={styles.statCard}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+        >
+          <div className={styles.statIcon} style={{ background: '#D1FAE5', color: '#059669' }}>
+            <TrendingUp size={18} />
+          </div>
+          <div className={styles.statContent}>
+            <span className={styles.statValue}>{totalRecords.toLocaleString()}</span>
+            <span className={styles.statLabel}>Total Records</span>
+          </div>
+        </motion.div>
+        
+        <motion.div 
+          className={styles.statCard}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className={styles.statIcon} style={{ background: '#FEF3C7', color: '#D97706' }}>
+            <Database size={18} />
+          </div>
+          <div className={styles.statContent}>
+            <span className={styles.statValue}>{activeTablesCount}/{tables.length}</span>
+            <span className={styles.statLabel}>Active Tables</span>
+          </div>
+        </motion.div>
+        
+        <motion.div 
+          className={styles.statCard}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+        >
+          <div className={styles.statIcon} style={{ background: '#EDE9FE', color: '#7C3AED' }}>
+            <HardDrive size={18} />
+          </div>
+          <div className={styles.statContent}>
+            <span className={styles.statValue}>PostgreSQL</span>
+            <span className={styles.statLabel}>Neon</span>
+          </div>
+        </motion.div>
       </div>
 
-      {/* Stats */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Tables</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{tables.length}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Records</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalRecords.toLocaleString()}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Database</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-lg font-medium">PostgreSQL</div>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Search & Filter Bar */}
+      <motion.div 
+        className={styles.searchBar}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <div className={styles.searchInputWrapper}>
+          <Search size={16} className={styles.searchIcon} />
+          <input
+            id="table-search"
+            type="text"
+            placeholder="Search tables... (press / to focus)"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={styles.searchInput}
+          />
+          {searchQuery && (
+            <button 
+              onClick={() => setSearchQuery('')}
+              className={styles.clearSearch}
+            >
+              ×
+            </button>
+          )}
+        </div>
+        <div className={styles.filterPills}>
+          <button
+            onClick={() => setActiveFilter('all')}
+            className={`${styles.filterPill} ${activeFilter === 'all' ? styles.filterPillActive : ''}`}
+          >
+            All
+          </button>
+          {(Object.entries(CATEGORY_CONFIG) as [CategoryKey, typeof CATEGORY_CONFIG.core][]).map(([key, config]) => {
+            const count = groupedTables[key]?.length || 0;
+            return (
+              <button
+                key={key}
+                onClick={() => setActiveFilter(key)}
+                className={`${styles.filterPill} ${activeFilter === key ? styles.filterPillActive : ''}`}
+                style={activeFilter === key ? { background: config.color, borderColor: config.color } : {}}
+              >
+                <config.icon size={12} />
+                {config.label}
+                <span className={styles.filterCount}>{count}</span>
+              </button>
+            );
+          })}
+        </div>
+      </motion.div>
 
       {error && (
-        <div className="flex items-center gap-2 rounded-md border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
+        <div className={styles.errorBanner}>
           <AlertCircle size={16} />
           <span>{error}</span>
         </div>
       )}
 
       {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <RefreshCw size={20} className="animate-spin text-muted-foreground" />
-          <span className="ml-2 text-sm text-muted-foreground">Loading tables...</span>
+        <div className={styles.loadingState}>
+          <RefreshCw size={24} className={styles.spinning} />
+          <span>Loading tables...</span>
+        </div>
+      ) : filteredTables.length === 0 ? (
+        <div className={styles.emptySearch}>
+          <Search size={32} />
+          <h3>No tables found</h3>
+          <p>Try adjusting your search or filter</p>
+          <button onClick={() => { setSearchQuery(''); setActiveFilter('all'); }} className={styles.resetBtn}>
+            Reset filters
+          </button>
         </div>
       ) : (
-        <div className="space-y-6">
-          {(['core', 'config', 'events', 'dev'] as const).map((category) => {
+        <div className={styles.categorySections}>
+          {(['core', 'config', 'events', 'dev'] as const).map((category, categoryIndex) => {
             const categoryTables = groupedTables[category] || [];
             if (categoryTables.length === 0) return null;
 
+            const config = CATEGORY_CONFIG[category];
+            const isCollapsed = collapsedCategories.has(category);
+            const CategoryIcon = config.icon;
+
             return (
-              <div key={category}>
-                <h2 className="mb-3 text-sm font-medium text-muted-foreground">
-                  {CATEGORY_LABELS[category]}
-                </h2>
-                <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-                  {categoryTables.map((table) => (
-                    <Link key={table.name} href={`/admin/database/${table.name}`}>
-                      <Card className="h-full transition-colors hover:bg-accent/50">
-                        <CardHeader className="pb-2">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <table.icon size={16} className="text-muted-foreground" />
-                              <CardTitle className="text-sm font-medium">
-                                {table.displayName}
-                              </CardTitle>
+              <motion.div 
+                key={category}
+                className={styles.categorySection}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + categoryIndex * 0.05 }}
+              >
+                <button 
+                  className={styles.categoryHeader}
+                  onClick={() => toggleCategory(category)}
+                >
+                  <div className={styles.categoryLeft}>
+                    <div 
+                      className={styles.categoryIcon}
+                      style={{ background: `${config.color}15`, color: config.color }}
+                    >
+                      <CategoryIcon size={16} />
+                    </div>
+                    <h2 className={styles.categoryTitle}>{config.label}</h2>
+                    <span className={styles.categoryCount}>{categoryTables.length}</span>
+                  </div>
+                  <ChevronDown 
+                    size={18} 
+                    className={`${styles.collapseIcon} ${isCollapsed ? styles.collapsed : ''}`}
+                  />
+                </button>
+
+                <AnimatePresence>
+                  {!isCollapsed && (
+                    <motion.div
+                      className={styles.tableGrid}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {categoryTables.map((table, tableIndex) => {
+                        const TableIcon = table.icon;
+                        const health = getHealthStatus(table.recordCount);
+
+                        return (
+                          <motion.div
+                            key={table.name}
+                            className={styles.tableCard}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: tableIndex * 0.03 }}
+                          >
+                            <Link href={`/admin/database/${table.name}`} className={styles.tableCardLink}>
+                              <div className={styles.tableCardHeader}>
+                                <div 
+                                  className={styles.tableIconWrapper}
+                                  style={{ background: `${config.color}10`, color: config.color }}
+                                >
+                                  <TableIcon size={18} />
+                                </div>
+                                <div className={styles.tableInfo}>
+                                  <h3 className={styles.tableName}>{table.displayName}</h3>
+                                  <p className={styles.tableDescription}>{table.description}</p>
+                                </div>
+                              </div>
+
+                              <div className={styles.tableCardFooter}>
+                                <div className={styles.recordInfo}>
+                                  <span className={`${styles.healthDot} ${styles[`health_${health}`]}`} />
+                                  <span className={styles.recordCount}>
+                                    {table.recordCount === 0 ? (
+                                      <span className={styles.emptyCount}>
+                                        {table.emptyMessage || 'No records'}
+                                      </span>
+                                    ) : (
+                                      <>{table.recordCount.toLocaleString()} records</>
+                                    )}
+                                  </span>
+                                </div>
+                                <ExternalLink size={14} className={styles.viewIcon} />
+                              </div>
+                            </Link>
+
+                            {/* Quick Actions */}
+                            <div className={styles.quickActions}>
+                              <button
+                                onClick={(e) => { e.preventDefault(); copyTableName(table.name); }}
+                                className={styles.quickAction}
+                                title="Copy table name"
+                              >
+                                {copiedTable === table.name ? <Check size={12} /> : <Copy size={12} />}
+                              </button>
                             </div>
-                            <Badge variant="secondary" className="text-xs">
-                              {table.recordCount}
-                            </Badge>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <CardDescription className="text-xs">
-                            {table.description}
-                          </CardDescription>
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  ))}
-                </div>
-              </div>
+                          </motion.div>
+                        );
+                      })}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
         </div>
       )}
 
-      {/* Warning */}
-      <div className="flex items-start gap-2 rounded-md border border-yellow-500/50 bg-yellow-500/10 p-3 text-sm">
-        <AlertCircle size={16} className="mt-0.5 shrink-0 text-yellow-600" />
-        <div className="text-yellow-800 dark:text-yellow-200">
-          <strong>Caution:</strong> Editing data here directly affects the live application.
+      {/* Warning Banner */}
+      <motion.div 
+        className={styles.warningBanner}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        <AlertCircle size={18} />
+        <div>
+          <strong>Caution:</strong> Editing data here directly affects the live application. 
+          Changes are immediate and cannot be undone.
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

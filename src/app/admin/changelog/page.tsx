@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Plus,
   Milestone,
@@ -12,9 +13,17 @@ import {
   FileText,
   Filter,
   Pin,
+  ArrowRight,
+  Loader2,
+  ChevronDown,
+  Clock,
+  Calendar,
+  Tag,
+  Zap,
+  History,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody } from '@/components/ui/dialog';
+import styles from './page.module.css';
 
 type ChangelogType = 'milestone' | 'feature' | 'update' | 'fix' | 'blocker' | 'decision' | 'note';
 
@@ -33,22 +42,38 @@ interface ChangelogEntry {
   createdAt: string;
 }
 
-const TYPE_CONFIG: Record<ChangelogType, { icon: typeof Milestone; color: string; bg: string; label: string }> = {
-  milestone: { icon: Milestone, color: 'text-violet-600', bg: 'bg-violet-100', label: 'Milestone' },
-  feature: { icon: Sparkles, color: 'text-emerald-600', bg: 'bg-emerald-100', label: 'Feature' },
-  update: { icon: RefreshCw, color: 'text-blue-600', bg: 'bg-blue-100', label: 'Update' },
-  fix: { icon: Wrench, color: 'text-amber-600', bg: 'bg-amber-100', label: 'Fix' },
-  blocker: { icon: AlertTriangle, color: 'text-rose-600', bg: 'bg-rose-100', label: 'Blocker' },
-  decision: { icon: Lightbulb, color: 'text-cyan-600', bg: 'bg-cyan-100', label: 'Decision' },
-  note: { icon: FileText, color: 'text-slate-600', bg: 'bg-slate-100', label: 'Note' },
+const TYPE_CONFIG: Record<ChangelogType, { 
+  icon: typeof Milestone; 
+  label: string;
+  styleClass: string;
+}> = {
+  milestone: { icon: Milestone, label: 'Milestone', styleClass: styles.typeMilestone },
+  feature: { icon: Sparkles, label: 'Feature', styleClass: styles.typeFeature },
+  update: { icon: RefreshCw, label: 'Update', styleClass: styles.typeUpdate },
+  fix: { icon: Wrench, label: 'Fix', styleClass: styles.typeFix },
+  blocker: { icon: AlertTriangle, label: 'Blocker', styleClass: styles.typeBlocker },
+  decision: { icon: Lightbulb, label: 'Decision', styleClass: styles.typeDecision },
+  note: { icon: FileText, label: 'Note', styleClass: styles.typeNote },
 };
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  if (date.toDateString() === today.toDateString()) {
+    return 'Today';
+  }
+  if (date.toDateString() === yesterday.toDateString()) {
+    return 'Yesterday';
+  }
+
   return date.toLocaleDateString('en-US', { 
+    weekday: 'short',
     month: 'short', 
     day: 'numeric', 
-    year: 'numeric' 
+    year: date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined,
   });
 }
 
@@ -61,10 +86,29 @@ function formatTime(dateString: string): string {
   });
 }
 
+const STATUS_LABELS: Record<string, string> = {
+  backlog: 'Backlog',
+  todo: 'To Do',
+  in_progress: 'In Progress',
+  review: 'Review',
+  done: 'Done',
+};
+
+function formatFullDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { 
+    weekday: 'long',
+    month: 'long', 
+    day: 'numeric', 
+    year: 'numeric',
+  });
+}
+
 export default function ChangelogPage() {
   const [entries, setEntries] = useState<ChangelogEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>('all');
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [newEntry, setNewEntry] = useState({
     type: 'update' as ChangelogType,
@@ -72,6 +116,19 @@ export default function ChangelogPage() {
     description: '',
   });
   const [submitting, setSubmitting] = useState(false);
+
+  const toggleExpand = (id: string) => {
+    setExpandedId(prev => prev === id ? null : id);
+  };
+
+  const hasExpandableContent = (entry: ChangelogEntry): boolean => {
+    return !!(
+      entry.description || 
+      entry.phaseName || 
+      entry.deliverableName || 
+      (entry.previousStatus && entry.newStatus)
+    );
+  };
 
   const fetchEntries = useCallback(async () => {
     try {
@@ -126,32 +183,38 @@ export default function ChangelogPage() {
   }, {} as Record<string, ChangelogEntry[]>);
 
   return (
-    <div className="max-w-3xl">
+    <motion.div 
+      className={styles.page}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
       {/* Header */}
-      <header className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Changelog</h1>
-          <p className="text-sm text-muted-foreground mt-1">Project progress timeline</p>
+      <header className={styles.header}>
+        <div className={styles.headerLeft}>
+          <div className={styles.headerIcon}>
+            <History size={24} />
+          </div>
+          <div>
+            <h1 className={styles.headerTitle}>Changelog</h1>
+            <p className={styles.headerSubtitle}>Auto-tracked project activity</p>
+          </div>
         </div>
-        <Button onClick={() => setShowAddDialog(true)} size="sm" className="gap-1.5">
+        <button onClick={() => setShowAddDialog(true)} className={styles.addButton}>
           <Plus size={14} />
           Add Entry
-        </Button>
+        </button>
       </header>
 
       {/* Filters */}
-      <div className="flex items-center gap-2 mb-6">
-        <Filter size={14} className="text-muted-foreground" />
-        <div className="flex gap-1">
+      <div className={styles.filters}>
+        <Filter size={14} className={styles.filterIcon} />
+        <div className={styles.filterGroup}>
           {['all', ...Object.keys(TYPE_CONFIG)].map((type) => (
             <button
               key={type}
               onClick={() => setFilter(type)}
-              className={`px-2.5 py-1 text-xs rounded-full transition-colors ${
-                filter === type
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:bg-muted'
-              }`}
+              className={`${styles.filterBtn} ${filter === type ? styles.filterBtnActive : ''}`}
             >
               {type === 'all' ? 'All' : TYPE_CONFIG[type as ChangelogType].label}
             </button>
@@ -161,77 +224,175 @@ export default function ChangelogPage() {
 
       {/* Timeline */}
       {loading ? (
-        <div className="flex items-center justify-center py-12 text-muted-foreground">
-          Loading...
+        <div className={styles.loading}>
+          <Loader2 size={16} className={styles.loadingSpinner} />
+          Loading changelog...
         </div>
       ) : entries.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground">
-          <FileText size={32} className="mx-auto mb-2 opacity-50" />
-          <p>No changelog entries yet</p>
-          <p className="text-xs mt-1">Add your first entry to start tracking progress</p>
-        </div>
+        <motion.div 
+          className={styles.empty}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className={styles.emptyIcon}>
+            <FileText size={28} />
+          </div>
+          <h3 className={styles.emptyTitle}>No entries yet</h3>
+          <p className={styles.emptyDesc}>
+            Activity will appear here as you complete tasks
+          </p>
+        </motion.div>
       ) : (
-        <div className="space-y-8">
-          {Object.entries(groupedEntries).map(([date, dayEntries]) => (
-            <div key={date}>
-              {/* Date Header */}
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-xs font-medium text-muted-foreground">{date}</span>
-                <div className="flex-1 h-px bg-border" />
-              </div>
+        <div className={styles.timeline}>
+          <AnimatePresence>
+            {Object.entries(groupedEntries).map(([date, dayEntries], groupIndex) => (
+              <motion.div 
+                key={date}
+                className={styles.dateGroup}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: groupIndex * 0.05 }}
+              >
+                {/* Date Header */}
+                <div className={styles.dateHeader}>
+                  <span className={styles.dateLabel}>{date}</span>
+                  <div className={styles.dateLine} />
+                </div>
 
-              {/* Entries for this date */}
-              <div className="space-y-3 pl-4 border-l-2 border-muted">
-                {dayEntries.map((entry) => {
-                  const config = TYPE_CONFIG[entry.type];
-                  const Icon = config.icon;
+                {/* Entries for this date */}
+                <div className={styles.entriesList}>
+                  {dayEntries.map((entry, entryIndex) => {
+                    const config = TYPE_CONFIG[entry.type];
+                    const Icon = config.icon;
+                    const isExpanded = expandedId === entry.id;
+                    const canExpand = hasExpandableContent(entry);
 
-                  return (
-                    <div
-                      key={entry.id}
-                      className="relative pl-6 pb-3 group"
-                    >
-                      {/* Timeline dot */}
-                      <div className={`absolute -left-[9px] top-0.5 w-4 h-4 rounded-full ${config.bg} flex items-center justify-center`}>
-                        <Icon size={10} className={config.color} />
-                      </div>
+                    return (
+                      <motion.div
+                        key={entry.id}
+                        className={`${styles.entry} ${isExpanded ? styles.entryExpanded : ''}`}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: groupIndex * 0.05 + entryIndex * 0.02 }}
+                        onClick={() => canExpand && toggleExpand(entry.id)}
+                        style={{ cursor: canExpand ? 'pointer' : 'default' }}
+                      >
+                        {/* Timeline dot */}
+                        <div className={`${styles.entryDot} ${config.styleClass}`}>
+                          <Icon size={8} />
+                        </div>
 
-                      {/* Content */}
-                      <div className="flex items-start gap-3">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${config.bg} ${config.color}`}>
-                              {config.label}
-                            </span>
-                            {entry.isPinned && (
-                              <Pin size={10} className="text-amber-500" />
-                            )}
-                            {entry.isAutoGenerated && (
-                              <span className="text-[10px] text-muted-foreground">auto</span>
-                            )}
-                          </div>
-                          <h3 className="font-medium text-sm mt-1">{entry.title}</h3>
-                          {entry.description && (
-                            <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
-                              {entry.description}
-                            </p>
+                        {/* Content */}
+                        <div className={styles.entryHeader}>
+                          <span className={`${styles.entryBadge} ${config.styleClass}`}>
+                            <Icon size={9} />
+                            {config.label}
+                          </span>
+                          {entry.isPinned && (
+                            <Pin size={10} className={styles.entryPinned} />
                           )}
-                          {entry.phaseName && (
-                            <span className="inline-block text-[10px] text-muted-foreground mt-1">
-                              Phase {entry.phaseId}: {entry.phaseName}
-                            </span>
+                          {entry.isAutoGenerated && (
+                            <span className={styles.entryAuto}>auto</span>
+                          )}
+                          <span className={styles.entryTime}>
+                            {formatTime(entry.createdAt)}
+                          </span>
+                          {canExpand && (
+                            <ChevronDown 
+                              size={14} 
+                              className={`${styles.expandIcon} ${isExpanded ? styles.expandIconRotated : ''}`}
+                            />
                           )}
                         </div>
-                        <span className="text-[10px] text-muted-foreground whitespace-nowrap">
-                          {formatTime(entry.createdAt)}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+
+                        <h3 className={styles.entryTitle}>{entry.title}</h3>
+                        
+                        {/* Collapsed preview - show truncated description */}
+                        {!isExpanded && entry.description && (
+                          <p className={styles.entryDescPreview}>{entry.description}</p>
+                        )}
+
+                        {/* Expanded details */}
+                        <AnimatePresence>
+                          {isExpanded && (
+                            <motion.div
+                              className={styles.entryDetails}
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2, ease: 'easeInOut' }}
+                            >
+                              {entry.description && (
+                                <div className={styles.detailSection}>
+                                  <p className={styles.detailDesc}>{entry.description}</p>
+                                </div>
+                              )}
+
+                              <div className={styles.detailGrid}>
+                                {/* Date & Time */}
+                                <div className={styles.detailItem}>
+                                  <Calendar size={12} className={styles.detailIcon} />
+                                  <span>{formatFullDate(entry.createdAt)}</span>
+                                </div>
+                                <div className={styles.detailItem}>
+                                  <Clock size={12} className={styles.detailIcon} />
+                                  <span>{formatTime(entry.createdAt)}</span>
+                                </div>
+
+                                {/* Type */}
+                                <div className={styles.detailItem}>
+                                  <Tag size={12} className={styles.detailIcon} />
+                                  <span>Type: {config.label}</span>
+                                </div>
+
+                                {/* Source */}
+                                <div className={styles.detailItem}>
+                                  <Zap size={12} className={styles.detailIcon} />
+                                  <span>{entry.isAutoGenerated ? 'Auto-generated' : 'Manual entry'}</span>
+                                </div>
+
+                                {/* Phase info */}
+                                {entry.phaseName && (
+                                  <div className={styles.detailItem}>
+                                    <Milestone size={12} className={styles.detailIcon} />
+                                    <span>Phase {entry.phaseId}: {entry.phaseName}</span>
+                                  </div>
+                                )}
+
+                                {/* Deliverable */}
+                                {entry.deliverableName && (
+                                  <div className={styles.detailItem}>
+                                    <Sparkles size={12} className={styles.detailIcon} />
+                                    <span>Deliverable: {entry.deliverableName}</span>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Status change */}
+                              {entry.previousStatus && entry.newStatus && (
+                                <div className={styles.detailStatusChange}>
+                                  <span className={styles.statusLabel}>Status changed:</span>
+                                  <div className={styles.statusFlow}>
+                                    <span className={styles.statusPrev}>
+                                      {STATUS_LABELS[entry.previousStatus] || entry.previousStatus}
+                                    </span>
+                                    <ArrowRight size={14} className={styles.statusArrowLarge} />
+                                    <span className={styles.statusNew}>
+                                      {STATUS_LABELS[entry.newStatus] || entry.newStatus}
+                                    </span>
+                                  </div>
+                                </div>
+                              )}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       )}
 
@@ -242,20 +403,18 @@ export default function ChangelogPage() {
             <DialogTitle>Add Changelog Entry</DialogTitle>
           </DialogHeader>
           <DialogBody className="p-4">
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className={styles.form}>
               {/* Type Selection */}
-              <div>
-                <label className="text-xs font-medium text-muted-foreground mb-2 block">Type</label>
-                <div className="flex flex-wrap gap-1.5">
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>Type</label>
+                <div className={styles.typeSelector}>
                   {Object.entries(TYPE_CONFIG).map(([type, config]) => (
                     <button
                       key={type}
                       type="button"
                       onClick={() => setNewEntry(prev => ({ ...prev, type: type as ChangelogType }))}
-                      className={`flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
-                        newEntry.type === type
-                          ? `${config.bg} ${config.color}`
-                          : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                      className={`${styles.typeBtn} ${config.styleClass} ${
+                        newEntry.type === type ? styles.typeBtnActive : ''
                       }`}
                     >
                       <config.icon size={12} />
@@ -266,45 +425,52 @@ export default function ChangelogPage() {
               </div>
 
               {/* Title */}
-              <div>
-                <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Title</label>
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>Title</label>
                 <input
                   type="text"
                   value={newEntry.title}
                   onChange={(e) => setNewEntry(prev => ({ ...prev, title: e.target.value }))}
                   placeholder="What happened?"
-                  className="w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  className={styles.formInput}
                   required
                 />
               </div>
 
               {/* Description */}
-              <div>
-                <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
-                  Description <span className="text-muted-foreground/50">(optional)</span>
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>
+                  Description <span className={styles.formLabelOptional}>(optional)</span>
                 </label>
                 <textarea
                   value={newEntry.description}
                   onChange={(e) => setNewEntry(prev => ({ ...prev, description: e.target.value }))}
                   placeholder="Add more details..."
-                  rows={3}
-                  className="w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
+                  className={`${styles.formInput} ${styles.formTextarea}`}
                 />
               </div>
 
               {/* Submit */}
-              <div className="flex justify-end gap-2 pt-2">
-                <Button type="button" variant="ghost" size="sm" onClick={() => setShowAddDialog(false)}>
+              <div className={styles.formActions}>
+                <button 
+                  type="button" 
+                  className={styles.cancelBtn}
+                  onClick={() => setShowAddDialog(false)}
+                >
                   Cancel
-                </Button>
-                <Button type="submit" size="sm" disabled={submitting || !newEntry.title.trim()}>
+                </button>
+                <button 
+                  type="submit" 
+                  className={styles.submitBtn}
+                  disabled={submitting || !newEntry.title.trim()}
+                >
                   {submitting ? 'Adding...' : 'Add Entry'}
-                </Button>
+                </button>
               </div>
             </form>
           </DialogBody>
         </DialogContent>
       </Dialog>
-    </div>
+    </motion.div>
   );
 }

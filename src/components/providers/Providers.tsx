@@ -4,10 +4,11 @@ import { Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState, type ReactNode } from 'react';
 import { AnalyticsProvider } from './AnalyticsProvider';
+import { ToastProvider } from '@/components/ui/Toast';
 
 /**
  * App-wide providers wrapper
- * Includes React Query client and Analytics
+ * Includes React Query client, Analytics, and Toast notifications
  */
 export function Providers({ children }: { children: ReactNode }) {
   // Create QueryClient instance that persists across renders
@@ -28,11 +29,13 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={null}>
-        <AnalyticsProvider gtmId={gtmId}>
-          {children}
-        </AnalyticsProvider>
-      </Suspense>
+      <ToastProvider>
+        <Suspense fallback={null}>
+          <AnalyticsProvider gtmId={gtmId}>
+            {children}
+          </AnalyticsProvider>
+        </Suspense>
+      </ToastProvider>
     </QueryClientProvider>
   );
 }

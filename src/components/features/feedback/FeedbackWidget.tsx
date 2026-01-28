@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { X, Bug, Lightbulb, MessageCircle, ChevronRight, Check, ArrowLeft, MoreHorizontal } from 'lucide-react';
+import { X, Bug, Lightbulb, MessageCircle, ChevronRight, Check, ArrowLeft, MoreHorizontal, Target, Crosshair } from 'lucide-react';
 import { useFeedback, type FeedbackReason } from './FeedbackContext';
 import styles from './FeedbackWidget.module.css';
 
@@ -80,6 +80,10 @@ export function FeedbackWidget() {
     submitFeedback,
     isSubmitting,
     isSubmitted,
+    // Element selector
+    isSelectingElement,
+    startElementSelection,
+    selectedElement,
   } = useFeedback();
 
   const pathname = usePathname();
@@ -197,6 +201,17 @@ export function FeedbackWidget() {
         <span className={styles.tabLabel}>Feedback</span>
       </button>
 
+      {/* Element Selection Mode Indicator */}
+      {isSelectingElement && (
+        <div className={styles.selectionModeOverlay} data-feedback-widget>
+          <div className={styles.selectionModeCard}>
+            <Crosshair size={24} />
+            <p>Click on any element to select it</p>
+            <span>Press ESC to cancel</span>
+          </div>
+        </div>
+      )}
+
       {/* Feedback Panel */}
       <div
         ref={panelRef}
@@ -205,6 +220,7 @@ export function FeedbackWidget() {
         role="dialog"
         aria-label="Share feedback"
         aria-hidden={!isOpen}
+        data-feedback-widget
       >
         {/* Header */}
         <header className={styles.header}>
@@ -376,6 +392,37 @@ export function FeedbackWidget() {
                       : SUB_OPTIONS[feedbackData.reason!]?.find(o => o.id === feedbackData.subOption)?.label
                     }
                   </span>
+                )}
+              </div>
+
+              {/* Element Selector */}
+              <div className={styles.elementSelector}>
+                {selectedElement ? (
+                  <div className={styles.selectedElementBadge}>
+                    <Target size={14} />
+                    <span className={styles.selectedElementText}>
+                      {selectedElement.tagName}
+                      {selectedElement.id && `#${selectedElement.id}`}
+                      {selectedElement.text && `: "${selectedElement.text.slice(0, 30)}..."`}
+                    </span>
+                    <button
+                      className={styles.reselectButton}
+                      onClick={startElementSelection}
+                      aria-label="Select different element"
+                    >
+                      Change
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    className={styles.elementSelectorButton}
+                    onClick={startElementSelection}
+                    aria-label="Select an element on the page"
+                  >
+                    <Crosshair size={16} />
+                    <span>Select element on page</span>
+                    <span className={styles.optionalBadge}>Optional</span>
+                  </button>
                 )}
               </div>
 

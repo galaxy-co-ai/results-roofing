@@ -16,19 +16,38 @@
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: var(--admin-space-6);
+  gap: var(--admin-space-4);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-3);
+}
+
+.headerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);
+  border-radius: var(--admin-radius-xl);
+  color: white;
+  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
 }
 
 .title {
-  font-size: var(--admin-text-xl);
-  font-weight: var(--admin-font-semibold);
+  font-size: var(--admin-text-2xl);
+  font-weight: var(--admin-font-bold);
   color: var(--admin-text-primary);
   margin: 0;
 }
 
 .subtitle {
-  font-size: var(--admin-text-base);
+  font-size: var(--admin-text-sm);
   color: var(--admin-text-secondary);
-  margin: var(--admin-space-1) 0 0;
+  margin: 2px 0 0;
 }
 
 .headerActions {

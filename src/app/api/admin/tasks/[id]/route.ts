@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { db, eq } from '@/db';
 import { devTasks } from '@/db/schema';
+import { logTaskStatusChange } from '@/lib/changelog';
 
 /**
  * Helper to verify admin authentication
@@ -132,14 +133,30 @@ export async function PATCH(
       updateData.dueDate = validated.dueDate ? new Date(validated.dueDate) : null;
     }
 
+    // Get current task to check for status change
+    const [currentTask] = await db
+      .select()
+      .from(devTasks)
+      .where(eq(devTasks.id, id))
+      .limit(1);
+
+    if (!currentTask) {
+      return NextResponse.json({ error: 'Task not found' }, { status: 404 });
+    }
+
     const [updated] = await db
       .update(devTasks)
       .set(updateData)
       .where(eq(devTasks.id, id))
       .returning();
 
-    if (!updated) {
-      return NextResponse.json({ error: 'Task not found' }, { status: 404 });
+    // Log status change to changelog (async, non-blocking)
+    if (updateData.status && updateData.status !== currentTask.status) {
+      logTaskStatusChange(
+        currentTask.title,
+        currentTask.status,
+        updateData.status as string
+      ).catch(() => {});
     }
 
     return NextResponse.json({ task: updated });

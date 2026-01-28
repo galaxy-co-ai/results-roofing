@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Plus, 
@@ -11,9 +11,17 @@ import {
   Loader2,
   GripVertical,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Square,
   CheckSquare,
   Sparkles,
+  LayoutGrid,
+  List,
+  Zap,
+  Clock,
+  CheckCircle2,
+  ListTodo,
 } from 'lucide-react';
 import {
   DndContext,
@@ -36,6 +44,47 @@ import { Progress } from '@/components/ui/progress';
 import { staggerContainer, fadeInUp } from '@/lib/animation-variants';
 import { CommandBar } from '@/components/features/admin/CommandBar';
 import styles from './page.module.css';
+
+// ============================================
+// Tab Types and Components
+// ============================================
+type TabType = 'board' | 'list' | 'sprint';
+
+interface TabBarProps {
+  activeTab: TabType;
+  onTabChange: (tab: TabType) => void;
+  counts: {
+    board: number;
+    list: number;
+    sprint: number;
+  };
+}
+
+function TabBar({ activeTab, onTabChange, counts }: TabBarProps) {
+  const tabs = [
+    { id: 'board' as const, label: 'Board', icon: LayoutGrid, count: null },
+    { id: 'list' as const, label: 'All Tasks', icon: List, count: counts.list },
+    { id: 'sprint' as const, label: 'Sprint', icon: Zap, count: counts.sprint },
+  ];
+
+  return (
+    <div className={styles.tabBar}>
+      {tabs.map((tab) => (
+        <button
+          key={tab.id}
+          className={`${styles.tab} ${activeTab === tab.id ? styles.tabActive : ''}`}
+          onClick={() => onTabChange(tab.id)}
+        >
+          <tab.icon size={16} />
+          <span>{tab.label}</span>
+          {tab.count !== null && tab.count > 0 && (
+            <span className={styles.tabBadge}>{tab.count}</span>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 interface ChecklistItem {
   id: string;
@@ -434,6 +483,413 @@ function TaskCard({ task, isExpanded, onToggleExpand, onDelete, isDragging, isOv
 }
 
 // ============================================
+// List View Component
+// ============================================
+interface ListViewProps {
+  tasks: Task[];
+  onStatusChange: (taskId: string, status: Task['status']) => void;
+  onDeleteTask: (taskId: string) => void;
+}
+
+const TASKS_PER_PAGE = 10;
+
+function ListView({ tasks, onStatusChange, onDeleteTask }: ListViewProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const sortedTasks = useMemo(() => {
+    return [...tasks].sort((a, b) => {
+      const priorityOrder = { urgent: 0, high: 1, medium: 2, low: 3 };
+      const statusOrder = { in_progress: 0, todo: 1, review: 2, backlog: 3, done: 4 };
+      
+      // First by status
+      const statusDiff = statusOrder[a.status] - statusOrder[b.status];
+      if (statusDiff !== 0) return statusDiff;
+      
+      // Then by priority
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    });
+  }, [tasks]);
+
+  // Pagination calculations
+  const totalPages = Math.ceil(sortedTasks.length / TASKS_PER_PAGE);
+  const startIndex = (currentPage - 1) * TASKS_PER_PAGE;
+  const endIndex = startIndex + TASKS_PER_PAGE;
+  const paginatedTasks = sortedTasks.slice(startIndex, endIndex);
+
+  // Reset to page 1 if current page becomes invalid (e.g., after deleting tasks)
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  return (
+    <div className={styles.listView}>
+      <div className={styles.listHeader}>
+        <span className={styles.listHeaderCell} style={{ flex: 2 }}>Task</span>
+        <span className={styles.listHeaderCell}>Status</span>
+        <span className={styles.listHeaderCell}>Priority</span>
+        <span className={styles.listHeaderCell}>Category</span>
+        <span className={styles.listHeaderCell}>Phase</span>
+        <span className={styles.listHeaderCell} style={{ width: 40 }}></span>
+      </div>
+      <div className={styles.listBody}>
+        {paginatedTasks.map((task) => {
+          const statusCol = COLUMNS.find(c => c.id === task.status);
+          return (
+            <div key={task.id} className={styles.listRow}>
+              <div className={styles.listCell} style={{ flex: 2 }}>
+                <span className={styles.listTaskTitle}>{task.title}</span>
+                {task.description && (
+                  <span className={styles.listTaskDesc}>{task.description}</span>
+                )}
+              </div>
+              <div className={styles.listCell}>
+                <select
+                  className={styles.listSelect}
+                  value={task.status}
+                  onChange={(e) => onStatusChange(task.id, e.target.value as Task['status'])}
+                  style={{ borderColor: statusCol?.color }}
+                >
+                  {COLUMNS.map((col) => (
+                    <option key={col.id} value={col.id}>{col.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.listCell}>
+                <span 
+                  className={styles.priorityBadge}
+                  style={{ 
+                    background: `${PRIORITY_COLORS[task.priority]}15`, 
+                    color: PRIORITY_COLORS[task.priority] 
+                  }}
+                >
+                  <Flag size={10} />
+                  {task.priority}
+                </span>
+              </div>
+              <div className={styles.listCell}>
+                <span className={styles.categoryBadge}>
+                  {CATEGORY_LABELS[task.category]}
+                </span>
+              </div>
+              <div className={styles.listCell}>
+                {task.phaseName ? (
+                  <span className={styles.phaseBadge}>P{task.phaseId}</span>
+                ) : (
+                  <span className="text-muted-foreground text-xs">—</span>
+                )}
+              </div>
+              <div className={styles.listCell} style={{ width: 40 }}>
+                <button
+                  className={styles.listDeleteBtn}
+                  onClick={() => onDeleteTask(task.id)}
+                  aria-label="Delete task"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+        {sortedTasks.length === 0 && (
+          <div className={styles.listEmpty}>
+            No tasks yet. Click &quot;Add Task&quot; to create one.
+          </div>
+        )}
+      </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className={styles.pagination}>
+          <button
+            className={styles.paginationBtn}
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            aria-label="Previous page"
+          >
+            <ChevronLeft size={16} />
+            Previous
+          </button>
+          
+          <div className={styles.paginationInfo}>
+            <span className={styles.paginationCurrent}>Page {currentPage}</span>
+            <span className={styles.paginationTotal}>of {totalPages}</span>
+            <span className={styles.paginationCount}>
+              ({startIndex + 1}–{Math.min(endIndex, sortedTasks.length)} of {sortedTasks.length})
+            </span>
+          </div>
+          
+          <button
+            className={styles.paginationBtn}
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            aria-label="Next page"
+          >
+            Next
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============================================
+// Sprint View Component (Full Page Version)
+// ============================================
+interface SprintViewProps {
+  tasks: Task[];
+  onChecklistChange: (taskId: string, checklist: ChecklistItem[]) => void;
+  onAddChecklistItem: (taskId: string, text: string) => void;
+  onStatusChange: (taskId: string, status: Task['status']) => void;
+}
+
+function SprintView({ tasks, onChecklistChange, onAddChecklistItem, onStatusChange }: SprintViewProps) {
+  const [newItemText, setNewItemText] = useState('');
+  const [addingToTaskId, setAddingToTaskId] = useState<string | null>(null);
+
+  // Get active tasks: in_progress first, then todo
+  const activeTasks = useMemo(() => {
+    return tasks
+      .filter(t => t.status === 'in_progress' || t.status === 'todo')
+      .sort((a, b) => {
+        if (a.status === 'in_progress' && b.status !== 'in_progress') return -1;
+        if (b.status === 'in_progress' && a.status !== 'in_progress') return 1;
+        const priorityOrder = { urgent: 0, high: 1, medium: 2, low: 3 };
+        return priorityOrder[a.priority] - priorityOrder[b.priority];
+      });
+  }, [tasks]);
+
+  const handleToggleItem = (task: Task, itemId: string) => {
+    const updatedChecklist = task.checklist.map(item =>
+      item.id === itemId ? { ...item, completed: !item.completed } : item
+    );
+    onChecklistChange(task.id, updatedChecklist);
+  };
+
+  const handleAddItem = (taskId: string) => {
+    if (!newItemText.trim()) return;
+    onAddChecklistItem(taskId, newItemText.trim());
+    setNewItemText('');
+    setAddingToTaskId(null);
+  };
+
+  const getCompletionPercent = (task: Task) => {
+    if (!task.checklist || task.checklist.length === 0) return 0;
+    const completed = task.checklist.filter(i => i.completed).length;
+    return Math.round((completed / task.checklist.length) * 100);
+  };
+
+  // Calculate overall stats
+  const totalItems = activeTasks.reduce((acc, t) => acc + (t.checklist?.length || 0), 0);
+  const completedItems = activeTasks.reduce((acc, t) => acc + (t.checklist?.filter(i => i.completed).length || 0), 0);
+  const overallProgress = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+
+  const inProgressTasks = activeTasks.filter(t => t.status === 'in_progress');
+  const todoTasks = activeTasks.filter(t => t.status === 'todo');
+
+  if (activeTasks.length === 0) {
+    return (
+      <div className={styles.sprintEmpty}>
+        <div className={styles.sprintEmptyIcon}>
+          <Zap size={48} />
+        </div>
+        <h3>No Active Sprint</h3>
+        <p>Move tasks to &quot;To Do&quot; or &quot;In Progress&quot; to start a sprint.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.sprintView}>
+      {/* Sprint Stats */}
+      <div className={styles.sprintStats}>
+        <div className={styles.sprintStatCard}>
+          <Clock size={20} className="text-amber-500" />
+          <div>
+            <span className={styles.sprintStatValue}>{inProgressTasks.length}</span>
+            <span className={styles.sprintStatLabel}>In Progress</span>
+          </div>
+        </div>
+        <div className={styles.sprintStatCard}>
+          <List size={20} className="text-blue-500" />
+          <div>
+            <span className={styles.sprintStatValue}>{todoTasks.length}</span>
+            <span className={styles.sprintStatLabel}>To Do</span>
+          </div>
+        </div>
+        <div className={styles.sprintStatCard}>
+          <CheckCircle2 size={20} className="text-emerald-500" />
+          <div>
+            <span className={styles.sprintStatValue}>{overallProgress}%</span>
+            <span className={styles.sprintStatLabel}>Complete</span>
+          </div>
+        </div>
+      </div>
+
+      {/* In Progress Section */}
+      {inProgressTasks.length > 0 && (
+        <div className={styles.sprintSection}>
+          <h3 className={styles.sprintSectionTitle}>
+            <Clock size={16} className="text-amber-500" />
+            In Progress ({inProgressTasks.length})
+          </h3>
+          <div className={styles.sprintTaskGrid}>
+            {inProgressTasks.map((task) => {
+              const completionPercent = getCompletionPercent(task);
+              return (
+                <div key={task.id} className={styles.sprintTaskCard}>
+                  <div className={styles.sprintTaskHeader}>
+                    {task.phaseName && (
+                      <span className={styles.phaseBadge}>P{task.phaseId}</span>
+                    )}
+                    <span 
+                      className={styles.priorityBadge}
+                      style={{ 
+                        background: `${PRIORITY_COLORS[task.priority]}15`, 
+                        color: PRIORITY_COLORS[task.priority] 
+                      }}
+                    >
+                      <Flag size={9} />
+                      {task.priority.toUpperCase()}
+                    </span>
+                    {task.checklist.length > 0 && (
+                      <div className={styles.progressPill}>
+                        <div className={styles.progressPillBar}>
+                          <div 
+                            className={styles.progressPillFill}
+                            style={{ width: `${completionPercent}%` }}
+                          />
+                        </div>
+                        <span className={styles.progressPillText}>{completionPercent}%</span>
+                      </div>
+                    )}
+                    <button
+                      className={styles.markDoneBtn}
+                      onClick={(e) => { e.stopPropagation(); onStatusChange(task.id, 'done'); }}
+                    >
+                      <CheckCircle2 size={10} />
+                      Done
+                    </button>
+                  </div>
+                  <h4 className={styles.sprintTaskTitle}>{task.title}</h4>
+
+                  <div className={styles.sprintChecklist}>
+                    {task.checklist.map((item) => (
+                      <button
+                        key={item.id}
+                        className={`${styles.checklistItem} ${item.completed ? styles.checklistItemCompleted : ''}`}
+                        onClick={() => handleToggleItem(task, item.id)}
+                      >
+                        {item.completed ? (
+                          <CheckSquare size={14} className="text-emerald-500 flex-shrink-0" />
+                        ) : (
+                          <Square size={14} className="text-muted-foreground flex-shrink-0" />
+                        )}
+                        <span className={item.completed ? 'line-through text-muted-foreground' : ''}>
+                          {item.text}
+                        </span>
+                      </button>
+                    ))}
+
+                    {addingToTaskId === task.id ? (
+                      <div className={styles.addItemForm}>
+                        <input
+                          type="text"
+                          value={newItemText}
+                          onChange={(e) => setNewItemText(e.target.value)}
+                          placeholder="Add checklist item..."
+                          className={styles.addItemInput}
+                          autoFocus
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleAddItem(task.id);
+                            if (e.key === 'Escape') setAddingToTaskId(null);
+                          }}
+                        />
+                        <button
+                          onClick={() => handleAddItem(task.id)}
+                          className={styles.addItemSubmit}
+                          disabled={!newItemText.trim()}
+                        >
+                          Add
+                        </button>
+                        <button
+                          onClick={() => setAddingToTaskId(null)}
+                          className={styles.addItemCancel}
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        className={styles.addChecklistButton}
+                        onClick={() => setAddingToTaskId(task.id)}
+                      >
+                        <Plus size={12} />
+                        Add item
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* To Do Section */}
+      {todoTasks.length > 0 && (
+        <div className={styles.sprintSection}>
+          <h3 className={styles.sprintSectionTitle}>
+            <List size={16} className="text-blue-500" />
+            Up Next ({todoTasks.length})
+          </h3>
+          <div className={styles.sprintTaskGrid}>
+            {todoTasks.map((task) => (
+              <div key={task.id} className={`${styles.sprintTaskCard} ${styles.sprintTaskCardTodo}`}>
+                <div className={styles.sprintTaskHeader}>
+                  {task.phaseName && (
+                    <span className={styles.phaseBadge}>P{task.phaseId}</span>
+                  )}
+                  <span 
+                    className={styles.priorityBadge}
+                    style={{ 
+                      background: `${PRIORITY_COLORS[task.priority]}15`, 
+                      color: PRIORITY_COLORS[task.priority] 
+                    }}
+                  >
+                    <Flag size={9} />
+                    {task.priority.toUpperCase()}
+                  </span>
+                  <button
+                    className={styles.startTaskBtn}
+                    onClick={(e) => { e.stopPropagation(); onStatusChange(task.id, 'in_progress'); }}
+                  >
+                    <Zap size={10} />
+                    Start
+                  </button>
+                </div>
+                <h4 className={styles.sprintTaskTitle}>{task.title}</h4>
+                {task.description && (
+                  <p className={styles.sprintTaskDesc}>{task.description}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============================================
 // Droppable Column Component
 // ============================================
 interface ColumnProps {
@@ -487,6 +943,7 @@ export default function TasksPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabType>('board');
   const [newTask, setNewTask] = useState({ 
     title: '', 
     description: '', 
@@ -497,6 +954,13 @@ export default function TasksPage() {
   const [isAdding, setIsAdding] = useState(false);
   const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
+
+  // Tab counts
+  const tabCounts = useMemo(() => ({
+    board: 0, // No badge for board
+    list: tasks.length,
+    sprint: tasks.filter(t => t.status === 'in_progress' || t.status === 'todo').length,
+  }), [tasks]);
 
   // DnD Sensors
   const sensors = useSensors(
@@ -696,21 +1160,28 @@ export default function TasksPage() {
     >
       {/* Header */}
       <motion.header className={styles.header} variants={fadeInUp}>
-        <div>
-          <h1 className="text-heading-24 tracking-tight">Task Board</h1>
-          <p className="text-copy-14 text-subtle mt-1">
-            AI-powered sprint management
-          </p>
+        <div className={styles.headerLeft}>
+          <div className={styles.headerIcon}>
+            <ListTodo size={24} />
+          </div>
+          <div>
+            <h1 className={styles.title}>Tasks</h1>
+            <p className={styles.subtitle}>AI-powered sprint management</p>
+          </div>
         </div>
         <div className={styles.headerControls}>
-          <ActiveSprintButton 
-            tasks={tasks}
-            onChecklistChange={handleChecklistChange}
-            onAddChecklistItem={handleAddChecklistItem}
-          />
           <CommandBar onRefreshTasks={fetchTasks} onAddTask={() => setShowAddForm(true)} />
         </div>
       </motion.header>
+
+      {/* Tab Bar */}
+      <motion.div variants={fadeInUp}>
+        <TabBar 
+          activeTab={activeTab} 
+          onTabChange={setActiveTab}
+          counts={tabCounts}
+        />
+      </motion.div>
 
       {/* Add Task Modal */}
       {showAddForm && (
@@ -811,40 +1282,85 @@ export default function TasksPage() {
         </div>
       )}
 
-      {/* Kanban Board with Drag and Drop */}
+      {/* Tab Content */}
       {!isLoading && !error && (
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCorners}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-        >
-          <motion.div className={styles.board} variants={fadeInUp}>
-            {COLUMNS.map((column) => (
-              <Column
-                key={column.id}
-                column={column}
-                tasks={getTasksByStatus(column.id)}
-                expandedTaskId={expandedTaskId}
-                onToggleExpand={toggleExpand}
+        <AnimatePresence mode="wait">
+          {/* Board View */}
+          {activeTab === 'board' && (
+            <motion.div
+              key="board"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+            >
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCorners}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+              >
+                <div className={styles.board}>
+                  {COLUMNS.map((column) => (
+                    <Column
+                      key={column.id}
+                      column={column}
+                      tasks={getTasksByStatus(column.id)}
+                      expandedTaskId={expandedTaskId}
+                      onToggleExpand={toggleExpand}
+                      onDeleteTask={handleDeleteTask}
+                    />
+                  ))}
+                </div>
+
+                {/* Drag Overlay */}
+                <DragOverlay>
+                  {activeTask && (
+                    <TaskCard
+                      task={activeTask}
+                      isExpanded={false}
+                      onToggleExpand={() => {}}
+                      onDelete={() => {}}
+                      isOverlay
+                    />
+                  )}
+                </DragOverlay>
+              </DndContext>
+            </motion.div>
+          )}
+
+          {/* List View */}
+          {activeTab === 'list' && (
+            <motion.div
+              key="list"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+            >
+              <ListView
+                tasks={tasks}
+                onStatusChange={handleStatusChange}
                 onDeleteTask={handleDeleteTask}
               />
-            ))}
-          </motion.div>
+            </motion.div>
+          )}
 
-          {/* Drag Overlay */}
-          <DragOverlay>
-            {activeTask && (
-              <TaskCard
-                task={activeTask}
-                isExpanded={false}
-                onToggleExpand={() => {}}
-                onDelete={() => {}}
-                isOverlay
+          {/* Sprint View */}
+          {activeTab === 'sprint' && (
+            <motion.div
+              key="sprint"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+            >
+              <SprintView
+                tasks={tasks}
+                onChecklistChange={handleChecklistChange}
+                onAddChecklistItem={handleAddChecklistItem}
+                onStatusChange={handleStatusChange}
               />
-            )}
-          </DragOverlay>
-        </DndContext>
+            </motion.div>
+          )}
+        </AnimatePresence>
       )}
 
     </motion.div>

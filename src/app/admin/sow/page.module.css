@@ -16,19 +16,46 @@
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: var(--admin-space-6);
+  gap: var(--admin-space-4);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-3);
+}
+
+.headerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  border-radius: var(--admin-radius-xl);
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 .title {
-  font-size: var(--admin-text-xl);
-  font-weight: var(--admin-font-semibold);
+  font-size: var(--admin-text-2xl);
+  font-weight: var(--admin-font-bold);
   color: var(--admin-text-primary);
   margin: 0;
 }
 
 .subtitle {
-  font-size: var(--admin-text-base);
+  font-size: var(--admin-text-sm);
   color: var(--admin-text-secondary);
-  margin: var(--admin-space-1) 0 0;
+  margin: 2px 0 0;
+  display: flex;
+  align-items: center;
+}
+
+.liveIndicator {
+  font-size: var(--admin-text-xs);
+  color: #10B981;
+  margin-left: var(--admin-space-2);
 }
 
 .docLink {
@@ -408,4 +435,67 @@
   .blockerRow span:not(:first-child) {
     padding-left: var(--admin-space-3);
   }
+}
+
+/* ========================================
+   SHARE BUTTONS
+   ======================================== */
+
+.shareButtons {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-2);
+  flex-shrink: 0;
+}
+
+.shareBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--admin-interactive-primary);
+  border: none;
+  border-radius: var(--admin-radius-md);
+  color: white;
+  font-size: var(--admin-text-xs);
+  font-weight: var(--admin-font-medium);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.shareBtn:hover {
+  background: var(--admin-interactive-primary-hover);
+  transform: translateY(-1px);
+}
+
+.shareBtn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.shareBtnSuccess {
+  background: #10B981;
+}
+
+.shareBtnSuccess:hover {
+  background: #059669;
+}
+
+.openBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-default);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.openBtn:hover {
+  background: var(--admin-bg-hover);
+  color: var(--admin-text-primary);
+  border-color: var(--admin-border-strong);
 }

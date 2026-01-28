@@ -9,6 +9,10 @@ import {
   FileText,
   RefreshCw,
   Loader2,
+  Share2,
+  Check,
+  ExternalLink,
+  ClipboardList,
 } from 'lucide-react';
 import { SegmentedProgress } from '@/components/ui/segmented-progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody } from '@/components/ui/dialog';
@@ -111,6 +115,33 @@ export default function SOWPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showSowDialog, setShowSowDialog] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const shareUrl = typeof window !== 'undefined' 
+    ? `${window.location.origin}/sow/progress`
+    : '/sow/progress';
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = shareUrl;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleOpenSharePage = () => {
+    window.open(shareUrl, '_blank');
+  };
 
   const fetchTasks = useCallback(async () => {
     setIsLoading(true);
@@ -193,12 +224,17 @@ export default function SOWPage() {
     <div className={styles.page}>
       {/* Header */}
       <header className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Scope of Work</h1>
-          <p className={styles.subtitle}>
-            MVP B Progress Tracker
-            <span className="text-xs text-emerald-600 ml-2">● Live</span>
-          </p>
+        <div className={styles.headerLeft}>
+          <div className={styles.headerIcon}>
+            <ClipboardList size={24} />
+          </div>
+          <div>
+            <h1 className={styles.title}>SOW Tracker</h1>
+            <p className={styles.subtitle}>
+              MVP B Progress Tracker
+              <span className={styles.liveIndicator}>● Live</span>
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -222,9 +258,28 @@ export default function SOWPage() {
       <Dialog open={showSowDialog} onOpenChange={setShowSowDialog}>
         <DialogContent size="md" className="max-h-[65vh]">
           <DialogHeader className="border-b pb-4">
-            <div>
-              <DialogTitle className="text-xl">Results Roofing Website Overhaul</DialogTitle>
-              <p className="text-sm text-muted-foreground mt-1">Scope of Work - MVP B</p>
+            <div className="flex items-start justify-between w-full">
+              <div>
+                <DialogTitle className="text-xl">Results Roofing Website Overhaul</DialogTitle>
+                <p className="text-sm text-muted-foreground mt-1">Scope of Work - MVP B</p>
+              </div>
+              <div className={styles.shareButtons}>
+                <button
+                  onClick={handleCopyLink}
+                  className={`${styles.shareBtn} ${copied ? styles.shareBtnSuccess : ''}`}
+                  title="Copy shareable link"
+                >
+                  {copied ? <Check size={14} /> : <Share2 size={14} />}
+                  {copied ? 'Copied!' : 'Copy Link'}
+                </button>
+                <button
+                  onClick={handleOpenSharePage}
+                  className={styles.openBtn}
+                  title="Open in new tab"
+                >
+                  <ExternalLink size={14} />
+                </button>
+              </div>
             </div>
           </DialogHeader>
           <DialogBody className="p-6 overflow-y-auto">

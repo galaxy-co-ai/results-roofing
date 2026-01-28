@@ -1,0 +1,395 @@
+/* ========================================
+   SOW PROGRESS - Public Shareable Page
+   ======================================== */
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding: 40px;
+    align-items: center;
+  }
+}
+
+.card {
+  width: 100%;
+  max-width: 720px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* ========================================
+   LOADING & ERROR
+   ======================================== */
+
+.loading,
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 12px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.error {
+  color: #dc2626;
+}
+
+.retryBtn {
+  margin-top: 8px;
+  padding: 8px 16px;
+  background: #1e40af;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.retryBtn:hover {
+  background: #1e3a8a;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, #fafbfc 0%, white 100%);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin: 2px 0 0 0;
+}
+
+.refreshBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.refreshBtn:hover {
+  background: #f8fafc;
+  color: #1e40af;
+  border-color: #1e40af;
+}
+
+/* ========================================
+   PROGRESS SECTION
+   ======================================== */
+
+.progressSection {
+  padding: 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.progressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.progressLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.progressValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: #10B981;
+}
+
+.progressBar {
+  height: 12px;
+  background: #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+  border-radius: 6px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+@media (min-width: 480px) {
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.statIconComplete { color: #10B981; }
+.statIconProgress { color: #1e40af; }
+.statIconPending { color: #f59e0b; }
+.statIconBlocked { color: #dc2626; }
+
+/* ========================================
+   PHASES SECTION
+   ======================================== */
+
+.phasesSection {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.phaseCard {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.15s ease;
+}
+
+.phaseCard:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.phaseHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+@media (min-width: 480px) {
+  .phaseHeader {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.phaseInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.phaseNumber {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.phaseName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.phaseStats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.phaseProgressBar {
+  width: 80px;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.phaseProgressFill {
+  height: 100%;
+  background: #1e40af;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.phaseCount {
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  font-variant-numeric: tabular-nums;
+}
+
+.phaseBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.badge_complete {
+  background: #d1fae5;
+  color: #047857;
+}
+
+.badge_in_progress {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.badge_pending {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.badge_blocked {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ========================================
+   TASKS LIST
+   ======================================== */
+
+.tasksList {
+  padding: 8px 0;
+}
+
+.taskItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  font-size: 13px;
+  transition: background 0.1s ease;
+}
+
+.taskItem:hover {
+  background: #f8fafc;
+}
+
+.taskIcon {
+  flex-shrink: 0;
+}
+
+.task_complete .taskIcon { color: #10B981; }
+.task_in_progress .taskIcon { color: #1e40af; }
+.task_pending .taskIcon { color: #f59e0b; }
+.task_blocked .taskIcon { color: #dc2626; }
+
+.taskTitle {
+  color: #374151;
+}
+
+.task_complete .taskTitle {
+  color: #9ca3af;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.footerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.updatedAt {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.brandLink {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.brandLink:hover {
+  color: #1e40af;
+}

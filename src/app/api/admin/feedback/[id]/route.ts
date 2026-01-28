@@ -66,6 +66,7 @@ export async function PATCH(
 
     const schema = z.object({
       status: z.enum(['new', 'reviewed', 'in_progress', 'resolved', 'wont_fix']).optional(),
+      priority: z.enum(['low', 'medium', 'high', 'critical']).optional(),
       adminNotes: z.string().optional(),
     });
 
@@ -80,6 +81,10 @@ export async function PATCH(
       if (validated.status === 'resolved') {
         updateData.resolvedAt = new Date();
       }
+    }
+
+    if (validated.priority) {
+      updateData.priority = validated.priority;
     }
 
     if (validated.adminNotes !== undefined) {

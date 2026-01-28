@@ -16,7 +16,9 @@ import {
   Clock,
   Circle,
   AlertCircle,
+  LayoutDashboard,
 } from 'lucide-react';
+import styles from './page.module.css';
 import { PhaseTimeline } from '@/components/ui/phase-timeline';
 import { Dock, DockIcon } from '@/components/ui/dock';
 import {
@@ -167,16 +169,19 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className={styles.page}>
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Project Dashboard</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Results Roofing Website Overhaul — MVP B
-          </p>
+      <header className={styles.header}>
+        <div className={styles.headerLeft}>
+          <div className={styles.headerIcon}>
+            <LayoutDashboard size={24} />
+          </div>
+          <div>
+            <h1 className={styles.title}>Dashboard</h1>
+            <p className={styles.subtitle}>Results Roofing Website Overhaul — MVP B</p>
+          </div>
         </div>
-      </div>
+      </header>
 
       {/* Phase Dock */}
       <div className="flex justify-center">
