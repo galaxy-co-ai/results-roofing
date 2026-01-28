@@ -43,8 +43,8 @@ export function HeroAddressForm({ className = '' }: HeroAddressFormProps) {
           placeId: address.placeId,
         });
 
-        // Navigate to packages page on success
-        router.push(`/quote/${quote.id}/packages`);
+        // Navigate to customize page on success
+        router.push(`/quote/${quote.id}/customize`);
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Failed to create quote';
         setError(errorMessage);
