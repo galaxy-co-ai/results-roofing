@@ -89,7 +89,7 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         const response = await fetch(`/api/quotes/${quoteId}/select-tier`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ tierId: tier }),
+          body: JSON.stringify({ tier }),
         });
 
         if (!response.ok) {
