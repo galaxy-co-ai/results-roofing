@@ -26,8 +26,8 @@ const NAV_ITEMS = [
 ];
 
 async function handleLogout() {
-  // Clear admin session cookie
-  document.cookie = 'admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+  // Server-side session invalidation
+  await fetch('/api/admin/auth', { method: 'DELETE' });
   window.location.href = '/';
 }
 

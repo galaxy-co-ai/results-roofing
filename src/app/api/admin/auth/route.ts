@@ -2,12 +2,31 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { cookies } from 'next/headers';
+import { randomBytes } from 'crypto';
+import { createRateLimiter, getRequestIdentifier, rateLimitHeaders } from '@/lib/api/rate-limit';
+
+// Strict rate limiter for admin auth: 5 attempts per 15 minutes
+const adminAuthLimiter = createRateLimiter({
+  windowMs: 15 * 60 * 1000,
+  maxRequests: 5
+});
 
 /**
  * POST /api/admin/auth
  * Authenticate admin with password
  */
 export async function POST(request: NextRequest) {
+  // Rate limiting
+  const identifier = getRequestIdentifier(request);
+  const rateLimitResult = adminAuthLimiter.check(identifier);
+
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: 'Too many login attempts. Please try again later.' },
+      { status: 429, headers: rateLimitHeaders(rateLimitResult) }
+    );
+  }
+
   try {
     const body = await request.json();
 
@@ -19,7 +38,7 @@ export async function POST(request: NextRequest) {
 
     // Check password against environment variable
     const adminPassword = process.env.ADMIN_PASSWORD;
-    
+
     if (!adminPassword) {
       return NextResponse.json(
         { error: 'Admin access not configured' },
@@ -34,17 +53,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate a session token
-    const sessionToken = process.env.ADMIN_SESSION_TOKEN || 
-      Buffer.from(`admin_${Date.now()}_${Math.random()}`).toString('base64');
+    // Generate a cryptographically secure session token
+    const sessionToken = process.env.ADMIN_SESSION_TOKEN ||
+      randomBytes(32).toString('hex');
 
     // Set secure cookie
     const cookieStore = await cookies();
     cookieStore.set('admin_session', sessionToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'strict',
-      maxAge: 60 * 60 * 24, // 24 hours
+      maxAge: 60 * 60 * 4, // 4 hours
       path: '/',
     });
 
