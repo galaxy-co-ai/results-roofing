@@ -349,7 +349,7 @@ function InsightsTab({ feedback }: { feedback: FeedbackItem[] }) {
 
   const priorityData = useMemo(() => [
     { name: 'Critical', value: analytics.byPriority.critical, color: 'rose' as const },
-    { name: 'High', value: analytics.byPriority.high, color: 'orange' as const },
+    { name: 'High', value: analytics.byPriority.high, color: 'violet' as const },
     { name: 'Medium', value: analytics.byPriority.medium, color: 'amber' as const },
     { name: 'Low', value: analytics.byPriority.low, color: 'emerald' as const },
   ].filter(d => d.value > 0), [analytics.byPriority]);
@@ -454,7 +454,7 @@ function InsightsTab({ feedback }: { feedback: FeedbackItem[] }) {
                 data={priorityData}
                 category="value"
                 index="name"
-                colors={['rose', 'orange', 'amber', 'emerald']}
+                colors={['rose', 'violet', 'amber', 'emerald']}
                 className="h-44"
               />
             ) : (
