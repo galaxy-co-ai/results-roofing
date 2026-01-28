@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Plus, 
+import {
+  Plus,
   RefreshCw,
   AlertCircle,
   X,
@@ -15,7 +15,6 @@ import {
   ChevronRight,
   Square,
   CheckSquare,
-  Sparkles,
   LayoutGrid,
   List,
   Zap,
@@ -40,7 +39,6 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Progress } from '@/components/ui/progress';
 import { staggerContainer, fadeInUp } from '@/lib/animation-variants';
 import { CommandBar } from '@/components/features/admin/CommandBar';
 import styles from './page.module.css';
