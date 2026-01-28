@@ -85,14 +85,14 @@ export default async function ResumePage({ searchParams }: ResumePageProps) {
     redirectPath = `/quote/${quote.id}/checkout`;
   } else if (quote.status === 'measured' || quote.sqftTotal) {
     // If measured, go to package selection
-    redirectPath = `/quote/${quote.id}/packages`;
+    redirectPath = `/quote/${quote.id}/customize`;
   } else if (draftState.currentStage === 2) {
-    redirectPath = `/quote/${quote.id}/packages`;
+    redirectPath = `/quote/${quote.id}/customize`;
   } else if (draftState.currentStage === 3) {
     redirectPath = `/quote/${quote.id}/checkout`;
   } else {
-    // Default to packages
-    redirectPath = `/quote/${quote.id}/packages`;
+    // Default to customize
+    redirectPath = `/quote/${quote.id}/customize`;
   }
 
   // Redirect to the appropriate page

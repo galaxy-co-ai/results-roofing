@@ -96,7 +96,7 @@ export function CheckoutPageClient({
     <main className={styles.main}>
       <div className={styles.container}>
         {/* Back Link */}
-        <Link href={`/quote/${quoteId}/packages`} className={styles.backLink}>
+        <Link href={`/quote/${quoteId}/customize`} className={styles.backLink}>
           <ChevronLeft size={18} />
           Change Package
         </Link>

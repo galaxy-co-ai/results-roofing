@@ -106,7 +106,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         complexity,
         source: 'manual',
       },
-      nextStep: `/quote/${quoteId}/packages`,
+      nextStep: `/quote/${quoteId}/customize`,
     });
   } catch (error) {
     logger.error('Error saving manual measurement', error);
