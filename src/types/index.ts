@@ -84,3 +84,42 @@ export interface TierPricing {
   warranty: string;
   leadTime: string;
 }
+
+/**
+ * Quote draft state - saved progress for resume functionality
+ * Stores user selections made during the quote flow
+ */
+export interface QuoteDraftState {
+  // Stage 1 data
+  address?: Address;
+  propertyConfirmed?: boolean;
+  
+  // Stage 2 data (customize)
+  selectedTier?: PackageTier;
+  scheduledDate?: string; // ISO date string
+  timeSlot?: 'morning' | 'afternoon';
+  financingTerm?: 'pay-full' | '12' | '24';
+  
+  // Stage 3 data (checkout)
+  phone?: string;
+  smsConsent?: boolean;
+  
+  // Flow metadata
+  currentStage: 1 | 2 | 3;
+  currentStep: number;
+  lastUpdatedAt: string; // ISO date string
+}
+
+/**
+ * Quote draft record from database
+ */
+export interface QuoteDraft {
+  id: string;
+  quoteId: string;
+  email: string;
+  resumeToken: string;
+  draftState: QuoteDraftState;
+  expiresAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}

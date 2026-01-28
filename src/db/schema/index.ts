@@ -13,6 +13,7 @@ export * from './payments';
 export * from './appointments';
 export * from './sms-consents';
 export * from './quote-shares';
+export * from './quote-drafts';
 export * from './webhook-events';
 export * from './pricing-tiers';
 

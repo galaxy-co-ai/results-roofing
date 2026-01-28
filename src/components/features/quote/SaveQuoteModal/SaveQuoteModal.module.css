@@ -1,0 +1,284 @@
+/* =================================================
+   SAVE QUOTE MODAL STYLES
+   ================================================= */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: var(--rr-z-modal, 1000);
+  padding: var(--rr-space-4);
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--rr-color-bg-secondary);
+  border-radius: var(--rr-radius-lg);
+  box-shadow: var(--rr-shadow-charcoal-heavy, 0 25px 50px -12px rgba(0, 0, 0, 0.25));
+  padding: var(--rr-space-8);
+  text-align: center;
+  animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: var(--rr-space-4);
+  right: var(--rr-space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  color: var(--rr-color-text-tertiary);
+  cursor: pointer;
+  border-radius: var(--rr-radius-sm);
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.closeButton:hover {
+  color: var(--rr-color-text-primary);
+  background-color: var(--rr-color-bg-hover, rgba(0, 0, 0, 0.05));
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   ICON & HEADER
+   ======================================== */
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--rr-space-4);
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-blue-light, rgba(59, 130, 246, 0.1));
+  color: var(--rr-color-blue);
+}
+
+.title {
+  font-size: var(--rr-font-size-xl);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.description {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  margin-bottom: var(--rr-space-6);
+  line-height: 1.5;
+}
+
+/* ========================================
+   FORM
+   ======================================== */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-4);
+}
+
+.inputGroup {
+  text-align: left;
+}
+
+.label {
+  display: block;
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.input {
+  width: 100%;
+  padding: var(--rr-space-3) var(--rr-space-4);
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-primary);
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input::placeholder {
+  color: var(--rr-color-text-tertiary);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--rr-color-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input:disabled {
+  background-color: var(--rr-color-bg-muted, #f3f4f6);
+  cursor: not-allowed;
+}
+
+.inputError {
+  border-color: var(--rr-color-error, #dc2626);
+}
+
+.inputError:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.errorText {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-error, #dc2626);
+  margin-top: var(--rr-space-1);
+}
+
+.apiError {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-3);
+  background-color: var(--rr-color-error-light, rgba(239, 68, 68, 0.1));
+  border-radius: var(--rr-radius-md);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-error, #dc2626);
+}
+
+/* ========================================
+   BUTTON
+   ======================================== */
+
+.submitButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  width: 100%;
+  padding: var(--rr-space-3) var(--rr-space-6);
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-white);
+  background-color: var(--rr-color-blue);
+  border: none;
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+}
+
+.submitButton:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   DISCLAIMER
+   ======================================== */
+
+.disclaimer {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-tertiary);
+  margin-top: var(--rr-space-4);
+  line-height: 1.5;
+}
+
+/* ========================================
+   SUCCESS STATE
+   ======================================== */
+
+.successState {
+  padding: var(--rr-space-4) 0;
+}
+
+.successIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--rr-space-4);
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-success-light, rgba(16, 185, 129, 0.1));
+  color: var(--rr-color-success, #10b981);
+  animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.successTitle {
+  font-size: var(--rr-font-size-xl);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.successMessage {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  line-height: 1.5;
+}

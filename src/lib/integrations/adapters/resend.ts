@@ -27,6 +27,7 @@ export interface SendEmailRequest {
  */
 export type EmailTemplate = 
   | 'quote_ready'
+  | 'quote_resume'
   | 'signature_request'
   | 'payment_confirmation'
   | 'booking_confirmation'
@@ -126,6 +127,27 @@ export const resendAdapter = {
       to: email,
       subject: 'Payment Received - Results Roofing',
       template: 'payment_confirmation',
+      data,
+    });
+  },
+
+  /**
+   * Send quote resume link
+   */
+  async sendQuoteResume(
+    email: string,
+    data: {
+      resumeUrl: string;
+      address: string;
+      city: string;
+      state: string;
+      expiresAt: string;
+    }
+  ): Promise<EmailResponse> {
+    return this.send({
+      to: email,
+      subject: 'Your Saved Quote - Results Roofing',
+      template: 'quote_resume',
       data,
     });
   },

@@ -6,6 +6,7 @@
 import { relations } from 'drizzle-orm';
 import { leads } from './leads';
 import { quotes } from './quotes';
+import { quoteDrafts } from './quote-drafts';
 import { measurements } from './measurements';
 import { contracts } from './contracts';
 import { orders } from './orders';
@@ -22,7 +23,7 @@ export const leadsRelations = relations(leads, ({ many }) => ({
 /**
  * Quote relations
  */
-export const quotesRelations = relations(quotes, ({ one }) => ({
+export const quotesRelations = relations(quotes, ({ one, many }) => ({
   lead: one(leads, {
     fields: [quotes.leadId],
     references: [leads.id],
@@ -30,6 +31,17 @@ export const quotesRelations = relations(quotes, ({ one }) => ({
   measurement: one(measurements),
   contract: one(contracts),
   order: one(orders),
+  drafts: many(quoteDrafts),
+}));
+
+/**
+ * Quote draft relations
+ */
+export const quoteDraftsRelations = relations(quoteDrafts, ({ one }) => ({
+  quote: one(quotes, {
+    fields: [quoteDrafts.quoteId],
+    references: [quotes.id],
+  }),
 }));
 
 /**

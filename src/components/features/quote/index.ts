@@ -8,3 +8,5 @@ export { ROIValueDisplay } from './ROIValueDisplay';
 export { PackageTierCard } from './PackageTierCard';
 export { ManualRoofEntry, type ManualRoofData } from './ManualRoofEntry';
 export { QuoteErrorBoundary } from './QuoteErrorBoundary';
+export { QuoteProgressBar } from './QuoteProgressBar';
+export { SaveQuoteModal } from './SaveQuoteModal';

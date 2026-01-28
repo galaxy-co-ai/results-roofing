@@ -1,0 +1,107 @@
+/* =================================================
+   RESUME ERROR PAGE STYLES
+   ================================================= */
+
+.main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--rr-color-bg-primary);
+  padding: var(--rr-space-8) var(--rr-space-page-gutter);
+}
+
+.container {
+  max-width: 480px;
+  text-align: center;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--rr-space-6);
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-error-light, rgba(239, 68, 68, 0.1));
+}
+
+.icon {
+  color: var(--rr-color-error, #dc2626);
+}
+
+.title {
+  font-size: var(--rr-font-size-2xl);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-3);
+}
+
+.message {
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--rr-space-8);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-3);
+}
+
+.primaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-3) var(--rr-space-6);
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-white);
+  background-color: var(--rr-color-blue);
+  border-radius: var(--rr-radius-md);
+  text-decoration: none;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.primaryButton:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+}
+
+.primaryButton:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
+}
+
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--rr-space-3) var(--rr-space-6);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-secondary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.secondaryButton:hover {
+  color: var(--rr-color-text-primary);
+}
+
+.secondaryButton:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+  .actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
