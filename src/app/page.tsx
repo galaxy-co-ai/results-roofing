@@ -97,9 +97,6 @@ export default function HomePage() {
           <h1 className={styles.title}>
             Your Roof Quote <span className={styles.highlight}>In Minutes</span>
           </h1>
-          <p className={styles.heroSubtitle}>
-            No salesperson visit required. Get your price online.
-          </p>
 
           {/* Address Input Form with Autocomplete */}
           <HeroAddressForm className={styles.addressForm} />
