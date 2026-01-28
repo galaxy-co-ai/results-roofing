@@ -54,8 +54,6 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
     setSchedule,
     setFinancing,
     goToSubStep,
-    nextStep: _nextStep,
-    prevStep,
     setQuoteId,
     setLoading,
     setError,

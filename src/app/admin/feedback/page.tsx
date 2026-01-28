@@ -1064,7 +1064,6 @@ export default function FeedbackPage() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('');
-  const [reasonFilter, _setReasonFilter] = useState<string>('');
   const [priorityFilter, setPriorityFilter] = useState<string>('');
   
   // Operation state
@@ -1079,7 +1078,6 @@ export default function FeedbackPage() {
     try {
       const params = new URLSearchParams();
       if (statusFilter) params.set('status', statusFilter);
-      if (reasonFilter) params.set('reason', reasonFilter);
       if (priorityFilter) params.set('priority', priorityFilter);
       if (searchQuery.trim()) params.set('search', searchQuery.trim());
       
@@ -1100,7 +1098,7 @@ export default function FeedbackPage() {
       setIsLoading(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [statusFilter, reasonFilter, priorityFilter, searchQuery]);
+  }, [statusFilter, priorityFilter, searchQuery]);
 
   // Initial fetch and auto-refresh
   useEffect(() => {
