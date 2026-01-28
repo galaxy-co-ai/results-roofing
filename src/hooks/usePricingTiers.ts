@@ -82,9 +82,9 @@ export function calculateTierPrice(tier: PricingTier, sqft: number): number {
  */
 export function getTierDisplayName(tier: PricingTier['tier']): string {
   const names: Record<typeof tier, string> = {
-    good: 'Good',
-    better: 'Better',
-    best: 'Best',
+    good: 'Essential',
+    better: 'Premium',
+    best: 'Elite',
   };
   return names[tier];
 }

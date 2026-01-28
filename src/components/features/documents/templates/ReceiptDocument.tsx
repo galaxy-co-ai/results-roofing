@@ -11,7 +11,7 @@ export function ReceiptDocument({ document }: ReceiptDocumentProps) {
     address: '123 Main Street, Austin, TX 78701',
     customerName: 'John Smith',
     email: 'john@example.com',
-    packageName: 'Better Package',
+    packageName: 'Premium Package',
     totalPrice: 15000,
     depositAmount: 750,
     contractDate: 'January 22, 2026',

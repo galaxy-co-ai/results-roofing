@@ -9,7 +9,7 @@ export function ScopeDocument({ document }: ScopeDocumentProps) {
   const project = document.projectData || {
     address: '123 Main Street, Austin, TX 78701',
     customerName: 'John Smith',
-    packageName: 'Better Package',
+    packageName: 'Premium Package',
     totalPrice: 15000,
     installationDate: 'February 3, 2026',
     contractDate: 'January 22, 2026',

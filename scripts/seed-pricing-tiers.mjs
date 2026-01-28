@@ -37,7 +37,7 @@ const db = drizzle(sql);
 const pricingTierData = [
   {
     tier: 'good',
-    displayName: 'Good',
+    displayName: 'Essential',
     description: 'Quality roofing at an affordable price. Perfect for budget-conscious homeowners who want reliable protection.',
     materialPricePerSqft: '2.50',
     laborPricePerSqft: '3.00',
@@ -53,7 +53,7 @@ const pricingTierData = [
   },
   {
     tier: 'better',
-    displayName: 'Better',
+    displayName: 'Premium',
     description: 'Enhanced durability and curb appeal. Our most popular choice with architectural shingles and extended warranty.',
     materialPricePerSqft: '3.50',
     laborPricePerSqft: '3.50',
@@ -69,7 +69,7 @@ const pricingTierData = [
   },
   {
     tier: 'best',
-    displayName: 'Best',
+    displayName: 'Elite',
     description: 'Premium materials with maximum protection. Designer shingles, lifetime warranty, and transferable coverage.',
     materialPricePerSqft: '5.00',
     laborPricePerSqft: '4.00',

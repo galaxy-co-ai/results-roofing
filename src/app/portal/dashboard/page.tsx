@@ -92,9 +92,9 @@ function getStatusDisplayName(status: string): string {
 
 function getTierDisplayName(tier: string): string {
   const tierMap: Record<string, string> = {
-    good: 'Good Package',
-    better: 'Better Package',
-    best: 'Best Package',
+    good: 'Essential Package',
+    better: 'Premium Package',
+    best: 'Elite Package',
   };
   return tierMap[tier] || tier;
 }

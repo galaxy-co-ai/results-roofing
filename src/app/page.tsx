@@ -37,7 +37,7 @@ const REVIEWS = [
     initials: "AT",
   },
   {
-    text: "The package comparison made it so easy to decide. We went with the Better option and couldn't be happier.",
+    text: "The package comparison made it so easy to decide. We went with the Premium option and couldn't be happier.",
     author: "Robert J.",
     location: "Marietta, GA",
     initials: "RJ",
@@ -70,7 +70,7 @@ const VALUE_PROPS = [
   {
     icon: DollarSign,
     title: 'Transparent Pricing',
-    description: 'Compare Good, Better, and Best packages. See exactly what you pay for with no hidden fees.',
+    description: 'Compare Essential, Premium, and Elite packages. See exactly what you pay for with no hidden fees.',
   },
   {
     icon: Shield,

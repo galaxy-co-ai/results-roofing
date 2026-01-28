@@ -31,7 +31,7 @@ export default async function ConfirmationPage({ params }: ConfirmationPageProps
 
   // Get selected tier info
   const selectedTier = quote.selectedTier;
-  const tierName = selectedTier === 'best' ? 'Best' : selectedTier === 'better' ? 'Better' : 'Good';
+  const tierName = selectedTier === 'best' ? 'Elite' : selectedTier === 'better' ? 'Premium' : 'Essential';
 
   return (
     <>

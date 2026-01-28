@@ -121,7 +121,7 @@ describe('Pricing Engine', () => {
       {
         id: '1',
         tier: 'good',
-        displayName: 'Good',
+        displayName: 'Essential',
         description: 'Basic package',
         materialPricePerSqft: '2.50',
         laborPricePerSqft: '3.00',
@@ -138,7 +138,7 @@ describe('Pricing Engine', () => {
       {
         id: '2',
         tier: 'better',
-        displayName: 'Better',
+        displayName: 'Premium',
         description: 'Recommended package',
         materialPricePerSqft: '3.50',
         laborPricePerSqft: '3.50',
@@ -155,7 +155,7 @@ describe('Pricing Engine', () => {
       {
         id: '3',
         tier: 'best',
-        displayName: 'Best',
+        displayName: 'Elite',
         description: 'Premium package',
         materialPricePerSqft: '5.00',
         laborPricePerSqft: '4.00',
@@ -207,7 +207,7 @@ describe('Pricing Engine', () => {
       {
         id: '1',
         tier: 'good',
-        displayName: 'Good',
+        displayName: 'Essential',
         description: 'Basic package',
         materialPricePerSqft: '2.50',
         laborPricePerSqft: '3.00',

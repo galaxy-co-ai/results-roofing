@@ -12,7 +12,7 @@ export function ContractDocument({ document }: ContractDocumentProps) {
     customerName: 'John Smith',
     email: 'john@example.com',
     phone: '(555) 123-4567',
-    packageName: 'Better Package',
+    packageName: 'Premium Package',
     totalPrice: 15000,
     depositAmount: 750,
     installationDate: 'February 3, 2026',

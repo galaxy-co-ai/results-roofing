@@ -144,7 +144,7 @@ export function PackageSelection({
       {/* Help Text */}
       <div className={styles.helpSection}>
         <p className={styles.helpText}>
-          Not sure which to choose? Our Better package is the most popular choice, offering the
+          Not sure which to choose? Our Premium package is the most popular choice, offering the
           best balance of quality and value.
         </p>
       </div>
