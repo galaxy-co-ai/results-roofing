@@ -90,6 +90,10 @@
   /* Focus Ring */
   --rr-color-focus-ring: var(--rr-color-blue);
   --rr-color-focus-ring-alpha: rgba(74, 126, 194, 0.15);
+  --rr-color-focus-ring-error: rgba(239, 68, 68, 0.15);
+
+  /* Overlay */
+  --rr-color-overlay: rgba(0, 0, 0, 0.5);
 
   /* Shadows */
   --rr-shadow-charcoal-subtle: 0 2px 8px rgba(30, 35, 41, 0.12);

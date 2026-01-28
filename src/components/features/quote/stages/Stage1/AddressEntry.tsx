@@ -9,6 +9,7 @@ const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ', 'OK'];
 interface AddressEntryProps {
   initialAddress?: string;
   onAddressSelect: (address: ParsedAddress) => void;
+  onServiceAreaError?: (state: string) => void;
   isLoading?: boolean;
 }
 
@@ -17,10 +18,12 @@ interface AddressEntryProps {
  * 
  * User enters their address using autocomplete.
  * On valid selection, proceeds to property confirmation.
+ * If outside service area, triggers onServiceAreaError callback.
  */
 export function AddressEntry({
   initialAddress = '',
   onAddressSelect,
+  onServiceAreaError,
   isLoading = false,
 }: AddressEntryProps) {
   return (
@@ -44,6 +47,7 @@ export function AddressEntry({
         </label>
         <AddressAutocomplete
           onAddressSelect={onAddressSelect}
+          onServiceAreaError={onServiceAreaError}
           initialValue={initialAddress}
           disabled={isLoading}
           serviceStates={SERVICE_STATES}

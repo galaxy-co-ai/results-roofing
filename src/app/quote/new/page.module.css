@@ -27,6 +27,12 @@
   color: var(--rr-color-text-secondary);
 }
 
+/* Trust signals positioned at top */
+.trustSignals {
+  max-width: 560px;
+  margin: 0 auto var(--rr-space-4);
+}
+
 /* ========================================
    HEADER
    ======================================== */

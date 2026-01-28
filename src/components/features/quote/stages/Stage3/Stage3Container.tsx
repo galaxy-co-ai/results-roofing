@@ -187,12 +187,28 @@ export function Stage3Container({ quoteId, quoteData }: Stage3ContainerProps) {
     );
   }
 
+  // Generate announcement for completed sections
+  const getCompletionAnnouncement = (): string => {
+    const completedCount = Object.values(sectionsComplete).filter(Boolean).length;
+    if (completedCount === 0) return 'Start by entering your contact information';
+    if (sectionsComplete.payment) return 'All sections complete';
+    if (sectionsComplete.signature) return 'Signature complete, proceed to payment';
+    if (sectionsComplete.contract) return 'Contract agreed, please sign below';
+    if (sectionsComplete.contact) return 'Contact saved, please review the contract';
+    return '';
+  };
+
   return (
     <div className={styles.container}>
+      {/* Screen reader announcements for section completion */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {getCompletionAnnouncement()}
+      </div>
+
       {/* Main content area with sidebar */}
       <div className={styles.layout}>
         {/* Form sections */}
-        <div className={styles.formArea}>
+        <div className={styles.formArea} role="main" aria-label="Checkout form">
           {/* Error display */}
           {state.error && (
             <div className={styles.errorBanner} role="alert">

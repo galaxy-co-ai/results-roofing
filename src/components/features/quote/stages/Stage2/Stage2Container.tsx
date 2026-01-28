@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuoteWizard } from '../../QuoteWizardProvider';
 import { PackageSelection } from './PackageSelection';
@@ -22,6 +22,20 @@ interface Stage2ContainerProps {
       isPopular?: boolean;
     }[];
   };
+}
+
+// Get human-readable step name for screen readers
+function getSubStepLabel(subStep: string): string {
+  switch (subStep) {
+    case 'package':
+      return 'Choose your roofing package';
+    case 'schedule':
+      return 'Select installation date';
+    case 'financing':
+      return 'Choose payment option';
+    default:
+      return 'Customize your order';
+  }
 }
 
 /**
@@ -47,12 +61,26 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
     setError,
   } = useQuoteWizard();
 
+  // Refs for focus management
+  const contentRef = useRef<HTMLDivElement>(null);
+  const previousSubStep = useRef(state.currentSubStep);
+
   // Ensure quote ID is set in context
   useEffect(() => {
     if (!state.quoteId && quoteId) {
       setQuoteId(quoteId);
     }
   }, [quoteId, state.quoteId, setQuoteId]);
+
+  // Focus management: move focus to content when sub-step changes
+  useEffect(() => {
+    if (previousSubStep.current !== state.currentSubStep) {
+      previousSubStep.current = state.currentSubStep;
+      requestAnimationFrame(() => {
+        contentRef.current?.focus();
+      });
+    }
+  }, [state.currentSubStep]);
 
   const handleTierSelect = useCallback(
     async (tier: 'good' | 'better' | 'best') => {
@@ -169,6 +197,11 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
 
   return (
     <div className={styles.container}>
+      {/* Screen reader announcement for step changes */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {getSubStepLabel(state.currentSubStep)}
+      </div>
+
       {/* Error display */}
       {state.error && (
         <div className={styles.errorBanner} role="alert">
@@ -176,8 +209,13 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         </div>
       )}
 
-      {/* Sub-step content */}
-      <div className={styles.subStepContent}>
+      {/* Sub-step content with focus management */}
+      <div
+        ref={contentRef}
+        className={styles.subStepContent}
+        tabIndex={-1}
+        aria-label={getSubStepLabel(state.currentSubStep)}
+      >
         {renderSubStep()}
       </div>
     </div>

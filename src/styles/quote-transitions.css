@@ -266,6 +266,170 @@
 }
 
 /* ========================================
+   MICRO-INTERACTIONS
+   Button press, hover, and focus effects
+   ======================================== */
+
+/* Button press effect */
+.buttonPress {
+  transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+.buttonPress:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Button lift on hover */
+.buttonLift {
+  transition:
+    transform 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    background-color 0.15s ease-out;
+}
+
+.buttonLift:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+}
+
+.buttonLift:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+}
+
+/* Card hover lift */
+.cardLift {
+  transition:
+    transform 0.2s ease-out,
+    box-shadow 0.2s ease-out,
+    border-color 0.2s ease-out;
+}
+
+.cardLift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+}
+
+/* Card selection highlight */
+.cardSelect {
+  transition:
+    border-color 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    background-color 0.15s ease-out;
+}
+
+.cardSelect[data-selected="true"] {
+  border-color: var(--rr-color-blue);
+  box-shadow: 0 0 0 3px var(--rr-color-focus-ring-alpha);
+}
+
+/* Input focus glow */
+.inputGlow {
+  transition:
+    border-color 0.15s ease-out,
+    box-shadow 0.15s ease-out;
+}
+
+.inputGlow:focus {
+  border-color: var(--rr-color-border-focus);
+  box-shadow: 0 0 0 3px var(--rr-color-focus-ring-alpha);
+}
+
+/* Icon rotation on hover */
+.iconRotate {
+  transition: transform 0.2s ease-out;
+}
+
+.iconRotate:hover {
+  transform: rotate(5deg);
+}
+
+/* Link underline grow */
+.linkUnderline {
+  position: relative;
+}
+
+.linkUnderline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: currentColor;
+  transition: width 0.2s ease-out;
+}
+
+.linkUnderline:hover::after {
+  width: 100%;
+}
+
+/* Success check bounce */
+.successBounce {
+  animation: successBounce 0.5s var(--rr-ease-out) forwards;
+}
+
+@keyframes successBounce {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Error shake */
+.errorShake {
+  animation: errorShake 0.4s ease-out;
+}
+
+@keyframes errorShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60% {
+    transform: translateX(-4px);
+  }
+  40%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+/* Progress bar fill */
+.progressFill {
+  transition: width 0.4s var(--rr-ease-out);
+}
+
+/* Ripple effect base */
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease-out, height 0.3s ease-out;
+}
+
+.ripple:active::before {
+  width: 200%;
+  height: 200%;
+}
+
+/* ========================================
    REDUCED MOTION
    ======================================== */
 
@@ -289,7 +453,17 @@
   .stageProgressFill,
   .pulse,
   .skeletonShimmer,
-  .checkMark {
+  .checkMark,
+  .buttonPress,
+  .buttonLift,
+  .cardLift,
+  .cardSelect,
+  .inputGlow,
+  .iconRotate,
+  .successBounce,
+  .errorShake,
+  .progressFill,
+  .ripple {
     animation: none;
     transition: none;
   }
@@ -300,7 +474,8 @@
   .fadeSlideInReverse,
   .fadeIn,
   .scaleIn,
-  .slideUp {
+  .slideUp,
+  .successBounce {
     opacity: 1;
     transform: none;
   }
@@ -311,6 +486,14 @@
   .scaleOut,
   .slideDown {
     opacity: 0;
+    transform: none;
+  }
+
+  /* Disable hover/active transforms */
+  .buttonPress:active,
+  .buttonLift:hover,
+  .buttonLift:active,
+  .cardLift:hover {
     transform: none;
   }
 }

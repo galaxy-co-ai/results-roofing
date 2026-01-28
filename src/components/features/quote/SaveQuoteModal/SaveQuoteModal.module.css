@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--rr-color-overlay);
   z-index: var(--rr-z-modal, 1000);
   padding: var(--rr-space-4);
   animation: fadeIn 0.15s ease-out;

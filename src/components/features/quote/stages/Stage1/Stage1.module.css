@@ -487,3 +487,11 @@
     transition: none;
   }
 }
+
+/* ========================================
+   SKELETON OVERRIDES
+   ======================================== */
+
+.skeletonTitle {
+  margin: var(--rr-space-4) auto var(--rr-space-2);
+}

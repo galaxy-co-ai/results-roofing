@@ -1,16 +1,31 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuoteWizard } from '../../QuoteWizardProvider';
 import { AddressEntry } from './AddressEntry';
 import { PropertyConfirm } from './PropertyConfirm';
 import { PricePreview } from './PricePreview';
 import { SaveQuoteModal } from '../../SaveQuoteModal';
+import { OutOfAreaCapture } from '@/components/features/address';
 import styles from './Stage1.module.css';
 
 interface Stage1ContainerProps {
   initialAddress?: string;
+}
+
+// Get human-readable step name for screen readers
+function getSubStepLabel(subStep: string): string {
+  switch (subStep) {
+    case 'address':
+      return 'Enter your address';
+    case 'property-confirm':
+      return 'Confirm your property';
+    case 'price-preview':
+      return 'View your price estimate';
+    default:
+      return 'Quote step';
+  }
 }
 
 /**
@@ -20,19 +35,46 @@ interface Stage1ContainerProps {
  * 1. AddressEntry - Enter and validate address
  * 2. PropertyConfirm - Confirm satellite view
  * 3. PricePreview - Show price ranges + option to save
+ * 
+ * Also handles out-of-area capture when user's address is outside service area.
  */
 export function Stage1Container({ initialAddress = '' }: Stage1ContainerProps) {
   const router = useRouter();
   const { state, setAddress, confirmProperty, setQuoteId, setPriceRanges, goToSubStep, setLoading, setError } = useQuoteWizard();
   const [showSaveModal, setShowSaveModal] = useState(false);
+  const [outOfAreaState, setOutOfAreaState] = useState<string | null>(null);
+  
+  // Refs for focus management
+  const contentRef = useRef<HTMLDivElement>(null);
+  const previousSubStep = useRef(state.currentSubStep);
+
+  // Focus management: move focus to content when sub-step changes
+  useEffect(() => {
+    if (previousSubStep.current !== state.currentSubStep) {
+      previousSubStep.current = state.currentSubStep;
+      // Small delay to allow DOM to update before focusing
+      requestAnimationFrame(() => {
+        contentRef.current?.focus();
+      });
+    }
+  }, [state.currentSubStep]);
 
   const handleAddressSelect = useCallback(
     (address: Parameters<typeof setAddress>[0]) => {
+      setOutOfAreaState(null); // Clear any previous out-of-area state
       setAddress(address);
       goToSubStep('property-confirm');
     },
     [setAddress, goToSubStep]
   );
+
+  const handleServiceAreaError = useCallback((detectedState: string) => {
+    setOutOfAreaState(detectedState);
+  }, []);
+
+  const handleOutOfAreaClose = useCallback(() => {
+    setOutOfAreaState(null);
+  }, []);
 
   const handlePropertyConfirm = useCallback(async () => {
     if (!state.address) return;
@@ -88,12 +130,23 @@ export function Stage1Container({ initialAddress = '' }: Stage1ContainerProps) {
 
   // Render the current sub-step
   const renderSubStep = () => {
+    // Show out-of-area capture if user's address is outside service area
+    if (outOfAreaState) {
+      return (
+        <OutOfAreaCapture
+          state={outOfAreaState}
+          onClose={handleOutOfAreaClose}
+        />
+      );
+    }
+
     switch (state.currentSubStep) {
       case 'address':
         return (
           <AddressEntry
             initialAddress={initialAddress}
             onAddressSelect={handleAddressSelect}
+            onServiceAreaError={handleServiceAreaError}
             isLoading={state.isLoading}
           />
         );
@@ -135,6 +188,11 @@ export function Stage1Container({ initialAddress = '' }: Stage1ContainerProps) {
 
   return (
     <div className={styles.container}>
+      {/* Screen reader announcement for step changes */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {getSubStepLabel(state.currentSubStep)}
+      </div>
+
       {/* Error display */}
       {state.error && (
         <div className={styles.errorBanner} role="alert">
@@ -142,8 +200,13 @@ export function Stage1Container({ initialAddress = '' }: Stage1ContainerProps) {
         </div>
       )}
 
-      {/* Sub-step content */}
-      <div className={styles.subStepContent}>
+      {/* Sub-step content with focus management */}
+      <div
+        ref={contentRef}
+        className={styles.subStepContent}
+        tabIndex={-1}
+        aria-label={getSubStepLabel(state.currentSubStep)}
+      >
         {renderSubStep()}
       </div>
 

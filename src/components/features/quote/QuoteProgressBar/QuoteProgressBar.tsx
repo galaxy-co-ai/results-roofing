@@ -1,5 +1,18 @@
 'use client';
 
+/**
+ * @deprecated This component uses the old 5-step flow.
+ * Use `StageIndicator` from '@/components/features/quote/StageIndicator' instead,
+ * which implements the new 3-stage wizard (Get Your Quote → Customize → Confirm & Pay).
+ *
+ * This component is kept for backward compatibility with legacy routes:
+ * - /quote/[id]/packages
+ * - /quote/[id]/contract
+ * - /quote/[id]/payment
+ *
+ * These routes will be removed in a future release.
+ */
+
 import Link from 'next/link';
 import { Check } from 'lucide-react';
 import styles from './QuoteProgressBar.module.css';

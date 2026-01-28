@@ -224,7 +224,7 @@
 }
 
 .input_error:focus {
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+  box-shadow: 0 0 0 3px var(--rr-color-focus-ring-error);
 }
 
 .errorText {
@@ -590,5 +590,58 @@
   .submitButton,
   .contractToggle {
     transition: none;
+  }
+}
+
+/* ========================================
+   SKELETON STYLES
+   ======================================== */
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-4);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--rr-space-4);
+}
+
+.sidebar {
+  display: none;
+}
+
+.sidebarContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-3);
+  padding: var(--rr-space-4);
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+}
+
+.sidebarItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-2);
+  margin-bottom: var(--rr-space-3);
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    display: block;
+    width: 360px;
+    position: sticky;
+    top: var(--rr-space-4);
+    align-self: flex-start;
   }
 }
