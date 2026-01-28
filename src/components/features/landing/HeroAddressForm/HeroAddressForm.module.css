@@ -1,11 +1,73 @@
 /* =================================================
-   HERO ADDRESS FORM STYLES
-   Landing page address autocomplete with quote creation
+   HERO ADDRESS FORM - CARD COMPONENT
+   Polished card design for landing page quote form
    ================================================= */
 
-.container {
+.card {
   width: 100%;
-  max-width: 520px;
+  max-width: 480px;
+  background: var(--rr-color-white);
+  border-radius: var(--rr-radius-xl, 16px);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* ========================================
+   CARD HEADER
+   ======================================== */
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-4);
+  padding: var(--rr-space-5) var(--rr-space-6);
+  background: linear-gradient(
+    to right,
+    var(--rr-color-blue),
+    color-mix(in srgb, var(--rr-color-blue) 85%, #000)
+  );
+}
+
+.iconBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--rr-radius-lg);
+  color: var(--rr-color-white);
+  flex-shrink: 0;
+}
+
+.headerText {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: var(--rr-font-size-lg);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-white);
+  line-height: 1.3;
+}
+
+.cardSubtitle {
+  margin: var(--rr-space-1) 0 0;
+  font-size: var(--rr-font-size-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ========================================
+   CARD BODY
+   ======================================== */
+
+.cardBody {
+  padding: var(--rr-space-6);
 }
 
 .formWrapper {
@@ -34,12 +96,8 @@
 }
 
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .loadingText {
@@ -57,10 +115,11 @@
   align-items: center;
   gap: var(--rr-space-2);
   padding: var(--rr-space-3) var(--rr-space-4);
-  margin-top: var(--rr-space-3);
-  background-color: var(--rr-color-error-light, #fef2f2);
+  margin-top: var(--rr-space-4);
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
   border-radius: var(--rr-radius-md);
-  color: var(--rr-color-error, #ef4444);
+  color: #dc2626;
   font-size: var(--rr-font-size-sm);
 }
 
@@ -97,7 +156,7 @@
 
 .notifyInput {
   width: 100%;
-  height: var(--rr-input-height, 48px);
+  height: 48px;
   padding: 0 var(--rr-space-4);
   font-size: var(--rr-font-size-base);
   color: var(--rr-color-text-primary);
@@ -109,8 +168,8 @@
 
 .notifyInput:focus {
   outline: none;
-  border-color: var(--rr-color-border-focus);
-  box-shadow: 0 0 0 3px var(--rr-color-focus-ring-alpha, rgba(74, 126, 194, 0.15));
+  border-color: var(--rr-color-blue);
+  box-shadow: 0 0 0 3px rgba(74, 126, 194, 0.15);
 }
 
 .notifyButton {
@@ -119,7 +178,7 @@
   justify-content: center;
   gap: var(--rr-space-2);
   width: 100%;
-  height: var(--rr-input-height, 48px);
+  height: 48px;
   padding: 0 var(--rr-space-6);
   font-size: var(--rr-font-size-base);
   font-weight: var(--rr-font-weight-semibold);
@@ -128,17 +187,49 @@
   border: none;
   border-radius: var(--rr-radius-md);
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
 }
 
 .notifyButton:hover {
+  background-color: color-mix(in srgb, var(--rr-color-blue) 90%, #000);
   transform: translateY(-1px);
-  box-shadow: var(--rr-shadow-charcoal-medium);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.notifyButton:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--rr-color-focus-ring, rgba(74, 126, 194, 0.3));
+.notifyButton:active {
+  transform: translateY(0);
+}
+
+/* ========================================
+   CARD FOOTER
+   ======================================== */
+
+.cardFooter {
+  padding: var(--rr-space-4) var(--rr-space-6);
+  background-color: var(--rr-color-bg-secondary, #f8f9fa);
+  border-top: 1px solid var(--rr-color-border-default, #e5e7eb);
+}
+
+.trustIndicators {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--rr-space-4);
+}
+
+.trustItem {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-secondary);
+}
+
+.checkIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--rr-color-success, #22c55e);
+  flex-shrink: 0;
 }
 
 /* ========================================
@@ -157,5 +248,29 @@
   .notifyButton {
     width: auto;
     flex-shrink: 0;
+  }
+}
+
+@media (max-width: 479px) {
+  .card {
+    border-radius: var(--rr-radius-lg, 12px);
+  }
+
+  .cardHeader {
+    padding: var(--rr-space-4) var(--rr-space-5);
+  }
+
+  .cardBody {
+    padding: var(--rr-space-5);
+  }
+
+  .cardFooter {
+    padding: var(--rr-space-3) var(--rr-space-5);
+  }
+
+  .trustIndicators {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--rr-space-2);
   }
 }
