@@ -1,0 +1,316 @@
+/* =================================================
+   QUOTE WIZARD TRANSITIONS
+   Sub-step and stage transition animations
+   ================================================= */
+
+/* ========================================
+   SUB-STEP TRANSITIONS
+   Smooth slide/fade for sub-step changes
+   ======================================== */
+
+/* Enter from right (forward navigation) */
+.subStepEnter {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.subStepEnterActive {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity var(--rr-duration-normal) var(--rr-ease-out),
+    transform var(--rr-duration-normal) var(--rr-ease-out);
+}
+
+/* Exit to left (forward navigation) */
+.subStepExit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.subStepExitActive {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition:
+    opacity var(--rr-duration-normal) var(--rr-ease-in),
+    transform var(--rr-duration-normal) var(--rr-ease-in);
+}
+
+/* Enter from left (backward navigation) */
+.subStepEnterBack {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.subStepEnterBackActive {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity var(--rr-duration-normal) var(--rr-ease-out),
+    transform var(--rr-duration-normal) var(--rr-ease-out);
+}
+
+/* Exit to right (backward navigation) */
+.subStepExitBack {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.subStepExitBackActive {
+  opacity: 0;
+  transform: translateX(20px);
+  transition:
+    opacity var(--rr-duration-normal) var(--rr-ease-in),
+    transform var(--rr-duration-normal) var(--rr-ease-in);
+}
+
+/* ========================================
+   FADE IN ANIMATION (simpler alternative)
+   ======================================== */
+
+.fadeSlideIn {
+  animation: fadeSlideIn var(--rr-duration-normal) var(--rr-ease-out) forwards;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fadeSlideInReverse {
+  animation: fadeSlideInReverse var(--rr-duration-normal) var(--rr-ease-out) forwards;
+}
+
+@keyframes fadeSlideInReverse {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ========================================
+   SIMPLE FADE
+   ======================================== */
+
+.fadeIn {
+  animation: fadeIn var(--rr-duration-normal) var(--rr-ease-out) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeOut {
+  animation: fadeOut var(--rr-duration-fast) var(--rr-ease-in) forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* ========================================
+   SCALE ANIMATIONS
+   For modals and overlays
+   ======================================== */
+
+.scaleIn {
+  animation: scaleIn var(--rr-duration-normal) var(--rr-ease-out) forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.scaleOut {
+  animation: scaleOut var(--rr-duration-fast) var(--rr-ease-in) forwards;
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* ========================================
+   SLIDE UP (for mobile sheets/modals)
+   ======================================== */
+
+.slideUp {
+  animation: slideUp var(--rr-duration-slow) var(--rr-ease-out) forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slideDown {
+  animation: slideDown var(--rr-duration-normal) var(--rr-ease-in) forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+/* ========================================
+   STAGE PROGRESS ANIMATION
+   ======================================== */
+
+.stageProgressFill {
+  transition: width var(--rr-duration-slow) var(--rr-ease-out);
+}
+
+/* ========================================
+   PULSE ANIMATION
+   For loading/attention states
+   ======================================== */
+
+.pulse {
+  animation: pulse 2s var(--rr-ease-in-out) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ========================================
+   SKELETON LOADING ANIMATION
+   ======================================== */
+
+.skeletonShimmer {
+  background: linear-gradient(
+    90deg,
+    var(--rr-color-gray-100) 0%,
+    var(--rr-color-gray-50) 50%,
+    var(--rr-color-gray-100) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ========================================
+   CHECK MARK ANIMATION
+   For completion states
+   ======================================== */
+
+.checkMark {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: checkDraw var(--rr-duration-slow) var(--rr-ease-out) forwards;
+}
+
+@keyframes checkDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .subStepEnter,
+  .subStepEnterActive,
+  .subStepExit,
+  .subStepExitActive,
+  .subStepEnterBack,
+  .subStepEnterBackActive,
+  .subStepExitBack,
+  .subStepExitBackActive,
+  .fadeSlideIn,
+  .fadeSlideInReverse,
+  .fadeIn,
+  .fadeOut,
+  .scaleIn,
+  .scaleOut,
+  .slideUp,
+  .slideDown,
+  .stageProgressFill,
+  .pulse,
+  .skeletonShimmer,
+  .checkMark {
+    animation: none;
+    transition: none;
+  }
+
+  .subStepEnter,
+  .subStepEnterBack,
+  .fadeSlideIn,
+  .fadeSlideInReverse,
+  .fadeIn,
+  .scaleIn,
+  .slideUp {
+    opacity: 1;
+    transform: none;
+  }
+
+  .subStepExit,
+  .subStepExitBack,
+  .fadeOut,
+  .scaleOut,
+  .slideDown {
+    opacity: 0;
+    transform: none;
+  }
+}

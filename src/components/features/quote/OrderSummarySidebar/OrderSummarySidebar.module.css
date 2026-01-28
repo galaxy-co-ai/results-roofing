@@ -1,0 +1,193 @@
+/* =================================================
+   ORDER SUMMARY SIDEBAR STYLES
+   Sticky sidebar for checkout stage
+   ================================================= */
+
+.container {
+  padding: var(--rr-space-5);
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.title {
+  font-size: var(--rr-font-size-lg);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-4);
+}
+
+/* ========================================
+   SECTIONS
+   ======================================== */
+
+.section {
+  margin-bottom: var(--rr-space-4);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  margin-bottom: var(--rr-space-1);
+}
+
+.sectionIcon {
+  color: var(--rr-color-blue);
+  flex-shrink: 0;
+}
+
+.sectionLabel {
+  font-size: var(--rr-font-size-xs);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sectionValue {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin: 0;
+}
+
+.sectionMeta {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-tertiary);
+  margin: 0;
+}
+
+/* ========================================
+   DIVIDER
+   ======================================== */
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--rr-color-border-default);
+  margin: var(--rr-space-4) 0;
+}
+
+/* ========================================
+   PRICE BREAKDOWN
+   ======================================== */
+
+.priceBreakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-2);
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.priceRow_highlight {
+  padding: var(--rr-space-3);
+  margin: var(--rr-space-2) 0;
+  background-color: var(--rr-color-gray-50);
+  border-radius: var(--rr-radius-md);
+}
+
+.priceLabel {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+}
+
+.priceLabel_muted {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-tertiary);
+}
+
+.priceValue {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+}
+
+.priceValue_muted {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-tertiary);
+}
+
+.priceTotal {
+  font-size: var(--rr-font-size-xl);
+  font-weight: var(--rr-font-weight-bold);
+  color: var(--rr-color-text-primary);
+}
+
+/* ========================================
+   PROGRESS
+   ======================================== */
+
+.progress {
+  margin-bottom: var(--rr-space-4);
+}
+
+.progressTitle {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-3);
+}
+
+.progressList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-2);
+}
+
+.progressItem {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-tertiary);
+}
+
+.progressItem_complete {
+  color: var(--rr-color-success);
+}
+
+.progressIcon {
+  color: var(--rr-color-gray-400);
+  flex-shrink: 0;
+}
+
+.progressIcon_complete {
+  color: var(--rr-color-success);
+  flex-shrink: 0;
+}
+
+/* ========================================
+   TRUST BADGES
+   ======================================== */
+
+.trustBadges {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-2);
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-tertiary);
+}
+
+.badge svg {
+  color: var(--rr-color-success);
+  flex-shrink: 0;
+}

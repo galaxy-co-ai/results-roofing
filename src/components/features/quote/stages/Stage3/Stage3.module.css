@@ -1,0 +1,594 @@
+/* =================================================
+   STAGE 3 STYLES
+   Confirm & Pay: Contact → Contract → Signature → Payment
+   ================================================= */
+
+/* ========================================
+   CONTAINER & LAYOUT
+   ======================================== */
+
+.container {
+  width: 100%;
+  min-height: calc(100vh - 120px);
+  padding: var(--rr-space-6) var(--rr-space-page-gutter);
+  background-color: var(--rr-color-bg-primary);
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-6);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.formArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-4);
+}
+
+.sidebarArea {
+  display: none;
+}
+
+/* ========================================
+   ERROR BANNER
+   ======================================== */
+
+.errorBanner {
+  padding: var(--rr-space-3) var(--rr-space-4);
+  background-color: var(--rr-color-error-light);
+  border: 1px solid var(--rr-color-error);
+  border-radius: var(--rr-radius-md);
+  color: var(--rr-color-error);
+  font-size: var(--rr-font-size-sm);
+  text-align: center;
+}
+
+/* ========================================
+   SECTION
+   ======================================== */
+
+.section {
+  padding: var(--rr-space-5);
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+}
+
+.section_complete {
+  background-color: var(--rr-color-success-light);
+  border-color: var(--rr-color-success);
+}
+
+.section_disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ========================================
+   SECTION HEADER
+   ======================================== */
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rr-space-3);
+  margin-bottom: var(--rr-space-4);
+}
+
+.sectionNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-blue);
+  color: var(--rr-color-white);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-semibold);
+  flex-shrink: 0;
+}
+
+.sectionNumber_complete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-success);
+  color: var(--rr-color-white);
+  flex-shrink: 0;
+}
+
+.sectionNumber_disabled {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--rr-radius-full);
+  background-color: var(--rr-color-gray-200);
+  color: var(--rr-color-text-tertiary);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-semibold);
+  flex-shrink: 0;
+}
+
+.sectionHeaderText {
+  flex: 1;
+}
+
+.sectionTitle {
+  font-size: var(--rr-font-size-lg);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-1);
+}
+
+.sectionTitle_disabled {
+  font-size: var(--rr-font-size-lg);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-tertiary);
+  margin-bottom: var(--rr-space-1);
+}
+
+.sectionSubtitle {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  margin: 0;
+}
+
+.sectionSubtitle_disabled {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-tertiary);
+  margin: 0;
+}
+
+.sectionComplete {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-success);
+  font-weight: var(--rr-font-weight-medium);
+  margin: 0;
+}
+
+/* ========================================
+   FORM
+   ======================================== */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-4);
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-1);
+}
+
+.label {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.inputIcon {
+  position: absolute;
+  left: var(--rr-space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--rr-color-text-tertiary);
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  height: var(--rr-input-height);
+  padding: var(--rr-input-padding-y) var(--rr-input-padding-x);
+  padding-left: calc(var(--rr-space-3) + 18px + var(--rr-space-2));
+  font-size: var(--rr-input-font-size);
+  color: var(--rr-color-text-primary);
+  background-color: var(--rr-color-surface-default);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  transition: var(--rr-transition-colors), var(--rr-transition-shadow);
+}
+
+.input::placeholder {
+  color: var(--rr-color-text-tertiary);
+}
+
+.input:hover:not(:disabled) {
+  border-color: var(--rr-color-border-strong);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--rr-color-border-focus);
+  box-shadow: 0 0 0 3px var(--rr-color-focus-ring-alpha);
+}
+
+.input_error {
+  border-color: var(--rr-color-error);
+}
+
+.input_error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+.errorText {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-error);
+  margin: 0;
+}
+
+/* ========================================
+   CHECKBOX
+   ======================================== */
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rr-space-3);
+  cursor: pointer;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--rr-color-blue);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkboxText {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+  line-height: var(--rr-line-height-relaxed);
+}
+
+.checkboxSubtext {
+  display: block;
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-tertiary);
+  margin-top: var(--rr-space-1);
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  width: 100%;
+  height: var(--rr-button-height-lg);
+  padding: 0 var(--rr-space-6);
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-white);
+  background-color: var(--rr-color-blue);
+  border: none;
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition:
+    transform 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    background-color 0.15s ease-out;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+  background-color: var(--rr-color-blue-light);
+}
+
+.submitButton:active:not(:disabled) {
+  transform: translateY(0.5px);
+}
+
+.submitButton:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   CONTRACT SECTION
+   ======================================== */
+
+.contractToggle {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  width: 100%;
+  padding: var(--rr-space-3) var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-primary);
+  background-color: var(--rr-color-gray-50);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: background-color 0.15s ease-out;
+}
+
+.contractToggle:hover {
+  background-color: var(--rr-color-surface-hover);
+}
+
+.contractContent {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: var(--rr-space-4);
+  margin: var(--rr-space-4) 0;
+  background-color: var(--rr-color-gray-50);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  font-size: var(--rr-font-size-sm);
+  line-height: var(--rr-line-height-relaxed);
+}
+
+.contractHeading {
+  font-size: var(--rr-font-size-lg);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-4);
+}
+
+.contractSubheading {
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin: var(--rr-space-4) 0 var(--rr-space-2);
+}
+
+.contractText {
+  color: var(--rr-color-text-secondary);
+  margin: 0 0 var(--rr-space-3);
+}
+
+.contractDetails {
+  background-color: var(--rr-color-white);
+  padding: var(--rr-space-3);
+  border-radius: var(--rr-radius-md);
+  margin-bottom: var(--rr-space-4);
+}
+
+.contractRow {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--rr-space-2) 0;
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.contractRow:last-child {
+  border-bottom: none;
+}
+
+.contractLabel {
+  color: var(--rr-color-text-tertiary);
+}
+
+.contractValue {
+  color: var(--rr-color-text-primary);
+  font-weight: var(--rr-font-weight-medium);
+}
+
+.contractList {
+  margin: 0 0 var(--rr-space-3);
+  padding-left: var(--rr-space-5);
+  color: var(--rr-color-text-secondary);
+}
+
+.contractList li {
+  margin-bottom: var(--rr-space-1);
+}
+
+.scrollHint {
+  text-align: center;
+  color: var(--rr-color-text-tertiary);
+  font-style: italic;
+  margin-top: var(--rr-space-4);
+}
+
+.viewFullLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rr-space-1);
+  margin: var(--rr-space-3) 0;
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-blue);
+  text-decoration: none;
+}
+
+.viewFullLink:hover {
+  text-decoration: underline;
+}
+
+/* ========================================
+   SIGNATURE SECTION
+   ======================================== */
+
+.signatureWrapper {
+  /* SignatureCapture component handles its own styling */
+}
+
+/* ========================================
+   PAYMENT SECTION
+   ======================================== */
+
+.paymentSummary {
+  padding: var(--rr-space-4);
+  margin-bottom: var(--rr-space-4);
+  background-color: var(--rr-color-gray-50);
+  border-radius: var(--rr-radius-md);
+}
+
+.paymentRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paymentLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+}
+
+.paymentAmount {
+  font-size: var(--rr-font-size-xl);
+  font-weight: var(--rr-font-weight-bold);
+  color: var(--rr-color-text-primary);
+}
+
+.paymentNote {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-tertiary);
+  margin: var(--rr-space-2) 0 0;
+  text-align: right;
+}
+
+.paymentFormWrapper {
+  /* PaymentForm component handles its own styling */
+}
+
+/* ========================================
+   SUCCESS STATE
+   ======================================== */
+
+.successContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 200px);
+  padding: var(--rr-space-8);
+  text-align: center;
+}
+
+.successIcon {
+  color: var(--rr-color-success);
+  margin-bottom: var(--rr-space-4);
+  animation: scaleIn 0.3s var(--rr-ease-out) forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.successTitle {
+  font-size: var(--rr-font-size-2xl);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.successMessage {
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-secondary);
+}
+
+/* ========================================
+   SPINNER
+   ======================================== */
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 768px) {
+  .container {
+    padding: var(--rr-space-8) var(--rr-space-page-gutter-lg);
+  }
+
+  .layout {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .formArea {
+    flex: 1;
+    max-width: 640px;
+  }
+
+  .sidebarArea {
+    display: block;
+    width: 360px;
+    flex-shrink: 0;
+    position: sticky;
+    top: var(--rr-space-6);
+  }
+
+  .submitButton {
+    width: auto;
+    align-self: flex-start;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sidebarArea {
+    width: 400px;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .successIcon {
+    animation: none;
+  }
+
+  .spinner {
+    animation: none;
+  }
+
+  .submitButton,
+  .contractToggle {
+    transition: none;
+  }
+}

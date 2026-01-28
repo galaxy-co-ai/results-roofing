@@ -1,0 +1,203 @@
+/* =================================================
+   STAGE INDICATOR STYLES
+   3-stage progress indicator for quote wizard
+   ================================================= */
+
+.container {
+  width: 100%;
+  background-color: var(--rr-color-white);
+  border-bottom: 1px solid var(--rr-color-border-default);
+  padding: var(--rr-space-4) var(--rr-space-page-gutter);
+}
+
+.wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ========================================
+   PROGRESS TRACK
+   ======================================== */
+
+.track {
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  right: 40px;
+  height: 2px;
+  background-color: var(--rr-color-gray-200);
+  z-index: 0;
+}
+
+.trackFill {
+  height: 100%;
+  background-color: var(--rr-color-success);
+  transition: width var(--rr-duration-slow) var(--rr-ease-out);
+}
+
+/* ========================================
+   STAGES LIST
+   ======================================== */
+
+.stagesList {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ========================================
+   INDIVIDUAL STAGE
+   ======================================== */
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.stageContent,
+.stageLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rr-space-2);
+  text-decoration: none;
+  color: inherit;
+  padding: var(--rr-space-1);
+}
+
+.stageLink:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
+  border-radius: var(--rr-radius-md);
+}
+
+/* ========================================
+   STAGE INDICATOR (circle)
+   ======================================== */
+
+.stageIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--rr-radius-full);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-semibold);
+  transition: 
+    background-color var(--rr-duration-normal) var(--rr-ease-in-out),
+    border-color var(--rr-duration-normal) var(--rr-ease-in-out),
+    color var(--rr-duration-normal) var(--rr-ease-in-out),
+    transform var(--rr-duration-normal) var(--rr-ease-out),
+    box-shadow var(--rr-duration-normal) var(--rr-ease-out);
+}
+
+/* Pending state */
+.stage_pending .stageIndicator {
+  background-color: var(--rr-color-white);
+  border: 2px solid var(--rr-color-gray-200);
+  color: var(--rr-color-text-tertiary);
+}
+
+/* Current state */
+.stage_current .stageIndicator {
+  background-color: var(--rr-color-blue);
+  border: 2px solid var(--rr-color-blue);
+  color: var(--rr-color-white);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+}
+
+/* Completed state */
+.stage_completed .stageIndicator {
+  background-color: var(--rr-color-success);
+  border: 2px solid var(--rr-color-success);
+  color: var(--rr-color-white);
+}
+
+/* Clickable hover */
+.stage_clickable:hover .stageIndicator {
+  transform: translateY(-2px);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+}
+
+/* ========================================
+   STAGE INFO (label)
+   ======================================== */
+
+.stageInfo {
+  text-align: center;
+}
+
+.stageLabel {
+  font-size: var(--rr-font-size-xs);
+  font-weight: var(--rr-font-weight-medium);
+  white-space: nowrap;
+  transition: color var(--rr-duration-normal) var(--rr-ease-in-out);
+}
+
+.stage_pending .stageLabel {
+  color: var(--rr-color-text-tertiary);
+}
+
+.stage_current .stageLabel {
+  color: var(--rr-color-text-primary);
+}
+
+.stage_completed .stageLabel {
+  color: var(--rr-color-success);
+}
+
+/* ========================================
+   CONNECTOR LINE (between stages)
+   ======================================== */
+
+.connector {
+  display: none; /* Hidden by default, shown on larger screens */
+}
+
+/* ========================================
+   RESPONSIVE STYLES
+   ======================================== */
+
+@media (min-width: 640px) {
+  .container {
+    padding: var(--rr-space-5) var(--rr-space-page-gutter-lg);
+  }
+
+  .stageIndicator {
+    width: 44px;
+    height: 44px;
+    font-size: var(--rr-font-size-base);
+  }
+
+  .stageLabel {
+    font-size: var(--rr-font-size-sm);
+  }
+
+  .track {
+    top: 22px;
+    left: 60px;
+    right: 60px;
+  }
+}
+
+@media (min-width: 768px) {
+  .stageIndicator {
+    width: 48px;
+    height: 48px;
+  }
+
+  .track {
+    top: 24px;
+    left: 80px;
+    right: 80px;
+  }
+}
