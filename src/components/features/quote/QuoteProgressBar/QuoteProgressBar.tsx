@@ -1,19 +1,37 @@
 'use client';
 
+import Link from 'next/link';
 import { Check } from 'lucide-react';
 import styles from './QuoteProgressBar.module.css';
 
 const STEPS = [
-  { id: 'address', label: 'Address' },
-  { id: 'package', label: 'Package' },
-  { id: 'checkout', label: 'Checkout' },
-  { id: 'contract', label: 'Contract' },
-  { id: 'payment', label: 'Payment' },
+  { id: 'address', label: 'Address', path: '/quote/new' },
+  { id: 'package', label: 'Package', path: '/packages' },
+  { id: 'checkout', label: 'Checkout', path: '/checkout' },
+  { id: 'contract', label: 'Contract', path: '/contract' },
+  { id: 'payment', label: 'Payment', path: '/payment' },
 ] as const;
 
 interface QuoteProgressBarProps {
   currentStep: 1 | 2 | 3 | 4 | 5;
+  quoteId?: string;
   className?: string;
+}
+
+/**
+ * Get the URL for a step based on quote ID
+ */
+function getStepUrl(stepIndex: number, quoteId?: string): string | null {
+  const step = STEPS[stepIndex];
+  if (stepIndex === 0) {
+    // Step 1 (Address) is always the same URL
+    return step.path;
+  }
+  if (!quoteId) {
+    // Can't navigate to other steps without a quote ID
+    return null;
+  }
+  return `/quote/${quoteId}${step.path}`;
 }
 
 /**
@@ -22,8 +40,10 @@ interface QuoteProgressBarProps {
  * Steps: Address -> Package -> Checkout -> Contract -> Payment
  * Mobile: Shows numbers only
  * Desktop: Shows numbers + labels
+ *
+ * Completed steps are clickable to allow navigation back
  */
-export function QuoteProgressBar({ currentStep, className = '' }: QuoteProgressBarProps) {
+export function QuoteProgressBar({ currentStep, quoteId, className = '' }: QuoteProgressBarProps) {
   return (
     <nav
       className={`${styles.container} ${className}`}
@@ -50,6 +70,21 @@ export function QuoteProgressBar({ currentStep, className = '' }: QuoteProgressB
             const stepNumber = index + 1;
             const isCompleted = stepNumber < currentStep;
             const isCurrent = stepNumber === currentStep;
+            const stepUrl = isCompleted ? getStepUrl(index, quoteId) : null;
+            const isClickable = isCompleted && stepUrl;
+
+            const stepContent = (
+              <>
+                <div className={styles.stepIndicator}>
+                  {isCompleted ? (
+                    <Check size={14} aria-hidden="true" />
+                  ) : (
+                    <span>{stepNumber}</span>
+                  )}
+                </div>
+                <span className={styles.stepLabel}>{step.label}</span>
+              </>
+            );
 
             return (
               <li
@@ -59,17 +94,21 @@ export function QuoteProgressBar({ currentStep, className = '' }: QuoteProgressB
                   ${isCompleted ? styles.step_completed : ''}
                   ${isCurrent ? styles.step_current : ''}
                   ${!isCompleted && !isCurrent ? styles.step_pending : ''}
+                  ${isClickable ? styles.step_clickable : ''}
                 `}
                 aria-current={isCurrent ? 'step' : undefined}
               >
-                <div className={styles.stepIndicator}>
-                  {isCompleted ? (
-                    <Check size={14} aria-hidden="true" />
-                  ) : (
-                    <span>{stepNumber}</span>
-                  )}
-                </div>
-                <span className={styles.stepLabel}>{step.label}</span>
+                {isClickable ? (
+                  <Link
+                    href={stepUrl}
+                    className={styles.stepLink}
+                    aria-label={`Go back to ${step.label} step`}
+                  >
+                    {stepContent}
+                  </Link>
+                ) : (
+                  stepContent
+                )}
               </li>
             );
           })}

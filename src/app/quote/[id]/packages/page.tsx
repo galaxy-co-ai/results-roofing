@@ -1,18 +1,16 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Check, Star, ChevronRight, Clock } from 'lucide-react';
 import { db, schema, eq } from '@/db/index';
 import { TrustBar } from '@/components/ui';
 import { QuoteProgressBar } from '@/components/features/quote/QuoteProgressBar';
 import { TrustSignals } from '@/components/features/quote/TrustSignals';
 import { PackageViewTracker } from '@/components/features/quote/PackageViewTracker';
+import { DEPOSIT_CONFIG, QUOTE_VALIDITY } from '@/lib/constants';
 import styles from './page.module.css';
 
 interface PackagesPageProps {
   params: Promise<{ id: string }>;
 }
-
-// Mock measurement data - in production this would come from the quote
-const MOCK_SQFT = 2450;
 
 interface TierCard {
   tier: string;
@@ -87,8 +85,13 @@ export default async function PackagesPage({ params }: PackagesPageProps) {
     notFound();
   }
 
-  // Use quote sqft if available, otherwise mock data
-  const sqft = quote.sqftTotal ? parseFloat(quote.sqftTotal) : MOCK_SQFT;
+  // Step guard: Ensure measurement data is available (step 1 completed)
+  // If sqftTotal is missing, redirect back to start the quote process
+  if (!quote.sqftTotal) {
+    redirect('/quote/new');
+  }
+
+  const sqft = parseFloat(quote.sqftTotal);
 
   // Build tier cards with calculated prices
   const tierCards: TierCard[] = pricingTiers.map((tier) => ({
@@ -106,11 +109,11 @@ export default async function PackagesPage({ params }: PackagesPageProps) {
     features: getTierFeatures(tier),
   }));
 
-  const depositPercent = 10;
+  const depositPercent = DEPOSIT_CONFIG.percentage * 100; // Convert 0.1 to 10%
 
   return (
     <>
-      <QuoteProgressBar currentStep={2} />
+      <QuoteProgressBar currentStep={2} quoteId={quoteId} />
       <main className={styles.main}>
         {/* Track page view */}
         <PackageViewTracker quoteId={quoteId} />
@@ -130,7 +133,7 @@ export default async function PackagesPage({ params }: PackagesPageProps) {
           {/* Urgency message */}
           <div className={styles.urgencyBanner}>
             <Clock size={16} />
-            <span>Pricing valid for 30 days</span>
+            <span>Pricing valid for {QUOTE_VALIDITY.validityDays} days</span>
           </div>
 
         {/* Address Bar */}
@@ -210,7 +213,7 @@ export default async function PackagesPage({ params }: PackagesPageProps) {
             Not sure which to choose? Our Better package is the most popular choice, offering the best balance of quality and value.
           </p>
           <p className={styles.helpText}>
-            All prices are valid for 30 days. Financing options available on the next step.
+            All prices are valid for {QUOTE_VALIDITY.validityDays} days. Financing options available on the next step.
           </p>
         </div>
 

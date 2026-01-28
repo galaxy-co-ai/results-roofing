@@ -143,6 +143,44 @@
 }
 
 /* ========================================
+   CLICKABLE STEPS (Completed)
+   ======================================== */
+
+.step_clickable {
+  cursor: pointer;
+}
+
+.stepLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rr-space-2);
+  text-decoration: none;
+  transition: transform 0.15s ease;
+}
+
+.stepLink:hover,
+.stepLink:focus {
+  transform: translateY(-1px);
+}
+
+.stepLink:focus {
+  outline: none;
+}
+
+.stepLink:focus .stepIndicator {
+  box-shadow: 0 0 0 3px var(--rr-color-focus-ring, rgba(74, 126, 194, 0.3));
+}
+
+.step_clickable:hover .stepIndicator {
+  background-color: var(--rr-color-success-dark, #0d9668);
+}
+
+.step_clickable:hover .stepLabel {
+  color: var(--rr-color-success-dark, #0d9668);
+}
+
+/* ========================================
    RESPONSIVE ADJUSTMENTS
    ======================================== */
 

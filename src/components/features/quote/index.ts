@@ -7,3 +7,4 @@ export { MotivationCapture, type ReplacementMotivation } from './MotivationCaptu
 export { ROIValueDisplay } from './ROIValueDisplay';
 export { PackageTierCard } from './PackageTierCard';
 export { ManualRoofEntry, type ManualRoofData } from './ManualRoofEntry';
+export { QuoteErrorBoundary } from './QuoteErrorBoundary';

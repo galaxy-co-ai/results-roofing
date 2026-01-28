@@ -109,6 +109,57 @@ async function selectTier(input: SelectTierInput): Promise<{ success: boolean; q
 }
 
 /**
+ * Input for finalizing checkout (consolidated API call)
+ */
+interface FinalizeCheckoutInput {
+  quoteId: string;
+  phone: string;
+  smsConsent: boolean;
+  scheduledDate: string;
+  timeSlot: 'morning' | 'afternoon';
+  timezone: string;
+  financingTerm: 'pay-full' | '12' | '24';
+}
+
+/**
+ * Response from finalize checkout
+ */
+interface FinalizeCheckoutResponse {
+  success: boolean;
+  quoteId: string;
+  data: {
+    scheduledDate: string;
+    timeSlot: string;
+    slotId: string;
+    financingTerm: string;
+    monthlyPayment: number | null;
+  };
+}
+
+/**
+ * Finalizes checkout with contact, schedule, and financing in a single call
+ */
+async function finalizeCheckout(input: FinalizeCheckoutInput): Promise<FinalizeCheckoutResponse> {
+  const response = await fetch(`/api/quotes/${input.quoteId}/finalize`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      phone: input.phone,
+      smsConsent: input.smsConsent,
+      scheduledDate: input.scheduledDate,
+      timeSlot: input.timeSlot,
+      timezone: input.timezone,
+      financingTerm: input.financingTerm,
+    }),
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to finalize checkout');
+  }
+  return response.json();
+}
+
+/**
  * Hook to fetch a quote by ID
  * 
  * @example
@@ -176,4 +227,63 @@ export function useSelectTier() {
   });
 }
 
-export type { QuoteEstimate, CreateQuoteInput, SelectTierInput, TierPriceRange };
+/**
+ * Hook to finalize checkout with a single API call
+ * Combines contact, schedule, and financing updates
+ * 
+ * @example
+ * ```tsx
+ * const finalizeMutation = useFinalizeCheckout();
+ * 
+ * const handleSubmit = async () => {
+ *   await finalizeMutation.mutateAsync({
+ *     quoteId,
+ *     phone: '555-555-5555',
+ *     smsConsent: true,
+ *     scheduledDate: selectedDate.toISOString(),
+ *     timeSlot: 'morning',
+ *     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+ *     financingTerm: 'pay-full',
+ *   });
+ *   router.push(`/quote/${quoteId}/contract`);
+ * };
+ * ```
+ */
+export function useFinalizeCheckout() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: finalizeCheckout,
+    onMutate: async (variables) => {
+      // Cancel any outgoing refetches so they don't overwrite our optimistic update
+      await queryClient.cancelQueries({ queryKey: quoteKeys.detail(variables.quoteId) });
+
+      // Snapshot the previous value
+      const previousQuote = queryClient.getQueryData(quoteKeys.detail(variables.quoteId));
+
+      // Optimistically update the cache with new status
+      queryClient.setQueryData(quoteKeys.detail(variables.quoteId), (old: QuoteEstimate | undefined) => {
+        if (!old) return old;
+        return {
+          ...old,
+          status: 'scheduled',
+        };
+      });
+
+      // Return a context object with the snapshotted value
+      return { previousQuote };
+    },
+    onError: (_err, variables, context) => {
+      // If the mutation fails, use the context returned from onMutate to roll back
+      if (context?.previousQuote) {
+        queryClient.setQueryData(quoteKeys.detail(variables.quoteId), context.previousQuote);
+      }
+    },
+    onSettled: (_data, _error, variables) => {
+      // Always refetch after error or success to ensure we have the latest data
+      queryClient.invalidateQueries({ queryKey: quoteKeys.detail(variables.quoteId) });
+    },
+  });
+}
+
+export type { QuoteEstimate, CreateQuoteInput, SelectTierInput, TierPriceRange, FinalizeCheckoutInput };

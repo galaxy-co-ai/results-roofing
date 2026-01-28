@@ -11,27 +11,12 @@
  */
 
 import type { PricingTier } from '@/db/schema';
-
-// Deposit configuration (F27)
-const DEPOSIT_CONFIG = {
-  percentage: 0.1, // 10%
-  minimum: 500,
-  maximum: 2500,
-};
-
-// Complexity multipliers (F29)
-const COMPLEXITY_MULTIPLIERS: Record<string, number> = {
-  simple: 1.0,
-  moderate: 1.15,
-  complex: 1.3,
-};
-
-// Pitch adjustments (F29)
-const PITCH_ADJUSTMENTS: Record<string, number> = {
-  standard: 1.0, // 4:12 to 7:12
-  steep: 1.1, // 8:12 to 10:12
-  very_steep: 1.2, // >10:12
-};
+import {
+  DEPOSIT_CONFIG,
+  COMPLEXITY_MULTIPLIERS,
+  PITCH_ADJUSTMENTS,
+  QUOTE_VALIDITY,
+} from '@/lib/constants';
 
 export interface TierPricing {
   tier: string;
@@ -133,8 +118,10 @@ export function calculateQuotePricing(
   } = options;
 
   const pitchCategory = getPitchCategory(pitchRatio);
-  const complexityMultiplier = COMPLEXITY_MULTIPLIERS[complexity] || 1.0;
-  const pitchMultiplier = PITCH_ADJUSTMENTS[pitchCategory] || 1.0;
+  const complexityMultiplier =
+    COMPLEXITY_MULTIPLIERS[complexity as keyof typeof COMPLEXITY_MULTIPLIERS] ?? 1.0;
+  const pitchMultiplier =
+    PITCH_ADJUSTMENTS[pitchCategory as keyof typeof PITCH_ADJUSTMENTS] ?? 1.0;
   const totalMultiplier = complexityMultiplier * pitchMultiplier;
 
   const tiers: TierPricing[] = pricingTiers.map((tier) => {
@@ -166,9 +153,9 @@ export function calculateQuotePricing(
     };
   });
 
-  // Quote valid for 30 days
+  // Quote validity from centralized config
   const expiresAt = new Date();
-  expiresAt.setDate(expiresAt.getDate() + 30);
+  expiresAt.setDate(expiresAt.getDate() + QUOTE_VALIDITY.validityDays);
 
   return {
     sqft,

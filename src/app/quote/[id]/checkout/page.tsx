@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { db, schema, eq } from '@/db/index';
 import { QuoteProgressBar } from '@/components/features/quote/QuoteProgressBar';
 import CheckoutPageClient from './CheckoutPageClient';
@@ -24,9 +24,14 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
     notFound();
   }
 
-  // Ensure a tier is selected
+  // Step guard: Ensure measurement data exists (step 1 completed)
+  if (!quote.sqftTotal) {
+    redirect('/quote/new');
+  }
+
+  // Step guard: Ensure a tier is selected (step 2 completed)
   if (!quote.selectedTier) {
-    notFound();
+    redirect(`/quote/${quoteId}/packages`);
   }
 
   const selectedTierData = pricingTiers.find((t) => t.tier === quote.selectedTier);
@@ -35,7 +40,7 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
 
   return (
     <>
-      <QuoteProgressBar currentStep={3} />
+      <QuoteProgressBar currentStep={3} quoteId={quoteId} />
       <CheckoutPageClient
         quoteId={quoteId}
         quote={{

@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, ChevronRight, Check, Loader2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Loader2, AlertCircle } from 'lucide-react';
 import { ScheduleSelector } from '@/components/features/checkout/ScheduleSelector';
 import { FinancingSelector } from '@/components/features/checkout/FinancingSelector';
 import { TrustSignals } from '@/components/features/quote/TrustSignals';
+import { useFinalizeCheckout } from '@/hooks/useQuote';
 import { TCPA_CONSENT_TEXT } from '@/lib/constants';
 import styles from './page.module.css';
 
@@ -52,68 +53,42 @@ export function CheckoutPageClient({
   const [selectedFinancing, setSelectedFinancing] = useState<FinancingTerm | null>(null);
   const [phone, setPhone] = useState('');
   const [smsConsent, setSmsConsent] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Use consolidated finalize mutation (single API call instead of 3)
+  const finalizeMutation = useFinalizeCheckout();
+  const isSubmitting = finalizeMutation.isPending;
 
   const canContinue = selectedDate && selectedTimeSlot && selectedFinancing && phone.trim();
 
   const handleContinue = async () => {
     if (!canContinue || isSubmitting) return;
+    if (!selectedDate || !selectedTimeSlot || !selectedFinancing) return;
 
-    setIsSubmitting(true);
     setError(null);
 
     try {
-      // Save contact info
-      const contactRes = await fetch(`/api/quotes/${quoteId}/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          phone: phone.trim(),
-          smsConsent,
-        }),
+      // Single consolidated API call for checkout
+      await finalizeMutation.mutateAsync({
+        quoteId,
+        phone: phone.trim(),
+        smsConsent,
+        scheduledDate: selectedDate.toISOString(),
+        timeSlot: selectedTimeSlot,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        financingTerm: selectedFinancing,
       });
-
-      if (!contactRes.ok) {
-        const data = await contactRes.json();
-        throw new Error(data.error || 'Failed to save contact info');
-      }
-
-      // Save schedule
-      const scheduleRes = await fetch(`/api/quotes/${quoteId}/schedule`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          scheduledDate: selectedDate.toISOString(),
-          timeSlot: selectedTimeSlot,
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        }),
-      });
-
-      if (!scheduleRes.ok) {
-        const data = await scheduleRes.json();
-        throw new Error(data.error || 'Failed to save schedule');
-      }
-
-      // Save financing
-      const financingRes = await fetch(`/api/quotes/${quoteId}/financing`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          financingTerm: selectedFinancing,
-        }),
-      });
-
-      if (!financingRes.ok) {
-        const data = await financingRes.json();
-        throw new Error(data.error || 'Failed to save financing selection');
-      }
 
       // Navigate to contract page
       router.push(`/quote/${quoteId}/contract`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
-      setIsSubmitting(false);
+      // Transform error to user-friendly message
+      const message = err instanceof Error ? err.message : 'Something went wrong';
+      setError(
+        message.includes('expired')
+          ? message
+          : 'Could not save your information. Please try again.'
+      );
     }
   };
 
@@ -242,8 +217,9 @@ export function CheckoutPageClient({
 
         {/* Error message */}
         {error && (
-          <div className={styles.error}>
-            {error}
+          <div className={styles.error} role="alert" aria-live="polite">
+            <AlertCircle size={18} aria-hidden="true" />
+            <span>{error}</span>
           </div>
         )}
 

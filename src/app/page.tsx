@@ -1,5 +1,6 @@
-import { MapPin, Clock, Shield, DollarSign, CheckCircle, ChevronRight, Star, UserX } from 'lucide-react';
+import { Clock, Shield, DollarSign, CheckCircle, ChevronRight, Star, UserX } from 'lucide-react';
 import { Header } from '@/components/layout';
+import { HeroAddressForm } from '@/components/features/landing';
 import styles from './page.module.css';
 
 const SERVICE_STATES = ['Texas', 'Georgia', 'North Carolina', 'Arizona', 'Oklahoma'];
@@ -100,25 +101,8 @@ export default function HomePage() {
             No salesperson visit required. Get your price online.
           </p>
 
-          {/* Address Input Form */}
-          <form className={styles.addressForm} action="/quote/new">
-            <div className={styles.inputWrapper}>
-              <MapPin className={styles.inputIcon} size={20} />
-              <input
-                type="text"
-                name="address"
-                className={styles.addressInput}
-                placeholder="Enter your home address"
-                autoComplete="street-address"
-                aria-label="Enter your home address to get a quote"
-                required
-              />
-            </div>
-            <button type="submit" className={styles.submitButton}>
-              Get My Quote
-              <ChevronRight size={16} />
-            </button>
-          </form>
+          {/* Address Input Form with Autocomplete */}
+          <HeroAddressForm className={styles.addressForm} />
 
           {/* Service Area Badge */}
           <div className={styles.serviceArea}>

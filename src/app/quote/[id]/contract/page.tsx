@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { db, schema, eq } from '@/db/index';
 import { QuoteProgressBar } from '@/components/features/quote/QuoteProgressBar';
 import ContractPageClient from './ContractPageClient';
@@ -19,8 +19,24 @@ export default async function ContractPage({ params }: ContractPageProps) {
     }),
   ]);
 
-  if (!quote || !quote.selectedTier) {
+  if (!quote) {
     notFound();
+  }
+
+  // Step guard: Ensure measurement data exists (step 1 completed)
+  if (!quote.sqftTotal) {
+    redirect('/quote/new');
+  }
+
+  // Step guard: Ensure a tier is selected (step 2 completed)
+  if (!quote.selectedTier) {
+    redirect(`/quote/${quoteId}/packages`);
+  }
+
+  // Step guard: Ensure checkout is complete (step 3 completed)
+  // Scheduling is required before contract
+  if (!quote.scheduledDate) {
+    redirect(`/quote/${quoteId}/checkout`);
   }
 
   const selectedTier = pricingTiers.find((t) => t.tier === quote.selectedTier);
@@ -34,7 +50,7 @@ export default async function ContractPage({ params }: ContractPageProps) {
 
   return (
     <>
-      <QuoteProgressBar currentStep={4} />
+      <QuoteProgressBar currentStep={4} quoteId={quoteId} />
       <ContractPageClient
         quoteId={quoteId}
         quote={{

@@ -1,0 +1,161 @@
+/* =================================================
+   HERO ADDRESS FORM STYLES
+   Landing page address autocomplete with quote creation
+   ================================================= */
+
+.container {
+  width: 100%;
+  max-width: 520px;
+}
+
+.formWrapper {
+  position: relative;
+}
+
+/* ========================================
+   LOADING STATE
+   ======================================== */
+
+.loadingOverlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rr-space-3);
+  padding: var(--rr-space-6) var(--rr-space-4);
+  margin-top: var(--rr-space-4);
+  background-color: var(--rr-color-bg-secondary);
+  border-radius: var(--rr-radius-lg);
+  text-align: center;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  color: var(--rr-color-blue);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-secondary);
+}
+
+/* ========================================
+   ERROR STATE
+   ======================================== */
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-3) var(--rr-space-4);
+  margin-top: var(--rr-space-3);
+  background-color: var(--rr-color-error-light, #fef2f2);
+  border-radius: var(--rr-radius-md);
+  color: var(--rr-color-error, #ef4444);
+  font-size: var(--rr-font-size-sm);
+}
+
+/* ========================================
+   OUT OF AREA STATE
+   ======================================== */
+
+.outOfArea {
+  padding: var(--rr-space-5);
+  margin-top: var(--rr-space-4);
+  background-color: var(--rr-color-bg-secondary);
+  border-radius: var(--rr-radius-lg);
+  text-align: center;
+}
+
+.outOfAreaTitle {
+  margin: 0 0 var(--rr-space-2);
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+}
+
+.outOfAreaText {
+  margin: 0 0 var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-secondary);
+}
+
+.notifyForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-3);
+}
+
+.notifyInput {
+  width: 100%;
+  height: var(--rr-input-height, 48px);
+  padding: 0 var(--rr-space-4);
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-primary);
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.notifyInput:focus {
+  outline: none;
+  border-color: var(--rr-color-border-focus);
+  box-shadow: 0 0 0 3px var(--rr-color-focus-ring-alpha, rgba(74, 126, 194, 0.15));
+}
+
+.notifyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  width: 100%;
+  height: var(--rr-input-height, 48px);
+  padding: 0 var(--rr-space-6);
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-white);
+  background-color: var(--rr-color-blue);
+  border: none;
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.notifyButton:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+}
+
+.notifyButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--rr-color-focus-ring, rgba(74, 126, 194, 0.3));
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 480px) {
+  .notifyForm {
+    flex-direction: row;
+  }
+
+  .notifyInput {
+    flex: 1;
+  }
+
+  .notifyButton {
+    width: auto;
+    flex-shrink: 0;
+  }
+}

@@ -4,6 +4,17 @@
 
 export { serverEnv, clientEnv, features } from './env';
 export { TCPA_CONSENT_TEXT, TCPA_DISCLOSURE_SHORT } from './tcpa';
+export {
+  PRICING_CONFIG,
+  DEPOSIT_CONFIG,
+  FINANCING_TERMS,
+  QUOTE_VALIDITY,
+  COMPLEXITY_MULTIPLIERS,
+  PITCH_ADJUSTMENTS,
+  type FinancingTerm,
+  type ComplexityLevel,
+  type PitchCategory,
+} from './pricing';
 
 /**
  * Service area states
@@ -44,14 +55,7 @@ export const REPLACEMENT_MOTIVATIONS = [
 ] as const;
 export type ReplacementMotivation = (typeof REPLACEMENT_MOTIVATIONS)[number];
 
-/**
- * Deposit calculation rules
- */
-export const DEPOSIT_RULES = {
-  percentage: 0.1, // 10% of total
-  minimum: 500,
-  maximum: 2500,
-} as const;
+// Deposit calculation rules are now in ./pricing.ts as DEPOSIT_CONFIG
 
 /**
  * API rate limits (requests per minute)

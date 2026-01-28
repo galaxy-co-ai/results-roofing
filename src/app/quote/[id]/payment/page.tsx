@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { db, schema, eq } from '@/db/index';
 import { QuoteProgressBar } from '@/components/features/quote/QuoteProgressBar';
 import PaymentPageClient from './PaymentPageClient';
@@ -10,7 +10,7 @@ interface PaymentPageProps {
 export default async function PaymentPage({ params }: PaymentPageProps) {
   const { id: quoteId } = await params;
 
-  const [quote, pricingTiers] = await Promise.all([
+  const [quote, pricingTiers, contract] = await Promise.all([
     db.query.quotes.findFirst({
       where: eq(schema.quotes.id, quoteId),
       with: {
@@ -20,10 +20,33 @@ export default async function PaymentPage({ params }: PaymentPageProps) {
     db.query.pricingTiers.findMany({
       where: eq(schema.pricingTiers.isActive, true),
     }),
+    db.query.contracts.findFirst({
+      where: eq(schema.contracts.quoteId, quoteId),
+    }),
   ]);
 
-  if (!quote || !quote.selectedTier) {
+  if (!quote) {
     notFound();
+  }
+
+  // Step guard: Ensure measurement data exists (step 1 completed)
+  if (!quote.sqftTotal) {
+    redirect('/quote/new');
+  }
+
+  // Step guard: Ensure a tier is selected (step 2 completed)
+  if (!quote.selectedTier) {
+    redirect(`/quote/${quoteId}/packages`);
+  }
+
+  // Step guard: Ensure checkout is complete (step 3 completed)
+  if (!quote.scheduledDate) {
+    redirect(`/quote/${quoteId}/checkout`);
+  }
+
+  // Step guard: Ensure contract is signed (step 4 completed)
+  if (!contract?.signedAt) {
+    redirect(`/quote/${quoteId}/contract`);
   }
 
   const selectedTier = pricingTiers.find((t) => t.tier === quote.selectedTier);
@@ -41,7 +64,7 @@ export default async function PaymentPage({ params }: PaymentPageProps) {
 
   return (
     <>
-      <QuoteProgressBar currentStep={5} />
+      <QuoteProgressBar currentStep={5} quoteId={quoteId} />
       <PaymentPageClient
         quoteId={quoteId}
         totalPrice={totalPrice}

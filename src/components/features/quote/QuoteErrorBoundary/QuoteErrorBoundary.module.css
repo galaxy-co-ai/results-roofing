@@ -1,0 +1,185 @@
+/* =================================================
+   QUOTE ERROR BOUNDARY STYLES
+   User-friendly error display for quote flow
+   ================================================= */
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: var(--rr-space-8) var(--rr-space-page-gutter);
+  background-color: var(--rr-color-bg-primary);
+}
+
+.content {
+  max-width: 480px;
+  text-align: center;
+}
+
+/* ========================================
+   ICON
+   ======================================== */
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--rr-space-6);
+  background-color: var(--rr-color-error-light, #fef2f2);
+  border-radius: var(--rr-radius-full);
+  color: var(--rr-color-error, #ef4444);
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+
+.title {
+  margin: 0 0 var(--rr-space-4);
+  font-size: var(--rr-font-size-2xl);
+  font-weight: var(--rr-font-weight-bold);
+  color: var(--rr-color-text-primary);
+  line-height: var(--rr-line-height-tight);
+}
+
+.message {
+  margin: 0 0 var(--rr-space-8);
+  font-size: var(--rr-font-size-base);
+  color: var(--rr-color-text-secondary);
+  line-height: var(--rr-line-height-relaxed);
+}
+
+/* ========================================
+   ACTIONS
+   ======================================== */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-3);
+  margin-bottom: var(--rr-space-8);
+}
+
+.primaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  width: 100%;
+  padding: var(--rr-space-4) var(--rr-space-6);
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-white);
+  background-color: var(--rr-color-blue);
+  border: none;
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.primaryButton:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--rr-shadow-charcoal-medium);
+}
+
+.primaryButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--rr-color-focus-ring, rgba(74, 126, 194, 0.3));
+}
+
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  width: 100%;
+  padding: var(--rr-space-4) var(--rr-space-6);
+  font-size: var(--rr-font-size-base);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  background-color: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.secondaryButton:hover {
+  border-color: var(--rr-color-border-hover);
+  background-color: var(--rr-color-bg-secondary);
+}
+
+.secondaryButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--rr-color-focus-ring, rgba(74, 126, 194, 0.3));
+}
+
+.tertiaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-2) var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-secondary);
+  background: none;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.tertiaryButton:hover {
+  color: var(--rr-color-text-primary);
+}
+
+.tertiaryButton:focus {
+  outline: none;
+  text-decoration: underline;
+}
+
+/* ========================================
+   HELP TEXT
+   ======================================== */
+
+.helpText {
+  font-size: var(--rr-font-size-sm);
+  color: var(--rr-color-text-tertiary);
+}
+
+.helpLink {
+  color: var(--rr-color-blue);
+  text-decoration: none;
+  font-weight: var(--rr-font-weight-medium);
+}
+
+.helpLink:hover {
+  text-decoration: underline;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 640px) {
+  .actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: auto;
+    min-width: 160px;
+  }
+
+  .tertiaryButton {
+    width: 100%;
+  }
+}
