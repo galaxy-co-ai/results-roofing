@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { ScheduleSelector } from '@/components/features/checkout/ScheduleSelector';
 import styles from './Stage2.module.css';
 
@@ -24,24 +24,6 @@ export function ScheduleSelection({
   onBack,
   isLoading = false,
 }: ScheduleSelectionProps) {
-  const handleContinue = () => {
-    if (selectedDate && selectedTimeSlot) {
-      onScheduleSelect(selectedDate, selectedTimeSlot);
-    }
-  };
-
-  // Temporary state handlers for the ScheduleSelector
-  // The actual state is managed by the parent through props
-  const handleDateChange = (date: Date | null) => {
-    // Will be handled by parent on continue
-  };
-
-  const handleTimeSlotChange = (slot: 'morning' | 'afternoon' | null) => {
-    if (selectedDate && slot) {
-      onScheduleSelect(selectedDate, slot);
-    }
-  };
-
   return (
     <div className={styles.subStep}>
       {/* Header */}
@@ -58,7 +40,7 @@ export function ScheduleSelection({
         <ScheduleSelector
           selectedDate={selectedDate}
           selectedTimeSlot={selectedTimeSlot}
-          onDateChange={(date) => {
+          onDateChange={(_date) => {
             // Store date temporarily, wait for time slot
           }}
           onTimeSlotChange={(slot) => {

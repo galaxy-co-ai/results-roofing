@@ -54,7 +54,7 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
     setSchedule,
     setFinancing,
     goToSubStep,
-    nextStep,
+    nextStep: _nextStep,
     prevStep,
     setQuoteId,
     setLoading,
@@ -130,14 +130,6 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
       router.push(`/quote/${quoteId}/checkout`);
     }
   }, [quoteId, state.selectedTier, state.scheduledDate, state.financingTerm, router]);
-
-  const handleBack = useCallback(() => {
-    prevStep();
-    // If going back to Stage 1, redirect to the quote new page
-    if (state.currentSubStep === 'package') {
-      router.push('/quote/new');
-    }
-  }, [prevStep, state.currentSubStep, router]);
 
   // Get selected tier data
   const selectedTierData = state.selectedTier

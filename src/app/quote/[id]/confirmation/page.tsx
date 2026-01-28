@@ -17,14 +17,6 @@ function formatDate(date: Date): string {
   });
 }
 
-function formatPrice(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-  }).format(amount);
-}
-
 export default async function ConfirmationPage({ params }: ConfirmationPageProps) {
   const { id: quoteId } = await params;
 

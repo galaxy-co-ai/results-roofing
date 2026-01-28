@@ -144,7 +144,7 @@ interface ActiveSprintButtonProps {
   onAddChecklistItem: (taskId: string, text: string) => void;
 }
 
-function ActiveSprintButton({ tasks, onChecklistChange, onAddChecklistItem }: ActiveSprintButtonProps) {
+function _ActiveSprintButton({ tasks, onChecklistChange, onAddChecklistItem }: ActiveSprintButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [newItemText, setNewItemText] = useState('');
   const [addingToTaskId, setAddingToTaskId] = useState<string | null>(null);
@@ -537,7 +537,7 @@ function ListView({ tasks, onStatusChange, onDeleteTask }: ListViewProps) {
         <span className={styles.listHeaderCell}>Priority</span>
         <span className={styles.listHeaderCell}>Category</span>
         <span className={styles.listHeaderCell}>Phase</span>
-        <span className={styles.listHeaderCell} style={{ width: 40 }}></span>
+        <span className={styles.listHeaderCell} style={{ width: 40 }} />
       </div>
       <div className={styles.listBody}>
         {paginatedTasks.map((task) => {

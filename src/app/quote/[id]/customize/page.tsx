@@ -2,7 +2,6 @@ import { notFound, redirect } from 'next/navigation';
 import { db, schema, eq } from '@/db/index';
 import { QuoteWizardProvider, Stage2Container, StageIndicator } from '@/components/features/quote';
 import { TrustBar } from '@/components/ui';
-import { DEPOSIT_CONFIG } from '@/lib/constants';
 import styles from './page.module.css';
 
 interface CustomizePageProps {

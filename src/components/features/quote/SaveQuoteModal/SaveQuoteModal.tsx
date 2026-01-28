@@ -21,7 +21,7 @@ export function SaveQuoteModal({
   isOpen,
   onClose,
   quoteId,
-  draftState,
+  draftState: _draftState,
 }: SaveQuoteModalProps) {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState<string | null>(null);

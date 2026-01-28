@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FileText, CheckCircle, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import styles from './Stage3.module.css';
 

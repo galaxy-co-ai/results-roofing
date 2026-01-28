@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle, CreditCard } from 'lucide-react';
+import { CreditCard } from 'lucide-react';
 import { PaymentForm } from '@/components/features/checkout/PaymentForm';
 import { DEPOSIT_CONFIG } from '@/lib/constants';
 import styles from './Stage3.module.css';

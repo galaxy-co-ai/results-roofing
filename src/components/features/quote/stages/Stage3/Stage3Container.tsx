@@ -167,7 +167,6 @@ export function Stage3Container({ quoteId, quoteData }: Stage3ContainerProps) {
   );
 
   // Determine which sections are enabled
-  const isContactEnabled = true;
   const isContractEnabled = sectionsComplete.contact;
   const isSignatureEnabled = sectionsComplete.contract && contractViewed;
   const isPaymentEnabled = sectionsComplete.signature;

@@ -70,7 +70,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const { phone, smsConsent, scheduledDate, timeSlot, timezone, financingTerm } = parsed.data;
+    const { phone, smsConsent, scheduledDate, timeSlot, timezone: _timezone, financingTerm } = parsed.data;
 
     // Fetch the quote with validation
     const quote = await db.query.quotes.findFirst({

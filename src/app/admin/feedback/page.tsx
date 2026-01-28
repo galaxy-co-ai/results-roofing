@@ -26,7 +26,6 @@ import {
   Zap,
   CheckSquare,
   Square,
-  MoreHorizontal,
   ArrowUpRight,
   XCircle,
   AlertTriangle,
@@ -35,7 +34,7 @@ import {
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { DonutChart, BarList, AreaChart } from '@/components/ui/charts';
+import { DonutChart, BarList } from '@/components/ui/charts';
 import { useToast } from '@/components/ui/Toast';
 import { staggerContainer, cardItem, fadeInUp } from '@/lib/animation-variants';
 import styles from './page.module.css';
@@ -690,7 +689,7 @@ function TicketsTab({
   selectedIds,
   onToggleExpand,
   onToggleSelect,
-  onSelectAll,
+  onSelectAll: _onSelectAll,
   onStatusChange,
   onPriorityChange,
   onAdminNotesChange,
@@ -1065,7 +1064,7 @@ export default function FeedbackPage() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('');
-  const [reasonFilter, setReasonFilter] = useState<string>('');
+  const [reasonFilter, _setReasonFilter] = useState<string>('');
   const [priorityFilter, setPriorityFilter] = useState<string>('');
   
   // Operation state
