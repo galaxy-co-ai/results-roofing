@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import { db, schema, eq } from '@/db/index';
 import { Header } from '@/components/layout';
 import { TrustBar } from '@/components/ui';
-import { CheckCircle2, Calendar, MapPin, Phone, Mail } from 'lucide-react';
+import { CheckCircle2, Calendar, Phone, Mail, FileText, CreditCard, Check, ArrowRight } from 'lucide-react';
 import styles from './page.module.css';
 
 // Force dynamic rendering to ensure fresh database queries
@@ -35,20 +36,20 @@ export default async function SuccessPage({ params }: SuccessPageProps) {
   const tierName = quote.selectedTier ? TIER_DISPLAY_NAMES[quote.selectedTier] || quote.selectedTier : 'Selected';
   const totalPrice = quote.totalPrice ? parseFloat(quote.totalPrice) : 0;
 
-  // Format scheduled date
-  const formatScheduledDate = (date: Date | null, slotId: string | null) => {
-    if (!date) return 'To be scheduled';
-
+  // Format short date for condensed summary
+  const formatShortDate = (date: Date | null, slotId: string | null) => {
+    if (!date) return 'TBD';
     const dateStr = date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      month: 'long',
+      weekday: 'short',
+      month: 'short',
       day: 'numeric',
-      year: 'numeric',
     });
-
-    const timeSlot = slotId?.includes('morning') ? '8 AM - 12 PM' : '12 PM - 5 PM';
-    return `${dateStr} • ${timeSlot}`;
+    const time = slotId?.includes('morning') ? '8AM' : '12PM';
+    return `${dateStr} @ ${time}`;
   };
+
+  // Calculate deposit amount (10% of total)
+  const depositAmount = Math.round(totalPrice * 0.1);
 
   return (
     <>
@@ -66,53 +67,45 @@ export default async function SuccessPage({ params }: SuccessPageProps) {
             Your roofing installation has been scheduled. We&apos;ll send you a confirmation email shortly.
           </p>
 
-          {/* Quote Summary Card */}
-          <div className={styles.summaryCard}>
-            <h2 className={styles.cardTitle}>Installation Details</h2>
-
-            <div className={styles.detailRow}>
-              <MapPin className={styles.detailIcon} />
-              <div className={styles.detailContent}>
-                <span className={styles.detailLabel}>Property</span>
-                <span className={styles.detailValue}>{address}</span>
-              </div>
-            </div>
-
-            <div className={styles.detailRow}>
-              <Calendar className={styles.detailIcon} />
-              <div className={styles.detailContent}>
-                <span className={styles.detailLabel}>Scheduled Date</span>
-                <span className={styles.detailValue}>
-                  {formatScheduledDate(quote.scheduledDate, quote.scheduledSlotId)}
-                </span>
-              </div>
-            </div>
-
-            <div className={styles.divider} />
-
-            <div className={styles.priceRow}>
-              <span className={styles.packageName}>{tierName} Package</span>
-              <span className={styles.packagePrice}>${totalPrice.toLocaleString()}</span>
-            </div>
+          {/* Condensed Installation Summary */}
+          <div className={styles.installationSummary}>
+            {address} • {formatShortDate(quote.scheduledDate, quote.scheduledSlotId)} • {tierName} Package
           </div>
 
-          {/* Next Steps */}
-          <div className={styles.nextSteps}>
-            <h3 className={styles.nextStepsTitle}>What happens next?</h3>
-            <ol className={styles.stepsList}>
-              <li className={styles.step}>
-                <span className={styles.stepNumber}>1</span>
-                <span className={styles.stepText}>Our team will call you to confirm the details</span>
-              </li>
-              <li className={styles.step}>
-                <span className={styles.stepNumber}>2</span>
-                <span className={styles.stepText}>We&apos;ll send a deposit invoice via email</span>
-              </li>
-              <li className={styles.step}>
-                <span className={styles.stepNumber}>3</span>
-                <span className={styles.stepText}>Our crew arrives on your scheduled date</span>
-              </li>
-            </ol>
+          {/* Dashboard Preview Funnel */}
+          <div className={styles.dashboardPreview}>
+            <div className={styles.dashboardHeader}>
+              <CheckCircle2 className={styles.dashboardHeaderIcon} />
+              <span className={styles.dashboardHeaderTitle}>Your project dashboard is ready</span>
+            </div>
+
+            <div className={styles.actionPreviewList}>
+              {/* Contract */}
+              <div className={`${styles.previewItem} ${styles.previewItem_pending}`}>
+                <FileText className={styles.previewItemIcon} />
+                <span className={styles.previewItemLabel}>Contract ready to sign</span>
+                <span className={styles.previewItemBadge}>Action needed</span>
+              </div>
+
+              {/* Deposit */}
+              <div className={`${styles.previewItem} ${styles.previewItem_pending}`}>
+                <CreditCard className={styles.previewItemIcon} />
+                <span className={styles.previewItemLabel}>Deposit invoice</span>
+                <span className={styles.previewItemBadge}>${depositAmount.toLocaleString()} due</span>
+              </div>
+
+              {/* Installation */}
+              <div className={`${styles.previewItem} ${styles.previewItem_complete}`}>
+                <Calendar className={styles.previewItemIcon} />
+                <span className={styles.previewItemLabel}>Installation confirmed</span>
+                <Check className={styles.previewItemCheck} />
+              </div>
+            </div>
+
+            <Link href="/portal/dashboard" className={styles.dashboardCta}>
+              Go to My Dashboard
+              <ArrowRight className={styles.dashboardCtaIcon} />
+            </Link>
           </div>
 
           {/* Contact Info */}
