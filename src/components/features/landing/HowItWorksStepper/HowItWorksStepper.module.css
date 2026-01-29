@@ -118,11 +118,25 @@
   color: hsl(var(--muted-foreground));
   margin: 0;
   max-width: 180px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  height: 0;
+  overflow: hidden;
+}
+
+.step:hover .description {
+  opacity: 1;
+  transform: translateY(0);
+  height: auto;
 }
 
 @media (max-width: 767px) {
   .description {
     max-width: none;
+    opacity: 1;
+    transform: none;
+    height: auto;
   }
 }
 
