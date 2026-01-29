@@ -57,11 +57,11 @@ export async function POST(request: NextRequest) {
     const sessionToken = process.env.ADMIN_SESSION_TOKEN ||
       randomBytes(32).toString('hex');
 
-    // Set secure cookie
+    // Set secure cookie (secure only in production)
     const cookieStore = await cookies();
     cookieStore.set('admin_session', sessionToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 60 * 60 * 4, // 4 hours
       path: '/',

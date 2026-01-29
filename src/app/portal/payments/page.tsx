@@ -1,6 +1,8 @@
-import type { Metadata } from 'next';
-import { 
-  CreditCard, 
+'use client';
+
+import { useUser } from '@clerk/nextjs';
+import {
+  CreditCard,
   CheckCircle,
   Clock,
   DollarSign,
@@ -11,52 +13,10 @@ import {
   AlertCircle,
   ChevronRight
 } from 'lucide-react';
+import { useOrders, useOrderDetails } from '@/hooks';
+import { Skeleton } from '@/components/ui';
+import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import styles from './page.module.css';
-
-export const metadata: Metadata = {
-  title: 'Payments',
-  description: 'View payment history and make payments for your roofing project.',
-};
-
-// Mock data - would come from database in production
-const PAYMENT_SUMMARY = {
-  totalProject: 15000,
-  amountPaid: 750,
-  balanceDue: 14250,
-  nextPaymentDue: 'Upon completion',
-  paymentMethod: 'Visa ending in 4242',
-};
-
-const PAYMENT_HISTORY = [
-  {
-    id: 'pay-1',
-    type: 'Deposit',
-    amount: 750,
-    date: 'January 22, 2026',
-    status: 'completed',
-    method: 'Visa ****4242',
-    confirmationNumber: 'RR-YCZZ9PH2',
-  },
-];
-
-const PAYMENT_OPTIONS = [
-  {
-    id: 'pay-balance',
-    title: 'Pay Balance in Full',
-    amount: 14250,
-    description: 'Pay the remaining balance now',
-    icon: DollarSign,
-    primary: true,
-  },
-  {
-    id: 'financing',
-    title: 'Apply for Financing',
-    amount: null,
-    description: 'Get approved in 60 seconds with Wisetack',
-    icon: Wallet,
-    primary: false,
-  },
-];
 
 function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-US', {
@@ -67,8 +27,97 @@ function formatCurrency(amount: number): string {
   }).format(amount);
 }
 
-export default function PaymentsPage() {
-  const percentPaid = (PAYMENT_SUMMARY.amountPaid / PAYMENT_SUMMARY.totalProject) * 100;
+function formatDate(dateString: string | Date | null): string {
+  if (!dateString) return 'N/A';
+  const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
+function PaymentsSkeleton() {
+  return (
+    <div className={styles.paymentsPage}>
+      <header className={styles.header}>
+        <Skeleton variant="text" width="40%" height={32} />
+        <Skeleton variant="text" width="60%" height={20} />
+      </header>
+      <section className={styles.summaryCard}>
+        <Skeleton variant="rounded" width="100%" height={200} />
+      </section>
+      <div className={styles.twoColumn}>
+        <Skeleton variant="rounded" width="100%" height={250} />
+        <Skeleton variant="rounded" width="100%" height={250} />
+      </div>
+    </div>
+  );
+}
+
+function PaymentsError() {
+  return (
+    <div className={styles.paymentsPage}>
+      <div className={styles.errorState} role="alert">
+        <AlertCircle size={48} />
+        <h2>Unable to load payment information</h2>
+        <p>Please try refreshing the page.</p>
+      </div>
+    </div>
+  );
+}
+
+function ClerkPayments() {
+  const { user, isLoaded } = useUser();
+  const userEmail = user?.primaryEmailAddress?.emailAddress ?? null;
+  return <PaymentsContent userEmail={userEmail} userLoaded={isLoaded} />;
+}
+
+function DevPayments() {
+  const userEmail = MOCK_USER.primaryEmailAddress.emailAddress;
+  return <PaymentsContent userEmail={userEmail} userLoaded={true} />;
+}
+
+function PaymentsContent({ userEmail, userLoaded }: { userEmail: string | null; userLoaded: boolean }) {
+  const { data: ordersData, isLoading: ordersLoading, error: ordersError } = useOrders(userEmail);
+  const currentOrderId = ordersData?.orders?.[0]?.id ?? null;
+  const { data: orderDetails, isLoading: detailsLoading, error: detailsError } = useOrderDetails(currentOrderId);
+
+  if (!userLoaded || ordersLoading || (currentOrderId && detailsLoading)) {
+    return <PaymentsSkeleton />;
+  }
+
+  if (ordersError || detailsError || !orderDetails) {
+    return <PaymentsError />;
+  }
+
+  const { order, payments } = orderDetails;
+  const percentPaid = (order.totalPaid / order.totalPrice) * 100;
+
+  // Get payment method display from most recent payment
+  const lastPayment = payments[0];
+  const paymentMethodDisplay = lastPayment?.type === 'deposit'
+    ? `${lastPayment.type === 'deposit' ? 'Card' : 'Card'} ending in ${order.customerPhone?.slice(-4) || '****'}`
+    : 'No payment method on file';
+
+  const PAYMENT_OPTIONS = [
+    {
+      id: 'pay-balance',
+      title: 'Pay Balance in Full',
+      amount: order.balance,
+      description: 'Pay the remaining balance now',
+      icon: DollarSign,
+      primary: true,
+    },
+    {
+      id: 'financing',
+      title: 'Apply for Financing',
+      amount: null,
+      description: 'Get approved in 60 seconds with Wisetack',
+      icon: Wallet,
+      primary: false,
+    },
+  ];
 
   return (
     <div className={styles.paymentsPage}>
@@ -88,7 +137,7 @@ export default function PaymentsPage() {
           <h2 className={styles.summaryTitle}>Payment Summary</h2>
           <span className={styles.paymentMethod}>
             <CreditCard size={16} />
-            {PAYMENT_SUMMARY.paymentMethod}
+            {paymentMethodDisplay}
           </span>
         </div>
 
@@ -96,25 +145,25 @@ export default function PaymentsPage() {
           <div className={styles.summaryItem}>
             <span className={styles.summaryLabel}>Total Project</span>
             <span className={styles.summaryValue}>
-              {formatCurrency(PAYMENT_SUMMARY.totalProject)}
+              {formatCurrency(order.totalPrice)}
             </span>
           </div>
           <div className={styles.summaryItem}>
             <span className={styles.summaryLabel}>Amount Paid</span>
             <span className={`${styles.summaryValue} ${styles.summarySuccess}`}>
-              {formatCurrency(PAYMENT_SUMMARY.amountPaid)}
+              {formatCurrency(order.totalPaid)}
             </span>
           </div>
           <div className={styles.summaryItem}>
             <span className={styles.summaryLabel}>Balance Due</span>
             <span className={`${styles.summaryValue} ${styles.summaryPrimary}`}>
-              {formatCurrency(PAYMENT_SUMMARY.balanceDue)}
+              {formatCurrency(order.balance)}
             </span>
           </div>
           <div className={styles.summaryItem}>
             <span className={styles.summaryLabel}>Payment Due</span>
             <span className={styles.summaryValue}>
-              {PAYMENT_SUMMARY.nextPaymentDue}
+              Upon completion
             </span>
           </div>
         </div>
@@ -126,8 +175,8 @@ export default function PaymentsPage() {
             <span className={styles.progressPercent}>{percentPaid.toFixed(0)}% paid</span>
           </div>
           <div className={styles.progressBar}>
-            <div 
-              className={styles.progressFill} 
+            <div
+              className={styles.progressFill}
               style={{ width: `${percentPaid}%` }}
             />
           </div>
@@ -152,7 +201,7 @@ export default function PaymentsPage() {
                   <span className={styles.optionTitle}>{option.title}</span>
                   <span className={styles.optionDescription}>{option.description}</span>
                 </div>
-                {option.amount && (
+                {option.amount && option.amount > 0 && (
                   <span className={styles.optionAmount}>{formatCurrency(option.amount)}</span>
                 )}
                 <ChevronRight size={18} className={styles.optionArrow} />
@@ -175,27 +224,33 @@ export default function PaymentsPage() {
         {/* Payment History */}
         <section className={styles.historyCard}>
           <h2 className={styles.sectionTitle}>Payment History</h2>
-          {PAYMENT_HISTORY.length > 0 ? (
+          {payments.length > 0 ? (
             <div className={styles.historyList}>
-              {PAYMENT_HISTORY.map((payment) => (
+              {payments.map((payment) => (
                 <article key={payment.id} className={styles.historyItem}>
                   <div className={styles.historyIcon}>
-                    <CheckCircle size={20} />
+                    {payment.status === 'succeeded' ? (
+                      <CheckCircle size={20} />
+                    ) : (
+                      <Clock size={20} />
+                    )}
                   </div>
                   <div className={styles.historyContent}>
                     <div className={styles.historyHeader}>
-                      <span className={styles.historyType}>{payment.type}</span>
+                      <span className={styles.historyType}>
+                        {payment.type.charAt(0).toUpperCase() + payment.type.slice(1)}
+                      </span>
                       <span className={styles.historyAmount}>
                         {formatCurrency(payment.amount)}
                       </span>
                     </div>
                     <div className={styles.historyMeta}>
-                      <span>{payment.date}</span>
+                      <span>{payment.processedAt ? formatDate(payment.processedAt) : 'Processing'}</span>
                       <span className={styles.historyDot}>•</span>
-                      <span>{payment.method}</span>
+                      <span>{payment.status === 'succeeded' ? 'Completed' : payment.status}</span>
                     </div>
                     <div className={styles.historyConfirmation}>
-                      Confirmation: {payment.confirmationNumber}
+                      Confirmation: {order.confirmationNumber}
                     </div>
                   </div>
                   <button className={styles.downloadButton} aria-label="Download receipt">
@@ -219,12 +274,19 @@ export default function PaymentsPage() {
         <div className={styles.infoContent}>
           <p className={styles.infoTitle}>Payment Terms</p>
           <p className={styles.infoText}>
-            Your remaining balance of {formatCurrency(PAYMENT_SUMMARY.balanceDue)} is due upon 
-            completion of your roofing project. We accept all major credit cards, bank transfers, 
+            Your remaining balance of {formatCurrency(order.balance)} is due upon
+            completion of your roofing project. We accept all major credit cards, bank transfers,
             and financing through Wisetack.
           </p>
         </div>
       </div>
     </div>
   );
+}
+
+export default function PaymentsPage() {
+  if (DEV_BYPASS_ENABLED) {
+    return <DevPayments />;
+  }
+  return <ClerkPayments />;
 }

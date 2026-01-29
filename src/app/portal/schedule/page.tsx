@@ -1,8 +1,10 @@
-import type { Metadata } from 'next';
-import { 
-  Calendar, 
-  Clock, 
-  MapPin, 
+'use client';
+
+import { useUser } from '@clerk/nextjs';
+import {
+  Calendar,
+  Clock,
+  MapPin,
   CheckCircle,
   Sun,
   Truck,
@@ -10,63 +12,29 @@ import {
   ClipboardCheck,
   AlertCircle
 } from 'lucide-react';
+import { useOrders, useOrderDetails } from '@/hooks';
+import { Skeleton } from '@/components/ui';
 import { ScheduleSupport } from '@/components/features/support';
+import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import styles from './page.module.css';
 
-export const metadata: Metadata = {
-  title: 'Schedule',
-  description: 'View your installation schedule and project timeline.',
-};
-
-// Mock data - would come from database in production
-const PROJECT_SCHEDULE = {
-  installationDate: 'Monday, February 3, 2026',
-  installationTime: '7:00 AM - 5:00 PM',
-  estimatedDuration: '1-2 days',
-  address: '123 Main Street, Austin, TX 78701',
-  crewLead: 'Mike Rodriguez',
-  crewSize: '4-5 crew members',
-  weather: 'Sunny, 72°F',
-};
-
-const TIMELINE_EVENTS = [
-  {
-    id: 'materials',
-    date: 'January 30, 2026',
-    time: '8:00 AM - 12:00 PM',
-    title: 'Material Delivery',
-    description: 'GAF Timberline HDZ shingles and underlayment delivered',
-    icon: Truck,
-    status: 'upcoming',
-  },
-  {
-    id: 'installation-1',
-    date: 'February 3, 2026',
-    time: '7:00 AM - 5:00 PM',
-    title: 'Installation Day 1',
-    description: 'Tear-off, decking inspection, underlayment installation',
-    icon: HardHat,
-    status: 'upcoming',
-  },
-  {
-    id: 'installation-2',
-    date: 'February 4, 2026',
-    time: '7:00 AM - 3:00 PM',
-    title: 'Installation Day 2',
-    description: 'Shingle installation, flashing, cleanup',
-    icon: HardHat,
-    status: 'upcoming',
-  },
-  {
-    id: 'inspection',
-    date: 'February 4, 2026',
-    time: '3:00 PM - 4:00 PM',
-    title: 'Final Inspection',
-    description: 'Quality check and project walkthrough with you',
-    icon: ClipboardCheck,
-    status: 'upcoming',
-  },
-];
+function formatDate(dateString: string | Date | null, format: 'full' | 'short' = 'full'): string {
+  if (!dateString) return 'To be scheduled';
+  const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
+  if (format === 'short') {
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  }
+  return date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
 
 const PREPARATION_TIPS = [
   'Move vehicles away from the driveway and work area',
@@ -77,7 +45,111 @@ const PREPARATION_TIPS = [
   'Clear access around the perimeter of your home',
 ];
 
-export default function SchedulePage() {
+function ScheduleSkeleton() {
+  return (
+    <div className={styles.schedulePage}>
+      <header className={styles.header}>
+        <Skeleton variant="text" width="40%" height={32} />
+        <Skeleton variant="text" width="60%" height={20} />
+      </header>
+      <section className={styles.installationCard}>
+        <Skeleton variant="rounded" width="100%" height={200} />
+      </section>
+      <div className={styles.twoColumn}>
+        <Skeleton variant="rounded" width="100%" height={300} />
+        <Skeleton variant="rounded" width="100%" height={300} />
+      </div>
+    </div>
+  );
+}
+
+function ScheduleError() {
+  return (
+    <div className={styles.schedulePage}>
+      <div className={styles.errorState} role="alert">
+        <AlertCircle size={48} />
+        <h2>Unable to load schedule</h2>
+        <p>Please try refreshing the page.</p>
+      </div>
+    </div>
+  );
+}
+
+function ClerkSchedule() {
+  const { user, isLoaded } = useUser();
+  const userEmail = user?.primaryEmailAddress?.emailAddress ?? null;
+  return <ScheduleContent userEmail={userEmail} userLoaded={isLoaded} />;
+}
+
+function DevSchedule() {
+  const userEmail = MOCK_USER.primaryEmailAddress.emailAddress;
+  return <ScheduleContent userEmail={userEmail} userLoaded={true} />;
+}
+
+function ScheduleContent({ userEmail, userLoaded }: { userEmail: string | null; userLoaded: boolean }) {
+  const { data: ordersData, isLoading: ordersLoading, error: ordersError } = useOrders(userEmail);
+  const currentOrderId = ordersData?.orders?.[0]?.id ?? null;
+  const { data: orderDetails, isLoading: detailsLoading, error: detailsError } = useOrderDetails(currentOrderId);
+
+  if (!userLoaded || ordersLoading || (currentOrderId && detailsLoading)) {
+    return <ScheduleSkeleton />;
+  }
+
+  if (ordersError || detailsError || !orderDetails) {
+    return <ScheduleError />;
+  }
+
+  const { order, timeline } = orderDetails;
+
+  // Build full address
+  const fullAddress = `${order.propertyAddress}, ${order.propertyCity}, ${order.propertyState} ${order.propertyZip}`;
+
+  // Calculate installation date + 1 for day 2
+  const installDate = order.scheduledStartDate ? new Date(order.scheduledStartDate) : null;
+  const installDay2 = installDate ? new Date(installDate.getTime() + 24 * 60 * 60 * 1000) : null;
+  const materialsDate = installDate ? new Date(installDate.getTime() - 4 * 24 * 60 * 60 * 1000) : null;
+
+  const TIMELINE_EVENTS = [
+    {
+      id: 'materials',
+      date: materialsDate ? formatDate(materialsDate, 'short') : 'TBD',
+      time: '8:00 AM - 12:00 PM',
+      title: 'Material Delivery',
+      description: 'Shingles and underlayment delivered to your property',
+      icon: Truck,
+      status: 'upcoming',
+    },
+    {
+      id: 'installation-1',
+      date: installDate ? formatDate(installDate, 'short') : 'TBD',
+      time: '7:00 AM - 5:00 PM',
+      title: 'Installation Day 1',
+      description: 'Tear-off, decking inspection, underlayment installation',
+      icon: HardHat,
+      status: 'upcoming',
+    },
+    {
+      id: 'installation-2',
+      date: installDay2 ? formatDate(installDay2, 'short') : 'TBD',
+      time: '7:00 AM - 3:00 PM',
+      title: 'Installation Day 2',
+      description: 'Shingle installation, flashing, cleanup',
+      icon: HardHat,
+      status: 'upcoming',
+    },
+    {
+      id: 'inspection',
+      date: installDay2 ? formatDate(installDay2, 'short') : 'TBD',
+      time: '3:00 PM - 4:00 PM',
+      title: 'Final Inspection',
+      description: 'Quality check and project walkthrough with you',
+      icon: ClipboardCheck,
+      status: 'upcoming',
+    },
+  ];
+
+  const isScheduled = !!order.scheduledStartDate;
+
   return (
     <div className={styles.schedulePage}>
       {/* Header */}
@@ -90,16 +162,18 @@ export default function SchedulePage() {
         </div>
       </header>
 
-      {/* Installation Card - Compact Horizontal Layout */}
+      {/* Installation Card */}
       <section className={styles.installationCard}>
         <div className={styles.installationHeader}>
           <div className={styles.installationBadge}>
             <Calendar size={16} />
-            <span>Confirmed</span>
+            <span>{isScheduled ? 'Confirmed' : 'Pending'}</span>
           </div>
           <div className={styles.dateHighlight}>
             <span className={styles.dateLabel}>Installation</span>
-            <span className={styles.dateValue}>{PROJECT_SCHEDULE.installationDate}</span>
+            <span className={styles.dateValue}>
+              {order.scheduledStartDate ? formatDate(order.scheduledStartDate) : 'To be scheduled'}
+            </span>
           </div>
         </div>
 
@@ -111,7 +185,7 @@ export default function SchedulePage() {
               </div>
               <span className={styles.gridLabel}>Time</span>
             </div>
-            <span className={styles.gridValue}>{PROJECT_SCHEDULE.installationTime}</span>
+            <span className={styles.gridValue}>7:00 AM - 5:00 PM</span>
           </div>
 
           <div className={styles.gridItem}>
@@ -121,7 +195,7 @@ export default function SchedulePage() {
               </div>
               <span className={styles.gridLabel}>Location</span>
             </div>
-            <span className={styles.gridValue}>{PROJECT_SCHEDULE.address}</span>
+            <span className={styles.gridValue}>{fullAddress}</span>
           </div>
 
           <div className={styles.gridItem}>
@@ -131,7 +205,7 @@ export default function SchedulePage() {
               </div>
               <span className={styles.gridLabel}>Weather</span>
             </div>
-            <span className={styles.gridValue}>{PROJECT_SCHEDULE.weather}</span>
+            <span className={styles.gridValue}>Check closer to date</span>
           </div>
 
           <div className={styles.gridItem}>
@@ -139,9 +213,9 @@ export default function SchedulePage() {
               <div className={styles.gridIcon}>
                 <HardHat size={16} />
               </div>
-              <span className={styles.gridLabel}>Crew Lead</span>
+              <span className={styles.gridLabel}>Crew</span>
             </div>
-            <span className={styles.gridValue}>{PROJECT_SCHEDULE.crewLead}</span>
+            <span className={styles.gridValue}>4-5 crew members</span>
           </div>
 
           <div className={styles.gridItem}>
@@ -151,7 +225,7 @@ export default function SchedulePage() {
               </div>
               <span className={styles.gridLabel}>Duration</span>
             </div>
-            <span className={styles.gridValue}>{PROJECT_SCHEDULE.estimatedDuration}</span>
+            <span className={styles.gridValue}>1-2 days</span>
           </div>
         </div>
       </section>
@@ -216,4 +290,11 @@ export default function SchedulePage() {
       <ScheduleSupport />
     </div>
   );
+}
+
+export default function SchedulePage() {
+  if (DEV_BYPASS_ENABLED) {
+    return <DevSchedule />;
+  }
+  return <ClerkSchedule />;
 }

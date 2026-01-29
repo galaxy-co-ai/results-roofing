@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  LayoutDashboard, 
-  FileText, 
-  CreditCard, 
+import {
+  LayoutDashboard,
+  FileText,
+  CreditCard,
   Calendar,
   Home,
   ChevronLeft,
@@ -28,25 +28,16 @@ const NAV_ITEMS = [
 const TABLET_BREAKPOINT = 1024;
 
 export function PortalSidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
+  // Start with null to indicate "not yet determined" - prevents hydration mismatch
+  const [isCollapsed, setIsCollapsed] = useState<boolean | null>(null);
   const pathname = usePathname();
   const { openChat } = useChat();
 
-  // Set initial collapsed state based on screen size
+  // Set initial collapsed state based on screen size (client-side only)
   useEffect(() => {
-    const checkScreenSize = () => {
-      const isTabletOrSmaller = window.innerWidth < TABLET_BREAKPOINT;
-      // Only auto-collapse on initial load, not on every resize
-      if (!isInitialized) {
-        setIsCollapsed(isTabletOrSmaller);
-        setIsInitialized(true);
-      }
-    };
+    const isTabletOrSmaller = window.innerWidth < TABLET_BREAKPOINT;
+    setIsCollapsed(isTabletOrSmaller);
 
-    checkScreenSize();
-
-    // Optional: Listen for resize to update on orientation change
     const handleResize = () => {
       // On very small screens (mobile), the sidebar becomes bottom nav,
       // so we don't need to manage collapsed state
@@ -57,25 +48,29 @@ export function PortalSidebar() {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [isInitialized]);
+  }, []);
+
+  // Use expanded as default for SSR, then client will adjust
+  const collapsed = isCollapsed ?? false;
 
   const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed);
+    setIsCollapsed(!collapsed);
   };
 
   return (
-    <aside 
-      className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`} 
+    <aside
+      className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}
       aria-label="Portal sidebar"
+      suppressHydrationWarning
     >
       {/* Toggle Button */}
       <button
         className={styles.toggleButton}
         onClick={toggleSidebar}
-        aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        aria-expanded={!isCollapsed}
+        aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        aria-expanded={!collapsed}
       >
-        {isCollapsed ? (
+        {collapsed ? (
           <ChevronRight size={16} strokeWidth={2.5} />
         ) : (
           <ChevronLeft size={16} strokeWidth={2.5} />
@@ -88,7 +83,7 @@ export function PortalSidebar() {
           <div className={styles.logoIcon} aria-hidden="true">
             <Home size={20} strokeWidth={2.5} />
           </div>
-          {!isCollapsed && (
+          {!collapsed && (
             <span className={styles.brandText}>
               <span className={styles.brandName}>Results</span>{' '}
               <span className={styles.brandSuffix}>Roofing</span>
@@ -99,20 +94,20 @@ export function PortalSidebar() {
 
       {/* Navigation */}
       <nav className={styles.nav} aria-label="Portal navigation">
-        {!isCollapsed && <div className={styles.navSectionLabel}>Menu</div>}
+        {!collapsed && <div className={styles.navSectionLabel}>Menu</div>}
         <ul className={styles.navList}>
           {NAV_ITEMS.map((item) => {
             const isActive = pathname === item.href || pathname?.startsWith(`${item.href}/`);
             return (
               <li key={item.id}>
-                <Link 
-                  href={item.href} 
+                <Link
+                  href={item.href}
                   className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
                   aria-current={isActive ? 'page' : undefined}
-                  title={isCollapsed ? item.label : undefined}
+                  title={collapsed ? item.label : undefined}
                 >
                   <item.icon size={20} className={styles.navIcon} aria-hidden="true" />
-                  {!isCollapsed && <span className={styles.navLabel}>{item.label}</span>}
+                  {!collapsed && <span className={styles.navLabel}>{item.label}</span>}
                 </Link>
               </li>
             );
@@ -122,26 +117,26 @@ export function PortalSidebar() {
 
       {/* Support Button */}
       <div className={styles.supportSection}>
-        <button 
+        <button
           className={styles.supportButton}
           onClick={() => openChat()}
           aria-label="Open support chat"
-          title={isCollapsed ? 'Support' : undefined}
+          title={collapsed ? 'Support' : undefined}
         >
           <MessageCircle size={20} />
-          {!isCollapsed && <span>Support</span>}
+          {!collapsed && <span>Support</span>}
         </button>
       </div>
 
       {/* User Card */}
-      {!isCollapsed && (
+      {!collapsed && (
         <div className={styles.sidebarFooter}>
           <PortalUserCard />
         </div>
       )}
 
       {/* Collapsed User Avatar */}
-      {isCollapsed && (
+      {collapsed && (
         <div className={styles.collapsedUserSection}>
           <div className={styles.collapsedAvatar}>
             <span className={styles.collapsedAvatarText}>DU</span>
