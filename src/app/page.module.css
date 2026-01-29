@@ -392,7 +392,7 @@
    ======================================== */
 
 .howItWorks {
-  padding: 40px 0;
+  padding: 48px 0 64px;
   background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }
 
@@ -597,90 +597,23 @@
 }
 
 /* ========================================
-   STICKY TRUST BAR FOOTER
+   FOOTER
    ======================================== */
 
-.stickyTrustBar {
-  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-  padding: 16px 20px;
+.footer {
+  background: #0f172a;
+  padding: 16px 24px;
+  text-align: center;
 }
 
-.trustBarContent {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 8px 16px;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.trustItem {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.trustIcon {
-  color: #4ade80;
-  flex-shrink: 0;
-  width: 14px;
-  height: 14px;
-}
-
-.trustIconGoogle {
-  color: #94a3b8;
-  flex-shrink: 0;
-}
-
-.trustIconCheck {
-  color: #4ade80;
-  flex-shrink: 0;
-  width: 14px;
-  height: 14px;
-}
-
-.trustRating {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.trustStar {
-  color: #f59e0b;
-  width: 12px;
-  height: 12px;
-}
-
-.trustLabel {
-  font-size: 14px;
-  color: #94a3b8;
-  white-space: nowrap;
-}
-
-.trustDivider {
-  display: none;
-  width: 1px;
-  height: 14px;
-  background: #475569;
+.footerText {
+  font-size: 13px;
+  color: #64748b;
 }
 
 /* ========================================
    RESPONSIVE STYLES
    ======================================== */
-
-@media (min-width: 640px) {
-  .trustBarContent {
-    gap: 12px;
-  }
-
-  .trustDivider {
-    display: block;
-  }
-}
 
 @media (max-width: 639px) {
   .title {

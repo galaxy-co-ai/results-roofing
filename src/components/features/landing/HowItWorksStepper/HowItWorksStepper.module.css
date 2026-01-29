@@ -83,12 +83,14 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  position: relative;
 }
 
 @media (min-width: 768px) {
   .content {
     margin-top: 1rem;
     align-items: center;
+    min-height: 70px;
   }
 }
 
@@ -118,25 +120,24 @@
   color: hsl(var(--muted-foreground));
   margin: 0;
   max-width: 180px;
-  opacity: 0;
-  transform: translateY(-4px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  height: 0;
-  overflow: hidden;
 }
 
-.step:hover .description {
-  opacity: 1;
-  transform: translateY(0);
-  height: auto;
+@media (min-width: 768px) {
+  .description {
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .step:hover .description {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 767px) {
   .description {
     max-width: none;
-    opacity: 1;
-    transform: none;
-    height: auto;
   }
 }
 

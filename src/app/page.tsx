@@ -1,4 +1,4 @@
-import { CheckCircle, ChevronRight, BadgeCheck, Shield } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { Header } from '@/components/layout';
 import { HeroAddressForm, HowItWorksStepper, ReviewsTicker } from '@/components/features/landing';
 import styles from './page.module.css';
@@ -51,31 +51,11 @@ export default function HomePage() {
       </section>
     </main>
 
-    {/* Sticky Trust Bar Footer */}
-    <footer className={styles.stickyTrustBar} role="contentinfo">
-      <div className={styles.trustBarContent}>
-        {/* Roofs Quoted */}
-        <div className={styles.trustItem}>
-          <CheckCircle size={14} className={styles.trustIconCheck} />
-          <span className={styles.trustLabel}>5,000+ Roofs Quoted</span>
-        </div>
-
-        <div className={styles.trustDivider} aria-hidden="true" />
-
-        {/* Licensed & Insured */}
-        <div className={styles.trustItem}>
-          <BadgeCheck size={14} className={styles.trustIcon} />
-          <span className={styles.trustLabel}>Licensed & Insured</span>
-        </div>
-
-        <div className={styles.trustDivider} aria-hidden="true" />
-
-        {/* Manufacturer Certified */}
-        <div className={styles.trustItem}>
-          <Shield size={14} className={styles.trustIcon} />
-          <span className={styles.trustLabel}>GAF & Owens Corning Certified</span>
-        </div>
-      </div>
+    {/* Footer */}
+    <footer className={styles.footer} role="contentinfo">
+      <span className={styles.footerText}>
+        © {new Date().getFullYear()} Results Roofing. All rights reserved.
+      </span>
     </footer>
     </>
   );
