@@ -4,11 +4,17 @@
    ================================================= */
 
 .trustBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: var(--rr-space-3) var(--rr-space-page-gutter);
+  z-index: var(--rr-z-sticky, 100);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .trustBar_light {
-  background-color: var(--rr-color-bg-tertiary);
+  background-color: #1E3A5F; /* Dark navy blue */
 }
 
 .trustBar_dark {
@@ -31,7 +37,7 @@
 }
 
 .trustBar_light .icon {
-  color: var(--rr-color-sandstone);
+  color: #86EFAC; /* Mint green */
 }
 
 .trustBar_dark .icon {
@@ -44,7 +50,7 @@
 }
 
 .trustBar_light .text {
-  color: var(--rr-color-text-primary);
+  color: var(--rr-color-white);
 }
 
 .trustBar_dark .text {
@@ -57,7 +63,7 @@
 }
 
 .trustBar_light .subtext {
-  color: var(--rr-color-text-tertiary);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .trustBar_dark .subtext {
@@ -71,7 +77,7 @@
 }
 
 .trustBar_light .divider {
-  background-color: var(--rr-color-border-default);
+  background-color: rgba(255, 255, 255, 0.25);
 }
 
 .trustBar_dark .divider {

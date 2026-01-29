@@ -29,4 +29,4 @@ export { OrderSummarySidebar } from './OrderSummarySidebar';
 // Stage containers
 export { Stage1Container } from './stages/Stage1';
 export { Stage2Container } from './stages/Stage2';
-export { Stage3Container } from './stages/Stage3';
+export { Stage3Container, ScheduleContainer } from './stages/Stage3';

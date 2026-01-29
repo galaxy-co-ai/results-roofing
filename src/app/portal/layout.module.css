@@ -24,6 +24,14 @@
    RESPONSIVE
    ======================================== */
 
+/* Tablet: Sidebar is collapsed (72px wide) */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .mainContent {
+    margin-left: 72px;
+  }
+}
+
+/* Mobile: Bottom navigation */
 @media (max-width: 768px) {
   .portalLayout {
     flex-direction: column;

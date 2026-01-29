@@ -21,7 +21,7 @@ export type WizardStage = 1 | 2 | 3;
  */
 export type Stage1SubStep = 'address' | 'property-confirm' | 'price-preview';
 export type Stage2SubStep = 'package' | 'schedule' | 'financing';
-export type Stage3SubStep = 'contact' | 'contract' | 'signature' | 'payment';
+export type Stage3SubStep = 'contact' | 'schedule-time';
 
 export type SubStep = Stage1SubStep | Stage2SubStep | Stage3SubStep;
 
@@ -40,9 +40,9 @@ export const STAGE_CONFIG = {
     path: (quoteId: string) => `/quote/${quoteId}/customize`,
   },
   3: {
-    label: 'Confirm & Pay',
-    subSteps: ['contact', 'contract', 'signature', 'payment'] as Stage3SubStep[],
-    path: (quoteId: string) => `/quote/${quoteId}/checkout`,
+    label: 'Schedule',
+    subSteps: ['contact', 'schedule-time'] as Stage3SubStep[],
+    path: (quoteId: string) => `/quote/${quoteId}/schedule`,
   },
 } as const;
 

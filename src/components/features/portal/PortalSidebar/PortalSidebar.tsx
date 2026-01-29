@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
@@ -24,10 +24,41 @@ const NAV_ITEMS = [
   { id: 'schedule', label: 'Schedule', href: '/portal/schedule', icon: Calendar },
 ];
 
+// Breakpoint for tablet (sidebar collapses below this width)
+const TABLET_BREAKPOINT = 1024;
+
 export function PortalSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const pathname = usePathname();
   const { openChat } = useChat();
+
+  // Set initial collapsed state based on screen size
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const isTabletOrSmaller = window.innerWidth < TABLET_BREAKPOINT;
+      // Only auto-collapse on initial load, not on every resize
+      if (!isInitialized) {
+        setIsCollapsed(isTabletOrSmaller);
+        setIsInitialized(true);
+      }
+    };
+
+    checkScreenSize();
+
+    // Optional: Listen for resize to update on orientation change
+    const handleResize = () => {
+      const isTabletOrSmaller = window.innerWidth < TABLET_BREAKPOINT;
+      // On very small screens (mobile), the sidebar becomes bottom nav,
+      // so we don't need to manage collapsed state
+      if (window.innerWidth > 768 && window.innerWidth < TABLET_BREAKPOINT) {
+        setIsCollapsed(true);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isInitialized]);
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);

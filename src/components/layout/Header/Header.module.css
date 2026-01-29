@@ -1,41 +1,36 @@
-/* =================================================
-   HEADER STYLES
-   Minimal, elegant header matching landing page aesthetic
-   ================================================= */
+/* ========================================
+   HEADER - Clean, Minimal Design
+   Matches SOW admin panel aesthetic
+   ======================================== */
 
 .header {
   position: sticky;
   top: 0;
-  z-index: var(--rr-z-header, 100);
-  background-color: var(--rr-color-bg-primary);
-  border-bottom: 1px solid transparent;
-  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  z-index: 100;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  transition: all 0.15s ease;
 }
 
 .header.transparent {
-  background-color: transparent;
+  background: transparent;
+  border-bottom-color: transparent;
 }
 
 .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1200px;
+  max-width: 720px;
   margin: 0 auto;
-  padding: var(--rr-space-3) var(--rr-space-page-gutter);
-  min-height: 68px;
+  padding: 12px 24px;
+  min-height: 56px;
 }
 
 @media (min-width: 768px) {
   .container {
-    padding: var(--rr-space-4) var(--rr-space-page-gutter-lg);
-    min-height: 80px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container {
-    min-height: 88px;
+    padding: 14px 32px;
+    min-height: 60px;
   }
 }
 
@@ -46,119 +41,70 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: var(--rr-space-3);
+  gap: 10px;
   text-decoration: none;
-  color: var(--rr-color-text-primary);
-  transition: transform 0.15s ease;
+  color: #0f172a;
+  transition: all 0.15s ease;
 }
 
 .logo:hover {
-  transform: translateY(-1px);
+  opacity: 0.8;
 }
 
-.logo:hover .appIcon {
-  box-shadow: var(--rr-shadow-charcoal-medium);
-}
-
-/* iOS-style App Icon */
 .appIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  background: var(--rr-color-white);
-  border: 1px solid var(--rr-color-border-default);
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background: #eff6ff;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
-  color: var(--rr-color-blue);
-  box-shadow: var(--rr-shadow-charcoal-subtle);
-  transition: box-shadow 0.2s ease;
+  color: #1e40af;
+  transition: all 0.15s ease;
 }
 
-/* Brand Text */
+.logo:hover .appIcon {
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.appIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
 .brandText {
   display: inline;
-  font-size: 1.375rem;
+  font-size: 16px;
   letter-spacing: -0.02em;
 }
 
 .brandName {
-  font-weight: 700;
-  color: var(--rr-color-charcoal);
+  font-weight: 600;
+  color: #0f172a;
 }
 
 .brandSuffix {
   font-weight: 500;
-  color: var(--rr-color-blue);
-}
-
-/* Legacy logoImage support */
-.logoText {
-  font-size: var(--rr-font-size-lg);
-  font-weight: var(--rr-font-weight-semibold);
-  letter-spacing: var(--rr-letter-spacing-tight);
-  color: var(--rr-color-text-primary);
-}
-
-.logoImage {
-  height: 36px;
-  width: auto;
-  max-width: 180px;
-  object-fit: contain;
+  color: #1e40af;
 }
 
 @media (min-width: 768px) {
   .appIcon {
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
   }
 
   .appIcon svg {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
 
-  .brandName {
-    font-size: var(--rr-font-size-xl);
-  }
-
-  .brandSuffix {
-    font-size: var(--rr-font-size-sm);
-  }
-
-  .logoText {
-    font-size: var(--rr-font-size-xl);
-  }
-
-  .logoImage {
-    height: 44px;
-    max-width: 220px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .appIcon {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
-    border-radius: 14px;
-  }
-
-  .appIcon svg {
-    width: 26px;
-    height: 26px;
-  }
-
-  .brandName {
-    font-size: 1.375rem;
-  }
-
-  .logoImage {
-    height: 48px;
-    max-width: 260px;
+  .brandText {
+    font-size: 18px;
   }
 }
 
@@ -169,33 +115,34 @@
 .dashboardButton {
   display: flex;
   align-items: center;
-  gap: var(--rr-space-2);
-  padding: var(--rr-space-2) var(--rr-space-4);
-  font-size: var(--rr-font-size-sm);
-  font-weight: var(--rr-font-weight-medium);
-  color: var(--rr-color-blue);
-  background-color: var(--rr-color-white);
-  border: 1px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-md);
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
   text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: all 0.15s ease;
 }
 
 .dashboardButton:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--rr-shadow-charcoal-medium);
-  background-color: var(--rr-color-blue);
-  border-color: var(--rr-color-blue);
-  color: var(--rr-color-white);
+  color: #1e40af;
+  border-color: #1e40af;
+  background: #f8fafc;
 }
 
 .dashboardButton:active {
-  transform: translateY(0);
-  box-shadow: var(--rr-shadow-charcoal-subtle);
+  background: #eff6ff;
 }
 
 .dashboardButton:focus-visible {
-  outline: 2px solid var(--rr-color-blue);
+  outline: 2px solid #1e40af;
   outline-offset: 2px;
+}
+
+.dashboardButton svg {
+  width: 14px;
+  height: 14px;
 }

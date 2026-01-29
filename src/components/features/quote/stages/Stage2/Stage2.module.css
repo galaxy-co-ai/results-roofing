@@ -54,8 +54,15 @@
 }
 
 /* ========================================
-   HEADER
+   HEADER SECTION (Unified)
    ======================================== */
+
+.headerSection {
+  text-align: center;
+  margin-bottom: var(--rr-space-5);
+  padding-bottom: var(--rr-space-4);
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
 
 .header {
   text-align: center;
@@ -63,11 +70,30 @@
 }
 
 .title {
-  font-size: var(--rr-font-size-2xl);
-  font-weight: var(--rr-font-weight-semibold);
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--rr-color-text-primary);
-  margin-bottom: var(--rr-space-2);
-  line-height: var(--rr-line-height-tight);
+  margin: 0 0 var(--rr-space-2);
+  line-height: 1.2;
+}
+
+.addressLine {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--rr-color-text-secondary);
+}
+
+.addressLabel {
+  color: var(--rr-color-text-tertiary);
+}
+
+.addressValue {
+  font-weight: 500;
+  color: var(--rr-color-text-primary);
 }
 
 .subtitle {
@@ -96,30 +122,6 @@
   font-weight: var(--rr-font-weight-medium);
 }
 
-/* ========================================
-   ADDRESS BAR
-   ======================================== */
-
-.addressBar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--rr-space-2);
-  padding: var(--rr-space-3) var(--rr-space-4);
-  margin-bottom: var(--rr-space-6);
-  background-color: var(--rr-color-gray-50);
-  border-radius: var(--rr-radius-md);
-  font-size: var(--rr-font-size-sm);
-}
-
-.addressLabel {
-  color: var(--rr-color-text-tertiary);
-}
-
-.addressValue {
-  color: var(--rr-color-text-primary);
-  font-weight: var(--rr-font-weight-medium);
-}
 
 /* ========================================
    TIERS GRID
@@ -183,20 +185,23 @@
 }
 
 .tierHeader {
-  margin-bottom: var(--rr-space-4);
+  text-align: center;
+  margin-bottom: var(--rr-space-3);
 }
 
 .tierName {
-  font-size: var(--rr-font-size-xl);
-  font-weight: var(--rr-font-weight-semibold);
+  font-size: 1.25rem;
+  font-weight: 700;
   color: var(--rr-color-text-primary);
-  margin-bottom: var(--rr-space-1);
+  letter-spacing: -0.01em;
+  margin: 0;
 }
 
 .tierDescription {
-  font-size: var(--rr-font-size-sm);
-  color: var(--rr-color-text-secondary);
-  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--rr-color-text-tertiary);
+  line-height: 1.5;
+  margin: var(--rr-space-1) 0 0;
 }
 
 /* ========================================
@@ -204,20 +209,85 @@
    ======================================== */
 
 .priceSection {
+  text-align: center;
   margin-bottom: var(--rr-space-4);
-  padding-bottom: var(--rr-space-4);
-  border-bottom: 1px solid var(--rr-color-border-default);
 }
 
 .totalPrice {
-  font-size: var(--rr-font-size-3xl);
-  font-weight: var(--rr-font-weight-bold);
+  font-size: 2rem;
+  font-weight: 700;
   color: var(--rr-color-text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
 .pricePerSqft {
-  font-size: var(--rr-font-size-sm);
+  font-size: 0.75rem;
   color: var(--rr-color-text-tertiary);
+  margin-top: 2px;
+}
+
+/* ========================================
+   EXPAND TOGGLE
+   ======================================== */
+
+.expandToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--rr-space-2) var(--rr-space-3);
+  margin-bottom: var(--rr-space-2);
+  background-color: transparent;
+  border: none;
+  border-radius: var(--rr-radius-sm);
+  font-size: var(--rr-font-size-xs);
+  font-weight: var(--rr-font-weight-medium);
+  color: var(--rr-color-text-tertiary);
+  cursor: pointer;
+  transition: 
+    background-color 0.15s ease-out,
+    color 0.15s ease-out;
+}
+
+.expandToggle:hover {
+  background-color: var(--rr-color-gray-50);
+  color: var(--rr-color-text-secondary);
+}
+
+.expandToggle:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
+}
+
+.expandIcon {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.expandIcon_open {
+  transform: rotate(180deg);
+}
+
+/* ========================================
+   FEATURES COLLAPSIBLE
+   ======================================== */
+
+.featuresCollapsible {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: 
+    grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.25s ease-out;
+}
+
+.featuresCollapsible_open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.featuresCollapsible > .featuresList {
+  overflow: hidden;
 }
 
 /* ========================================
@@ -228,7 +298,6 @@
   list-style: none;
   padding: 0;
   margin: 0 0 var(--rr-space-4);
-  flex-grow: 1;
 }
 
 .feature {
@@ -254,11 +323,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--rr-space-3);
-  margin-bottom: var(--rr-space-4);
-  background-color: var(--rr-color-gray-50);
-  border-radius: var(--rr-radius-md);
-  font-size: var(--rr-font-size-sm);
+  padding: var(--rr-space-2) 0;
+  margin-bottom: var(--rr-space-3);
+  border-top: 1px solid var(--rr-color-border-default);
+  font-size: var(--rr-font-size-xs);
 }
 
 .depositLabel {
@@ -280,8 +348,8 @@
   justify-content: center;
   gap: var(--rr-space-2);
   width: 100%;
-  height: var(--rr-button-height-lg);
-  font-size: var(--rr-font-size-base);
+  height: 40px;
+  font-size: var(--rr-font-size-sm);
   font-weight: var(--rr-font-weight-medium);
   border-radius: var(--rr-radius-md);
   cursor: pointer;
@@ -341,6 +409,7 @@
   color: var(--rr-color-text-secondary);
   margin: 0;
   line-height: var(--rr-line-height-relaxed);
+  text-align: center;
 }
 
 /* ========================================
@@ -350,6 +419,11 @@
 .selectorWrapper {
   max-width: 560px;
   margin: 0 auto var(--rr-space-6);
+}
+
+.scheduleSelectorWrapper {
+  max-width: 420px;
+  margin: 0 auto var(--rr-space-5);
 }
 
 /* ========================================

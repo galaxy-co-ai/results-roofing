@@ -5,13 +5,12 @@
 
 .container {
   width: 100%;
-  background-color: var(--rr-color-white);
-  border-bottom: 1px solid var(--rr-color-border-default);
-  padding: var(--rr-space-4) var(--rr-space-page-gutter);
+  background-color: transparent;
+  padding: var(--rr-space-2) 0;
 }
 
 .wrapper {
-  max-width: 600px;
+  max-width: 480px;
   margin: 0 auto;
   position: relative;
 }
@@ -22,9 +21,9 @@
 
 .track {
   position: absolute;
-  top: 20px;
-  left: 40px;
-  right: 40px;
+  top: 14px;
+  left: 32px;
+  right: 32px;
   height: 2px;
   background-color: var(--rr-color-gray-200);
   z-index: 0;
@@ -67,10 +66,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--rr-space-2);
+  gap: 4px;
   text-decoration: none;
   color: inherit;
-  padding: var(--rr-space-1);
+  padding: 2px;
 }
 
 .stageLink:focus-visible {
@@ -87,10 +86,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 28px;
+  height: 28px;
   border-radius: var(--rr-radius-full);
-  font-size: var(--rr-font-size-sm);
+  font-size: 0.75rem;
   font-weight: var(--rr-font-weight-semibold);
   transition: 
     background-color var(--rr-duration-normal) var(--rr-ease-in-out),
@@ -137,7 +136,7 @@
 }
 
 .stageLabel {
-  font-size: var(--rr-font-size-xs);
+  font-size: 0.6875rem;
   font-weight: var(--rr-font-weight-medium);
   white-space: nowrap;
   transition: color var(--rr-duration-normal) var(--rr-ease-in-out);
@@ -168,36 +167,19 @@
    ======================================== */
 
 @media (min-width: 640px) {
-  .container {
-    padding: var(--rr-space-5) var(--rr-space-page-gutter-lg);
-  }
-
   .stageIndicator {
-    width: 44px;
-    height: 44px;
-    font-size: var(--rr-font-size-base);
+    width: 32px;
+    height: 32px;
+    font-size: 0.8125rem;
   }
 
   .stageLabel {
-    font-size: var(--rr-font-size-sm);
+    font-size: 0.75rem;
   }
 
   .track {
-    top: 22px;
-    left: 60px;
-    right: 60px;
-  }
-}
-
-@media (min-width: 768px) {
-  .stageIndicator {
-    width: 48px;
-    height: 48px;
-  }
-
-  .track {
-    top: 24px;
-    left: 80px;
-    right: 80px;
+    top: 16px;
+    left: 48px;
+    right: 48px;
   }
 }

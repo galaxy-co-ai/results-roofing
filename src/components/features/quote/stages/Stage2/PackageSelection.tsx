@@ -1,7 +1,8 @@
 'use client';
 
-import { Check, Star, Clock, Loader2 } from 'lucide-react';
-import { DEPOSIT_CONFIG, QUOTE_VALIDITY } from '@/lib/constants';
+import { Check, Star, Loader2 } from 'lucide-react';
+import { DEPOSIT_CONFIG } from '@/lib/constants';
+import { StageIndicator } from '../../StageIndicator';
 import styles from './Stage2.module.css';
 
 interface TierData {
@@ -20,7 +21,15 @@ interface PackageSelectionProps {
   selectedTier: 'good' | 'better' | 'best' | null;
   onSelect: (tier: 'good' | 'better' | 'best') => void;
   isLoading?: boolean;
+  quoteId: string;
 }
+
+// Map tier keys to new display names
+const TIER_DISPLAY_NAMES: Record<string, string> = {
+  good: 'Essential',
+  better: 'Preferred',
+  best: 'Signature',
+};
 
 function formatPrice(amount: number): string {
   return new Intl.NumberFormat('en-US', {
@@ -34,7 +43,8 @@ function formatPrice(amount: number): string {
 /**
  * Stage 2, Sub-step 1: Package Selection
  * 
- * User chooses between Good, Better, or Best packages.
+ * User chooses between Essential, Preferred, or Signature packages.
+ * Cards are expandable to show feature details.
  */
 export function PackageSelection({
   tiers,
@@ -43,30 +53,20 @@ export function PackageSelection({
   selectedTier,
   onSelect,
   isLoading = false,
+  quoteId,
 }: PackageSelectionProps) {
   const depositPercent = DEPOSIT_CONFIG.percentage * 100;
 
   return (
     <div className={styles.subStep}>
-      {/* Header */}
-      <div className={styles.header}>
+      {/* Unified Header Section */}
+      <div className={styles.headerSection}>
         <h1 className={styles.title}>Choose Your Package</h1>
-        <p className={styles.subtitle}>
-          Based on your {sqft.toLocaleString()} sq ft roof. All packages include professional
-          installation, permits, and full cleanup.
+        <StageIndicator currentStage={2} quoteId={quoteId} />
+        <p className={styles.addressLine}>
+          <span className={styles.addressLabel}>Quote for</span>
+          <span className={styles.addressValue}>{address}</span>
         </p>
-      </div>
-
-      {/* Urgency message */}
-      <div className={styles.urgencyBanner}>
-        <Clock size={16} aria-hidden="true" />
-        <span>Pricing valid for {QUOTE_VALIDITY.validityDays} days</span>
-      </div>
-
-      {/* Address Bar */}
-      <div className={styles.addressBar}>
-        <span className={styles.addressLabel}>Quote for:</span>
-        <span className={styles.addressValue}>{address}</span>
       </div>
 
       {/* Package Cards */}
@@ -75,6 +75,7 @@ export function PackageSelection({
           const tierKey = tier.tier.toLowerCase() as 'good' | 'better' | 'best';
           const isSelected = selectedTier === tierKey;
           const isSelecting = isLoading && isSelected;
+          const displayName = TIER_DISPLAY_NAMES[tierKey] || tier.displayName;
 
           return (
             <div
@@ -89,8 +90,7 @@ export function PackageSelection({
               )}
 
               <div className={styles.tierHeader}>
-                <h2 className={styles.tierName}>{tier.displayName}</h2>
-                <p className={styles.tierDescription}>{tier.description}</p>
+                <h2 className={styles.tierName}>{displayName}</h2>
               </div>
 
               <div className={styles.priceSection}>
@@ -102,6 +102,7 @@ export function PackageSelection({
                 </div>
               </div>
 
+              {/* Features List */}
               <ul className={styles.featuresList}>
                 {tier.features.map((feature, index) => (
                   <li key={index} className={styles.feature}>
@@ -112,9 +113,9 @@ export function PackageSelection({
               </ul>
 
               <div className={styles.depositInfo}>
-                <span className={styles.depositLabel}>Due today:</span>
+                <span className={styles.depositLabel}>Deposit:</span>
                 <span className={styles.depositAmount}>
-                  {formatPrice(Math.round(tier.totalPrice * depositPercent / 100))} ({depositPercent}% deposit)
+                  {formatPrice(Math.round(tier.totalPrice * depositPercent / 100))}
                 </span>
               </div>
 
@@ -132,7 +133,7 @@ export function PackageSelection({
                   </>
                 ) : (
                   <>
-                    {isSelected ? 'Selected' : `Select ${tier.displayName}`}
+                    {isSelected ? 'Selected' : `Select ${displayName}`}
                   </>
                 )}
               </button>
@@ -144,7 +145,7 @@ export function PackageSelection({
       {/* Help Text */}
       <div className={styles.helpSection}>
         <p className={styles.helpText}>
-          Not sure which to choose? Our Premium package is the most popular choice, offering the
+          Not sure which to choose? Our Preferred package is the most popular choice, offering the
           best balance of quality and value.
         </p>
       </div>

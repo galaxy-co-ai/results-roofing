@@ -10,6 +10,70 @@
   padding: var(--rr-space-5);
 }
 
+.container_compact {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: var(--rr-space-4);
+}
+
+.container_compact .headerTitle {
+  font-size: var(--rr-font-size-base);
+}
+
+.container_compact .calendar {
+  margin-bottom: var(--rr-space-4);
+}
+
+.container_compact .monthNav {
+  margin-bottom: var(--rr-space-3);
+}
+
+.container_compact .navButton {
+  width: 32px;
+  height: 32px;
+}
+
+.container_compact .monthLabel {
+  font-size: var(--rr-font-size-sm);
+}
+
+.container_compact .weekday {
+  font-size: 0.65rem;
+  padding: var(--rr-space-1) 0;
+}
+
+.container_compact .day {
+  font-size: var(--rr-font-size-xs);
+}
+
+.container_compact .legend {
+  margin-top: var(--rr-space-2);
+  font-size: 0.65rem;
+}
+
+.container_compact .legendDot_available,
+.container_compact .legendDot_unavailable {
+  width: 10px;
+  height: 10px;
+}
+
+.container_compact .timeSlots {
+  padding-top: var(--rr-space-4);
+}
+
+.container_compact .timeSlotButton {
+  padding: var(--rr-space-3);
+  gap: var(--rr-space-1);
+}
+
+.container_compact .timeSlotName {
+  font-size: var(--rr-font-size-sm);
+}
+
+.container_compact .timeSlotRange {
+  font-size: 0.65rem;
+}
+
 /* ========================================
    HEADER
    ======================================== */
@@ -93,6 +157,36 @@
   font-weight: var(--rr-font-weight-medium);
   color: var(--rr-color-text-tertiary);
   padding: var(--rr-space-2) 0;
+}
+
+/* ========================================
+   LOADING STATE
+   ======================================== */
+
+.loadingOverlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-6);
+  color: var(--rr-color-text-secondary);
+  font-size: var(--rr-font-size-sm);
+}
+
+.loadingSpinner {
+  animation: spin 1s linear infinite;
+  color: var(--rr-color-sandstone);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.days_loading {
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 /* ========================================

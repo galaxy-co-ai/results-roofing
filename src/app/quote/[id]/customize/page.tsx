@@ -1,8 +1,12 @@
 import { notFound, redirect } from 'next/navigation';
 import { db, schema, eq } from '@/db/index';
-import { QuoteWizardProvider, Stage2Container, StageIndicator } from '@/components/features/quote';
+import { Header } from '@/components/layout';
+import { QuoteWizardProvider, Stage2Container } from '@/components/features/quote';
 import { TrustBar } from '@/components/ui';
 import styles from './page.module.css';
+
+// Force dynamic rendering to ensure fresh database queries
+export const dynamic = 'force-dynamic';
 
 interface CustomizePageProps {
   params: Promise<{ id: string }>;
@@ -28,30 +32,34 @@ function calculateTierPrice(
 }
 
 function getTierFeatures(tier: { tier: string; warrantyYears: string; warrantyType: string | null; underlaymentType: string | null }): string[] {
-  const features: string[] = [];
-
-  features.push(`${tier.warrantyYears}-year ${tier.warrantyType || ''} warranty`.trim());
-
-  if (tier.underlaymentType) {
-    features.push(tier.underlaymentType);
-  }
-
+  // Limit to 5 key features per tier for cleaner UI
   if (tier.tier === 'good') {
-    features.push('Standard cleanup and disposal');
-    features.push('Basic inspection report');
+    return [
+      `${tier.warrantyYears}-year ${tier.warrantyType || 'limited'} warranty`.trim(),
+      'Synthetic felt underlayment',
+      'Standard cleanup & disposal',
+      'Basic inspection report',
+      'Permits included',
+    ];
   } else if (tier.tier === 'better') {
-    features.push('Enhanced cleanup and disposal');
-    features.push('Detailed inspection report');
-    features.push('Starter strip and drip edge included');
+    return [
+      `${tier.warrantyYears}-year ${tier.warrantyType || 'full'} warranty`.trim(),
+      'Synthetic underlayment',
+      'Starter strip & drip edge',
+      'Enhanced cleanup & disposal',
+      'Detailed inspection report',
+    ];
   } else if (tier.tier === 'best') {
-    features.push('Premium cleanup and disposal');
-    features.push('Comprehensive inspection report');
-    features.push('Full ridge vent system');
-    features.push('Ice & water shield at all valleys');
-    features.push('Transferable warranty coverage');
+    return [
+      'Lifetime transferable warranty',
+      'Premium ice & water shield',
+      'Full ridge vent system',
+      'Premium cleanup & disposal',
+      'Comprehensive inspection',
+    ];
   }
 
-  return features;
+  return [];
 }
 
 export default async function CustomizePage({ params }: CustomizePageProps) {
@@ -102,7 +110,7 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
 
   return (
     <>
-      <StageIndicator currentStage={2} quoteId={quoteId} />
+      <Header />
       <main className={styles.main}>
         <QuoteWizardProvider initialData={initialWizardState}>
           <Stage2Container

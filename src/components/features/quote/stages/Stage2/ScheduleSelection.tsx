@@ -1,10 +1,14 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { ScheduleSelector } from '@/components/features/checkout/ScheduleSelector';
+import { StageIndicator } from '../../StageIndicator';
 import styles from './Stage2.module.css';
 
 interface ScheduleSelectionProps {
+  quoteId: string;
+  address: string;
   selectedDate: Date | null;
   selectedTimeSlot: 'morning' | 'afternoon' | null;
   onScheduleSelect: (date: Date, timeSlot: 'morning' | 'afternoon') => void;
@@ -18,37 +22,64 @@ interface ScheduleSelectionProps {
  * User picks installation date and time slot.
  */
 export function ScheduleSelection({
+  quoteId,
+  address,
   selectedDate,
   selectedTimeSlot,
   onScheduleSelect,
   onBack,
   isLoading = false,
 }: ScheduleSelectionProps) {
+  // Local state for date selection (before time slot is chosen)
+  const [localDate, setLocalDate] = useState<Date | null>(selectedDate);
+  const [localTimeSlot, setLocalTimeSlot] = useState<'morning' | 'afternoon' | null>(selectedTimeSlot);
+
+  // Sync local state with props when they change
+  useEffect(() => {
+    setLocalDate(selectedDate);
+  }, [selectedDate]);
+
+  useEffect(() => {
+    setLocalTimeSlot(selectedTimeSlot);
+  }, [selectedTimeSlot]);
+
+  const handleDateChange = (date: Date | null) => {
+    setLocalDate(date);
+    // If a time slot is already selected, trigger the callback
+    if (date && localTimeSlot) {
+      onScheduleSelect(date, localTimeSlot);
+    }
+  };
+
+  const handleTimeSlotChange = (slot: 'morning' | 'afternoon' | null) => {
+    setLocalTimeSlot(slot);
+    // Trigger callback when both date and time slot are selected
+    if (localDate && slot) {
+      onScheduleSelect(localDate, slot);
+    }
+  };
+
   return (
     <div className={styles.subStep}>
-      {/* Header */}
-      <div className={styles.header}>
-        <h2 className={styles.title}>Schedule Your Installation</h2>
-        <p className={styles.subtitle}>
-          Pick a date and time that works for you. We&apos;ll confirm availability and send you a
-          reminder.
+      {/* Unified Header Section */}
+      <div className={styles.headerSection}>
+        <h1 className={styles.title}>Schedule Installation</h1>
+        <StageIndicator currentStage={2} quoteId={quoteId} />
+        <p className={styles.addressLine}>
+          <span className={styles.addressLabel}>Quote for</span>
+          <span className={styles.addressValue}>{address}</span>
         </p>
       </div>
 
       {/* Schedule Selector */}
-      <div className={styles.selectorWrapper}>
+      <div className={styles.scheduleSelectorWrapper}>
         <ScheduleSelector
-          selectedDate={selectedDate}
-          selectedTimeSlot={selectedTimeSlot}
-          onDateChange={(_date) => {
-            // Store date temporarily, wait for time slot
-          }}
-          onTimeSlotChange={(slot) => {
-            if (selectedDate && slot) {
-              onScheduleSelect(selectedDate, slot);
-            }
-          }}
+          selectedDate={localDate}
+          selectedTimeSlot={localTimeSlot}
+          onDateChange={handleDateChange}
+          onTimeSlotChange={handleTimeSlotChange}
           disabled={isLoading}
+          compact
         />
       </div>
 

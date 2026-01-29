@@ -1,4 +1,5 @@
 export { Stage3Container } from './Stage3Container';
+export { ScheduleContainer } from './ScheduleContainer';
 export { ContactSection } from './ContactSection';
 export { ContractSection } from './ContractSection';
 export { SignatureSection } from './SignatureSection';

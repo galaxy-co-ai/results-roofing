@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { LayoutDashboard, Home } from 'lucide-react';
+import { User, Home } from 'lucide-react';
 import styles from './Header.module.css';
 
 interface HeaderProps {
@@ -31,14 +31,14 @@ export function Header({ transparent = false }: HeaderProps) {
           </span>
         </Link>
 
-        {/* Dashboard Button - Right aligned */}
+        {/* Account Button - Right aligned */}
         <Link 
-          href="/portal/dashboard" 
+          href="/sign-in" 
           className={styles.dashboardButton}
-          aria-label="Go to homeowner dashboard"
+          aria-label="Go to my account"
         >
-          <LayoutDashboard size={16} aria-hidden="true" />
-          <span>Dashboard</span>
+          <User size={16} aria-hidden="true" />
+          <span>My Account</span>
         </Link>
       </div>
     </header>

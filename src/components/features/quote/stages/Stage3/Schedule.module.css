@@ -1,0 +1,546 @@
+/* =================================================
+   SCHEDULE CONTAINER STYLES
+   Stage 3: Clean, compact design inspired by admin panel
+   ================================================= */
+
+/* ========================================
+   CONTAINER
+   ======================================== */
+
+.container {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--rr-space-5) var(--rr-space-page-gutter);
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-3);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.headerSection {
+  text-align: center;
+  margin-bottom: var(--rr-space-3);
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0 0 var(--rr-space-2);
+  letter-spacing: -0.01em;
+}
+
+/* ========================================
+   QUOTE SUMMARY BAR
+   ======================================== */
+
+.quoteSummaryBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-3);
+  padding: var(--rr-space-2) var(--rr-space-3);
+  background: var(--rr-color-gray-50);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+  margin-bottom: var(--rr-space-4);
+}
+
+.quoteSummaryContent {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  font-size: 13px;
+}
+
+.quoteSummaryIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: var(--rr-color-blue);
+  border-radius: var(--rr-radius-md);
+  color: white;
+  flex-shrink: 0;
+}
+
+.quoteSummaryIconWrapper svg {
+  width: 12px;
+  height: 12px;
+}
+
+.quoteSummaryAddress {
+  color: var(--rr-color-text-primary);
+  font-weight: 500;
+}
+
+.quoteSummaryDivider {
+  width: 3px;
+  height: 3px;
+  background: var(--rr-color-text-tertiary);
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+.quoteSummaryTier {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--rr-color-blue);
+  font-weight: 600;
+}
+
+.tierIcon {
+  width: 12px;
+  height: 12px;
+  opacity: 0.7;
+}
+
+.quoteSummaryPrice {
+  color: var(--rr-color-text-primary);
+  font-weight: 700;
+}
+
+/* ========================================
+   ERROR BANNER
+   ======================================== */
+
+.errorBanner {
+  padding: var(--rr-space-2) var(--rr-space-3);
+  background: #FEE2E2;
+  border: 1px solid #FECACA;
+  border-radius: var(--rr-radius-md);
+  color: #DC2626;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ========================================
+   SECTION
+   ======================================== */
+
+.section {
+  padding: var(--rr-space-4);
+  background: white;
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  margin-bottom: var(--rr-space-3);
+}
+
+.sectionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--rr-radius-md);
+  background: var(--rr-color-gray-100);
+  color: var(--rr-color-blue);
+  flex-shrink: 0;
+}
+
+.sectionIcon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0;
+}
+
+.sectionSubtitle {
+  font-size: 12px;
+  color: var(--rr-color-text-tertiary);
+  margin: 2px 0 0;
+}
+
+/* ========================================
+   DATE GRID (Compact)
+   ======================================== */
+
+.dateGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.dateButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--rr-color-text-primary);
+  background: var(--rr-color-gray-50);
+  border: 1px solid transparent;
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dateButton:hover {
+  background: var(--rr-color-gray-100);
+  border-color: var(--rr-color-border-default);
+}
+
+.dateButton_selected {
+  background: var(--rr-color-blue);
+  color: white;
+}
+
+.dateButton_selected:hover {
+  background: var(--rr-color-blue);
+}
+
+.dateButtonCheck {
+  display: flex;
+}
+
+.dateButtonCheck svg {
+  width: 12px;
+  height: 12px;
+}
+
+.dateButtonText {
+  display: block;
+}
+
+/* ========================================
+   TIME SLOTS (Compact)
+   ======================================== */
+
+.timeSlotGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.timeSlotButton {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--rr-space-3);
+  background: var(--rr-color-gray-50);
+  border: 1px solid transparent;
+  border-radius: var(--rr-radius-lg);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.timeSlotButton:hover {
+  background: var(--rr-color-gray-100);
+  border-color: var(--rr-color-border-default);
+}
+
+.timeSlotButton_selected {
+  background: #EBF4FF;
+  border-color: var(--rr-color-blue);
+}
+
+.timeSlotCheck {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: var(--rr-color-blue);
+}
+
+.timeSlotCheck svg {
+  width: 14px;
+  height: 14px;
+}
+
+.timeSlotLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+}
+
+.timeSlotTime {
+  font-size: 12px;
+  color: var(--rr-color-text-secondary);
+}
+
+.timeSlotButton_selected .timeSlotLabel,
+.timeSlotButton_selected .timeSlotTime {
+  color: var(--rr-color-blue);
+}
+
+/* ========================================
+   CONFIRMATION SECTION
+   ======================================== */
+
+.confirmSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-3);
+  padding: var(--rr-space-4);
+  background: #F0FDF4;
+  border: 1px solid #86EFAC;
+  border-radius: var(--rr-radius-lg);
+}
+
+.confirmationHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-2) var(--rr-space-3);
+  background: white;
+  border-radius: var(--rr-radius-md);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.confirmationIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #22C55E;
+  border-radius: var(--rr-radius-full);
+  color: white;
+  flex-shrink: 0;
+}
+
+.confirmationIcon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.confirmationDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.confirmationLabel {
+  font-size: 10px;
+  font-weight: 600;
+  color: #166534;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.confirmationDate {
+  font-size: 13px;
+  font-weight: 500;
+  color: #15803D;
+}
+
+/* Phone Section */
+.phoneSection {
+  padding: var(--rr-space-3);
+  background: white;
+  border-radius: var(--rr-radius-md);
+}
+
+.phoneSection .sectionHeader {
+  margin-bottom: var(--rr-space-2);
+}
+
+.phoneSection .sectionIcon {
+  width: 28px;
+  height: 28px;
+  background: #DCFCE7;
+  color: #22C55E;
+}
+
+/* ========================================
+   FORM ELEMENTS
+   ======================================== */
+
+.inputGroup {
+  margin-bottom: var(--rr-space-3);
+}
+
+.input {
+  width: 100%;
+  height: 44px;
+  padding: var(--rr-space-2) var(--rr-space-3);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--rr-color-text-primary);
+  background: white;
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--rr-color-blue);
+  box-shadow: 0 0 0 3px rgba(74, 124, 171, 0.1);
+}
+
+.input::placeholder {
+  color: var(--rr-color-text-tertiary);
+  font-weight: 400;
+}
+
+/* ========================================
+   CHECKBOX
+   ======================================== */
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rr-space-2);
+  cursor: pointer;
+  padding: var(--rr-space-2);
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: var(--rr-radius-md);
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  accent-color: var(--rr-color-blue);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkboxText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: var(--rr-color-text-primary);
+}
+
+.checkboxIcon {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 4px;
+  color: var(--rr-color-blue);
+  width: 14px;
+  height: 14px;
+}
+
+.checkboxSubtext {
+  display: block;
+  font-size: 11px;
+  color: var(--rr-color-text-tertiary);
+}
+
+/* ========================================
+   SUBMIT BUTTON
+   ======================================== */
+
+.submitButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  width: 100%;
+  height: 44px;
+  padding: 0 var(--rr-space-4);
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  background: var(--rr-color-blue);
+  border: none;
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #3A6499;
+}
+
+.submitButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submitButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+.disclaimer {
+  text-align: center;
+  font-size: 11px;
+  color: #166534;
+  margin: 0;
+}
+
+/* ========================================
+   SPINNER
+   ======================================== */
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 480px) {
+  .dateGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 640px) {
+  .dateGrid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .dateButton,
+  .timeSlotButton,
+  .submitButton,
+  .input {
+    transition: none;
+  }
+
+  .spinner {
+    animation: none;
+  }
+}

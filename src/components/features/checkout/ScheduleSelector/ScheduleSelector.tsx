@@ -13,6 +13,8 @@ interface ScheduleSelectorProps {
   onTimeSlotChange: (slot: TimeSlot | null) => void;
   disabled?: boolean;
   className?: string;
+  /** Compact mode for smaller calendar */
+  compact?: boolean;
 }
 
 const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -22,23 +24,20 @@ const MONTHS = [
 ];
 
 /**
- * Generate mock available dates (realistic scheduling)
- * Available: Weekdays, 3-30 days out, excluding some blocked dates
+ * Generate mock available dates
+ * Available: Weekdays, 3-30 days out
  */
 function getAvailableDates(): Set<string> {
   const available = new Set<string>();
   const today = new Date();
 
-  for (let i = 3; i <= 30; i++) {
+  for (let i = 3; i <= 45; i++) {
     const date = new Date(today);
     date.setDate(today.getDate() + i);
 
     // Skip weekends
     const day = date.getDay();
     if (day === 0 || day === 6) continue;
-
-    // Block some dates to simulate busy schedule
-    if (i === 7 || i === 14 || i === 21) continue;
 
     available.add(date.toISOString().split('T')[0]);
   }
@@ -48,11 +47,6 @@ function getAvailableDates(): Set<string> {
 
 /**
  * ScheduleSelector - Calendar date picker with time slot selection
- *
- * Features:
- * - Month navigation
- * - Available date highlighting
- * - Morning (8am-12pm) / Afternoon (12pm-5pm) time slots
  */
 export function ScheduleSelector({
   selectedDate,
@@ -61,6 +55,7 @@ export function ScheduleSelector({
   onTimeSlotChange,
   disabled = false,
   className = '',
+  compact = false,
 }: ScheduleSelectorProps) {
   const [currentMonth, setCurrentMonth] = useState(() => {
     const date = selectedDate || new Date();
@@ -126,11 +121,17 @@ export function ScheduleSelector({
     });
   };
 
+  // Prevent going to past months
+  const canGoPrevious = () => {
+    const today = new Date();
+    return currentMonth > new Date(today.getFullYear(), today.getMonth(), 1);
+  };
+
   return (
-    <div className={`${styles.container} ${className}`}>
+    <div className={`${styles.container} ${compact ? styles.container_compact : ''} ${className}`}>
       <div className={styles.header}>
-        <Calendar size={20} className={styles.headerIcon} aria-hidden="true" />
-        <h3 className={styles.headerTitle}>Schedule Your Installation</h3>
+        <Calendar size={compact ? 18 : 20} className={styles.headerIcon} aria-hidden="true" />
+        <h3 className={styles.headerTitle}>Select a Date</h3>
       </div>
 
       {/* Calendar */}
@@ -140,7 +141,7 @@ export function ScheduleSelector({
           <button
             type="button"
             onClick={goToPreviousMonth}
-            disabled={disabled}
+            disabled={disabled || !canGoPrevious()}
             className={styles.navButton}
             aria-label="Previous month"
           >

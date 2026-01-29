@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import { Providers } from '@/components/providers/Providers';
 import { ChatProvider, ChatWidget } from '@/components/features/support';
@@ -8,12 +7,6 @@ import { FAQProvider, FAQModal } from '@/components/features/faq';
 import { FeedbackProvider, FeedbackWidget } from '@/components/features/feedback';
 import { AdminAccessTrigger } from '@/components/features/admin';
 import '@/styles/globals.css';
-
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-});
 
 /**
  * Check if Clerk bypass is enabled for development
@@ -81,7 +74,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const content = (
-    <html lang="en" className={inter.variable}>
+    <html lang="en">
       <body>
         <Providers>
           <ChatProvider>

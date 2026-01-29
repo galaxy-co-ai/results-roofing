@@ -1,46 +1,112 @@
+/* =================================================
+   SIGN IN PAGE - Branded for Results Roofing
+   ================================================= */
+
 .container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #F7F9FC 0%, #EFF6FF 100%);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+  padding: var(--rr-space-4) var(--rr-space-page-gutter);
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.appIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: var(--rr-space-6);
-  background-color: var(--rr-color-background);
+  width: 40px;
+  height: 40px;
+  background-color: var(--rr-color-blue);
+  border-radius: 10px;
+  color: var(--rr-color-white);
+  box-shadow: 0 2px 8px rgba(74, 126, 194, 0.25);
+}
+
+.brandText {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.brandName {
+  color: var(--rr-color-charcoal);
+}
+
+.brandSuffix {
+  color: var(--rr-color-blue);
+  font-weight: 400;
+}
+
+/* ========================================
+   MAIN CONTENT
+   ======================================== */
+
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--rr-space-6) var(--rr-space-page-gutter);
 }
 
 .content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--rr-space-6);
   width: 100%;
-  max-width: 440px;
+  max-width: 420px;
 }
 
-.header {
+.heading {
   text-align: center;
+  margin-bottom: var(--rr-space-6);
 }
 
 .title {
-  margin: 0;
-  font-size: var(--rr-text-3xl);
-  font-weight: var(--rr-font-bold);
-  color: var(--rr-color-text-primary);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--rr-color-charcoal);
+  margin: 0 0 var(--rr-space-2);
+  line-height: 1.2;
 }
 
 .subtitle {
-  margin: var(--rr-space-2) 0 0;
-  font-size: var(--rr-text-base);
-  color: var(--rr-color-text-secondary);
+  font-size: 1rem;
+  color: var(--rr-color-gray-600);
+  margin: 0;
+  line-height: 1.5;
 }
 
-.clerkRoot {
+/* ========================================
+   CLERK COMPONENT OVERRIDES
+   ======================================== */
+
+.clerkRootBox {
   width: 100%;
 }
 
 .clerkCard {
-  background-color: var(--rr-color-surface);
-  border-radius: var(--rr-radius-lg);
-  box-shadow: var(--rr-shadow-md);
+  background: var(--rr-color-white);
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 24px rgba(30, 35, 41, 0.08),
+    0 1px 3px rgba(30, 35, 41, 0.06);
+  border: 1px solid var(--rr-color-gray-100);
+  padding: var(--rr-space-6);
 }
 
 .clerkHeaderTitle {
@@ -51,28 +117,158 @@
   display: none;
 }
 
-.clerkButton {
-  background-color: var(--rr-color-primary);
-  border-radius: var(--rr-radius-md);
+.clerkSocialButton {
+  border: 1.5px solid var(--rr-color-gray-200) !important;
+  border-radius: 10px !important;
+  padding: 12px 16px !important;
+  transition: 
+    border-color 0.2s ease,
+    background-color 0.2s ease !important;
 }
 
-.clerkButton:hover {
-  background-color: var(--rr-color-primary-hover);
+.clerkSocialButton:hover {
+  border-color: var(--rr-color-gray-400) !important;
+  background-color: var(--rr-color-gray-50) !important;
+}
+
+.clerkSocialButtonText {
+  font-weight: 500 !important;
+  color: var(--rr-color-charcoal) !important;
+}
+
+.clerkDivider {
+  background-color: var(--rr-color-gray-200) !important;
+}
+
+.clerkDividerText {
+  color: var(--rr-color-gray-500) !important;
+  font-size: 0.8125rem !important;
+}
+
+.clerkLabel {
+  font-weight: 500 !important;
+  color: var(--rr-color-charcoal) !important;
+  font-size: 0.875rem !important;
 }
 
 .clerkInput {
-  border-radius: var(--rr-radius-md);
-  border-color: var(--rr-color-border);
+  border: 1.5px solid var(--rr-color-gray-200) !important;
+  border-radius: 10px !important;
+  padding: 12px 14px !important;
+  font-size: 1rem !important;
+  transition: 
+    border-color 0.2s ease,
+    box-shadow 0.2s ease !important;
 }
 
 .clerkInput:focus {
-  border-color: var(--rr-color-primary);
+  border-color: var(--rr-color-blue) !important;
+  box-shadow: 0 0 0 3px rgba(74, 126, 194, 0.15) !important;
+}
+
+.clerkPrimaryButton {
+  background-color: var(--rr-color-blue) !important;
+  border-radius: 10px !important;
+  padding: 14px 20px !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  transition: 
+    background-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease !important;
+}
+
+.clerkPrimaryButton:hover {
+  background-color: var(--rr-color-blue-dark) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 126, 194, 0.3) !important;
 }
 
 .clerkLink {
-  color: var(--rr-color-primary);
+  color: var(--rr-color-blue) !important;
+  font-weight: 500 !important;
 }
 
 .clerkLink:hover {
-  color: var(--rr-color-primary-hover);
+  color: var(--rr-color-blue-dark) !important;
+}
+
+.clerkEditButton {
+  color: var(--rr-color-blue) !important;
+}
+
+.clerkShowPassword {
+  color: var(--rr-color-gray-500) !important;
+}
+
+/* ========================================
+   DEV MODE CARD
+   ======================================== */
+
+.devCard {
+  background: var(--rr-color-white);
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 24px rgba(30, 35, 41, 0.08),
+    0 1px 3px rgba(30, 35, 41, 0.06);
+  border: 1px solid var(--rr-color-gray-100);
+  padding: var(--rr-space-6);
+  text-align: center;
+}
+
+.devNote {
+  font-size: 0.875rem;
+  color: var(--rr-color-gray-600);
+  margin: 0 0 var(--rr-space-4);
+}
+
+.devButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--rr-color-white);
+  background-color: var(--rr-color-blue);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 
+    background-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.devButton:hover {
+  background-color: var(--rr-color-blue-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 126, 194, 0.3);
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+.footer {
+  padding: var(--rr-space-4) var(--rr-space-page-gutter);
+  text-align: center;
+}
+
+.footerText {
+  font-size: 0.8125rem;
+  color: var(--rr-color-gray-500);
+  margin: 0;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 640px) {
+  .title {
+    font-size: 2rem;
+  }
 }

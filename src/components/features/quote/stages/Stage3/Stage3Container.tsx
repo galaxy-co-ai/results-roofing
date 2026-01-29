@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { CheckCircle } from 'lucide-react';
 import { useQuoteWizard } from '../../QuoteWizardProvider';
 import { useFinalizeCheckout } from '@/hooks/useQuote';
+import { StageIndicator } from '../../StageIndicator';
 import { ContactSection } from './ContactSection';
 import { ContractSection } from './ContractSection';
 import { SignatureSection } from './SignatureSection';
@@ -202,6 +203,16 @@ export function Stage3Container({ quoteId, quoteData }: Stage3ContainerProps) {
       {/* Screen reader announcements for section completion */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">
         {getCompletionAnnouncement()}
+      </div>
+
+      {/* Unified Header Section */}
+      <div className={styles.headerSection}>
+        <h1 className={styles.title}>Schedule Installation</h1>
+        <StageIndicator currentStage={3} quoteId={quoteId} />
+        <p className={styles.addressLine}>
+          <span className={styles.addressLabel}>Quote for</span>
+          <span className={styles.addressValue}>{quoteData.address}</span>
+        </p>
       </div>
 
       {/* Main content area with sidebar */}

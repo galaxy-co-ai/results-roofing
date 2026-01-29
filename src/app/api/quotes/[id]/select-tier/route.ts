@@ -95,6 +95,19 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       })
       .where(eq(schema.quotes.id, quoteId));
 
+    // Verify the update was successful
+    const updatedQuote = await db.query.quotes.findFirst({
+      where: eq(schema.quotes.id, quoteId),
+    });
+
+    if (!updatedQuote?.selectedTier) {
+      logger.error('Failed to update quote tier', { quoteId, tier: parsed.data.tier });
+      return NextResponse.json(
+        { error: 'Failed to save package selection. Please try again.' },
+        { status: 500 }
+      );
+    }
+
     logger.info('Package tier selected', {
       quoteId,
       tier: parsed.data.tier,
