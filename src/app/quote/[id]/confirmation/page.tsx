@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { CheckCircle, Calendar, MapPin, Package, FileText } from 'lucide-react';
 import { db, schema, eq } from '@/db/index';
-import { StageIndicator } from '@/components/features/quote/StageIndicator';
+import { QuoteStepper } from '@/components/features/quote/QuoteStepper';
 import styles from './page.module.css';
 
 interface ConfirmationPageProps {
@@ -35,7 +35,7 @@ export default async function ConfirmationPage({ params }: ConfirmationPageProps
 
   return (
     <>
-      <StageIndicator currentStage={3} quoteId={quoteId} />
+      <QuoteStepper currentStage={3} quoteId={quoteId} />
       <main className={styles.main}>
         <div className={styles.container}>
           {/* Success Icon */}

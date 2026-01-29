@@ -153,12 +153,14 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         }),
       });
 
+      // Always parse response to ensure request completes fully
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.error || 'Failed to save schedule');
       }
 
-      // Navigate to success page
+      // Navigate to success page after confirmed save
       router.push(`/quote/${quoteId}/success`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');

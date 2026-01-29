@@ -78,6 +78,19 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       })
       .where(eq(schema.quotes.id, quoteId));
 
+    // Verify the update was successful
+    const updatedQuote = await db.query.quotes.findFirst({
+      where: eq(schema.quotes.id, quoteId),
+    });
+
+    if (!updatedQuote?.scheduledDate) {
+      logger.error('Failed to update quote schedule', { quoteId, scheduledDate: parsed.data.scheduledDate });
+      return NextResponse.json(
+        { error: 'Failed to save schedule. Please try again.' },
+        { status: 500 }
+      );
+    }
+
     logger.info('Quote scheduled', {
       quoteId,
       scheduledDate: parsed.data.scheduledDate,

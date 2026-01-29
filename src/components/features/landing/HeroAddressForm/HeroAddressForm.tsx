@@ -53,11 +53,29 @@ export function HeroAddressForm({ className = '' }: HeroAddressFormProps) {
     setError(null);
 
     try {
-      // Store address in sessionStorage for the quote flow to pick up
-      sessionStorage.setItem('pendingAddress', JSON.stringify(selectedAddress));
+      // Create quote directly from landing page
+      const response = await fetch('/api/quotes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          streetAddress: selectedAddress.streetAddress,
+          city: selectedAddress.city,
+          state: selectedAddress.state,
+          zip: selectedAddress.zip,
+          lat: selectedAddress.lat,
+          lng: selectedAddress.lng,
+          placeId: selectedAddress.placeId,
+        }),
+      });
 
-      // Navigate to quote flow with address pre-filled
-      router.push('/quote/new?prefilled=true');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create quote');
+      }
+
+      // Go directly to package selection
+      router.push(`/quote/${data.id}/customize`);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to start quote';
       setError(errorMessage);

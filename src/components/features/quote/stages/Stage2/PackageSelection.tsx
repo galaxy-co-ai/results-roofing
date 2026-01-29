@@ -2,7 +2,7 @@
 
 import { Check, Star, Loader2 } from 'lucide-react';
 import { DEPOSIT_CONFIG } from '@/lib/constants';
-import { StageIndicator } from '../../StageIndicator';
+import { QuoteStepper } from '../../QuoteStepper';
 import styles from './Stage2.module.css';
 
 interface TierData {
@@ -62,7 +62,7 @@ export function PackageSelection({
       {/* Unified Header Section */}
       <div className={styles.headerSection}>
         <h1 className={styles.title}>Choose Your Package</h1>
-        <StageIndicator currentStage={2} quoteId={quoteId} />
+        <QuoteStepper currentStage={2} quoteId={quoteId} />
         <p className={styles.addressLine}>
           <span className={styles.addressLabel}>Quote for</span>
           <span className={styles.addressValue}>{address}</span>

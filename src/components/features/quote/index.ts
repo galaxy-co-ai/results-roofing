@@ -24,6 +24,7 @@ export type {
 } from './QuoteWizardProvider';
 
 export { StageIndicator } from './StageIndicator';
+export { QuoteStepper } from './QuoteStepper';
 export { OrderSummarySidebar } from './OrderSummarySidebar';
 
 // Stage containers

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { ScheduleSelector } from '@/components/features/checkout/ScheduleSelector';
-import { StageIndicator } from '../../StageIndicator';
+import { QuoteStepper } from '../../QuoteStepper';
 import styles from './Stage2.module.css';
 
 interface ScheduleSelectionProps {
@@ -64,7 +64,7 @@ export function ScheduleSelection({
       {/* Unified Header Section */}
       <div className={styles.headerSection}>
         <h1 className={styles.title}>Schedule Installation</h1>
-        <StageIndicator currentStage={2} quoteId={quoteId} />
+        <QuoteStepper currentStage={2} quoteId={quoteId} />
         <p className={styles.addressLine}>
           <span className={styles.addressLabel}>Quote for</span>
           <span className={styles.addressValue}>{address}</span>

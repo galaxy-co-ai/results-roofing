@@ -163,45 +163,73 @@
   background: #eff6ff;
 }
 
-/* Primary CTA Button */
+/* Primary CTA Button - Matches stepper aesthetic */
 .primaryButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
-  height: 44px;
-  font-size: 14px;
+  height: 48px;
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: #ffffff;
-  background: #1e40af;
+  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.15s ease;
+  box-shadow:
+    0 4px 6px -1px rgba(30, 64, 175, 0.35),
+    0 2px 4px -2px rgba(30, 64, 175, 0.25),
+    0 0 0 0 rgba(30, 64, 175, 0);
+  transition: all 0.2s ease;
 }
 
 .primaryButton:hover {
-  background: #1e3a8a;
+  background: linear-gradient(135deg, #2146b8 0%, #1e40af 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    0 6px 12px -2px rgba(30, 64, 175, 0.4),
+    0 4px 6px -2px rgba(30, 64, 175, 0.3),
+    0 0 0 4px rgba(30, 64, 175, 0.1);
 }
 
 .primaryButton:active {
-  background: #172554;
+  transform: translateY(0);
+  box-shadow:
+    0 2px 4px -1px rgba(30, 64, 175, 0.3),
+    0 1px 2px -1px rgba(30, 64, 175, 0.2);
 }
 
 .primaryButtonReady {
-  background: #1e40af;
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  box-shadow:
+    0 4px 6px -1px rgba(22, 163, 74, 0.35),
+    0 2px 4px -2px rgba(22, 163, 74, 0.25),
+    0 0 0 0 rgba(22, 163, 74, 0);
+}
+
+.primaryButtonReady:hover {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  box-shadow:
+    0 6px 12px -2px rgba(22, 163, 74, 0.4),
+    0 4px 6px -2px rgba(22, 163, 74, 0.3),
+    0 0 0 4px rgba(22, 163, 74, 0.1);
 }
 
 .primaryButton:disabled {
   cursor: wait;
-  opacity: 0.7;
+  opacity: 0.8;
+  transform: none;
 }
 
 .primaryButton:focus-visible {
-  outline: 2px solid #1e40af;
-  outline-offset: 2px;
+  outline: none;
+  box-shadow:
+    0 4px 6px -1px rgba(30, 64, 175, 0.35),
+    0 2px 4px -2px rgba(30, 64, 175, 0.25),
+    0 0 0 3px rgba(30, 64, 175, 0.4);
 }
 
 .spinner {
@@ -395,6 +423,7 @@
   }
 
   .primaryButton {
-    height: 40px;
+    height: 44px;
+    font-size: 14px;
   }
 }

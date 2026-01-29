@@ -24,8 +24,9 @@ export function StageIndicator({ currentStage, quoteId, className = '' }: StageI
   const stages = [1, 2, 3] as const;
 
   const getStageUrl = (stage: WizardStage): string | null => {
+    // Stage 1 is not navigable once a quote exists - can't go back to before quote creation
     if (stage === 1) {
-      return STAGE_CONFIG[1].path;
+      return null;
     }
     if (!quoteId) {
       return null;

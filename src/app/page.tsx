@@ -1,6 +1,6 @@
 import { Clock, Shield, DollarSign, CheckCircle, ChevronRight, Star, BadgeCheck } from 'lucide-react';
 import { Header } from '@/components/layout';
-import { HeroAddressForm } from '@/components/features/landing';
+import { HeroAddressForm, HowItWorksStepper } from '@/components/features/landing';
 import styles from './page.module.css';
 
 const REVIEWS = [
@@ -72,12 +72,6 @@ const VALUE_PROPS = [
   },
 ];
 
-const PROCESS_STEPS = [
-  { number: '1', title: 'Enter Your Address' },
-  { number: '2', title: 'Choose Your Package' },
-  { number: '3', title: 'Schedule Installation' },
-  { number: '4', title: 'Get Your New Roof' },
-];
 
 export default function HomePage() {
   return (
@@ -175,21 +169,7 @@ export default function HomePage() {
           <p className={styles.sectionSubtitle}>
             From quote to installation in four simple steps
           </p>
-          <div className={styles.stepsGrid}>
-            {PROCESS_STEPS.map((step, index) => (
-              <div key={step.number} className={styles.stepWrapper}>
-                <div className={styles.step}>
-                  <div className={styles.stepNumber}>{step.number}</div>
-                  <h3 className={styles.stepTitle}>{step.title}</h3>
-                </div>
-                {index < PROCESS_STEPS.length - 1 && (
-                  <div className={styles.stepArrow} aria-hidden="true">
-                    <ChevronRight size={16} />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+          <HowItWorksStepper />
         </div>
       </section>
 

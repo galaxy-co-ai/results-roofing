@@ -1,41 +1,10 @@
-import { Suspense } from 'react';
-import { QuoteWizardProvider } from '@/components/features/quote/QuoteWizardProvider';
-import { StageIndicator } from '@/components/features/quote/StageIndicator';
-import { Stage1Container, Stage1Skeleton } from '@/components/features/quote/stages/Stage1';
-import { TrustSignals } from '@/components/features/quote/TrustSignals';
-import styles from './page.module.css';
+import { redirect } from 'next/navigation';
 
-interface PageProps {
-  searchParams: Promise<{ address?: string }>;
-}
-
-function FormLoading() {
-  return (
-    <>
-      <StageIndicator currentStage={1} />
-      <TrustSignals variant="compact" showCounter className={styles.trustSignals} />
-      <Stage1Skeleton />
-    </>
-  );
-}
-
-async function NewQuoteContent({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const initialAddress = params.address || '';
-
-  return (
-    <QuoteWizardProvider>
-      <StageIndicator currentStage={1} />
-      <TrustSignals variant="compact" showCounter className={styles.trustSignals} />
-      <Stage1Container initialAddress={initialAddress} />
-    </QuoteWizardProvider>
-  );
-}
-
-export default function NewQuotePage(props: PageProps) {
-  return (
-    <Suspense fallback={<FormLoading />}>
-      <NewQuoteContent {...props} />
-    </Suspense>
-  );
+/**
+ * /quote/new now redirects to the landing page.
+ * Users enter their address on the landing page, which creates
+ * the quote and redirects directly to package selection.
+ */
+export default function NewQuotePage() {
+  redirect('/');
 }
