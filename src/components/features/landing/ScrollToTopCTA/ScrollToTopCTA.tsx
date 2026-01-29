@@ -15,12 +15,8 @@ export function ScrollToTopCTA({ className }: ScrollToTopCTAProps) {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
-    const target = document.getElementById('quote-form');
-    if (!target) return;
-
-    const targetPosition = target.getBoundingClientRect().top + window.scrollY;
     const startPosition = window.scrollY;
-    const distance = targetPosition - startPosition;
+    const distance = -startPosition; // Scroll to top (position 0)
     const duration = 1200; // ms - longer for premium feel
     let startTime: number | null = null;
 
