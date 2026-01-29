@@ -1,76 +1,8 @@
-import { Clock, Shield, DollarSign, CheckCircle, ChevronRight, Star, BadgeCheck } from 'lucide-react';
+import { CheckCircle, ChevronRight, Star, BadgeCheck, Shield } from 'lucide-react';
 import { Header } from '@/components/layout';
-import { HeroAddressForm, HowItWorksStepper } from '@/components/features/landing';
+import { HeroAddressForm, HowItWorksStepper, ReviewsTicker } from '@/components/features/landing';
 import styles from './page.module.css';
 
-const REVIEWS = [
-  {
-    text: "Results Roofing made everything so easy. Got my quote in 5 minutes and scheduled installation the same week. No pushy salespeople!",
-    author: "Sarah M.",
-    location: "Austin, TX",
-    initials: "SM",
-  },
-  {
-    text: "Best roofing experience ever. The online process was seamless and the crew was professional. My new roof looks amazing.",
-    author: "Michael R.",
-    location: "Atlanta, GA",
-    initials: "MR",
-  },
-  {
-    text: "I was skeptical about getting a roof quote online, but this was incredibly accurate. The final price matched exactly.",
-    author: "Jennifer L.",
-    location: "Charlotte, NC",
-    initials: "JL",
-  },
-  {
-    text: "From quote to completion in under two weeks. The transparency in pricing was refreshing - no hidden fees or surprises.",
-    author: "David K.",
-    location: "Phoenix, AZ",
-    initials: "DK",
-  },
-  {
-    text: "Finally, a roofing company that respects your time. No waiting around for estimates. Highly recommend!",
-    author: "Amanda T.",
-    location: "Dallas, TX",
-    initials: "AT",
-  },
-  {
-    text: "The package comparison made it so easy to decide. We went with the Premium option and couldn't be happier.",
-    author: "Robert J.",
-    location: "Marietta, GA",
-    initials: "RJ",
-  },
-  {
-    text: "Professional from start to finish. The satellite measurement was spot-on and installation was flawless.",
-    author: "Lisa H.",
-    location: "Raleigh, NC",
-    initials: "LH",
-  },
-  {
-    text: "Love that I could do everything online. Scheduled around my work and they showed up exactly when promised.",
-    author: "Chris P.",
-    location: "Scottsdale, AZ",
-    initials: "CP",
-  },
-];
-
-const VALUE_PROPS = [
-  {
-    icon: Clock,
-    title: 'Skip the Runaround',
-    description: 'No waiting for someone to "come out and take a look." Get an accurate quote from satellite imagery while you finish your coffee.',
-  },
-  {
-    icon: DollarSign,
-    title: 'No Surprises',
-    description: 'The price you see is the price you pay. Compare packages side-by-side and know exactly what\'s included.',
-  },
-  {
-    icon: Shield,
-    title: 'Built to Last',
-    description: 'GAF and Owens Corning certified crews. Industry-leading warranties. We stand behind every roof.',
-  },
-];
 
 
 export default function HomePage() {
@@ -79,7 +11,7 @@ export default function HomePage() {
       <Header />
       <main className={styles.main}>
       {/* Hero Section */}
-      <section className={styles.hero}>
+      <section id="quote-form" className={styles.hero}>
         <div className={styles.heroContent}>
           <h1 className={styles.title}>
             Your Roof Quote <span className={styles.highlight}>In Minutes</span>
@@ -135,32 +67,7 @@ export default function HomePage() {
       </section>
 
       {/* Reviews Ticker */}
-      <section className={styles.reviewsTicker} aria-label="Customer reviews">
-        <div className={styles.tickerTrack}>
-          {/* Duplicate reviews for seamless infinite scroll */}
-          {[...REVIEWS, ...REVIEWS].map((review, index) => (
-            <article key={`review-${index}`} className={styles.reviewCard}>
-              <div className={styles.reviewHeader}>
-                <div className={styles.reviewAuthor}>
-                  <div className={styles.reviewAvatar} aria-hidden="true">
-                    {review.initials}
-                  </div>
-                  <div className={styles.reviewMeta}>
-                    <span className={styles.reviewName}>{review.author}</span>
-                    <span className={styles.reviewLocation}>{review.location}</span>
-                  </div>
-                </div>
-                <div className={styles.reviewStars} aria-label="5 out of 5 stars">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} fill="currentColor" />
-                  ))}
-                </div>
-              </div>
-              <p className={styles.reviewText}>&ldquo;{review.text}&rdquo;</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <ReviewsTicker />
 
       {/* How It Works */}
       <section className={styles.howItWorks}>
@@ -173,26 +80,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Value Propositions */}
-      <section className={styles.valueProps}>
-        <div className={styles.sectionContainer}>
-          <h2 className={styles.sectionTitle}>Roofing Without the Headache</h2>
-          <div className={styles.valuePropsGrid}>
-            {VALUE_PROPS.map((prop) => (
-              <div key={prop.title} className={styles.valuePropCard}>
-                <div className={styles.valuePropIcon}>
-                  <prop.icon size={18} />
-                </div>
-                <div className={styles.valuePropContent}>
-                  <h3 className={styles.valuePropTitle}>{prop.title}</h3>
-                  <p className={styles.valuePropDescription}>{prop.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Bottom CTA */}
       <section className={styles.bottomCta}>
         <div className={styles.sectionContainer}>
@@ -200,7 +87,7 @@ export default function HomePage() {
           <p className={styles.ctaSubtitle}>
             No sales calls. No home visits. Just an honest quote you can trust.
           </p>
-          <a href="/" className={styles.ctaButton}>
+          <a href="#quote-form" className={styles.ctaButton}>
             Get My Quote
             <ChevronRight size={20} />
           </a>

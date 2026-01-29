@@ -22,6 +22,10 @@
   text-align: center;
   padding: 32px 24px 24px;
   min-height: auto;
+  position: relative;
+  background-color: #ffffff;
+  background-image: radial-gradient(circle, rgba(59, 130, 246, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 .heroContent {
@@ -181,6 +185,55 @@
   border-bottom: 1px solid #e2e8f0;
 }
 
+.reviewsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 0 24px;
+}
+
+.reviewsTitle {
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tickerControl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.tickerControl:hover {
+  color: #1e40af;
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow:
+    0 2px 4px -1px rgba(30, 64, 175, 0.15),
+    0 0 0 3px rgba(59, 130, 246, 0.08);
+}
+
+.tickerControl:active {
+  transform: scale(0.96);
+}
+
+.tickerControl svg {
+  width: 14px;
+  height: 14px;
+}
+
 .reviewsTicker::before,
 .reviewsTicker::after {
   content: '';
@@ -209,7 +262,7 @@
   width: max-content;
 }
 
-.tickerTrack:hover {
+.tickerTrackPaused {
   animation-play-state: paused;
 }
 
@@ -496,7 +549,6 @@
 
 .bottomCta {
   padding: 48px 0;
-  padding-bottom: calc(48px + 56px);
   background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
   text-align: center;
 }
@@ -549,14 +601,8 @@
    ======================================== */
 
 .stickyTrustBar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-  padding: 12px 20px;
-  z-index: 100;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px 20px;
 }
 
 .trustBarContent {
