@@ -57,18 +57,18 @@ const REVIEWS = [
 const VALUE_PROPS = [
   {
     icon: Clock,
-    title: 'Instant Quotes',
-    description: 'Get your roof measurement and quote in minutes, not days.',
+    title: 'Skip the Runaround',
+    description: 'No waiting for someone to "come out and take a look." Get an accurate quote from satellite imagery while you finish your coffee.',
   },
   {
     icon: DollarSign,
-    title: 'Transparent Pricing',
-    description: 'Compare Essential, Premium, and Elite packages. See exactly what you pay for with no hidden fees.',
+    title: 'No Surprises',
+    description: 'The price you see is the price you pay. Compare packages side-by-side and know exactly what\'s included.',
   },
   {
     icon: Shield,
-    title: 'Licensed & Insured',
-    description: 'Our crews are fully licensed, insured, and trained to the highest industry standards.',
+    title: 'Built to Last',
+    description: 'GAF and Owens Corning certified crews. Industry-leading warranties. We stand behind every roof.',
   },
 ];
 
@@ -176,7 +176,7 @@ export default function HomePage() {
       {/* Value Propositions */}
       <section className={styles.valueProps}>
         <div className={styles.sectionContainer}>
-          <h2 className={styles.sectionTitle}>Why Homeowners Choose Us</h2>
+          <h2 className={styles.sectionTitle}>Roofing Without the Headache</h2>
           <div className={styles.valuePropsGrid}>
             {VALUE_PROPS.map((prop) => (
               <div key={prop.title} className={styles.valuePropCard}>
@@ -196,12 +196,12 @@ export default function HomePage() {
       {/* Bottom CTA */}
       <section className={styles.bottomCta}>
         <div className={styles.sectionContainer}>
-          <h2 className={styles.ctaTitle}>Ready to Get Started?</h2>
+          <h2 className={styles.ctaTitle}>Know Your Price in 5 Minutes</h2>
           <p className={styles.ctaSubtitle}>
-            Join thousands of homeowners who have simplified their roof replacement.
+            No sales calls. No home visits. Just an honest quote you can trust.
           </p>
-          <a href="/quote/new" className={styles.ctaButton}>
-            Get Your Free Quote
+          <a href="/" className={styles.ctaButton}>
+            Get My Quote
             <ChevronRight size={20} />
           </a>
         </div>

@@ -14,7 +14,7 @@ const STEPS = [
   {
     number: 2,
     title: 'Choose Your Package',
-    description: 'Compare Essential, Preferred & Signature options',
+    description: 'Compare options and pick what fits your budget',
     icon: Package,
   },
   {
