@@ -61,9 +61,9 @@ export default async function SuccessPage({ params }: SuccessPageProps) {
           </div>
 
           {/* Title */}
-          <h1 className={styles.title}>You're All Set!</h1>
+          <h1 className={styles.title}>You&apos;re All Set!</h1>
           <p className={styles.subtitle}>
-            Your roofing installation has been scheduled. We'll send you a confirmation email shortly.
+            Your roofing installation has been scheduled. We&apos;ll send you a confirmation email shortly.
           </p>
 
           {/* Quote Summary Card */}
@@ -106,7 +106,7 @@ export default async function SuccessPage({ params }: SuccessPageProps) {
               </li>
               <li className={styles.step}>
                 <span className={styles.stepNumber}>2</span>
-                <span className={styles.stepText}>We'll send a deposit invoice via email</span>
+                <span className={styles.stepText}>We&apos;ll send a deposit invoice via email</span>
               </li>
               <li className={styles.step}>
                 <span className={styles.stepNumber}>3</span>
@@ -117,7 +117,7 @@ export default async function SuccessPage({ params }: SuccessPageProps) {
 
           {/* Contact Info */}
           <div className={styles.contactInfo}>
-            <p className={styles.contactText}>Questions? We're here to help.</p>
+            <p className={styles.contactText}>Questions? We&apos;re here to help.</p>
             <div className={styles.contactMethods}>
               <a href="tel:+18005551234" className={styles.contactLink}>
                 <Phone size={16} />

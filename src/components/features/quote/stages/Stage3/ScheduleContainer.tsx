@@ -72,7 +72,7 @@ export function ScheduleContainer({ quoteId, quoteData }: ScheduleContainerProps
     const dates: Date[] = [];
     const today = new Date();
     let daysAdded = 0;
-    let currentDate = new Date(today);
+    const currentDate = new Date(today);
     currentDate.setDate(currentDate.getDate() + 3); // Start 3 days from now
 
     while (daysAdded < 10) {

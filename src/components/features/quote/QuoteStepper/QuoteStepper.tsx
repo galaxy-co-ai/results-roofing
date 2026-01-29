@@ -5,7 +5,7 @@ import { defineStepper } from '@/components/ui/stepper';
 import { cn } from '@/lib/utils';
 
 // Define the quote wizard steps
-const { Stepper, useStepper } = defineStepper(
+const { Stepper } = defineStepper(
   { id: 'quote', label: 'Get Quote', description: 'Enter your address' },
   { id: 'customize', label: 'Customize', description: 'Choose your package' },
   { id: 'schedule', label: 'Schedule', description: 'Pick a date' }
@@ -22,7 +22,7 @@ interface QuoteStepperProps {
  *
  * Uses shadcn-stepper for a consistent, accessible design.
  */
-export function QuoteStepper({ currentStage, quoteId, className }: QuoteStepperProps) {
+export function QuoteStepper({ currentStage, quoteId: _quoteId, className }: QuoteStepperProps) {
   // Map stage number to step ID
   const stepIds = ['quote', 'customize', 'schedule'] as const;
   const currentStepId = stepIds[currentStage - 1];

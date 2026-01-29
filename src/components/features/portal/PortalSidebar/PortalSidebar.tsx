@@ -48,7 +48,7 @@ export function PortalSidebar() {
 
     // Optional: Listen for resize to update on orientation change
     const handleResize = () => {
-      const isTabletOrSmaller = window.innerWidth < TABLET_BREAKPOINT;
+      const _isTabletOrSmaller = window.innerWidth < TABLET_BREAKPOINT;
       // On very small screens (mobile), the sidebar becomes bottom nav,
       // so we don't need to manage collapsed state
       if (window.innerWidth > 768 && window.innerWidth < TABLET_BREAKPOINT) {
