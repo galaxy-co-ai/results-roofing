@@ -42,7 +42,11 @@
 }
 
 .highlight {
-  color: #1e40af;
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 50%, #1e3a8a 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.4));
 }
 
 .subtitle {
