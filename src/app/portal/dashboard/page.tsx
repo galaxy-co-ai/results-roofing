@@ -190,7 +190,7 @@ function NoOrdersState() {
     <div className={styles.dashboard}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>Your Project Dashboard</h1>
+          <h1 className={styles.title}>Your Project <span className={styles.titleAccent}>Dashboard</span></h1>
           <p className={styles.subtitle}>
             Track your roof replacement progress and manage your project
           </p>
@@ -277,7 +277,7 @@ function DashboardContent({ userEmail, userLoaded }: { userEmail: string | null;
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>Your Project Dashboard</h1>
+          <h1 className={styles.title}>Your Project <span className={styles.titleAccent}>Dashboard</span></h1>
           <p className={styles.subtitle}>
             Track your roof replacement progress and manage your project
           </p>

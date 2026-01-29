@@ -15,8 +15,10 @@
 }
 
 .card:hover {
-  border-color: var(--rr-color-blue);
-  box-shadow: var(--rr-shadow-charcoal-medium);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow:
+    0 4px 12px -2px rgba(30, 64, 175, 0.12),
+    0 0 0 3px rgba(59, 130, 246, 0.08);
   transform: translateY(-2px);
 }
 
@@ -40,7 +42,9 @@
 }
 
 .card:hover .iconWrapper {
-  box-shadow: var(--rr-shadow-charcoal-medium);
+  box-shadow:
+    0 4px 8px -2px rgba(59, 130, 246, 0.3),
+    0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .icon {
@@ -160,10 +164,12 @@
 }
 
 .downloadButton:hover {
-  background: var(--rr-color-blue);
-  border-color: var(--rr-color-blue);
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  border-color: transparent;
   color: var(--rr-color-white);
-  box-shadow: var(--rr-shadow-charcoal-medium);
+  box-shadow:
+    0 4px 8px -2px rgba(59, 130, 246, 0.35),
+    0 0 0 3px rgba(59, 130, 246, 0.12);
   transform: translateY(-1px);
 }
 

@@ -12,13 +12,15 @@
 }
 
 .card:hover {
-  border-color: var(--rr-color-brand-primary, #c4a77d);
+  border-color: rgba(59, 130, 246, 0.4);
   background-color: var(--rr-color-surface-secondary, #faf8f5);
-  box-shadow: var(--rr-shadow-sm, 0 2px 8px rgba(44, 44, 44, 0.04));
+  box-shadow:
+    0 4px 12px -2px rgba(30, 64, 175, 0.12),
+    0 0 0 3px rgba(59, 130, 246, 0.08);
 }
 
 .card:focus-visible {
-  outline: 2px solid var(--rr-color-brand-primary, #c4a77d);
+  outline: 2px solid rgba(59, 130, 246, 0.6);
   outline-offset: 2px;
 }
 
@@ -50,7 +52,9 @@
 }
 
 .card:hover .iconWrapper {
-  box-shadow: var(--rr-shadow-charcoal-medium, 0 4px 12px rgba(30, 35, 41, 0.15));
+  box-shadow:
+    0 4px 8px -2px rgba(59, 130, 246, 0.3),
+    0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 /* Content */

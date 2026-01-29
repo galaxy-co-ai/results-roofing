@@ -83,7 +83,7 @@ export default function SchedulePage() {
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>Your Schedule</h1>
+          <h1 className={styles.title}>Your <span className={styles.titleAccent}>Schedule</span></h1>
           <p className={styles.subtitle}>
             Track your installation timeline and prepare for the big day
           </p>

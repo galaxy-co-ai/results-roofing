@@ -1,5 +1,6 @@
 /* =================================================
    SIGN UP PAGE - Branded for Results Roofing
+   Visual continuity with landing page
    ================================================= */
 
 .container {
@@ -7,6 +8,11 @@
   display: flex;
   flex-direction: column;
   background: linear-gradient(180deg, #F7F9FC 0%, #EFF6FF 100%);
+  /* Subtle dot grid pattern - matches landing page */
+  background-image:
+    radial-gradient(circle, rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, #F7F9FC 0%, #EFF6FF 100%);
+  background-size: 24px 24px, 100% 100%;
 }
 
 /* ========================================
@@ -33,10 +39,12 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  background-color: var(--rr-color-blue);
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
   border-radius: 10px;
   color: var(--rr-color-white);
-  box-shadow: 0 2px 8px rgba(74, 126, 194, 0.25);
+  box-shadow:
+    0 4px 12px -2px rgba(30, 64, 175, 0.4),
+    0 0 0 1px rgba(59, 130, 246, 0.1);
 }
 
 .brandText {
@@ -50,8 +58,19 @@
 }
 
 .brandSuffix {
-  color: var(--rr-color-blue);
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-weight: 400;
+}
+
+/* Title accent for gradient text */
+.titleAccent {
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* ========================================
@@ -102,11 +121,21 @@
 .clerkCard {
   background: var(--rr-color-white);
   border-radius: 16px;
-  box-shadow: 
+  box-shadow:
     0 4px 24px rgba(30, 35, 41, 0.08),
-    0 1px 3px rgba(30, 35, 41, 0.06);
+    0 1px 3px rgba(30, 35, 41, 0.06),
+    0 0 0 1px rgba(59, 130, 246, 0.05);
   border: 1px solid var(--rr-color-gray-100);
   padding: var(--rr-space-6);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clerkCard:hover {
+  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow:
+    0 8px 32px rgba(30, 64, 175, 0.12),
+    0 1px 3px rgba(30, 35, 41, 0.06),
+    0 0 0 3px rgba(59, 130, 246, 0.06);
 }
 
 .clerkHeaderTitle {
@@ -121,14 +150,16 @@
   border: 1.5px solid var(--rr-color-gray-200) !important;
   border-radius: 10px !important;
   padding: 12px 16px !important;
-  transition: 
+  transition:
     border-color 0.2s ease,
-    background-color 0.2s ease !important;
+    background-color 0.2s ease,
+    box-shadow 0.2s ease !important;
 }
 
 .clerkSocialButton:hover {
-  border-color: var(--rr-color-gray-400) !important;
-  background-color: var(--rr-color-gray-50) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  background-color: rgba(59, 130, 246, 0.04) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.06) !important;
 }
 
 .clerkSocialButtonText {
@@ -156,32 +187,36 @@
   border-radius: 10px !important;
   padding: 12px 14px !important;
   font-size: 1rem !important;
-  transition: 
+  transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease !important;
 }
 
 .clerkInput:focus {
-  border-color: var(--rr-color-blue) !important;
-  box-shadow: 0 0 0 3px rgba(74, 126, 194, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
 }
 
 .clerkPrimaryButton {
-  background-color: var(--rr-color-blue) !important;
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%) !important;
   border-radius: 10px !important;
   padding: 14px 20px !important;
   font-weight: 600 !important;
   font-size: 1rem !important;
-  transition: 
-    background-color 0.2s ease,
+  box-shadow:
+    0 4px 6px -1px rgba(30, 64, 175, 0.3),
+    0 2px 4px -2px rgba(30, 64, 175, 0.2) !important;
+  transition:
     transform 0.15s ease,
     box-shadow 0.2s ease !important;
 }
 
 .clerkPrimaryButton:hover {
-  background-color: var(--rr-color-blue-dark) !important;
+  background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%) !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(74, 126, 194, 0.3) !important;
+  box-shadow:
+    0 6px 12px -2px rgba(30, 64, 175, 0.4),
+    0 0 0 3px rgba(59, 130, 246, 0.12) !important;
 }
 
 .clerkLink {
@@ -190,7 +225,7 @@
 }
 
 .clerkLink:hover {
-  color: var(--rr-color-blue-dark) !important;
+  color: #1e40af !important;
 }
 
 .clerkEditButton {
@@ -208,12 +243,22 @@
 .devCard {
   background: var(--rr-color-white);
   border-radius: 16px;
-  box-shadow: 
+  box-shadow:
     0 4px 24px rgba(30, 35, 41, 0.08),
-    0 1px 3px rgba(30, 35, 41, 0.06);
+    0 1px 3px rgba(30, 35, 41, 0.06),
+    0 0 0 1px rgba(59, 130, 246, 0.05);
   border: 1px solid var(--rr-color-gray-100);
   padding: var(--rr-space-6);
   text-align: center;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.devCard:hover {
+  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow:
+    0 8px 32px rgba(30, 64, 175, 0.12),
+    0 1px 3px rgba(30, 35, 41, 0.06),
+    0 0 0 3px rgba(59, 130, 246, 0.06);
 }
 
 .devNote {
@@ -232,20 +277,24 @@
   font-size: 1rem;
   font-weight: 600;
   color: var(--rr-color-white);
-  background-color: var(--rr-color-blue);
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: 
-    background-color 0.2s ease,
+  box-shadow:
+    0 4px 6px -1px rgba(30, 64, 175, 0.3),
+    0 2px 4px -2px rgba(30, 64, 175, 0.2);
+  transition:
     transform 0.15s ease,
     box-shadow 0.2s ease;
 }
 
 .devButton:hover {
-  background-color: var(--rr-color-blue-dark);
+  background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(74, 126, 194, 0.3);
+  box-shadow:
+    0 6px 12px -2px rgba(30, 64, 175, 0.4),
+    0 0 0 3px rgba(59, 130, 246, 0.12);
 }
 
 /* ========================================

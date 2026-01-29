@@ -37,7 +37,7 @@ export default function SignUpPage() {
         <main className={styles.main}>
           <div className={styles.content}>
             <div className={styles.heading}>
-              <h1 className={styles.title}>Create your account</h1>
+              <h1 className={styles.title}>Create your <span className={styles.titleAccent}>account</span></h1>
               <p className={styles.subtitle}>
                 Track your quote, schedule installation, and manage payments
               </p>
@@ -86,7 +86,7 @@ export default function SignUpPage() {
       <main className={styles.main}>
         <div className={styles.content}>
           <div className={styles.heading}>
-            <h1 className={styles.title}>Create your account</h1>
+            <h1 className={styles.title}>Create your <span className={styles.titleAccent}>account</span></h1>
             <p className={styles.subtitle}>
               Track your quote, schedule installation, and manage payments
             </p>
@@ -111,7 +111,7 @@ export default function SignUpPage() {
                 formFieldInputShowPasswordButton: styles.clerkShowPassword,
               },
               variables: {
-                colorPrimary: '#4A7EC2',
+                colorPrimary: '#3b82f6',
                 colorBackground: '#ffffff',
                 colorText: '#1E2329',
                 colorTextSecondary: '#6B7A94',

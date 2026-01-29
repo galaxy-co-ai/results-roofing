@@ -21,8 +21,8 @@
 }
 
 .supportButton:hover {
-  background: var(--rr-color-bg-tertiary);
-  color: var(--rr-color-text-primary);
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--rr-color-blue);
 }
 
 .supportButton:focus-visible {

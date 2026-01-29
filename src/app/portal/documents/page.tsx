@@ -168,7 +168,7 @@ export default function DocumentsPage() {
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>Your Documents</h1>
+          <h1 className={styles.title}>Your <span className={styles.titleAccent}>Documents</span></h1>
           <p className={styles.subtitle}>
             Click any document to view, sign, print, or download
           </p>

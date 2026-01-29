@@ -14,13 +14,15 @@
 }
 
 .faqBar:hover {
-  border-color: var(--rr-color-sandstone);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow:
+    0 4px 12px -2px rgba(30, 64, 175, 0.12),
+    0 0 0 3px rgba(59, 130, 246, 0.08);
   transform: translateY(-2px);
 }
 
 .faqBar:focus-visible {
-  outline: 2px solid var(--rr-color-sandstone);
+  outline: 2px solid rgba(59, 130, 246, 0.6);
   outline-offset: 2px;
 }
 
@@ -28,12 +30,13 @@
   width: 48px;
   height: 48px;
   min-width: 48px;
-  background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--rr-color-sandstone);
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.25);
 }
 
 .content {
@@ -61,5 +64,5 @@
 
 .faqBar:hover .arrow {
   transform: translateX(4px);
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
 }

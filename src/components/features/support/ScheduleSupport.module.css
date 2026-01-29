@@ -5,6 +5,14 @@
   padding: 24px;
   text-align: center;
   box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contactCard:hover {
+  border-color: rgba(59, 130, 246, 0.15);
+  box-shadow:
+    var(--rr-shadow-charcoal-subtle),
+    0 0 0 3px rgba(59, 130, 246, 0.03);
 }
 
 .contactTitle {
@@ -38,10 +46,12 @@
 }
 
 .chatButton:hover {
-  background: var(--rr-color-blue);
-  border-color: var(--rr-color-blue);
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  border-color: transparent;
   color: var(--rr-color-white);
-  box-shadow: var(--rr-shadow-charcoal-medium);
+  box-shadow:
+    0 4px 12px -2px rgba(30, 64, 175, 0.35),
+    0 0 0 3px rgba(59, 130, 246, 0.12);
   transform: translateY(-1px);
 }
 

@@ -23,14 +23,17 @@
 }
 
 .userCard:hover {
-  box-shadow: var(--rr-shadow-charcoal-medium);
+  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow:
+    var(--rr-shadow-charcoal-subtle),
+    0 0 0 3px rgba(59, 130, 246, 0.04);
 }
 
 .userAvatar {
   width: 44px;
   height: 44px;
   min-width: 44px;
-  background: linear-gradient(135deg, rgba(45, 98, 168, 0.1) 0%, rgba(45, 98, 168, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0.06) 100%);
   border: 2px solid var(--rr-color-white);
   border-radius: 12px;
   display: flex;
@@ -38,9 +41,9 @@
   justify-content: center;
   color: var(--rr-color-blue);
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     var(--rr-shadow-charcoal-subtle),
-    inset 0 0 0 1px rgba(45, 98, 168, 0.1);
+    inset 0 0 0 1px rgba(59, 130, 246, 0.1);
 }
 
 .avatarImage {

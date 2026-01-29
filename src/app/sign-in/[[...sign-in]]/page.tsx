@@ -37,7 +37,7 @@ export default function SignInPage() {
         <main className={styles.main}>
           <div className={styles.content}>
             <div className={styles.heading}>
-              <h1 className={styles.title}>Welcome back</h1>
+              <h1 className={styles.title}>Welcome <span className={styles.titleAccent}>back</span></h1>
               <p className={styles.subtitle}>
                 Sign in to view your quote and manage your project
               </p>
@@ -86,7 +86,7 @@ export default function SignInPage() {
       <main className={styles.main}>
         <div className={styles.content}>
           <div className={styles.heading}>
-            <h1 className={styles.title}>Welcome back</h1>
+            <h1 className={styles.title}>Welcome <span className={styles.titleAccent}>back</span></h1>
             <p className={styles.subtitle}>
               Sign in to view your quote and manage your project
             </p>
@@ -111,7 +111,7 @@ export default function SignInPage() {
                 formFieldInputShowPasswordButton: styles.clerkShowPassword,
               },
               variables: {
-                colorPrimary: '#4A7EC2',
+                colorPrimary: '#3b82f6',
                 colorBackground: '#ffffff',
                 colorText: '#1E2329',
                 colorTextSecondary: '#6B7A94',

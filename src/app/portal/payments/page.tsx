@@ -75,7 +75,7 @@ export default function PaymentsPage() {
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>Payments</h1>
+          <h1 className={styles.title}><span className={styles.titleAccent}>Payments</span></h1>
           <p className={styles.subtitle}>
             Manage payments and view transaction history
           </p>
