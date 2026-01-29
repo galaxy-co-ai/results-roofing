@@ -1,13 +1,17 @@
-/* =================================================
-   HERO ADDRESS FORM - CARD COMPONENT
-   Polished card design for landing page quote form
-   ================================================= */
+/* ========================================
+   HERO ADDRESS FORM - Clean, Minimal Card
+   Matches SOW admin panel aesthetic
+   ======================================== */
 
 .card {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  max-width: 480px;
-  background: var(--rr-color-white);
-  border-radius: var(--rr-radius-xl, 16px);
+  max-width: 380px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -2px rgba(0, 0, 0, 0.1),
@@ -20,46 +24,32 @@
    ======================================== */
 
 .cardHeader {
-  display: flex;
-  align-items: center;
-  gap: var(--rr-space-4);
-  padding: var(--rr-space-5) var(--rr-space-6);
-  background: linear-gradient(
-    to right,
-    var(--rr-color-blue),
-    color-mix(in srgb, var(--rr-color-blue) 85%, #000)
-  );
-}
-
-.iconBadge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: var(--rr-radius-lg);
-  color: var(--rr-color-white);
-  flex-shrink: 0;
+  padding: 20px 20px 0 20px;
 }
 
 .headerText {
-  flex: 1;
-  min-width: 0;
+  text-align: center;
 }
 
 .cardTitle {
   margin: 0;
-  font-size: var(--rr-font-size-lg);
-  font-weight: var(--rr-font-weight-semibold);
-  color: var(--rr-color-white);
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+  letter-spacing: -0.01em;
   line-height: 1.3;
+  white-space: nowrap;
 }
 
 .cardSubtitle {
-  margin: var(--rr-space-1) 0 0;
-  font-size: var(--rr-font-size-sm);
-  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 400;
 }
 
 /* ========================================
@@ -67,32 +57,157 @@
    ======================================== */
 
 .cardBody {
-  padding: var(--rr-space-6);
+  padding: 16px 20px 20px 20px;
 }
 
 .formWrapper {
-  position: relative;
-}
-
-/* ========================================
-   LOADING STATE
-   ======================================== */
-
-.loadingOverlay {
   display: flex;
   flex-direction: column;
+  gap: 0;
+}
+
+.inputLabel {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.inputContainer {
+  margin-bottom: 12px;
+}
+
+.addressPrompt {
+  margin: 6px 0 0;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #1e40af;
+  background-color: #eff6ff;
+  border-radius: 6px;
+}
+
+.helperText {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #94a3b8;
+}
+
+/* Selected Address State */
+.selectedAddressPreview {
+  display: flex;
   align-items: center;
-  gap: var(--rr-space-3);
-  padding: var(--rr-space-6) var(--rr-space-4);
-  margin-top: var(--rr-space-4);
-  background-color: var(--rr-color-bg-secondary);
-  border-radius: var(--rr-radius-lg);
-  text-align: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.addressInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.addressStack {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.confirmLabel {
+  font-size: 10px;
+  font-weight: 600;
+  color: #16a34a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.successIcon {
+  color: #22c55e;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.addressText {
+  font-size: 13px;
+  font-weight: 500;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.editLink {
+  background: transparent;
+  border: none;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #1e40af;
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.editLink:hover {
+  background: #eff6ff;
+}
+
+/* Primary CTA Button */
+.primaryButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 44px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  background: #1e40af;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.primaryButton:hover {
+  background: #1e3a8a;
+}
+
+.primaryButton:active {
+  background: #172554;
+}
+
+.primaryButtonReady {
+  background: #1e40af;
+}
+
+.primaryButton:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.primaryButton:focus-visible {
+  outline: 2px solid #1e40af;
+  outline-offset: 2px;
 }
 
 .spinner {
   animation: spin 1s linear infinite;
-  color: var(--rr-color-blue);
+  width: 16px;
+  height: 16px;
 }
 
 @keyframes spin {
@@ -100,104 +215,77 @@
   to { transform: rotate(360deg); }
 }
 
-.loadingText {
-  font-size: var(--rr-font-size-sm);
-  font-weight: var(--rr-font-weight-medium);
-  color: var(--rr-color-text-secondary);
-}
-
 /* ========================================
-   ERROR STATE
+   ERROR & NOTIFICATION STATES
    ======================================== */
 
 .error {
   display: flex;
   align-items: center;
-  gap: var(--rr-space-2);
-  padding: var(--rr-space-3) var(--rr-space-4);
-  margin-top: var(--rr-space-4);
+  gap: 6px;
+  margin-top: 12px;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #b91c1c;
   background-color: #fef2f2;
   border: 1px solid #fecaca;
-  border-radius: var(--rr-radius-md);
-  color: #dc2626;
-  font-size: var(--rr-font-size-sm);
+  border-radius: 6px;
 }
 
-/* ========================================
-   OUT OF AREA STATE
-   ======================================== */
-
 .outOfArea {
-  padding: var(--rr-space-5);
-  margin-top: var(--rr-space-4);
-  background-color: var(--rr-color-bg-secondary);
-  border-radius: var(--rr-radius-lg);
+  margin-top: 12px;
+  padding: 12px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
   text-align: center;
 }
 
 .outOfAreaTitle {
-  margin: 0 0 var(--rr-space-2);
-  font-size: var(--rr-font-size-base);
-  font-weight: var(--rr-font-weight-semibold);
-  color: var(--rr-color-text-primary);
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
 }
 
 .outOfAreaText {
-  margin: 0 0 var(--rr-space-4);
-  font-size: var(--rr-font-size-sm);
-  color: var(--rr-color-text-secondary);
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #64748b;
 }
 
 .notifyForm {
   display: flex;
-  flex-direction: column;
-  gap: var(--rr-space-3);
+  gap: 6px;
 }
 
 .notifyInput {
-  width: 100%;
-  height: 48px;
-  padding: 0 var(--rr-space-4);
-  font-size: var(--rr-font-size-base);
-  color: var(--rr-color-text-primary);
-  background-color: var(--rr-color-white);
-  border: 1px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-md);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 13px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
 }
 
 .notifyInput:focus {
   outline: none;
-  border-color: var(--rr-color-blue);
-  box-shadow: 0 0 0 3px rgba(74, 126, 194, 0.15);
+  border-color: #1e40af;
 }
 
 .notifyButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--rr-space-2);
-  width: 100%;
-  height: 48px;
-  padding: 0 var(--rr-space-6);
-  font-size: var(--rr-font-size-base);
-  font-weight: var(--rr-font-weight-semibold);
-  color: var(--rr-color-white);
-  background-color: var(--rr-color-blue);
+  padding: 6px 12px;
+  background: #1e40af;
+  color: white;
   border: none;
-  border-radius: var(--rr-radius-md);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  transition: background 0.15s ease;
 }
 
 .notifyButton:hover {
-  background-color: color-mix(in srgb, var(--rr-color-blue) 90%, #000);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.notifyButton:active {
-  transform: translateY(0);
+  background: #1e3a8a;
 }
 
 /* ========================================
@@ -205,72 +293,108 @@
    ======================================== */
 
 .cardFooter {
-  padding: var(--rr-space-4) var(--rr-space-6);
-  background-color: var(--rr-color-bg-secondary, #f8f9fa);
-  border-top: 1px solid var(--rr-color-border-default, #e5e7eb);
+  padding: 14px 20px;
+  background: linear-gradient(180deg, #fafbfc 0%, #f1f5f9 100%);
+  border-top: 1px solid #e2e8f0;
 }
 
-.trustIndicators {
+.trustGrid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: var(--rr-space-4);
+  gap: 6px;
+  margin-bottom: 10px;
 }
 
 .trustItem {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: var(--rr-space-2);
-  font-size: var(--rr-font-size-xs);
-  color: var(--rr-color-text-secondary);
+  gap: 5px;
+  padding: 5px 10px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  transition: all 0.15s ease;
 }
 
-.checkIcon {
-  width: 14px;
-  height: 14px;
-  color: var(--rr-color-success, #22c55e);
+.trustItem:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.trustItem span {
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.trustIcon {
+  color: #1e40af;
   flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+}
+
+/* Service Area */
+.serviceArea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 11px;
+  padding-top: 10px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.serviceAreaLabel {
+  color: #94a3b8;
+}
+
+.serviceAreaStates {
+  color: #1e40af;
+  font-weight: 600;
 }
 
 /* ========================================
    RESPONSIVE
    ======================================== */
 
-@media (min-width: 480px) {
-  .notifyForm {
-    flex-direction: row;
-  }
-
-  .notifyInput {
-    flex: 1;
-  }
-
-  .notifyButton {
-    width: auto;
-    flex-shrink: 0;
-  }
-}
-
-@media (max-width: 479px) {
+@media (max-width: 480px) {
   .card {
-    border-radius: var(--rr-radius-lg, 12px);
+    border-radius: 12px;
   }
 
   .cardHeader {
-    padding: var(--rr-space-4) var(--rr-space-5);
+    padding: 16px 16px 0 16px;
+  }
+
+  .cardTitle {
+    font-size: 16px;
   }
 
   .cardBody {
-    padding: var(--rr-space-5);
+    padding: 12px 16px 16px 16px;
   }
 
   .cardFooter {
-    padding: var(--rr-space-3) var(--rr-space-5);
+    padding: 10px 16px;
   }
 
-  .trustIndicators {
+  .trustItem {
+    padding: 3px 6px;
+  }
+
+  .trustItem span {
+    font-size: 10px;
+  }
+
+  .notifyForm {
     flex-direction: column;
-    align-items: center;
-    gap: var(--rr-space-2);
+  }
+
+  .primaryButton {
+    height: 40px;
   }
 }

@@ -80,6 +80,15 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
     }
   }, [state.currentSubStep]);
 
+  // Guard: redirect to correct sub-step if prerequisites aren't met
+  useEffect(() => {
+    if (state.currentSubStep === 'schedule' && !state.selectedTier) {
+      goToSubStep('package');
+    } else if (state.currentSubStep === 'financing' && (!state.selectedTier || !state.scheduledDate)) {
+      goToSubStep('schedule');
+    }
+  }, [state.currentSubStep, state.selectedTier, state.scheduledDate, goToSubStep]);
+
   const handleTierSelect = useCallback(
     async (tier: 'good' | 'better' | 'best') => {
       setLoading(true);
@@ -98,6 +107,7 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         }
 
         selectTier(tier);
+        // Move to schedule sub-step
         goToSubStep('schedule');
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Something went wrong');
@@ -123,11 +133,38 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
     [setFinancing]
   );
 
-  const handleContinueToCheckout = useCallback(() => {
-    if (state.selectedTier && state.scheduledDate && state.financingTerm) {
-      router.push(`/quote/${quoteId}/checkout`);
+  const handleContinueToCheckout = useCallback(async () => {
+    if (!state.selectedTier || !state.scheduledDate || !state.financingTerm || !state.timeSlot) {
+      return;
     }
-  }, [quoteId, state.selectedTier, state.scheduledDate, state.financingTerm, router]);
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Save schedule to database
+      const response = await fetch(`/api/quotes/${quoteId}/schedule`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scheduledDate: state.scheduledDate.toISOString(),
+          timeSlot: state.timeSlot,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to save schedule');
+      }
+
+      // Navigate to success page
+      router.push(`/quote/${quoteId}/success`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+      setLoading(false);
+    }
+  }, [quoteId, state.selectedTier, state.scheduledDate, state.timeSlot, state.financingTerm, router, setLoading, setError]);
 
   // Get selected tier data
   const selectedTierData = state.selectedTier
@@ -146,16 +183,19 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
             selectedTier={state.selectedTier}
             onSelect={handleTierSelect}
             isLoading={state.isLoading}
+            quoteId={quoteId}
           />
         );
 
       case 'schedule':
+        // Guard handled by useEffect - just return null if prerequisites not met
         if (!state.selectedTier) {
-          goToSubStep('package');
           return null;
         }
         return (
           <ScheduleSelection
+            quoteId={quoteId}
+            address={quoteData.address}
             selectedDate={state.scheduledDate}
             selectedTimeSlot={state.timeSlot}
             onScheduleSelect={handleScheduleSelect}
@@ -165,8 +205,8 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         );
 
       case 'financing':
+        // Guard handled by useEffect - just return null if prerequisites not met
         if (!state.selectedTier || !state.scheduledDate) {
-          goToSubStep('schedule');
           return null;
         }
         return (

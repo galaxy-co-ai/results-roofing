@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { MapPin, ChevronRight, Loader2, AlertCircle } from 'lucide-react';
+import { ChevronRight, Loader2, AlertCircle, CheckCircle, CreditCard } from 'lucide-react';
 import { AddressAutocomplete, type ParsedAddress } from '@/components/features/address/AddressAutocomplete';
-import { useCreateQuote } from '@/hooks/useQuote';
 import styles from './HeroAddressForm.module.css';
+
+const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ', 'OK'];
 
 interface HeroAddressFormProps {
   className?: string;
@@ -13,79 +14,132 @@ interface HeroAddressFormProps {
 
 /**
  * HeroAddressForm - Landing page address autocomplete with quote creation
- *
- * When an address is selected:
- * 1. Creates a quote via API
- * 2. Redirects to the customize page
- *
- * Includes service area validation and error handling.
+ * Refactored for premium enterprise look and improved UX.
  */
 export function HeroAddressForm({ className = '' }: HeroAddressFormProps) {
   const router = useRouter();
-  const createQuoteMutation = useCreateQuote();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [outOfAreaState, setOutOfAreaState] = useState<string | null>(null);
+  const [selectedAddress, setSelectedAddress] = useState<ParsedAddress | null>(null);
+  const [showAddressPrompt, setShowAddressPrompt] = useState(false);
+  const inputContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleAddressSelect = useCallback(
-    async (address: ParsedAddress) => {
-      setIsSubmitting(true);
-      setError(null);
+  const handleAddressSelect = useCallback((address: ParsedAddress) => {
+    setError(null);
+    setOutOfAreaState(null);
+    setSelectedAddress(address);
+    setShowAddressPrompt(false);
+  }, []);
 
-      try {
-        const quote = await createQuoteMutation.mutateAsync({
-          streetAddress: address.streetAddress,
-          city: address.city,
-          state: address.state,
-          zip: address.zip,
-          lat: address.lat,
-          lng: address.lng,
-          placeId: address.placeId,
-        });
+  const handleEditAddress = () => {
+    setSelectedAddress(null);
+    setError(null);
+  };
 
-        // Navigate to customize page on success
-        router.push(`/quote/${quote.id}/customize`);
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to create quote';
-        setError(errorMessage);
-        setIsSubmitting(false);
+  const handleGetQuote = async () => {
+    // If no address selected, focus the input and show prompt
+    if (!selectedAddress) {
+      setShowAddressPrompt(true);
+      // Find and focus the input
+      const input = inputContainerRef.current?.querySelector('input');
+      if (input) {
+        input.focus();
       }
-    },
-    [createQuoteMutation, router]
-  );
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      // Store address in sessionStorage for the quote flow to pick up
+      sessionStorage.setItem('pendingAddress', JSON.stringify(selectedAddress));
+
+      // Navigate to quote flow with address pre-filled
+      router.push('/quote/new?prefilled=true');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to start quote';
+      setError(errorMessage);
+      setIsSubmitting(false);
+    }
+  };
 
   const handleServiceAreaError = useCallback((state: string) => {
     setOutOfAreaState(state);
+    setSelectedAddress(null);
   }, []);
 
   return (
     <div className={`${styles.card} ${className}`}>
       {/* Card Header */}
       <div className={styles.cardHeader}>
-        <div className={styles.iconBadge}>
-          <MapPin size={20} />
-        </div>
         <div className={styles.headerText}>
-          <h2 className={styles.cardTitle}>Get Your Free Quote</h2>
-          <p className={styles.cardSubtitle}>Enter your address to start</p>
+          <h2 className={styles.cardTitle}>Get a roof quote in minutes</h2>
+          <p className={styles.cardSubtitle}>
+            Instant estimate • No salesperson required
+          </p>
         </div>
       </div>
 
       {/* Card Body */}
       <div className={styles.cardBody}>
         <div className={styles.formWrapper}>
-          <AddressAutocomplete
-            onAddressSelect={handleAddressSelect}
-            onServiceAreaError={handleServiceAreaError}
-            disabled={isSubmitting}
-          />
-
-          {isSubmitting && (
-            <div className={styles.loadingOverlay}>
-              <Loader2 className={styles.spinner} size={24} />
-              <span className={styles.loadingText}>Getting your quote...</span>
+          <label className={styles.inputLabel}>Property address</label>
+          
+          {selectedAddress ? (
+            <div className={styles.selectedAddressPreview}>
+              <div className={styles.addressInfo}>
+                <CheckCircle size={18} className={styles.successIcon} />
+                <div className={styles.addressStack}>
+                  <span className={styles.confirmLabel}>We found</span>
+                  <span className={styles.addressText}>{selectedAddress.formattedAddress}</span>
+                </div>
+              </div>
+              <button 
+                onClick={handleEditAddress}
+                className={styles.editLink}
+                type="button"
+              >
+                Edit
+              </button>
+            </div>
+          ) : (
+            <div className={styles.inputContainer} ref={inputContainerRef}>
+              <AddressAutocomplete
+                onAddressSelect={handleAddressSelect}
+                onServiceAreaError={handleServiceAreaError}
+                disabled={isSubmitting}
+                initialValue=""
+              />
+              {showAddressPrompt && (
+                <p className={styles.addressPrompt}>
+                  Please enter your address above to continue
+                </p>
+              )}
             </div>
           )}
+
+          {/* Primary CTA */}
+          <button
+            onClick={handleGetQuote}
+            className={`${styles.primaryButton} ${selectedAddress ? styles.primaryButtonReady : ''}`}
+            disabled={isSubmitting}
+            type="button"
+            aria-label={isSubmitting ? 'Generating estimate' : 'Get my quote'}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className={styles.spinner} size={20} />
+                Generating estimate...
+              </>
+            ) : (
+              <>
+                Get my quote
+                <ChevronRight size={20} />
+              </>
+            )}
+          </button>
         </div>
 
         {error && (
@@ -103,6 +157,7 @@ export function HeroAddressForm({ className = '' }: HeroAddressFormProps) {
             <p className={styles.outOfAreaText}>
               Enter your email and we&apos;ll notify you when we expand to your area.
             </p>
+            {/* Notification form could be extracted or kept simple */}
             <form
               className={styles.notifyForm}
               onSubmit={(e) => {
@@ -119,7 +174,6 @@ export function HeroAddressForm({ className = '' }: HeroAddressFormProps) {
               />
               <button type="submit" className={styles.notifyButton}>
                 Notify Me
-                <ChevronRight size={16} />
               </button>
             </form>
           </div>
@@ -128,19 +182,15 @@ export function HeroAddressForm({ className = '' }: HeroAddressFormProps) {
 
       {/* Card Footer */}
       <div className={styles.cardFooter}>
-        <div className={styles.trustIndicators}>
-          <span className={styles.trustItem}>
-            <svg className={styles.checkIcon} viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-            </svg>
-            No credit card required
-          </span>
-          <span className={styles.trustItem}>
-            <svg className={styles.checkIcon} viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-            </svg>
-            Instant satellite measurement
-          </span>
+        <div className={styles.trustGrid}>
+          <div className={styles.trustItem}>
+            <CreditCard size={16} className={styles.trustIcon} />
+            <span>No credit card</span>
+          </div>
+        </div>
+        <div className={styles.serviceArea}>
+          <span className={styles.serviceAreaLabel}>Serving:</span>
+          <span className={styles.serviceAreaStates}>{SERVICE_STATES.join(' · ')}</span>
         </div>
       </div>
     </div>

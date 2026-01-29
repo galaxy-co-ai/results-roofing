@@ -16,6 +16,23 @@ export interface ParsedAddress {
   placeId: string;
 }
 
+interface MapboxFeature {
+  id: string;
+  place_name: string;
+  center: [number, number]; // [lng, lat]
+  context?: Array<{
+    id: string;
+    text: string;
+    short_code?: string;
+  }>;
+  address?: string;
+  text?: string;
+}
+
+interface MapboxResponse {
+  features: MapboxFeature[];
+}
+
 interface AddressAutocompleteProps {
   onAddressSelect: (address: ParsedAddress) => void;
   onServiceAreaError?: (state: string) => void;
@@ -25,13 +42,6 @@ interface AddressAutocompleteProps {
 }
 
 const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ', 'OK'];
-
-declare global {
-  interface Window {
-    google: typeof google;
-    initGooglePlaces?: () => void;
-  }
-}
 
 export function AddressAutocomplete({
   onAddressSelect,
@@ -43,224 +53,252 @@ export function AddressAutocomplete({
   const [value, setValue] = useState(initialValue);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+  const [suggestions, setSuggestions] = useState<MapboxFeature[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
-  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+  const suggestionsRef = useRef<HTMLDivElement>(null);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Load Google Places script
-  useEffect(() => {
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY;
+  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
-    if (!apiKey) {
-      logger.warn('Google Places API key not configured');
-      setIsScriptLoaded(true); // Allow fallback to manual entry
+  // Fetch suggestions from Mapbox
+  const fetchSuggestions = useCallback(async (query: string) => {
+    if (!mapboxToken || query.length < 5) {
+      setSuggestions([]);
+      setShowSuggestions(false);
       return;
     }
 
-    if (window.google?.maps?.places) {
-      setIsScriptLoaded(true);
-      return;
+    setIsLoading(true);
+    try {
+      const params = new URLSearchParams({
+        access_token: mapboxToken,
+        country: 'us',
+        types: 'address',
+        autocomplete: 'true',
+        limit: '5',
+      });
+
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?${params}`
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch suggestions');
+      }
+
+      const data: MapboxResponse = await response.json();
+      setSuggestions(data.features || []);
+      setShowSuggestions(data.features?.length > 0);
+      setSelectedIndex(-1);
+    } catch (err) {
+      logger.error('Mapbox geocoding error:', err);
+      setSuggestions([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [mapboxToken]);
+
+  // Debounced input handler
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+    setError(null);
+
+    // Clear previous debounce
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
     }
 
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-    script.async = true;
-    script.defer = true;
-    script.onload = () => setIsScriptLoaded(true);
-    script.onerror = () => {
-      logger.error('Failed to load Google Places script');
-      setIsScriptLoaded(true); // Allow fallback
-    };
+    // Debounce API calls - wait 500ms after user stops typing
+    debounceRef.current = setTimeout(() => {
+      fetchSuggestions(newValue);
+    }, 500);
+  };
 
-    document.head.appendChild(script);
+  // Parse Mapbox feature into our address format
+  const parseMapboxFeature = useCallback((feature: MapboxFeature): ParsedAddress | null => {
+    const context = feature.context || [];
 
-    return () => {
-      // Cleanup if needed
+    // Extract components from context
+    let city = '';
+    let state = '';
+    let zip = '';
+
+    for (const ctx of context) {
+      if (ctx.id.startsWith('place.')) {
+        city = ctx.text;
+      } else if (ctx.id.startsWith('region.')) {
+        // Extract state abbreviation from short_code (e.g., "US-TX" -> "TX")
+        state = ctx.short_code?.replace('US-', '') || ctx.text;
+      } else if (ctx.id.startsWith('postcode.')) {
+        zip = ctx.text;
+      }
+    }
+
+    // Street address: combine address number with street name
+    const streetAddress = feature.address
+      ? `${feature.address} ${feature.text || ''}`
+      : feature.text || '';
+
+    if (!streetAddress || !city || !state || !zip) {
+      return null;
+    }
+
+    return {
+      streetAddress: streetAddress.trim(),
+      city,
+      state: state.toUpperCase(),
+      zip,
+      formattedAddress: feature.place_name,
+      lat: feature.center[1],
+      lng: feature.center[0],
+      placeId: feature.id,
     };
   }, []);
 
-  // Initialize autocomplete when script loads
-  useEffect(() => {
-    if (!isScriptLoaded || !inputRef.current || !window.google?.maps?.places) {
+  // Handle suggestion selection
+  const handleSelect = useCallback((feature: MapboxFeature) => {
+    const parsed = parseMapboxFeature(feature);
+
+    if (!parsed) {
+      setError('Please select a complete street address with city, state, and ZIP code.');
       return;
     }
 
-    const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
-      componentRestrictions: { country: 'us' },
-      fields: ['address_components', 'formatted_address', 'geometry', 'place_id'],
-      types: ['address'],
-    });
+    // Check service area
+    if (!serviceStates.includes(parsed.state)) {
+      setError(`Sorry, we don't serve ${parsed.state} yet.`);
+      onServiceAreaError?.(parsed.state);
+      return;
+    }
 
-    autocomplete.addListener('place_changed', () => {
-      const place = autocomplete.getPlace();
-      handlePlaceSelect(place);
-    });
+    setValue(parsed.formattedAddress);
+    setSuggestions([]);
+    setShowSuggestions(false);
+    setError(null);
+    onAddressSelect(parsed);
+  }, [parseMapboxFeature, serviceStates, onAddressSelect, onServiceAreaError]);
 
-    autocompleteRef.current = autocomplete;
+  // Keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showSuggestions || suggestions.length === 0) {
+      return;
+    }
 
-    return () => {
-      if (autocompleteRef.current) {
-        google.maps.event.clearInstanceListeners(autocompleteRef.current);
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setSelectedIndex(prev =>
+          prev < suggestions.length - 1 ? prev + 1 : prev
+        );
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setSelectedIndex(prev => (prev > 0 ? prev - 1 : -1));
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (selectedIndex >= 0 && suggestions[selectedIndex]) {
+          handleSelect(suggestions[selectedIndex]);
+        }
+        break;
+      case 'Escape':
+        setShowSuggestions(false);
+        setSelectedIndex(-1);
+        break;
+    }
+  };
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        suggestionsRef.current &&
+        !suggestionsRef.current.contains(e.target as Node) &&
+        inputRef.current &&
+        !inputRef.current.contains(e.target as Node)
+      ) {
+        setShowSuggestions(false);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isScriptLoaded]);
 
-  const parseAddressComponents = useCallback(
-    (place: google.maps.places.PlaceResult): ParsedAddress | null => {
-      if (!place.address_components || !place.geometry?.location) {
-        return null;
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Cleanup debounce on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
       }
-
-      let streetNumber = '';
-      let route = '';
-      let city = '';
-      let state = '';
-      let zip = '';
-
-      for (const component of place.address_components) {
-        const types = component.types;
-
-        if (types.includes('street_number')) {
-          streetNumber = component.long_name;
-        } else if (types.includes('route')) {
-          route = component.long_name;
-        } else if (types.includes('locality')) {
-          city = component.long_name;
-        } else if (types.includes('administrative_area_level_1')) {
-          state = component.short_name;
-        } else if (types.includes('postal_code')) {
-          zip = component.long_name;
-        }
-      }
-
-      const streetAddress = [streetNumber, route].filter(Boolean).join(' ');
-
-      if (!streetAddress || !city || !state || !zip) {
-        return null;
-      }
-
-      return {
-        streetAddress,
-        city,
-        state,
-        zip,
-        formattedAddress: place.formatted_address || `${streetAddress}, ${city}, ${state} ${zip}`,
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng(),
-        placeId: place.place_id || '',
-      };
-    },
-    []
-  );
-
-  const handlePlaceSelect = useCallback(
-    (place: google.maps.places.PlaceResult) => {
-      setError(null);
-      setIsLoading(true);
-
-      const parsed = parseAddressComponents(place);
-
-      if (!parsed) {
-        setError('Please select a complete street address with city, state, and ZIP code.');
-        setIsLoading(false);
-        return;
-      }
-
-      // Check service area
-      if (!serviceStates.includes(parsed.state)) {
-        setError(`Sorry, we don't serve ${parsed.state} yet.`);
-        setIsLoading(false);
-        onServiceAreaError?.(parsed.state);
-        return;
-      }
-
-      setValue(parsed.formattedAddress);
-      setIsLoading(false);
-      onAddressSelect(parsed);
-    },
-    [parseAddressComponents, serviceStates, onAddressSelect, onServiceAreaError]
-  );
+    };
+  }, []);
 
   const handleClear = () => {
     setValue('');
     setError(null);
+    setSuggestions([]);
+    setShowSuggestions(false);
     inputRef.current?.focus();
   };
 
-  // Development mode: Allow manual entry when Google Places isn't configured
-  // Track if Google Places is available (must be state because window isn't defined on server)
-  const [isGooglePlacesAvailable, setIsGooglePlacesAvailable] = useState(false);
-
-  // Check for Google Places after script loads
-  useEffect(() => {
-    if (isScriptLoaded && typeof window !== 'undefined') {
-      setIsGooglePlacesAvailable(!!window.google?.maps?.places);
+  const handleFocus = () => {
+    if (suggestions.length > 0) {
+      setShowSuggestions(true);
     }
-  }, [isScriptLoaded]);
+  };
 
-  // Enable dev mode when Google Places isn't available  
-  const isDevMode = isScriptLoaded && !isGooglePlacesAvailable;
-
-  const handleManualEntry = useCallback(() => {
-    if (!value.trim()) {
-      setError('Please enter an address');
-      return;
-    }
-
-    // Simple address parser for development - expects "123 Main St, City, ST 12345"
-    const addressPattern = /^(.+),\s*([^,]+),\s*([A-Z]{2})\s*(\d{5})$/i;
-    const match = value.match(addressPattern);
-
-    if (!match) {
-      setError('Please enter a full address: 123 Main St, City, ST 12345');
-      return;
-    }
-
-    const [, streetAddress, city, state, zip] = match;
-    const stateUpper = state.toUpperCase();
-
-    // Check service area
-    if (!serviceStates.includes(stateUpper)) {
-      setError(`Sorry, we don't serve ${stateUpper} yet.`);
-      onServiceAreaError?.(stateUpper);
-      return;
-    }
-
-    const parsed: ParsedAddress = {
-      streetAddress: streetAddress.trim(),
-      city: city.trim(),
-      state: stateUpper,
-      zip: zip.trim(),
-      formattedAddress: value.trim(),
-      lat: 30.2672 + Math.random() * 0.1, // Mock coordinates in Austin area
-      lng: -97.7431 + Math.random() * 0.1,
-      placeId: `dev-${Date.now()}`,
-    };
-
-    setError(null);
-    onAddressSelect(parsed);
-  }, [value, serviceStates, onAddressSelect, onServiceAreaError]);
+  // Show message if Mapbox isn't configured
+  if (!mapboxToken) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.inputWrapper}>
+          <MapPin className={styles.inputIcon} size={20} aria-hidden="true" />
+          <input
+            ref={inputRef}
+            type="text"
+            className={styles.input}
+            placeholder="Enter address: 123 Main St, City, TX 75001"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            disabled={disabled}
+            aria-label="Enter your property address"
+          />
+        </div>
+        <p className={styles.hint}>
+          Enter a full address: 123 Main St, City, ST 12345
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
       <div className={styles.inputWrapper}>
-        <MapPin className={styles.inputIcon} size={20} />
+        <MapPin className={styles.inputIcon} size={20} aria-hidden="true" />
         <input
           ref={inputRef}
           type="text"
           className={styles.input}
-          placeholder={isDevMode ? "123 Main St, City, TX 78701" : "Enter your home address"}
+          placeholder="Start typing your address..."
           value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onKeyDown={(e) => {
-            if (isDevMode && e.key === 'Enter') {
-              e.preventDefault();
-              handleManualEntry();
-            }
-          }}
-          disabled={disabled || isLoading}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          onFocus={handleFocus}
+          disabled={disabled}
           autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck="false"
+          data-form-type="other"
+          data-lpignore="true"
+          aria-label="Enter your property address"
+          aria-expanded={showSuggestions}
+          aria-autocomplete="list"
+          role="combobox"
         />
         {isLoading && <Loader2 className={styles.loadingIcon} size={20} />}
         {value && !isLoading && (
@@ -275,31 +313,35 @@ export function AddressAutocomplete({
         )}
       </div>
 
+      {/* Suggestions dropdown */}
+      {showSuggestions && suggestions.length > 0 && (
+        <div
+          ref={suggestionsRef}
+          className={styles.suggestions}
+          role="listbox"
+        >
+          {suggestions.map((feature, index) => (
+            <button
+              key={feature.id}
+              type="button"
+              className={`${styles.suggestionItem} ${index === selectedIndex ? styles.suggestionItemSelected : ''}`}
+              onClick={() => handleSelect(feature)}
+              onMouseEnter={() => setSelectedIndex(index)}
+              role="option"
+              aria-selected={index === selectedIndex}
+            >
+              <MapPin size={14} className={styles.suggestionIcon} />
+              <span className={styles.suggestionText}>{feature.place_name}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
       {error && (
         <div className={styles.error}>
           <AlertCircle size={16} />
           <span>{error}</span>
         </div>
-      )}
-
-      {isDevMode ? (
-        <div className={styles.devModeHint}>
-          <button
-            type="button"
-            className={styles.devModeButton}
-            onClick={handleManualEntry}
-            disabled={disabled || isLoading || !value.trim()}
-          >
-            Confirm Address (Dev Mode)
-          </button>
-          <p className={styles.hint}>
-            Format: 123 Main St, City, TX 78701
-          </p>
-        </div>
-      ) : (
-        <p className={styles.hint}>
-          Start typing and select your address from the dropdown
-        </p>
       )}
     </div>
   );

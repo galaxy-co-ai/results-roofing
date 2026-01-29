@@ -1,13 +1,12 @@
 'use client';
 
 import { useCallback, useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useQuoteWizard } from '../../QuoteWizardProvider';
 import { AddressEntry } from './AddressEntry';
 import { PropertyConfirm } from './PropertyConfirm';
-import { PricePreview } from './PricePreview';
-import { SaveQuoteModal } from '../../SaveQuoteModal';
 import { OutOfAreaCapture } from '@/components/features/address';
+import type { ParsedAddress } from '@/components/features/address';
 import styles from './Stage1.module.css';
 
 interface Stage1ContainerProps {
@@ -21,8 +20,6 @@ function getSubStepLabel(subStep: string): string {
       return 'Enter your address';
     case 'property-confirm':
       return 'Confirm your property';
-    case 'price-preview':
-      return 'View your price estimate';
     default:
       return 'Quote step';
   }
@@ -30,23 +27,45 @@ function getSubStepLabel(subStep: string): string {
 
 /**
  * Stage 1 Container - Get Your Quote
- * 
+ *
  * Sub-steps:
  * 1. AddressEntry - Enter and validate address
- * 2. PropertyConfirm - Confirm satellite view
- * 3. PricePreview - Show price ranges + option to save
- * 
+ * 2. PropertyConfirm - Confirm satellite view → then redirect to package selection
+ *
  * Also handles out-of-area capture when user's address is outside service area.
  */
 export function Stage1Container({ initialAddress = '' }: Stage1ContainerProps) {
   const router = useRouter();
-  const { state, setAddress, confirmProperty, setQuoteId, setPriceRanges, goToSubStep, setLoading, setError } = useQuoteWizard();
-  const [showSaveModal, setShowSaveModal] = useState(false);
+  const searchParams = useSearchParams();
+  const { state, setAddress, confirmProperty, setQuoteId, goToSubStep, setLoading, setError } = useQuoteWizard();
   const [outOfAreaState, setOutOfAreaState] = useState<string | null>(null);
-  
+  const [hasCheckedPrefill, setHasCheckedPrefill] = useState(false);
+
   // Refs for focus management
   const contentRef = useRef<HTMLDivElement>(null);
   const previousSubStep = useRef(state.currentSubStep);
+
+  // Check for prefilled address from landing page
+  useEffect(() => {
+    if (hasCheckedPrefill) return;
+
+    const isPrefilled = searchParams.get('prefilled') === 'true';
+    if (isPrefilled && typeof window !== 'undefined') {
+      try {
+        const stored = sessionStorage.getItem('pendingAddress');
+        if (stored) {
+          const address: ParsedAddress = JSON.parse(stored);
+          sessionStorage.removeItem('pendingAddress'); // Clean up
+          setAddress(address);
+          goToSubStep('property-confirm');
+        }
+      } catch (e) {
+        // If parsing fails, just continue with normal flow
+        console.error('Failed to parse prefilled address:', e);
+      }
+    }
+    setHasCheckedPrefill(true);
+  }, [searchParams, setAddress, goToSubStep, hasCheckedPrefill]);
 
   // Focus management: move focus to content when sub-step changes
   useEffect(() => {
@@ -105,28 +124,18 @@ export function Stage1Container({ initialAddress = '' }: Stage1ContainerProps) {
 
       confirmProperty();
       setQuoteId(data.id);
-      setPriceRanges(data.estimate.tiers);
-      goToSubStep('price-preview');
+
+      // Go directly to package selection, skipping price preview
+      router.push(`/quote/${data.id}/customize`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
-    } finally {
       setLoading(false);
     }
-  }, [state.address, setLoading, setError, confirmProperty, setQuoteId, setPriceRanges, goToSubStep]);
+  }, [state.address, setLoading, setError, confirmProperty, setQuoteId, router]);
 
   const handlePropertyRetry = useCallback(() => {
     goToSubStep('address');
   }, [goToSubStep]);
-
-  const handleContinueToPackages = useCallback(() => {
-    if (state.quoteId) {
-      router.push(`/quote/${state.quoteId}/customize`);
-    }
-  }, [state.quoteId, router]);
-
-  const handleSaveQuote = useCallback(() => {
-    setShowSaveModal(true);
-  }, []);
 
   // Render the current sub-step
   const renderSubStep = () => {
@@ -166,21 +175,6 @@ export function Stage1Container({ initialAddress = '' }: Stage1ContainerProps) {
           />
         );
 
-      case 'price-preview':
-        if (!state.priceRanges) {
-          // If no price ranges, go back
-          goToSubStep('property-confirm');
-          return null;
-        }
-        return (
-          <PricePreview
-            priceRanges={state.priceRanges}
-            onContinue={handleContinueToPackages}
-            onSaveQuote={handleSaveQuote}
-            isLoading={state.isLoading}
-          />
-        );
-
       default:
         return null;
     }
@@ -209,30 +203,6 @@ export function Stage1Container({ initialAddress = '' }: Stage1ContainerProps) {
       >
         {renderSubStep()}
       </div>
-
-      {/* Save Quote Modal */}
-      {state.quoteId && (
-        <SaveQuoteModal
-          isOpen={showSaveModal}
-          onClose={() => setShowSaveModal(false)}
-          quoteId={state.quoteId}
-          draftState={{
-            address: state.address ? {
-              street: state.address.streetAddress,
-              city: state.address.city,
-              state: state.address.state as 'TX' | 'GA' | 'NC' | 'AZ' | 'OK',
-              zipCode: state.address.zip,
-              lat: state.address.lat,
-              lng: state.address.lng,
-              placeId: state.address.placeId,
-            } : undefined,
-            propertyConfirmed: state.propertyConfirmed,
-            currentStage: 1,
-            currentStep: 3,
-            lastUpdatedAt: new Date().toISOString(),
-          }}
-        />
-      )}
     </div>
   );
 }
