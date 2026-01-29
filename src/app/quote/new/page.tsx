@@ -1,10 +1,27 @@
-import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
+import { Header } from '@/components/layout';
+import { QuoteWizardProvider, Stage1Container } from '@/components/features/quote';
+import { TrustBar } from '@/components/ui';
+import styles from './page.module.css';
 
 /**
- * /quote/new now redirects to the landing page.
- * Users enter their address on the landing page, which creates
- * the quote and redirects directly to package selection.
+ * /quote/new - Start a new quote
+ * Shows the Stage1Container which handles:
+ * 1. Address entry (if no prefilled address)
+ * 2. Property confirmation with satellite image
  */
 export default function NewQuotePage() {
-  redirect('/');
+  return (
+    <>
+      <Header />
+      <main className={styles.main}>
+        <QuoteWizardProvider>
+          <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
+            <Stage1Container />
+          </Suspense>
+        </QuoteWizardProvider>
+        <TrustBar variant="light" />
+      </main>
+    </>
+  );
 }

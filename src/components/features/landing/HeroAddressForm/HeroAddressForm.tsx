@@ -37,7 +37,7 @@ export function HeroAddressForm({ className = '' }: HeroAddressFormProps) {
     setError(null);
   };
 
-  const handleGetQuote = async () => {
+  const handleGetQuote = () => {
     // If no address selected, focus the input and show prompt
     if (!selectedAddress) {
       setShowAddressPrompt(true);
@@ -53,29 +53,11 @@ export function HeroAddressForm({ className = '' }: HeroAddressFormProps) {
     setError(null);
 
     try {
-      // Create quote directly from landing page
-      const response = await fetch('/api/quotes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          streetAddress: selectedAddress.streetAddress,
-          city: selectedAddress.city,
-          state: selectedAddress.state,
-          zip: selectedAddress.zip,
-          lat: selectedAddress.lat,
-          lng: selectedAddress.lng,
-          placeId: selectedAddress.placeId,
-        }),
-      });
+      // Store address in sessionStorage for the quote wizard to pick up
+      sessionStorage.setItem('pendingAddress', JSON.stringify(selectedAddress));
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to create quote');
-      }
-
-      // Go directly to package selection
-      router.push(`/quote/${data.id}/customize`);
+      // Navigate to quote wizard with prefilled flag - shows property confirmation step
+      router.push('/quote/new?prefilled=true');
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to start quote';
       setError(errorMessage);
