@@ -1,6 +1,5 @@
-import { ChevronRight } from 'lucide-react';
 import { Header } from '@/components/layout';
-import { HeroAddressForm, HowItWorksStepper, ReviewsTicker } from '@/components/features/landing';
+import { HeroAddressForm, HowItWorksStepper, ReviewsTicker, ScrollToTopCTA } from '@/components/features/landing';
 import styles from './page.module.css';
 
 
@@ -43,10 +42,7 @@ export default function HomePage() {
           <p className={styles.ctaSubtitle}>
             No sales calls. No home visits. Just an honest quote you can trust.
           </p>
-          <a href="#quote-form" className={styles.ctaButton}>
-            Get My Quote
-            <ChevronRight size={20} />
-          </a>
+          <ScrollToTopCTA />
         </div>
       </section>
     </main>

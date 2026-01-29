@@ -83,6 +83,26 @@
   height: 12px;
 }
 
+.tickerContainer {
+  overflow: hidden;
+}
+
+.tickerContainerPaused {
+  overflow-x: auto;
+  cursor: grab;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tickerContainerPaused::-webkit-scrollbar {
+  display: none;
+}
+
+.tickerContainerDragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
 .tickerTrack {
   display: flex;
   gap: 16px;

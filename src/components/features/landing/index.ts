@@ -5,3 +5,4 @@
 export { HeroAddressForm } from './HeroAddressForm';
 export { HowItWorksStepper } from './HowItWorksStepper';
 export { ReviewsTicker } from './ReviewsTicker';
+export { ScrollToTopCTA } from './ScrollToTopCTA';

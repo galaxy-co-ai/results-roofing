@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { Star, Pause, Play } from 'lucide-react';
 import styles from './ReviewsTicker.module.css';
 
@@ -57,6 +57,33 @@ const REVIEWS = [
 
 export function ReviewsTicker() {
   const [isPaused, setIsPaused] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const dragStartX = useRef(0);
+  const scrollStartX = useRef(0);
+
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (!isPaused || !containerRef.current) return;
+    setIsDragging(true);
+    dragStartX.current = e.clientX;
+    scrollStartX.current = containerRef.current.scrollLeft;
+    e.preventDefault();
+  }, [isPaused]);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isDragging || !containerRef.current) return;
+    const deltaX = e.clientX - dragStartX.current;
+    containerRef.current.scrollLeft = scrollStartX.current - deltaX;
+  }, [isDragging]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsDragging(false);
+  }, []);
 
   return (
     <section className={styles.reviewsTicker} aria-label="Customer reviews">
@@ -71,7 +98,18 @@ export function ReviewsTicker() {
           {isPaused ? <Play /> : <Pause />}
         </button>
       </div>
-      <div className={`${styles.tickerTrack} ${isPaused ? styles.tickerTrackPaused : ''}`}>
+      <div
+        ref={containerRef}
+        className={`${styles.tickerContainer} ${isPaused ? styles.tickerContainerPaused : ''} ${isDragging ? styles.tickerContainerDragging : ''}`}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div
+          ref={trackRef}
+          className={`${styles.tickerTrack} ${isPaused ? styles.tickerTrackPaused : ''}`}
+        >
         {[...REVIEWS, ...REVIEWS].map((review, index) => (
           <article key={`review-${index}`} className={styles.reviewCard}>
             <div className={styles.reviewHeader}>
@@ -93,6 +131,7 @@ export function ReviewsTicker() {
             <p className={styles.reviewText}>&ldquo;{review.text}&rdquo;</p>
           </article>
         ))}
+        </div>
       </div>
     </section>
   );
