@@ -433,12 +433,14 @@
   border-radius: 12px;
   border: 1px solid #e2e8f0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .valuePropCard:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow:
+    0 4px 12px -2px rgba(30, 64, 175, 0.1),
+    0 0 0 3px rgba(59, 130, 246, 0.06);
 }
 
 .valuePropIcon {
@@ -448,9 +450,18 @@
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: #eff6ff;
-  color: #1e40af;
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  color: #ffffff;
   flex-shrink: 0;
+  box-shadow: 0 2px 4px -1px rgba(30, 64, 175, 0.25);
+  transition: all 0.2s ease;
+}
+
+.valuePropCard:hover .valuePropIcon {
+  box-shadow:
+    0 4px 8px -2px rgba(30, 64, 175, 0.3),
+    0 0 0 3px rgba(59, 130, 246, 0.12);
+  transform: scale(1.05);
 }
 
 .valuePropIcon svg {
