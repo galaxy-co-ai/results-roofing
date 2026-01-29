@@ -13,11 +13,11 @@ interface SuccessPageProps {
   params: Promise<{ id: string }>;
 }
 
-// Map tier keys to display names
+// Map tier keys to display names (must match pricingTiers.displayName in database)
 const TIER_DISPLAY_NAMES: Record<string, string> = {
   good: 'Essential',
-  better: 'Premium',
-  best: 'Elite',
+  better: 'Preferred',
+  best: 'Signature',
 };
 
 export default async function SuccessPage({ params }: SuccessPageProps) {
