@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import { useQuoteWizard } from '../../QuoteWizardProvider';
 import { PackageSelection } from './PackageSelection';
 import { ScheduleSelection } from './ScheduleSelection';
@@ -44,7 +43,6 @@ function getSubStepLabel(subStep: string): string {
  * 2. ScheduleSelection - Pick installation date → redirects to deposit page
  */
 export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
-  const router = useRouter();
   const {
     state,
     selectTier,
@@ -128,14 +126,14 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
           throw new Error(data.error || 'Failed to save schedule');
         }
 
-        // Navigate directly to deposit page
-        router.push(`/quote/${quoteId}/deposit`);
+        // Navigate directly to deposit page (full page load to ensure fresh data)
+        window.location.href = `/quote/${quoteId}/deposit`;
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Something went wrong');
         setLoading(false);
       }
     },
-    [quoteId, setLoading, setError, router]
+    [quoteId, setLoading, setError]
   );
 
 
