@@ -79,6 +79,27 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       .where(eq(schema.quotes.id, quoteId))
       .returning();
 
+    // DEBUG: Log database and update result
+    const dbHost = process.env.DATABASE_URL?.match(/@([^/]+)\//)?.[1] || 'unknown';
+    console.log('[DEBUG schedule] Update result:', {
+      quoteId,
+      dbHost,
+      scheduledDate: updatedQuote?.scheduledDate,
+      scheduledSlotId: updatedQuote?.scheduledSlotId,
+      updatedAt: updatedQuote?.updatedAt,
+    });
+
+    // DEBUG: Verify by reading back immediately
+    const verifyQuote = await db.query.quotes.findFirst({
+      where: eq(schema.quotes.id, quoteId),
+    });
+    console.log('[DEBUG schedule] Verification read:', {
+      quoteId,
+      verifyScheduledDate: verifyQuote?.scheduledDate,
+      verifySlotId: verifyQuote?.scheduledSlotId,
+      matchesUpdate: verifyQuote?.scheduledSlotId === updatedQuote?.scheduledSlotId,
+    });
+
     if (!updatedQuote?.scheduledDate) {
       logger.error('Failed to update quote schedule', { quoteId, scheduledDate: parsed.data.scheduledDate });
       return NextResponse.json(

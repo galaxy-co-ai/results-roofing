@@ -8,8 +8,14 @@ import { drizzle } from 'drizzle-orm/neon-http';
 
 import * as schema from './schema';
 
-// Create Neon HTTP client
-const sql = neon(process.env.DATABASE_URL!);
+// Create Neon HTTP client with caching disabled
+// IMPORTANT: Next.js 14 caches fetch by default, which can cause stale data reads
+// The neon-http driver uses fetch internally, so we disable caching here
+const sql = neon(process.env.DATABASE_URL!, {
+  fetchOptions: {
+    cache: 'no-store',
+  },
+});
 
 // Create Drizzle ORM instance
 export const db = drizzle(sql, { schema });

@@ -21,6 +21,14 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
   try {
     const { id: quoteId } = await params;
 
+    // DEBUG: Log database connection info
+    const dbHost = process.env.DATABASE_URL?.match(/@([^/]+)\//)?.[1] || 'unknown';
+    console.log('[DEBUG select-tier] Starting:', {
+      quoteId,
+      dbHost,
+      timestamp: new Date().toISOString(),
+    });
+
     // Parse form data (handles both FormData and JSON)
     let tier: string;
     const contentType = request.headers.get('content-type') || '';
@@ -95,6 +103,26 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       })
       .where(eq(schema.quotes.id, quoteId))
       .returning();
+
+    // DEBUG: Log update result
+    console.log('[DEBUG select-tier] Update result:', {
+      quoteId,
+      updatedQuoteId: updatedQuote?.id,
+      selectedTier: updatedQuote?.selectedTier,
+      updatedAt: updatedQuote?.updatedAt,
+      dbHost: process.env.DATABASE_URL?.match(/@([^/]+)\//)?.[1] || 'unknown',
+    });
+
+    // DEBUG: Verify by reading back immediately
+    const verifyQuote = await db.query.quotes.findFirst({
+      where: eq(schema.quotes.id, quoteId),
+    });
+    console.log('[DEBUG select-tier] Verification read:', {
+      quoteId,
+      verifySelectedTier: verifyQuote?.selectedTier,
+      verifyUpdatedAt: verifyQuote?.updatedAt,
+      matchesUpdate: verifyQuote?.selectedTier === updatedQuote?.selectedTier,
+    });
 
     if (!updatedQuote?.selectedTier) {
       logger.error('Failed to update quote tier', { quoteId, tier: parsed.data.tier });

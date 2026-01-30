@@ -22,9 +22,27 @@ const TIER_DISPLAY_NAMES: Record<string, string> = {
 export default async function DepositPage({ params }: DepositPageProps) {
   const { id: quoteId } = await params;
 
+  // DEBUG: Log database query info
+  const dbHost = process.env.DATABASE_URL?.match(/@([^/]+)\//)?.[1] || 'unknown';
+  console.log('[DEBUG deposit page] Querying quote:', {
+    quoteId,
+    dbHost,
+    timestamp: new Date().toISOString(),
+  });
+
   // Fetch quote with selected tier
   const quote = await db.query.quotes.findFirst({
     where: eq(schema.quotes.id, quoteId),
+  });
+
+  // DEBUG: Log query result
+  console.log('[DEBUG deposit page] Query result:', {
+    quoteId,
+    found: !!quote,
+    selectedTier: quote?.selectedTier,
+    scheduledDate: quote?.scheduledDate,
+    status: quote?.status,
+    updatedAt: quote?.updatedAt,
   });
 
   if (!quote) {
