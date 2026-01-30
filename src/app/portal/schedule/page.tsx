@@ -99,7 +99,7 @@ function ScheduleContent({ userEmail, userLoaded }: { userEmail: string | null; 
     return <ScheduleError />;
   }
 
-  const { order, timeline } = orderDetails;
+  const { order } = orderDetails;
 
   // Build full address
   const fullAddress = `${order.propertyAddress}, ${order.propertyCity}, ${order.propertyState} ${order.propertyZip}`;
