@@ -1,0 +1,105 @@
+/* =================================================
+   SIGNATURE PAD STYLES
+   Canvas-based signature capture
+   ================================================= */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-2);
+}
+
+.canvasWrapper {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  overflow: hidden;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: var(--rr-color-text-tertiary);
+  pointer-events: none;
+  user-select: none;
+}
+
+.baseline {
+  position: absolute;
+  bottom: 24px;
+  left: 16px;
+  right: 16px;
+  height: 1px;
+  background: var(--rr-color-border-default);
+  opacity: 0.5;
+}
+
+.clearButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  align-self: flex-end;
+  padding: var(--rr-space-1) var(--rr-space-2);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--rr-color-text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--rr-radius-sm);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.clearButton:hover {
+  color: var(--rr-color-text-primary);
+  background: var(--rr-color-gray-100);
+}
+
+.clearButton:focus-visible {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: 2px;
+}
+
+/* Disabled State */
+.disabled .canvasWrapper {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.disabled .canvas {
+  pointer-events: none;
+}
+
+/* Focus State */
+.canvasWrapper:focus-within {
+  border-color: var(--rr-color-blue);
+  box-shadow: 0 0 0 3px rgba(74, 124, 171, 0.1);
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+  .canvasWrapper {
+    height: 140px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .clearButton {
+    transition: none;
+  }
+}

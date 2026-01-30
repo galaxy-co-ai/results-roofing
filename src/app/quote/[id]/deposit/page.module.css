@@ -1,0 +1,133 @@
+/* =================================================
+   DEPOSIT PAGE STYLES
+   Save Your Spot - Deposit & Signature Flow
+   ================================================= */
+
+.main {
+  min-height: calc(100vh - 64px);
+  padding-bottom: 60px; /* Space for fixed TrustBar */
+  background-color: var(--rr-color-bg-primary);
+}
+
+.container {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--rr-space-5) var(--rr-space-page-gutter);
+}
+
+/* ========================================
+   PAYMENT CARD
+   ======================================== */
+
+.paymentCard {
+  width: 100%;
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+  overflow: hidden;
+}
+
+.paymentHeader {
+  padding: var(--rr-space-5) var(--rr-space-5) var(--rr-space-4);
+  text-align: center;
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.paymentTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0 0 4px;
+}
+
+.paymentSubtitle {
+  font-size: 0.875rem;
+  color: var(--rr-color-text-secondary);
+  margin: 0;
+}
+
+/* Payment Summary */
+.paymentSummary {
+  padding: var(--rr-space-4) var(--rr-space-5);
+  background: var(--rr-color-gray-50);
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9375rem;
+  color: var(--rr-color-text-primary);
+}
+
+.summaryAmount {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--rr-color-text-primary);
+}
+
+.summaryNote {
+  font-size: 0.75rem;
+  color: var(--rr-color-text-tertiary);
+  margin-top: 4px;
+  text-align: right;
+}
+
+/* Payment Form Container */
+.paymentCard > :global(.paymentForm),
+.paymentCard > :global(div:has(.paymentElementContainer)) {
+  padding: var(--rr-space-5);
+}
+
+/* Payment Error */
+.paymentError {
+  padding: var(--rr-space-3) var(--rr-space-5);
+  background: #FEE2E2;
+  border-bottom: 1px solid #FECACA;
+  color: #DC2626;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+/* Back Link */
+.backLink {
+  display: block;
+  width: 100%;
+  padding: var(--rr-space-3) var(--rr-space-5);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--rr-color-text-secondary);
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--rr-color-border-default);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.backLink:hover {
+  color: var(--rr-color-blue);
+  background: var(--rr-color-gray-50);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 640px) {
+  .container {
+    padding-top: var(--rr-space-8);
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .backLink {
+    transition: none;
+  }
+}

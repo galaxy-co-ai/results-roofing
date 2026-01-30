@@ -22,12 +22,14 @@ interface PaymentFormProps {
   onSuccess?: () => void;
   onError?: (error: string) => void;
   redirectOnSuccess?: boolean;
+  /** Use fixed amount instead of quote's depositAmount */
+  useFixedAmount?: boolean;
 }
 
 /**
  * Wrapper component that provides Stripe Elements context
  */
-export function PaymentForm({ quoteId, depositAmount, onSuccess, onError, redirectOnSuccess = true }: PaymentFormProps) {
+export function PaymentForm({ quoteId, depositAmount, onSuccess, onError, redirectOnSuccess = true, useFixedAmount = false }: PaymentFormProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -41,7 +43,10 @@ export function PaymentForm({ quoteId, depositAmount, onSuccess, onError, redire
         const response = await fetch('/api/payments/create-intent', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ quoteId }),
+          body: JSON.stringify({
+            quoteId,
+            ...(useFixedAmount && { fixedAmount: depositAmount }),
+          }),
         });
 
         const data = await response.json();
@@ -66,7 +71,7 @@ export function PaymentForm({ quoteId, depositAmount, onSuccess, onError, redire
     }
 
     createPaymentIntent();
-  }, [quoteId, onError]);
+  }, [quoteId, onError, useFixedAmount, depositAmount]);
 
   if (loading) {
     return (

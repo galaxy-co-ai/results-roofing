@@ -1,0 +1,353 @@
+/* =================================================
+   DEPOSIT AUTH CARD STYLES
+   Signature + authorization before payment
+   ================================================= */
+
+.card {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+  overflow: hidden;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rr-space-3);
+  padding: var(--rr-space-5) var(--rr-space-5) var(--rr-space-4);
+  background: linear-gradient(135deg, #EBF4FF 0%, #F8FAFC 100%);
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.headerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--rr-color-blue);
+  border-radius: var(--rr-radius-md);
+  color: white;
+  flex-shrink: 0;
+}
+
+.headerContent {
+  flex: 1;
+}
+
+.headerTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0 0 4px;
+}
+
+.headerSubtitle {
+  font-size: 0.875rem;
+  color: var(--rr-color-text-secondary);
+  margin: 0;
+}
+
+/* ========================================
+   QUOTE SUMMARY
+   ======================================== */
+
+.summarySection {
+  padding: var(--rr-space-4) var(--rr-space-5);
+  border-bottom: 1px solid var(--rr-color-border-default);
+  background: var(--rr-color-gray-50);
+}
+
+.summaryTitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--rr-color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 var(--rr-space-3);
+}
+
+.summaryList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-2);
+}
+
+.summaryItem {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  font-size: 0.875rem;
+}
+
+.summaryIcon {
+  color: var(--rr-color-blue);
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.summaryLabel {
+  color: var(--rr-color-text-secondary);
+  flex-shrink: 0;
+}
+
+.summaryValue {
+  color: var(--rr-color-text-primary);
+  font-weight: 500;
+}
+
+.summaryValueBold {
+  color: var(--rr-color-text-primary);
+  font-weight: 700;
+}
+
+/* ========================================
+   AUTHORIZATION SECTION
+   ======================================== */
+
+.authSection {
+  padding: var(--rr-space-5);
+}
+
+.authTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0 0 var(--rr-space-3);
+}
+
+.authTerms {
+  padding: var(--rr-space-3);
+  background: var(--rr-color-gray-50);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  margin-bottom: var(--rr-space-4);
+}
+
+.termsText {
+  font-size: 0.8125rem;
+  color: var(--rr-color-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  font-style: italic;
+}
+
+.signatureContainer {
+  margin-bottom: var(--rr-space-4);
+}
+
+/* Agreement Checkbox */
+.agreementLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rr-space-2);
+  cursor: pointer;
+  padding: var(--rr-space-2);
+  background: var(--rr-color-gray-50);
+  border-radius: var(--rr-radius-md);
+  transition: background 0.15s ease;
+}
+
+.agreementLabel:hover {
+  background: var(--rr-color-gray-100);
+}
+
+.agreementCheckbox {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  accent-color: var(--rr-color-blue);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.agreementText {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: var(--rr-color-text-primary);
+  font-weight: 500;
+}
+
+.agreementIcon {
+  color: var(--rr-color-blue);
+  opacity: 0.7;
+}
+
+/* ========================================
+   ERROR
+   ======================================== */
+
+.error {
+  padding: var(--rr-space-3) var(--rr-space-5);
+  background: #FEE2E2;
+  border-top: 1px solid #FECACA;
+  color: #DC2626;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+/* ========================================
+   ACTIONS
+   ======================================== */
+
+.actions {
+  padding: var(--rr-space-4) var(--rr-space-5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rr-space-3);
+  border-top: 1px solid var(--rr-color-border-default);
+}
+
+.payButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  width: 100%;
+  height: 52px;
+  padding: 0 var(--rr-space-6);
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+  border: none;
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+}
+
+.payButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #16A34A 0%, #15803D 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+}
+
+.payButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.payButton:disabled {
+  background: var(--rr-color-gray-300);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.payButton:focus-visible {
+  outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
+  outline-offset: 2px;
+}
+
+.laterLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--rr-space-2) var(--rr-space-3);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--rr-color-text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--rr-radius-sm);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.laterLink:hover:not(:disabled) {
+  color: var(--rr-color-blue);
+}
+
+.laterLink:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   TRUST INDICATORS
+   ======================================== */
+
+.trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  padding: var(--rr-space-3) var(--rr-space-5);
+  background: var(--rr-color-gray-50);
+  border-top: 1px solid var(--rr-color-border-default);
+}
+
+.trustItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.6875rem;
+  color: var(--rr-color-text-tertiary);
+}
+
+.trustDivider {
+  color: var(--rr-color-border-default);
+}
+
+/* ========================================
+   SPINNER
+   ======================================== */
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 480px) {
+  .summaryList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--rr-space-2) var(--rr-space-4);
+  }
+
+  .summaryItem:last-child {
+    grid-column: 2;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .payButton,
+  .agreementLabel,
+  .laterLink {
+    transition: none;
+  }
+
+  .spinner {
+    animation: none;
+  }
+}

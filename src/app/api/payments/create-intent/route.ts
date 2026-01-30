@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { quoteId } = body;
+    const { quoteId, fixedAmount } = body;
 
     if (!quoteId) {
       return NextResponse.json({ error: 'Quote ID is required' }, { status: 400 });
@@ -55,7 +55,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate the deposit amount in cents
-    const depositAmount = quote.depositAmount ? parseFloat(quote.depositAmount) : 0;
+    // Use fixedAmount if provided, otherwise fall back to quote's depositAmount
+    const depositAmount = fixedAmount
+      ? parseFloat(String(fixedAmount))
+      : (quote.depositAmount ? parseFloat(quote.depositAmount) : 0);
+
     if (depositAmount <= 0) {
       return NextResponse.json({ error: 'Invalid deposit amount' }, { status: 400 });
     }

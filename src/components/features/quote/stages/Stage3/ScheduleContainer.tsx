@@ -151,8 +151,8 @@ export function ScheduleContainer({ quoteId, quoteData }: ScheduleContainerProps
         setSchedule(selectedDate, selectedTimeSlot);
       }
 
-      // Redirect immediately to success page
-      router.push(`/quote/${quoteId}/success`);
+      // Redirect to deposit page for signature + payment
+      router.push(`/quote/${quoteId}/deposit`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to schedule installation');
     } finally {
