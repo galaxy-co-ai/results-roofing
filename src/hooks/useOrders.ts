@@ -110,26 +110,33 @@ const MOCK_ORDER_DETAILS: OrderDetailsResponse = {
 };
 
 async function fetchOrders(email: string): Promise<{ orders: Order[] }> {
-  // Return mock data in dev bypass mode
-  if (DEV_BYPASS_ENABLED) {
-    return { orders: [MOCK_ORDER] };
-  }
-  
+  // In dev bypass mode, fetch real orders but fall back to mock if none exist
   const res = await fetch(`/api/portal/orders?email=${encodeURIComponent(email)}`);
   if (!res.ok) {
     throw new Error('Failed to fetch orders');
   }
-  return res.json();
+  const data = await res.json();
+
+  // If no real orders and dev bypass is enabled, return mock data
+  if (DEV_BYPASS_ENABLED && (!data.orders || data.orders.length === 0)) {
+    return { orders: [MOCK_ORDER] };
+  }
+
+  return data;
 }
 
 async function fetchOrderDetails(orderId: string): Promise<OrderDetailsResponse> {
-  // Return mock data in dev bypass mode
-  if (DEV_BYPASS_ENABLED) {
+  // In dev bypass mode with mock order ID, return mock data
+  if (DEV_BYPASS_ENABLED && orderId === 'dev-order-123') {
     return MOCK_ORDER_DETAILS;
   }
-  
+
   const res = await fetch(`/api/portal/orders/${orderId}`);
   if (!res.ok) {
+    // Fall back to mock data in dev mode if real order not found
+    if (DEV_BYPASS_ENABLED) {
+      return MOCK_ORDER_DETAILS;
+    }
     throw new Error('Failed to fetch order details');
   }
   return res.json();

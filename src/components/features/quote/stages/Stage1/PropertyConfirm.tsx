@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { CheckCircle, Loader2, MapPin, ArrowLeft } from 'lucide-react';
 import type { ParsedAddress } from '@/components/features/address';
 import styles from './Stage1.module.css';
@@ -53,13 +54,16 @@ export function PropertyConfirm({
                   <span className="sr-only">Loading satellite image...</span>
                 </div>
               )}
-              <img
+              <Image
                 src={satelliteUrl}
                 alt={`Satellite view of ${address.formattedAddress}`}
                 className={styles.satelliteImage}
                 style={{ display: imageLoaded ? 'block' : 'none' }}
+                width={600}
+                height={400}
                 onLoad={() => setImageLoaded(true)}
                 onError={() => setImageError(true)}
+                unoptimized
               />
             </>
           ) : (

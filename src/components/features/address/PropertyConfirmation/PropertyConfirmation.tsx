@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { CheckCircle, Loader2, MapPin } from 'lucide-react';
 import type { ParsedAddress } from '../AddressAutocomplete';
 import styles from './PropertyConfirmation.module.css';
@@ -43,13 +44,16 @@ export function PropertyConfirmation({
                 <Loader2 size={32} className={styles.spinner} />
               </div>
             )}
-            <img
+            <Image
               src={satelliteUrl}
               alt={`Satellite view of ${address.formattedAddress}`}
               className={styles.satelliteImage}
               style={{ display: imageLoaded ? 'block' : 'none' }}
+              width={600}
+              height={400}
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageError(true)}
+              unoptimized
             />
           </>
         ) : (

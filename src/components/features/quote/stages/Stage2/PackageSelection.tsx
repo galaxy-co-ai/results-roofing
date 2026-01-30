@@ -1,7 +1,6 @@
 'use client';
 
 import { Check, Star, Loader2 } from 'lucide-react';
-import { DEPOSIT_CONFIG } from '@/lib/constants';
 import { QuoteStepper } from '../../QuoteStepper';
 import styles from './Stage2.module.css';
 
@@ -55,7 +54,8 @@ export function PackageSelection({
   isLoading = false,
   quoteId,
 }: PackageSelectionProps) {
-  const depositPercent = DEPOSIT_CONFIG.percentage * 100;
+  // Fixed deposit amount of $500 regardless of package
+  const fixedDeposit = 500;
 
   return (
     <div className={styles.subStep}>
@@ -115,7 +115,7 @@ export function PackageSelection({
               <div className={styles.depositInfo}>
                 <span className={styles.depositLabel}>Deposit:</span>
                 <span className={styles.depositAmount}>
-                  {formatPrice(Math.round(tier.totalPrice * depositPercent / 100))}
+                  {formatPrice(fixedDeposit)}
                 </span>
               </div>
 

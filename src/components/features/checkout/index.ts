@@ -7,3 +7,5 @@ export { PaymentForm } from './PaymentForm';
 export { OrderSummary } from './OrderSummary';
 export { ScheduleSelector } from './ScheduleSelector';
 export { FinancingSelector } from './FinancingSelector';
+export { DepositAuthCard } from './DepositAuthCard';
+export type { QuoteSummary } from './DepositAuthCard';

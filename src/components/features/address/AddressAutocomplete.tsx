@@ -298,6 +298,7 @@ export function AddressAutocomplete({
           aria-label="Enter your property address"
           aria-expanded={showSuggestions}
           aria-autocomplete="list"
+          aria-controls="address-suggestions-listbox"
           role="combobox"
         />
         {isLoading && <Loader2 className={styles.loadingIcon} size={20} />}
@@ -317,6 +318,7 @@ export function AddressAutocomplete({
       {showSuggestions && suggestions.length > 0 && (
         <div
           ref={suggestionsRef}
+          id="address-suggestions-listbox"
           className={styles.suggestions}
           role="listbox"
         >

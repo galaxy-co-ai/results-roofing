@@ -58,8 +58,18 @@ export function ScheduleSelector({
   compact = false,
 }: ScheduleSelectorProps) {
   const [currentMonth, setCurrentMonth] = useState(() => {
-    const date = selectedDate || new Date();
-    return new Date(date.getFullYear(), date.getMonth(), 1);
+    // If a date is already selected, use that month
+    if (selectedDate) {
+      return new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+    }
+    // Otherwise, start at the month containing the first available date (3 days out)
+    const firstAvailableDate = new Date();
+    firstAvailableDate.setDate(firstAvailableDate.getDate() + 3);
+    // Skip to next weekday if it falls on weekend
+    while (firstAvailableDate.getDay() === 0 || firstAvailableDate.getDay() === 6) {
+      firstAvailableDate.setDate(firstAvailableDate.getDate() + 1);
+    }
+    return new Date(firstAvailableDate.getFullYear(), firstAvailableDate.getMonth(), 1);
   });
 
   const availableDates = useMemo(() => getAvailableDates(), []);

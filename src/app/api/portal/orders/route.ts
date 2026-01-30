@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { getOrdersByEmail } from '@/db/queries';
 import { logger } from '@/lib/utils';
+import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 
 /**
  * GET /api/portal/orders
@@ -10,9 +11,17 @@ import { logger } from '@/lib/utils';
  */
 export async function GET(request: NextRequest) {
   try {
-    // Get authenticated user
-    const { userId } = await auth();
-    
+    let userId: string | null = null;
+
+    // In dev bypass mode, use mock user
+    if (DEV_BYPASS_ENABLED) {
+      userId = MOCK_USER.id;
+    } else {
+      // Get authenticated user from Clerk
+      const authResult = await auth();
+      userId = authResult.userId;
+    }
+
     if (!userId) {
       return NextResponse.json(
         { error: 'Unauthorized' },

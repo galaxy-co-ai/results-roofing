@@ -1,14 +1,15 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { 
-  getOrder, 
-  getPaymentsByOrderId, 
-  getAppointmentsByOrderId, 
+import {
+  getOrder,
+  getPaymentsByOrderId,
+  getAppointmentsByOrderId,
   getContractsByOrderId,
-  getTotalPaidForOrder 
+  getTotalPaidForOrder
 } from '@/db/queries';
 import { logger } from '@/lib/utils';
+import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 
 /**
  * GET /api/portal/orders/[id]
@@ -19,8 +20,17 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId } = await auth();
-    
+    let userId: string | null = null;
+
+    // In dev bypass mode, use mock user
+    if (DEV_BYPASS_ENABLED) {
+      userId = MOCK_USER.id;
+    } else {
+      // Get authenticated user from Clerk
+      const authResult = await auth();
+      userId = authResult.userId;
+    }
+
     if (!userId) {
       return NextResponse.json(
         { error: 'Unauthorized' },
