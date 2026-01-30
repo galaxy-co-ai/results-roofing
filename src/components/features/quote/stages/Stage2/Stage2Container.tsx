@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuoteWizard } from '../../QuoteWizardProvider';
 import { PackageSelection } from './PackageSelection';
@@ -63,6 +63,9 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const previousSubStep = useRef(state.currentSubStep);
 
+  // Flag to prevent guards from running during navigation
+  const [isNavigating, setIsNavigating] = useState(false);
+
   // Ensure quote ID is set in context
   useEffect(() => {
     if (!state.quoteId && quoteId) {
@@ -82,12 +85,15 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
 
   // Guard: redirect to correct sub-step if prerequisites aren't met
   useEffect(() => {
+    // Don't redirect if we're navigating away
+    if (isNavigating) return;
+
     if (state.currentSubStep === 'schedule' && !state.selectedTier) {
       goToSubStep('package');
     } else if (state.currentSubStep === 'financing' && (!state.selectedTier || !state.scheduledDate)) {
       goToSubStep('schedule');
     }
-  }, [state.currentSubStep, state.selectedTier, state.scheduledDate, goToSubStep]);
+  }, [state.currentSubStep, state.selectedTier, state.scheduledDate, goToSubStep, isNavigating]);
 
   const handleTierSelect = useCallback(
     async (tier: 'good' | 'better' | 'best') => {
@@ -120,7 +126,8 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
 
   const handleScheduleSelect = useCallback(
     async (date: Date, timeSlot: 'morning' | 'afternoon') => {
-      setSchedule(date, timeSlot);
+      // Prevent guard from redirecting during navigation
+      setIsNavigating(true);
       setLoading(true);
       setError(null);
 
@@ -146,10 +153,11 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         router.push(`/quote/${quoteId}/deposit`);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Something went wrong');
+        setIsNavigating(false);
         setLoading(false);
       }
     },
-    [quoteId, setSchedule, setLoading, setError, router]
+    [quoteId, setLoading, setError, router]
   );
 
   const handleFinancingSelect = useCallback(
