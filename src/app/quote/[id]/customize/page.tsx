@@ -99,11 +99,15 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
 
   const address = `${quote.address}, ${quote.city}, ${quote.state} ${quote.zip}`;
 
+  // Determine correct sub-step based on quote state
+  // If tier is selected, go to schedule. Otherwise start at package.
+  const currentSubStep = quote.selectedTier ? 'schedule' : 'package';
+
   // Initial wizard state from existing quote
   const initialWizardState = {
     quoteId,
     currentStage: 2 as const,
-    currentSubStep: 'package' as const,
+    currentSubStep: currentSubStep as 'package' | 'schedule',
     propertyConfirmed: true,
     selectedTier: quote.selectedTier as 'good' | 'better' | 'best' | null,
   };
