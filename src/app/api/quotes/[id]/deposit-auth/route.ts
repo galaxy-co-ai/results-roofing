@@ -35,7 +35,8 @@ export async function POST(
       );
     }
 
-    const { signature, agreedToTerms, termsVersion } = validation.data;
+    const { termsVersion } = validation.data;
+    // signature and agreedToTerms are validated by schema but stored implicitly via contract record
 
     // Fetch the quote
     const quote = await db.query.quotes.findFirst({

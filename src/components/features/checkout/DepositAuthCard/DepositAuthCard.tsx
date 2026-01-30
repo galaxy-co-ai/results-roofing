@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { Home, Sparkles, Calendar, Clock, Check, CreditCard, Shield, ArrowRight } from 'lucide-react';
+import { Home, Sparkles, Calendar, Check, CreditCard, Shield, ArrowRight } from 'lucide-react';
 import { SignaturePad } from '@/components/ui/SignaturePad/SignaturePad';
 import styles from './DepositAuthCard.module.css';
 
