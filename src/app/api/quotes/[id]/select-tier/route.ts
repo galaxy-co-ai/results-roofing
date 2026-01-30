@@ -82,8 +82,8 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     const totalPrice = Math.round(materialCost + laborCost);
     const depositAmount = calculateDeposit(totalPrice);
 
-    // Update the quote with selected tier
-    await db
+    // Update the quote with selected tier and return the updated row
+    const [updatedQuote] = await db
       .update(schema.quotes)
       .set({
         selectedTier: parsed.data.tier,
@@ -93,12 +93,8 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         status: 'selected',
         updatedAt: new Date(),
       })
-      .where(eq(schema.quotes.id, quoteId));
-
-    // Verify the update was successful
-    const updatedQuote = await db.query.quotes.findFirst({
-      where: eq(schema.quotes.id, quoteId),
-    });
+      .where(eq(schema.quotes.id, quoteId))
+      .returning();
 
     if (!updatedQuote?.selectedTier) {
       logger.error('Failed to update quote tier', { quoteId, tier: parsed.data.tier });

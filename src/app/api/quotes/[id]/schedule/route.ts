@@ -67,8 +67,8 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     // Generate a slot ID for the scheduled time
     const slotId = `${parsed.data.scheduledDate}-${parsed.data.timeSlot}`;
 
-    // Update the quote with schedule info
-    await db
+    // Update the quote with schedule info and return the updated row
+    const [updatedQuote] = await db
       .update(schema.quotes)
       .set({
         scheduledDate,
@@ -76,12 +76,8 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         status: quote.status === 'selected' || quote.status === 'financed' ? 'scheduled' : quote.status,
         updatedAt: new Date(),
       })
-      .where(eq(schema.quotes.id, quoteId));
-
-    // Verify the update was successful
-    const updatedQuote = await db.query.quotes.findFirst({
-      where: eq(schema.quotes.id, quoteId),
-    });
+      .where(eq(schema.quotes.id, quoteId))
+      .returning();
 
     if (!updatedQuote?.scheduledDate) {
       logger.error('Failed to update quote schedule', { quoteId, scheduledDate: parsed.data.scheduledDate });
