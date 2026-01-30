@@ -22,27 +22,9 @@ const TIER_DISPLAY_NAMES: Record<string, string> = {
 export default async function DepositPage({ params }: DepositPageProps) {
   const { id: quoteId } = await params;
 
-  // DEBUG: Log database query info
-  const dbHost = process.env.DATABASE_URL?.match(/@([^/]+)\//)?.[1] || 'unknown';
-  console.log('[DEBUG deposit page] Querying quote:', {
-    quoteId,
-    dbHost,
-    timestamp: new Date().toISOString(),
-  });
-
   // Fetch quote with selected tier
   const quote = await db.query.quotes.findFirst({
     where: eq(schema.quotes.id, quoteId),
-  });
-
-  // DEBUG: Log query result
-  console.log('[DEBUG deposit page] Query result:', {
-    quoteId,
-    found: !!quote,
-    selectedTier: quote?.selectedTier,
-    scheduledDate: quote?.scheduledDate,
-    status: quote?.status,
-    updatedAt: quote?.updatedAt,
   });
 
   if (!quote) {
@@ -54,40 +36,10 @@ export default async function DepositPage({ params }: DepositPageProps) {
     redirect('/quote/new');
   }
 
-  // DEBUG: Show what's missing instead of redirecting
-  const missingFields: string[] = [];
-  if (!quote.selectedTier) missingFields.push('selectedTier');
-  if (!quote.scheduledDate) missingFields.push('scheduledDate');
-  if (!quote.scheduledSlotId) missingFields.push('scheduledSlotId');
-
-  if (missingFields.length > 0) {
-    return (
-      <>
-        <Header />
-        <main className={styles.main}>
-          <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
-            <h1>Debug: Missing Quote Data</h1>
-            <p>Quote ID: {quoteId}</p>
-            <p>Missing fields: {missingFields.join(', ')}</p>
-            <p>Current quote data:</p>
-            <pre style={{ background: '#f5f5f5', padding: '1rem', overflow: 'auto', fontSize: '12px' }}>
-              {JSON.stringify({
-                selectedTier: quote.selectedTier,
-                scheduledDate: quote.scheduledDate,
-                scheduledSlotId: quote.scheduledSlotId,
-                status: quote.status,
-              }, null, 2)}
-            </pre>
-            <p style={{ marginTop: '1rem' }}>
-              <a href={`/quote/${quoteId}/customize`}>← Back to customize</a>
-            </p>
-          </div>
-        </main>
-      </>
-    );
+  // Step guard: Ensure package selection and scheduling are complete
+  if (!quote.selectedTier || !quote.scheduledDate || !quote.scheduledSlotId) {
+    redirect(`/quote/${quoteId}/customize`);
   }
-
-  // At this point we know all required fields exist (debug check above handles missing fields)
   const totalPrice = quote.totalPrice ? parseFloat(quote.totalPrice) : 0;
   const depositAmount = 500; // Fixed $500 deposit for this flow
   const address = `${quote.address}, ${quote.city}, ${quote.state} ${quote.zip}`;
