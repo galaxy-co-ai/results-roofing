@@ -69,13 +69,14 @@ export default async function DepositPage({ params }: DepositPageProps) {
     );
   }
 
+  // At this point we know all required fields exist (debug check above handles missing fields)
   const totalPrice = quote.totalPrice ? parseFloat(quote.totalPrice) : 0;
   const depositAmount = 500; // Fixed $500 deposit for this flow
   const address = `${quote.address}, ${quote.city}, ${quote.state} ${quote.zip}`;
-  const tierDisplayName = TIER_DISPLAY_NAMES[quote.selectedTier] || quote.selectedTier;
+  const tierDisplayName = TIER_DISPLAY_NAMES[quote.selectedTier!] || quote.selectedTier!;
 
   // Parse time slot from scheduledSlotId
-  const timeSlot: 'morning' | 'afternoon' = quote.scheduledSlotId.includes('morning')
+  const timeSlot: 'morning' | 'afternoon' = quote.scheduledSlotId!.includes('morning')
     ? 'morning'
     : 'afternoon';
 
@@ -87,9 +88,9 @@ export default async function DepositPage({ params }: DepositPageProps) {
           quoteId={quoteId}
           quoteSummary={{
             address,
-            tier: quote.selectedTier,
+            tier: quote.selectedTier!,
             tierDisplayName,
-            installDate: quote.scheduledDate.toISOString(),
+            installDate: quote.scheduledDate!.toISOString(),
             timeSlot,
             totalPrice,
             depositAmount,
