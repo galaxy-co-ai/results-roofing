@@ -80,14 +80,17 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
       setError(null);
 
       try {
+        console.log('DEBUG: Calling select-tier API', { quoteId, tier });
         const response = await fetch(`/api/quotes/${quoteId}/select-tier`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ tier }),
         });
 
+        const data = await response.json();
+        console.log('DEBUG: select-tier response', { ok: response.ok, status: response.status, data });
+
         if (!response.ok) {
-          const data = await response.json();
           throw new Error(data.error || 'Failed to select package');
         }
 
@@ -95,6 +98,7 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         // Move to schedule sub-step
         goToSubStep('schedule');
       } catch (err) {
+        console.error('DEBUG: select-tier error', err);
         setError(err instanceof Error ? err.message : 'Something went wrong');
       } finally {
         setLoading(false);
@@ -109,7 +113,7 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
       setError(null);
 
       try {
-        // Save schedule to database
+        console.log('DEBUG: Calling schedule API', { quoteId, date: date.toISOString(), timeSlot });
         const response = await fetch(`/api/quotes/${quoteId}/schedule`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -121,14 +125,17 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         });
 
         const data = await response.json();
+        console.log('DEBUG: schedule response', { ok: response.ok, status: response.status, data });
 
         if (!response.ok) {
           throw new Error(data.error || 'Failed to save schedule');
         }
 
         // Navigate directly to deposit page (full page load to ensure fresh data)
+        console.log('DEBUG: Navigating to deposit page');
         window.location.href = `/quote/${quoteId}/deposit`;
       } catch (err) {
+        console.error('DEBUG: schedule error', err);
         setError(err instanceof Error ? err.message : 'Something went wrong');
         setLoading(false);
       }
