@@ -11,6 +11,18 @@
   border: 1px solid var(--rr-color-border-default);
   border-radius: var(--rr-radius-lg);
   overflow: hidden;
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ========================================
@@ -19,11 +31,17 @@
 
 .header {
   display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-4);
+  padding: var(--rr-space-5);
+  background: linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 50%, #F8FAFC 100%);
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.headerTop {
+  display: flex;
   align-items: flex-start;
   gap: var(--rr-space-3);
-  padding: var(--rr-space-5) var(--rr-space-5) var(--rr-space-4);
-  background: linear-gradient(135deg, #EBF4FF 0%, #F8FAFC 100%);
-  border-bottom: 1px solid var(--rr-color-border-default);
 }
 
 .headerIcon {
@@ -55,14 +73,29 @@
   margin: 0;
 }
 
+.benefitPills {
+  margin-top: var(--rr-space-1);
+}
+
 /* ========================================
-   QUOTE SUMMARY
+   QUOTE SUMMARY CARD
    ======================================== */
 
-.summarySection {
-  padding: var(--rr-space-4) var(--rr-space-5);
-  border-bottom: 1px solid var(--rr-color-border-default);
+.summaryCard {
+  margin: var(--rr-space-4) var(--rr-space-4) 0;
+  background: var(--rr-color-white);
+  border: 2px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+  overflow: hidden;
+}
+
+.summaryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--rr-space-3) var(--rr-space-4);
   background: var(--rr-color-gray-50);
+  border-bottom: 1px solid var(--rr-color-border-default);
 }
 
 .summaryTitle {
@@ -71,44 +104,106 @@
   color: var(--rr-color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin: 0 0 var(--rr-space-3);
+  margin: 0;
 }
 
-.summaryList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.editLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--rr-color-blue);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.editLink:hover {
+  color: var(--rr-color-blue-dark, #1D4ED8);
+  text-decoration: underline;
+}
+
+.summaryContent {
+  padding: var(--rr-space-4);
   display: flex;
   flex-direction: column;
-  gap: var(--rr-space-2);
+  gap: var(--rr-space-3);
 }
 
-.summaryItem {
+.summaryRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rr-space-3);
+}
+
+.summaryIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--rr-color-blue-light, #EFF6FF);
+  border-radius: var(--rr-radius-md);
+  color: var(--rr-color-blue);
+  flex-shrink: 0;
+}
+
+.summaryDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.summaryLabel {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--rr-color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.summaryValue {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--rr-color-text-primary);
+  word-break: break-word;
+}
+
+.summaryTotal {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-top: var(--rr-space-3);
+  margin-top: var(--rr-space-1);
+  border-top: 1px solid var(--rr-color-border-default);
+}
+
+.summaryTotalLabel {
   display: flex;
   align-items: center;
   gap: var(--rr-space-2);
   font-size: 0.875rem;
-}
-
-.summaryIcon {
-  color: var(--rr-color-blue);
-  flex-shrink: 0;
-  opacity: 0.7;
-}
-
-.summaryLabel {
-  color: var(--rr-color-text-secondary);
-  flex-shrink: 0;
-}
-
-.summaryValue {
-  color: var(--rr-color-text-primary);
   font-weight: 500;
+  color: var(--rr-color-text-secondary);
 }
 
-.summaryValueBold {
-  color: var(--rr-color-text-primary);
+.summaryTotalValue {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.totalPrice {
+  font-size: 1.25rem;
   font-weight: 700;
+  color: var(--rr-color-text-primary);
+}
+
+.depositNote {
+  font-size: 0.75rem;
+  color: var(--rr-color-text-tertiary);
 }
 
 /* ========================================
@@ -120,14 +215,16 @@
 }
 
 .authTitle {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--rr-color-text-primary);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--rr-color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   margin: 0 0 var(--rr-space-3);
 }
 
 .authTerms {
-  padding: var(--rr-space-3);
+  padding: var(--rr-space-4);
   background: var(--rr-color-gray-50);
   border: 1px solid var(--rr-color-border-default);
   border-radius: var(--rr-radius-md);
@@ -135,11 +232,20 @@
 }
 
 .termsText {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   color: var(--rr-color-text-secondary);
-  line-height: 1.6;
+  line-height: 1.7;
   margin: 0;
-  font-style: italic;
+}
+
+.highlight {
+  color: var(--rr-color-text-primary);
+  font-weight: 600;
+}
+
+.highlightGreen {
+  color: var(--rr-color-success-dark, #166534);
+  font-weight: 600;
 }
 
 .signatureContainer {
@@ -149,40 +255,46 @@
 /* Agreement Checkbox */
 .agreementLabel {
   display: flex;
-  align-items: flex-start;
-  gap: var(--rr-space-2);
+  align-items: center;
+  gap: var(--rr-space-3);
   cursor: pointer;
-  padding: var(--rr-space-2);
+  padding: var(--rr-space-3) var(--rr-space-4);
   background: var(--rr-color-gray-50);
+  border: 2px solid var(--rr-color-border-default);
   border-radius: var(--rr-radius-md);
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  min-height: 48px; /* Touch target */
 }
 
 .agreementLabel:hover {
   background: var(--rr-color-gray-100);
+  border-color: var(--rr-color-blue-light, #93C5FD);
 }
 
 .agreementCheckbox {
-  width: 18px;
-  height: 18px;
-  margin-top: 1px;
-  accent-color: var(--rr-color-blue);
+  width: 22px;
+  height: 22px;
+  accent-color: var(--rr-color-success, #22C55E);
   cursor: pointer;
   flex-shrink: 0;
+}
+
+.agreementCheckbox:checked + .agreementText {
+  color: var(--rr-color-success-dark, #166534);
 }
 
 .agreementText {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.875rem;
+  gap: 8px;
+  font-size: 0.9375rem;
   color: var(--rr-color-text-primary);
   font-weight: 500;
 }
 
 .agreementIcon {
-  color: var(--rr-color-blue);
-  opacity: 0.7;
+  color: var(--rr-color-success, #22C55E);
+  flex-shrink: 0;
 }
 
 /* ========================================
@@ -203,12 +315,39 @@
    ======================================== */
 
 .actions {
-  padding: var(--rr-space-4) var(--rr-space-5);
+  padding: var(--rr-space-5);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--rr-space-3);
   border-top: 1px solid var(--rr-color-border-default);
+}
+
+/* Mini trust bar above CTA */
+.miniTrust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-4);
+  width: 100%;
+  margin-bottom: var(--rr-space-2);
+}
+
+.miniTrustItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--rr-color-success-dark, #166534);
+}
+
+.ctaWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rr-space-2);
 }
 
 .payButton {
@@ -217,27 +356,42 @@
   justify-content: center;
   gap: var(--rr-space-2);
   width: 100%;
-  height: 52px;
+  height: 56px;
   padding: 0 var(--rr-space-6);
-  font-size: 1rem;
+  font-size: 1.0625rem;
   font-weight: 600;
   color: white;
   background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
   border: none;
-  border-radius: var(--rr-radius-md);
+  border-radius: var(--rr-radius-lg);
   cursor: pointer;
-  transition: all 0.15s ease;
-  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+/* Subtle pulse when enabled */
+.payButton:not(:disabled):not(.payButtonDisabled) {
+  animation: subtlePulse 2s ease-in-out infinite;
+}
+
+@keyframes subtlePulse {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(34, 197, 94, 0.5);
+  }
 }
 
 .payButton:hover:not(:disabled) {
   background: linear-gradient(135deg, #16A34A 0%, #15803D 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
 }
 
 .payButton:active:not(:disabled) {
   transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
 }
 
 .payButton:disabled {
@@ -246,9 +400,20 @@
   cursor: not-allowed;
 }
 
+.payButtonDisabled {
+  background: linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%);
+}
+
 .payButton:focus-visible {
   outline: var(--rr-focus-ring-width) solid var(--rr-focus-ring-color);
   outline-offset: 2px;
+}
+
+.ctaHint {
+  font-size: 0.75rem;
+  color: var(--rr-color-text-tertiary);
+  text-align: center;
+  margin: 0;
 }
 
 .laterLink {
@@ -256,14 +421,15 @@
   align-items: center;
   gap: 4px;
   padding: var(--rr-space-2) var(--rr-space-3);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--rr-color-text-secondary);
+  color: var(--rr-color-text-tertiary);
   background: transparent;
   border: none;
   border-radius: var(--rr-radius-sm);
   cursor: pointer;
   transition: color 0.15s ease;
+  margin-top: var(--rr-space-1);
 }
 
 .laterLink:hover:not(:disabled) {
@@ -276,15 +442,29 @@
 }
 
 /* ========================================
+   SOCIAL PROOF
+   ======================================== */
+
+.socialProof {
+  margin-top: var(--rr-space-4);
+}
+
+.timeline {
+  margin-top: var(--rr-space-4);
+  margin-bottom: var(--rr-space-4);
+}
+
+/* ========================================
    TRUST INDICATORS
    ======================================== */
 
 .trust {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: var(--rr-space-2);
-  padding: var(--rr-space-3) var(--rr-space-5);
+  gap: var(--rr-space-4);
+  padding: var(--rr-space-4) var(--rr-space-5);
   background: var(--rr-color-gray-50);
   border-top: 1px solid var(--rr-color-border-default);
 }
@@ -292,13 +472,20 @@
 .trustItem {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 0.6875rem;
-  color: var(--rr-color-text-tertiary);
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--rr-color-text-secondary);
 }
 
-.trustDivider {
-  color: var(--rr-color-border-default);
+.trustIcon {
+  color: var(--rr-color-success, #22C55E);
+  flex-shrink: 0;
+}
+
+.stripeLogo {
+  display: flex;
+  align-items: center;
 }
 
 /* ========================================
@@ -324,15 +511,48 @@
    RESPONSIVE
    ======================================== */
 
-@media (min-width: 480px) {
-  .summaryList {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--rr-space-2) var(--rr-space-4);
+/* Mobile optimizations */
+@media (max-width: 479px) {
+  .card {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
   }
 
-  .summaryItem:last-child {
-    grid-column: 2;
+  .header {
+    padding: var(--rr-space-4);
+  }
+
+  .summaryCard {
+    margin: var(--rr-space-3) var(--rr-space-3) 0;
+  }
+
+  .authSection {
+    padding: var(--rr-space-4);
+  }
+
+  .actions {
+    padding: var(--rr-space-4);
+  }
+
+  /* Hide main CTA button on mobile since we have sticky */
+  .payButton {
+    display: none;
+  }
+
+  .ctaHint {
+    display: none;
+  }
+
+  .laterLink {
+    padding: var(--rr-space-3) var(--rr-space-4);
+    min-height: 48px;
+  }
+}
+
+@media (min-width: 480px) {
+  .summaryCard {
+    margin: var(--rr-space-5) var(--rr-space-5) 0;
   }
 }
 
@@ -341,10 +561,20 @@
    ======================================== */
 
 @media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+  }
+
   .payButton,
   .agreementLabel,
-  .laterLink {
+  .laterLink,
+  .editLink,
+  .canvasWrapper {
     transition: none;
+  }
+
+  .payButton:not(:disabled):not(.payButtonDisabled) {
+    animation: none;
   }
 
   .spinner {

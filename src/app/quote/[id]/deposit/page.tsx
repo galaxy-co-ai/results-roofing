@@ -1,9 +1,17 @@
 import { notFound, redirect } from 'next/navigation';
 import { db, schema, eq } from '@/db/index';
 import { Header } from '@/components/layout';
-import { TrustBar } from '@/components/ui';
+import { TrustBar, ProgressIndicator } from '@/components/ui';
 import { DepositPageClient } from './DepositPageClient';
 import styles from './page.module.css';
+
+// Progress steps for the quote flow
+const PROGRESS_STEPS = [
+  { id: 'quote', label: 'Get Quote' },
+  { id: 'customize', label: 'Customize' },
+  { id: 'schedule', label: 'Schedule' },
+  { id: 'deposit', label: 'Deposit' },
+];
 
 // Force dynamic rendering to ensure fresh database queries
 export const dynamic = 'force-dynamic';
@@ -54,6 +62,14 @@ export default async function DepositPage({ params }: DepositPageProps) {
     <>
       <Header />
       <main className={styles.main}>
+        {/* Progress Indicator */}
+        <div className={styles.progressSection}>
+          <ProgressIndicator steps={PROGRESS_STEPS} currentStep={4} />
+          <p className={styles.addressSubtitle}>
+            Quote for {address}
+          </p>
+        </div>
+
         <DepositPageClient
           quoteId={quoteId}
           quoteSummary={{

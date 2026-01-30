@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { Lock } from 'lucide-react';
 import { DepositAuthCard, type QuoteSummary } from '@/components/features/checkout/DepositAuthCard';
 import { PaymentForm } from '@/components/features/checkout/PaymentForm';
 import styles from './page.module.css';
@@ -91,22 +92,49 @@ export function DepositPageClient({ quoteId, quoteSummary }: DepositPageClientPr
     setError(null);
   }, []);
 
+  const canProceed = signature && hasAgreed && !isProcessing;
+
   // Authorization step
   if (step === 'authorization') {
     return (
-      <div className={styles.container}>
-        <DepositAuthCard
-          quoteSummary={quoteSummary}
-          onSignatureChange={handleSignatureChange}
-          onAgreementChange={handleAgreementChange}
-          onPayClick={handlePayClick}
-          onNeedMoreTime={handleNeedMoreTime}
-          signature={signature}
-          hasAgreed={hasAgreed}
-          isProcessing={isProcessing}
-          error={error}
-        />
-      </div>
+      <>
+        <div className={styles.container}>
+          <DepositAuthCard
+            quoteId={quoteId}
+            quoteSummary={quoteSummary}
+            onSignatureChange={handleSignatureChange}
+            onAgreementChange={handleAgreementChange}
+            onPayClick={handlePayClick}
+            onNeedMoreTime={handleNeedMoreTime}
+            signature={signature}
+            hasAgreed={hasAgreed}
+            isProcessing={isProcessing}
+            error={error}
+          />
+        </div>
+
+        {/* Sticky CTA for mobile */}
+        <div className={styles.stickyCta}>
+          <button
+            type="button"
+            className={`${styles.stickyButton} ${!canProceed ? styles.stickyButtonDisabled : ''}`}
+            onClick={handlePayClick}
+            disabled={!canProceed}
+          >
+            {isProcessing ? (
+              <>
+                <span className={styles.spinner} aria-hidden="true" />
+                Processing...
+              </>
+            ) : (
+              <>
+                <Lock size={16} aria-hidden="true" />
+                <span>Secure My Spot — ${quoteSummary.depositAmount}</span>
+              </>
+            )}
+          </button>
+        </div>
+      </>
     );
   }
 

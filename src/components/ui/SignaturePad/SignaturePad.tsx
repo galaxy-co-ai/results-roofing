@@ -212,14 +212,20 @@ export function SignaturePad({
 
   return (
     <div className={`${styles.container} ${className} ${disabled ? styles.disabled : ''}`}>
-      <div className={styles.canvasWrapper}>
+      <label className={styles.label}>
+        Your Signature <span className={styles.required}>*</span>
+      </label>
+      <div className={`${styles.canvasWrapper} ${hasSignature ? styles.hasSigned : ''}`}>
         <canvas
           ref={canvasRef}
           className={styles.canvas}
           aria-label="Signature pad"
         />
         {!hasSignature && (
-          <span className={styles.placeholder}>{placeholder}</span>
+          <div className={styles.placeholderContainer}>
+            <span className={styles.placeholder}>{placeholder}</span>
+            <span className={styles.instruction}>(Use your mouse or finger)</span>
+          </div>
         )}
         <div className={styles.baseline} aria-hidden="true" />
       </div>
@@ -231,7 +237,7 @@ export function SignaturePad({
           aria-label="Clear signature"
         >
           <Eraser size={14} />
-          Clear
+          Clear Signature
         </button>
       )}
     </div>

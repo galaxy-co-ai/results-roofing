@@ -9,6 +9,24 @@
   background-color: var(--rr-color-bg-primary);
 }
 
+/* ========================================
+   PROGRESS SECTION
+   ======================================== */
+
+.progressSection {
+  background-color: var(--rr-color-bg-secondary);
+  border-bottom: 1px solid var(--rr-color-border-default);
+  padding-bottom: var(--rr-space-3);
+}
+
+.addressSubtitle {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--rr-color-text-secondary);
+  margin: 0;
+  padding: 0 var(--rr-space-page-gutter);
+}
+
 .container {
   width: 100%;
   max-width: 560px;
@@ -113,8 +131,91 @@
 }
 
 /* ========================================
+   STICKY CTA (Mobile Only)
+   ======================================== */
+
+.stickyCta {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--rr-space-3) var(--rr-space-4);
+  background: var(--rr-color-white);
+  border-top: 1px solid var(--rr-color-border-default);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  animation: slideUpSticky 0.3s ease-out;
+}
+
+@keyframes slideUpSticky {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.stickyButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  width: 100%;
+  height: 52px;
+  padding: 0 var(--rr-space-5);
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+  border: none;
+  border-radius: var(--rr-radius-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+}
+
+.stickyButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #16A34A 0%, #15803D 100%);
+}
+
+.stickyButton:disabled,
+.stickyButtonDisabled {
+  background: linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
    RESPONSIVE
    ======================================== */
+
+/* Show sticky CTA only on mobile */
+@media (max-width: 639px) {
+  .stickyCta {
+    display: block;
+  }
+
+  .main {
+    padding-bottom: 80px; /* Space for sticky CTA */
+  }
+}
 
 @media (min-width: 640px) {
   .container {
@@ -127,7 +228,16 @@
    ======================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .backLink {
+  .backLink,
+  .stickyButton {
     transition: none;
+  }
+
+  .stickyCta {
+    animation: none;
+  }
+
+  .spinner {
+    animation: none;
   }
 }

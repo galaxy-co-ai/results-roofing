@@ -9,16 +9,33 @@
   gap: var(--rr-space-2);
 }
 
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--rr-color-text-primary);
+}
+
+.required {
+  color: var(--rr-color-error, #DC2626);
+}
+
 .canvasWrapper {
   position: relative;
   width: 100%;
-  height: 120px;
+  height: 140px;
   background: var(--rr-color-white);
-  border: 1px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-md);
+  border: 2px dashed var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
   overflow: hidden;
   touch-action: none;
   cursor: crosshair;
+  transition: border-color 0.2s ease, border-style 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Green border when signature is present */
+.canvasWrapper.hasSigned {
+  border: 2px solid var(--rr-color-success, #22C55E);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
 }
 
 .canvas {
@@ -27,15 +44,28 @@
   height: 100%;
 }
 
-.placeholder {
+.placeholderContainer {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 14px;
-  color: var(--rr-color-text-tertiary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
   pointer-events: none;
   user-select: none;
+}
+
+.placeholder {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--rr-color-text-secondary);
+}
+
+.instruction {
+  font-size: 0.75rem;
+  color: var(--rr-color-text-tertiary);
 }
 
 .baseline {
@@ -51,22 +81,23 @@
 .clearButton {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  align-self: flex-end;
-  padding: var(--rr-space-1) var(--rr-space-2);
-  font-size: 12px;
+  gap: 6px;
+  align-self: flex-start;
+  padding: var(--rr-space-2) var(--rr-space-3);
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--rr-color-text-secondary);
-  background: transparent;
-  border: none;
-  border-radius: var(--rr-radius-sm);
+  background: var(--rr-color-gray-50);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
   cursor: pointer;
-  transition: color 0.15s ease, background 0.15s ease;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 }
 
 .clearButton:hover {
-  color: var(--rr-color-text-primary);
-  background: var(--rr-color-gray-100);
+  color: var(--rr-color-error, #DC2626);
+  background: var(--rr-color-white);
+  border-color: var(--rr-color-error, #DC2626);
 }
 
 .clearButton:focus-visible {
@@ -90,7 +121,13 @@
   box-shadow: 0 0 0 3px rgba(74, 124, 171, 0.1);
 }
 
-/* Responsive */
+/* Responsive - Mobile first: larger touch target on mobile */
+@media (max-width: 639px) {
+  .canvasWrapper {
+    height: 160px;
+  }
+}
+
 @media (min-width: 640px) {
   .canvasWrapper {
     height: 140px;
