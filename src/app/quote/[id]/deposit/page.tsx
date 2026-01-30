@@ -36,14 +36,37 @@ export default async function DepositPage({ params }: DepositPageProps) {
     redirect('/quote/new');
   }
 
-  // Step guard: Ensure a tier is selected (Stage 2 completed)
-  if (!quote.selectedTier) {
-    redirect(`/quote/${quoteId}/customize`);
-  }
+  // DEBUG: Show what's missing instead of redirecting
+  const missingFields: string[] = [];
+  if (!quote.selectedTier) missingFields.push('selectedTier');
+  if (!quote.scheduledDate) missingFields.push('scheduledDate');
+  if (!quote.scheduledSlotId) missingFields.push('scheduledSlotId');
 
-  // Step guard: Ensure schedule exists (Stage 3 scheduling completed)
-  if (!quote.scheduledDate || !quote.scheduledSlotId) {
-    redirect(`/quote/${quoteId}/schedule`);
+  if (missingFields.length > 0) {
+    return (
+      <>
+        <Header />
+        <main className={styles.main}>
+          <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
+            <h1>Debug: Missing Quote Data</h1>
+            <p>Quote ID: {quoteId}</p>
+            <p>Missing fields: {missingFields.join(', ')}</p>
+            <p>Current quote data:</p>
+            <pre style={{ background: '#f5f5f5', padding: '1rem', overflow: 'auto', fontSize: '12px' }}>
+              {JSON.stringify({
+                selectedTier: quote.selectedTier,
+                scheduledDate: quote.scheduledDate,
+                scheduledSlotId: quote.scheduledSlotId,
+                status: quote.status,
+              }, null, 2)}
+            </pre>
+            <p style={{ marginTop: '1rem' }}>
+              <a href={`/quote/${quoteId}/customize`}>← Back to customize</a>
+            </p>
+          </div>
+        </main>
+      </>
+    );
   }
 
   const totalPrice = quote.totalPrice ? parseFloat(quote.totalPrice) : 0;
