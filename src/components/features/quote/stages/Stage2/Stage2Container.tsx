@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useQuoteWizard } from '../../QuoteWizardProvider';
 import { PackageSelection } from './PackageSelection';
 import { ScheduleSelection } from './ScheduleSelection';
-import { FinancingSelection } from './FinancingSelection';
+// Financing selection skipped - users handle financing in dashboard after deposit
 import styles from './Stage2.module.css';
 
 interface Stage2ContainerProps {
@@ -31,8 +31,6 @@ function getSubStepLabel(subStep: string): string {
       return 'Choose your roofing package';
     case 'schedule':
       return 'Select installation date';
-    case 'financing':
-      return 'Choose payment option';
     default:
       return 'Customize your order';
   }
@@ -40,19 +38,16 @@ function getSubStepLabel(subStep: string): string {
 
 /**
  * Stage 2 Container - Customize Your Order
- * 
+ *
  * Sub-steps:
  * 1. PackageSelection - Choose Good/Better/Best
- * 2. ScheduleSelection - Pick installation date
- * 3. FinancingSelection - Choose payment option
+ * 2. ScheduleSelection - Pick installation date → redirects to deposit page
  */
 export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
   const router = useRouter();
   const {
     state,
     selectTier,
-    setSchedule,
-    setFinancing,
     goToSubStep,
     setQuoteId,
     setLoading,
@@ -160,52 +155,6 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
     [quoteId, setLoading, setError, router]
   );
 
-  const handleFinancingSelect = useCallback(
-    (term: 'pay-full' | '12' | '24') => {
-      setFinancing(term);
-    },
-    [setFinancing]
-  );
-
-  const handleContinueToCheckout = useCallback(async () => {
-    if (!state.selectedTier || !state.scheduledDate || !state.financingTerm || !state.timeSlot) {
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Save schedule to database
-      const response = await fetch(`/api/quotes/${quoteId}/schedule`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          scheduledDate: state.scheduledDate.toISOString(),
-          timeSlot: state.timeSlot,
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        }),
-      });
-
-      // Always parse response to ensure request completes fully
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to save schedule');
-      }
-
-      // Navigate to deposit page for signature + payment
-      router.push(`/quote/${quoteId}/deposit`);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
-      setLoading(false);
-    }
-  }, [quoteId, state.selectedTier, state.scheduledDate, state.timeSlot, state.financingTerm, router, setLoading, setError]);
-
-  // Get selected tier data
-  const selectedTierData = state.selectedTier
-    ? quoteData.tiers.find((t) => t.tier.toLowerCase() === state.selectedTier)
-    : null;
 
   // Render the current sub-step
   const renderSubStep = () => {
@@ -236,22 +185,6 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
             selectedTimeSlot={state.timeSlot}
             onScheduleSelect={handleScheduleSelect}
             onBack={() => goToSubStep('package')}
-            isLoading={state.isLoading}
-          />
-        );
-
-      case 'financing':
-        // Guard handled by useEffect - just return null if prerequisites not met
-        if (!state.selectedTier || !state.scheduledDate) {
-          return null;
-        }
-        return (
-          <FinancingSelection
-            totalAmount={selectedTierData?.totalPrice ?? 0}
-            selectedTerm={state.financingTerm}
-            onTermSelect={handleFinancingSelect}
-            onContinue={handleContinueToCheckout}
-            onBack={() => goToSubStep('schedule')}
             isLoading={state.isLoading}
           />
         );
