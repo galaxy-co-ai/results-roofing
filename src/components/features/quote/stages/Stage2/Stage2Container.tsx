@@ -58,9 +58,6 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const previousSubStep = useRef(state.currentSubStep);
 
-  // Flag to prevent guards from running during navigation (ref for synchronous updates)
-  const isNavigatingRef = useRef(false);
-
   // Ensure quote ID is set in context
   useEffect(() => {
     if (!state.quoteId && quoteId) {
@@ -78,15 +75,6 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
     }
   }, [state.currentSubStep]);
 
-  // Guard: redirect to correct sub-step if prerequisites aren't met
-  useEffect(() => {
-    // Don't redirect if we're navigating away
-    if (isNavigatingRef.current) return;
-
-    if (state.currentSubStep === 'schedule' && !state.selectedTier) {
-      goToSubStep('package');
-    }
-  }, [state.currentSubStep, state.selectedTier, goToSubStep]);
 
   const handleTierSelect = useCallback(
     async (tier: 'good' | 'better' | 'best') => {
@@ -119,8 +107,6 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
 
   const handleScheduleSelect = useCallback(
     async (date: Date, timeSlot: 'morning' | 'afternoon') => {
-      // Prevent guard from redirecting during navigation (set synchronously via ref)
-      isNavigatingRef.current = true;
       setLoading(true);
       setError(null);
 
@@ -142,11 +128,10 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
           throw new Error(data.error || 'Failed to save schedule');
         }
 
-        // Navigate directly to deposit page (skip financing selection)
+        // Navigate directly to deposit page
         router.push(`/quote/${quoteId}/deposit`);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Something went wrong');
-        isNavigatingRef.current = false;
         setLoading(false);
       }
     },
