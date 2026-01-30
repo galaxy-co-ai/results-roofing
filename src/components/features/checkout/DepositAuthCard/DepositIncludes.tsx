@@ -1,4 +1,4 @@
-import { Check, Calendar, RefreshCw, DollarSign, Shield } from 'lucide-react';
+import { Check } from 'lucide-react';
 import styles from './DepositIncludes.module.css';
 
 interface DepositIncludesProps {
@@ -19,22 +19,10 @@ export function DepositIncludes({ installDate, totalPrice, depositAmount }: Depo
   });
 
   const benefits = [
-    {
-      icon: Calendar,
-      text: `Secures your ${formattedDate} installation date`,
-    },
-    {
-      icon: RefreshCw,
-      text: 'Fully refundable if you cancel within 3 business days',
-    },
-    {
-      icon: DollarSign,
-      text: `Applied toward your $${totalPrice.toLocaleString()} total project cost`,
-    },
-    {
-      icon: Shield,
-      text: 'Protects you from price increases',
-    },
+    `Secures your ${formattedDate} installation date`,
+    'Fully refundable if you cancel within 3 business days',
+    `Applied toward your $${totalPrice.toLocaleString()} total project cost`,
+    'Protects you from price increases',
   ];
 
   return (
@@ -43,17 +31,14 @@ export function DepositIncludes({ installDate, totalPrice, depositAmount }: Depo
         Your ${depositAmount} Deposit Includes:
       </h3>
       <ul className={styles.list}>
-        {benefits.map((benefit, index) => {
-          const Icon = benefit.icon;
-          return (
-            <li key={index} className={styles.item}>
-              <div className={styles.iconWrapper}>
-                <Check size={14} className={styles.checkIcon} aria-hidden="true" />
-              </div>
-              <span className={styles.text}>{benefit.text}</span>
-            </li>
-          );
-        })}
+        {benefits.map((text, index) => (
+          <li key={index} className={styles.item}>
+            <div className={styles.iconWrapper}>
+              <Check size={14} className={styles.checkIcon} aria-hidden="true" />
+            </div>
+            <span className={styles.text}>{text}</span>
+          </li>
+        ))}
       </ul>
     </div>
   );

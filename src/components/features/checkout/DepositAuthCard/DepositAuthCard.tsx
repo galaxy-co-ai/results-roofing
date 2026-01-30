@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Home, Sparkles, Calendar, Check, CreditCard, Shield, ArrowRight, Lock, ExternalLink, CalendarCheck, ShieldCheck } from 'lucide-react';
+import { Home, Sparkles, Calendar, Check, CreditCard, ArrowRight, Lock, ExternalLink, CalendarCheck, ShieldCheck } from 'lucide-react';
 import { SignaturePad } from '@/components/ui/SignaturePad/SignaturePad';
 import { BenefitPills } from './BenefitPills';
 import { DepositIncludes } from './DepositIncludes';
