@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
-import { Star, Pause, Play } from 'lucide-react';
+import { Star } from 'lucide-react';
 import styles from './ReviewsTicker.module.css';
 
 const REVIEWS = [
@@ -64,12 +64,12 @@ export function ReviewsTicker() {
   const scrollStartX = useRef(0);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    if (!isPaused || !containerRef.current) return;
+    if (!containerRef.current) return;
     setIsDragging(true);
     dragStartX.current = e.clientX;
     scrollStartX.current = containerRef.current.scrollLeft;
     e.preventDefault();
-  }, [isPaused]);
+  }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!isDragging || !containerRef.current) return;
@@ -81,26 +81,21 @@ export function ReviewsTicker() {
     setIsDragging(false);
   }, []);
 
+  const handleMouseEnter = useCallback(() => {
+    setIsPaused(true);
+  }, []);
+
   const handleMouseLeave = useCallback(() => {
     setIsDragging(false);
+    setIsPaused(false);
   }, []);
 
   return (
     <section className={styles.reviewsTicker} aria-label="Customer reviews">
-      <div className={styles.reviewsHeader}>
-        <span className={styles.reviewsTitle}>What Our Customers Say</span>
-        <button
-          type="button"
-          className={styles.tickerControl}
-          onClick={() => setIsPaused(!isPaused)}
-          aria-label={isPaused ? 'Play reviews' : 'Pause reviews'}
-        >
-          {isPaused ? <Play /> : <Pause />}
-        </button>
-      </div>
       <div
         ref={containerRef}
         className={`${styles.tickerContainer} ${isPaused ? styles.tickerContainerPaused : ''} ${isDragging ? styles.tickerContainerDragging : ''}`}
+        onMouseEnter={handleMouseEnter}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}

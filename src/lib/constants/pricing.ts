@@ -9,8 +9,8 @@
  * Deposit calculation rules per F27
  */
 export const DEPOSIT_CONFIG = {
-  /** Percentage of total price for deposit (10%) */
-  percentage: 0.1,
+  /** Percentage of total price for deposit (5%) */
+  percentage: 0.05,
   /** Minimum deposit amount in dollars */
   minimum: 500,
   /** Maximum deposit amount in dollars */

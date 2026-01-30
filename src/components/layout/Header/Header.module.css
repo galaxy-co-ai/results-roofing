@@ -21,15 +21,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 720px;
-  margin: 0 auto;
+  width: 100%;
   padding: 12px 24px;
   min-height: 56px;
 }
 
 @media (min-width: 768px) {
   .container {
-    padding: 14px 32px;
+    padding: 14px 48px;
     min-height: 60px;
   }
 }
@@ -82,17 +81,17 @@
 
 .brandText {
   display: inline;
-  font-size: 16px;
-  letter-spacing: -0.02em;
+  font-size: 20px;
+  letter-spacing: -0.03em;
 }
 
 .brandName {
-  font-weight: 600;
+  font-weight: 700;
   color: #0f172a;
 }
 
 .brandSuffix {
-  font-weight: 500;
+  font-weight: 600;
   background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
   background-clip: text;
   -webkit-background-clip: text;
@@ -101,18 +100,18 @@
 
 @media (min-width: 768px) {
   .appIcon {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
   }
 
   .appIcon svg {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
   }
 
   .brandText {
-    font-size: 18px;
+    font-size: 24px;
   }
 }
 

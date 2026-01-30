@@ -67,17 +67,16 @@ export function ScheduleContainer({ quoteId, quoteData }: ScheduleContainerProps
     }
   }, [quoteId, state.quoteId, setQuoteId]);
 
-  // Generate available dates (next 14 days, excluding weekends)
+  // Generate available dates (next 10 weekdays starting Feb 3, 2026)
   const getAvailableDates = useCallback(() => {
     const dates: Date[] = [];
-    const today = new Date();
     let daysAdded = 0;
-    const currentDate = new Date(today);
-    currentDate.setDate(currentDate.getDate() + 3); // Start 3 days from now
+    // Force start from February 3, 2026 (Monday)
+    const currentDate = new Date(2026, 1, 3);
 
     while (daysAdded < 10) {
       const dayOfWeek = currentDate.getDay();
-      if (dayOfWeek !== 0 && dayOfWeek !== 6) { // Skip weekends
+      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
         dates.push(new Date(currentDate));
         daysAdded++;
       }

@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronRight, Loader2, AlertCircle, CheckCircle, CreditCard } from 'lucide-react';
+import { ChevronRight, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
 import { AddressAutocomplete, type ParsedAddress } from '@/components/features/address/AddressAutocomplete';
 import styles from './HeroAddressForm.module.css';
 
@@ -75,9 +75,9 @@ export function HeroAddressForm({ className = '' }: HeroAddressFormProps) {
       {/* Card Header */}
       <div className={styles.cardHeader}>
         <div className={styles.headerText}>
-          <h2 className={styles.cardTitle}>Get a roof quote in minutes</h2>
+          <h2 className={styles.cardTitle}>Get Started Here</h2>
           <p className={styles.cardSubtitle}>
-            Instant estimate • No salesperson required
+            No Credit Card Required
           </p>
         </div>
       </div>
@@ -85,7 +85,6 @@ export function HeroAddressForm({ className = '' }: HeroAddressFormProps) {
       {/* Card Body */}
       <div className={styles.cardBody}>
         <div className={styles.formWrapper}>
-          <label className={styles.inputLabel}>Property address</label>
           
           {selectedAddress ? (
             <div className={styles.selectedAddressPreview}>
@@ -182,12 +181,6 @@ export function HeroAddressForm({ className = '' }: HeroAddressFormProps) {
 
       {/* Card Footer */}
       <div className={styles.cardFooter}>
-        <div className={styles.trustGrid}>
-          <div className={styles.trustItem}>
-            <CreditCard size={16} className={styles.trustIcon} />
-            <span>No credit card</span>
-          </div>
-        </div>
         <div className={styles.serviceArea}>
           <span className={styles.serviceAreaLabel}>Serving:</span>
           <span className={styles.serviceAreaStates}>{SERVICE_STATES.join(' · ')}</span>
