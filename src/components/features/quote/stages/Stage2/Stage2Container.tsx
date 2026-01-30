@@ -160,8 +160,8 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         throw new Error(data.error || 'Failed to save schedule');
       }
 
-      // Navigate to success page after confirmed save
-      router.push(`/quote/${quoteId}/success`);
+      // Navigate to deposit page for signature + payment
+      router.push(`/quote/${quoteId}/deposit`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
       setLoading(false);

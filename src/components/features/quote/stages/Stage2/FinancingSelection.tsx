@@ -73,7 +73,7 @@ export function FinancingSelection({
             </>
           ) : (
             <>
-              Continue to Checkout
+              Secure My Spot
               <ChevronRight size={18} aria-hidden="true" />
             </>
           )}
