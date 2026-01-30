@@ -119,11 +119,37 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
   );
 
   const handleScheduleSelect = useCallback(
-    (date: Date, timeSlot: 'morning' | 'afternoon') => {
+    async (date: Date, timeSlot: 'morning' | 'afternoon') => {
       setSchedule(date, timeSlot);
-      goToSubStep('financing');
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Save schedule to database
+        const response = await fetch(`/api/quotes/${quoteId}/schedule`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            scheduledDate: date.toISOString(),
+            timeSlot,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to save schedule');
+        }
+
+        // Navigate directly to deposit page (skip financing selection)
+        router.push(`/quote/${quoteId}/deposit`);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Something went wrong');
+        setLoading(false);
+      }
     },
-    [setSchedule, goToSubStep]
+    [quoteId, setSchedule, setLoading, setError, router]
   );
 
   const handleFinancingSelect = useCallback(
