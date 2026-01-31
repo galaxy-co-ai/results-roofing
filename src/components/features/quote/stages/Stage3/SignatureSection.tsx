@@ -5,7 +5,7 @@ import { SignatureCapture } from '@/components/features/contract/SignatureCaptur
 import styles from './Stage3.module.css';
 
 interface SignatureSectionProps {
-  onSignatureSubmit: (signature: string) => Promise<void>;
+  onSignatureSubmit: (signature: string, email: string) => Promise<void>;
   isComplete: boolean;
   isEnabled: boolean;
   isLoading?: boolean;

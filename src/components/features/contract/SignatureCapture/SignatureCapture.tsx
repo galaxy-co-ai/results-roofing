@@ -6,7 +6,7 @@ import styles from './SignatureCapture.module.css';
 
 interface SignatureCaptureProps {
   expectedName?: string;
-  onSignatureSubmit: (signature: string) => Promise<void>;
+  onSignatureSubmit: (signature: string, email: string) => Promise<void>;
   disabled?: boolean;
   className?: string;
 }
@@ -28,6 +28,12 @@ function isValidSignature(signature: string, expectedName?: string): boolean {
   return true;
 }
 
+function isValidEmail(email: string): boolean {
+  const trimmed = email.trim();
+  // Basic email validation
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
+}
+
 /**
  * SignatureCapture - Typed signature input with validation
  *
@@ -42,11 +48,12 @@ export function SignatureCapture({
   className = '',
 }: SignatureCaptureProps) {
   const [signature, setSignature] = useState('');
+  const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [agreed, setAgreed] = useState(false);
 
-  const isValid = isValidSignature(signature, expectedName) && agreed;
+  const isValid = isValidSignature(signature, expectedName) && isValidEmail(email) && agreed;
 
   const handleSubmit = useCallback(async () => {
     if (!isValid || isSubmitting || disabled) return;
@@ -55,15 +62,20 @@ export function SignatureCapture({
     setError(null);
 
     try {
-      await onSignatureSubmit(signature.trim());
+      await onSignatureSubmit(signature.trim(), email.trim());
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to submit signature');
       setIsSubmitting(false);
     }
-  }, [isValid, isSubmitting, disabled, signature, onSignatureSubmit]);
+  }, [isValid, isSubmitting, disabled, signature, email, onSignatureSubmit]);
 
   const handleSignatureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignature(e.target.value);
+    if (error) setError(null);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
     if (error) setError(null);
   };
 
@@ -120,6 +132,32 @@ export function SignatureCapture({
         </div>
       )}
 
+      {/* Email input */}
+      <div className={styles.inputWrapper}>
+        <label htmlFor="email-input" className={styles.inputLabel}>
+          Your Email
+        </label>
+        <div className={styles.inputContainer}>
+          <input
+            id="email-input"
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+            placeholder="your@email.com"
+            disabled={disabled || isSubmitting}
+            className={styles.input}
+            autoComplete="email"
+            aria-describedby="email-help"
+          />
+          {email.length > 0 && isValidEmail(email) && (
+            <CheckCircle size={20} className={styles.validIcon} aria-hidden="true" />
+          )}
+        </div>
+        <p id="email-help" className={styles.inputHelp}>
+          We&apos;ll send your contract and receipt here
+        </p>
+      </div>
+
       {/* Terms agreement */}
       <label className={styles.termsLabel}>
         <input
@@ -168,9 +206,9 @@ export function SignatureCapture({
       </button>
 
       {/* Validation hints */}
-      {!isValid && signature.length > 0 && (
+      {!isValid && (signature.length > 0 || email.length > 0) && (
         <div className={styles.hints}>
-          {!signature.includes(' ') && (
+          {signature.length > 0 && !signature.includes(' ') && (
             <p className={styles.hint}>
               <AlertCircle size={12} />
               Please enter your full name (first and last)
@@ -180,6 +218,12 @@ export function SignatureCapture({
             <p className={styles.hint}>
               <AlertCircle size={12} />
               Signature must match: {expectedName}
+            </p>
+          )}
+          {email.length > 0 && !isValidEmail(email) && (
+            <p className={styles.hint}>
+              <AlertCircle size={12} />
+              Please enter a valid email address
             </p>
           )}
           {!agreed && (

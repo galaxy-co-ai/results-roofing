@@ -119,7 +119,7 @@ export function Stage3Container({ quoteId, quoteData }: Stage3ContainerProps) {
   }, [agreeToContract]);
 
   const handleSignatureSubmit = useCallback(
-    async (signature: string) => {
+    async (signature: string, email: string) => {
       setLoading(true);
       setError(null);
 
@@ -130,6 +130,7 @@ export function Stage3Container({ quoteId, quoteData }: Stage3ContainerProps) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             signature,
+            email,
             agreedToTerms: true,
           }),
         });

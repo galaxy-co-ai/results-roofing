@@ -5,10 +5,11 @@ import { db, schema, eq } from '@/db/index';
 
 const contractSchema = z.object({
   signature: z.string().min(3, 'Signature must be at least 3 characters'),
+  email: z.string().email('Please enter a valid email address'),
   agreedToTerms: z.boolean().refine((val) => val === true, {
     message: 'You must agree to the terms',
   }),
-  signedAt: z.string().datetime({ message: 'Invalid date format' }),
+  signedAt: z.string().datetime({ message: 'Invalid date format' }).optional(),
 });
 
 export async function POST(
@@ -48,23 +49,26 @@ export async function POST(
       );
     }
 
-    const { signedAt } = result.data;
+    const { email, signedAt } = result.data;
 
-    // Get customer email from lead or use placeholder
-    const customerEmail = quote.lead?.email || `quote-${quoteId}@placeholder.local`;
+    // Use email from request (provided during signature)
+    const customerEmail = email;
 
     // Check if contract already exists for this quote
     const existingContract = await db.query.contracts.findFirst({
       where: eq(schema.contracts.quoteId, quoteId),
     });
 
+    const signedAtDate = signedAt ? new Date(signedAt) : new Date();
+
     if (existingContract) {
-      // Update existing contract
+      // Update existing contract with email and signed status
       await db
         .update(schema.contracts)
         .set({
+          customerEmail,
           status: 'signed',
-          signedAt: new Date(signedAt),
+          signedAt: signedAtDate,
           updatedAt: new Date(),
         })
         .where(eq(schema.contracts.quoteId, quoteId));
@@ -74,7 +78,7 @@ export async function POST(
         quoteId,
         customerEmail,
         status: 'signed',
-        signedAt: new Date(signedAt),
+        signedAt: signedAtDate,
       });
     }
 
@@ -86,6 +90,17 @@ export async function POST(
         updatedAt: new Date(),
       })
       .where(eq(schema.quotes.id, quoteId));
+
+    // Also update the lead with the email if it doesn't have one
+    if (quote.leadId && !quote.lead?.email) {
+      await db
+        .update(schema.leads)
+        .set({
+          email: customerEmail,
+          updatedAt: new Date(),
+        })
+        .where(eq(schema.leads.id, quote.leadId));
+    }
 
     return NextResponse.json({
       success: true,
