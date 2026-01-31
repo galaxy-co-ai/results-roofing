@@ -1,0 +1,233 @@
+/* =================================================
+   CHECKOUT PAYMENT STEP
+   Stripe payment form
+   ================================================= */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+/* =================================================
+   HEADER
+   ================================================= */
+
+.header {
+  text-align: center;
+}
+
+.iconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: var(--rr-color-sandstone-light, #f5f0e1);
+  color: var(--rr-color-sandstone-dark, #8b7035);
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  margin: 0 0 0.25rem;
+}
+
+.subtitle {
+  font-size: 0.9375rem;
+  color: var(--rr-color-gray-600, #525252);
+  margin: 0;
+}
+
+/* =================================================
+   DEPOSIT CARD
+   ================================================= */
+
+.depositCard {
+  padding: 1.25rem;
+  background-color: var(--rr-color-green-50, #f0fdf4);
+  border: 1px solid var(--rr-color-green-200, #bbf7d0);
+  border-radius: 12px;
+}
+
+.depositHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.depositLabel {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--rr-color-charcoal, #1a1a1a);
+}
+
+.depositAmount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--rr-color-green-700, #15803d);
+}
+
+.depositFeatures {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.depositFeatures li {
+  font-size: 0.8125rem;
+  color: var(--rr-color-gray-700, #404040);
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.depositFeatures li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--rr-color-green-600, #16a34a);
+  font-weight: 700;
+}
+
+/* =================================================
+   PAYMENT ERROR
+   ================================================= */
+
+.paymentError {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: var(--rr-color-red-50, #fef2f2);
+  border: 1px solid var(--rr-color-red-200, #fecaca);
+  border-radius: 8px;
+  color: var(--rr-color-red-700, #b91c1c);
+}
+
+.paymentError svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.paymentErrorContent {
+  flex: 1;
+}
+
+.paymentErrorTitle {
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+}
+
+.paymentErrorMessage {
+  font-size: 0.875rem;
+  margin: 0 0 0.75rem;
+}
+
+.retryButton {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--rr-color-red-700, #b91c1c);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.retryButton:hover {
+  text-decoration: none;
+}
+
+/* =================================================
+   PAYMENT FORM WRAPPER
+   ================================================= */
+
+.paymentFormWrapper {
+  background-color: white;
+  border: 1px solid var(--rr-color-gray-200, #e5e5e5);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+/* =================================================
+   SECURITY NOTE
+   ================================================= */
+
+.securityNote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: var(--rr-color-gray-50, #fafafa);
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  color: var(--rr-color-gray-600, #525252);
+}
+
+.securityNote svg {
+  color: var(--rr-color-green-600, #16a34a);
+}
+
+/* =================================================
+   DESKTOP NAV
+   ================================================= */
+
+.desktopNav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .desktopNav {
+    display: flex;
+    justify-content: flex-start;
+  }
+}
+
+/* =================================================
+   TERMS
+   ================================================= */
+
+.terms {
+  font-size: 0.75rem;
+  color: var(--rr-color-gray-500, #737373);
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.terms a {
+  color: var(--rr-color-sandstone-dark, #8b7035);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.terms a:hover {
+  text-decoration: none;
+}
+
+/* =================================================
+   ERROR CONTAINER
+   ================================================= */
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--rr-color-gray-600, #525252);
+}
+
+.errorContainer svg {
+  color: var(--rr-color-red-500, #ef4444);
+}

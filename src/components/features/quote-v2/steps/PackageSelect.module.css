@@ -1,0 +1,355 @@
+/* =================================================
+   PACKAGE SELECT STEP
+   Tier selection cards
+   ================================================= */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+/* =================================================
+   HEADER
+   ================================================= */
+
+.header {
+  text-align: center;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  margin: 0 0 0.25rem;
+}
+
+.subtitle {
+  font-size: 0.9375rem;
+  color: var(--rr-color-gray-600, #525252);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 1.75rem;
+  }
+}
+
+/* =================================================
+   TIER CARDS GRID
+   ================================================= */
+
+.tiers {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
+/* =================================================
+   TIER CARD
+   ================================================= */
+
+.tierCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  background-color: white;
+  border: 2px solid var(--rr-color-gray-200, #e5e5e5);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.tierCard:hover:not(:disabled) {
+  border-color: var(--rr-color-sandstone, #c4a35a);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.tierCard:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Selected state */
+.tierCard.selected {
+  border-color: var(--rr-color-sandstone, #c4a35a);
+  background-color: var(--rr-color-sandstone-light, #f5f0e1);
+  box-shadow: 0 0 0 3px rgba(196, 163, 90, 0.2);
+}
+
+/* Popular/recommended card */
+.tierCard.popular {
+  border-color: var(--rr-color-sandstone, #c4a35a);
+}
+
+/* =================================================
+   BADGE (Most Popular)
+   ================================================= */
+
+.badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.25rem 0.75rem;
+  background-color: var(--rr-color-sandstone, #c4a35a);
+  color: white;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* =================================================
+   SELECTED INDICATOR
+   ================================================= */
+
+.selectedIndicator {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--rr-color-sandstone, #c4a35a);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =================================================
+   CARD HEADER
+   ================================================= */
+
+.tierHeader {
+  text-align: center;
+}
+
+.tierIcon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 0.75rem;
+  border-radius: 12px;
+  background-color: var(--rr-color-gray-100, #f5f5f5);
+  color: var(--rr-color-gray-600, #525252);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tierCard.selected .tierIcon {
+  background-color: var(--rr-color-sandstone, #c4a35a);
+  color: white;
+}
+
+.tierCard.popular .tierIcon {
+  background-color: var(--rr-color-sandstone-light, #f5f0e1);
+  color: var(--rr-color-sandstone-dark, #8b7035);
+}
+
+.tierName {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  margin: 0 0 0.25rem;
+}
+
+.tierDescription {
+  font-size: 0.8125rem;
+  color: var(--rr-color-gray-600, #525252);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* =================================================
+   PRICE
+   ================================================= */
+
+.tierPrice {
+  text-align: center;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--rr-color-gray-200, #e5e5e5);
+  border-bottom: 1px solid var(--rr-color-gray-200, #e5e5e5);
+}
+
+.priceRange {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--rr-color-charcoal, #1a1a1a);
+}
+
+.priceNote {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--rr-color-gray-500, #737373);
+  margin-top: 0.125rem;
+}
+
+/* =================================================
+   FEATURES LIST
+   ================================================= */
+
+.tierFeatures {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--rr-color-gray-700, #404040);
+  line-height: 1.4;
+}
+
+.featureCheck {
+  color: var(--rr-color-green-600, #16a34a);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.featureMore {
+  font-size: 0.8125rem;
+  color: var(--rr-color-gray-500, #737373);
+  font-style: italic;
+  padding-left: 1.125rem;
+}
+
+/* =================================================
+   WARRANTY
+   ================================================= */
+
+.warranty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.5rem;
+  background-color: var(--rr-color-gray-50, #fafafa);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--rr-color-gray-600, #525252);
+}
+
+.tierCard.selected .warranty {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+/* =================================================
+   COMPARE BUTTON
+   ================================================= */
+
+.compareButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 0.9375rem;
+  color: var(--rr-color-sandstone-dark, #8b7035);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.compareButton:hover {
+  color: var(--rr-color-charcoal, #1a1a1a);
+}
+
+/* =================================================
+   DESKTOP NAV
+   ================================================= */
+
+.desktopNav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .desktopNav {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 0.5rem;
+  }
+}
+
+/* =================================================
+   COMPARISON TABLE (Modal)
+   ================================================= */
+
+.comparisonTable {
+  overflow-x: auto;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+}
+
+.comparisonTable table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.comparisonTable th,
+.comparisonTable td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--rr-color-gray-200, #e5e5e5);
+}
+
+.comparisonTable th {
+  font-weight: 600;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  background-color: var(--rr-color-gray-50, #fafafa);
+}
+
+.comparisonTable th:first-child {
+  width: 40%;
+}
+
+.comparisonTable td:first-child {
+  font-weight: 500;
+  color: var(--rr-color-gray-700, #404040);
+}
+
+.comparisonTable td {
+  color: var(--rr-color-gray-600, #525252);
+}
+
+/* =================================================
+   REDUCED MOTION
+   ================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .tierCard {
+    transition: none;
+  }
+
+  .tierCard:hover:not(:disabled) {
+    transform: none;
+  }
+}

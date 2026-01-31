@@ -1,0 +1,304 @@
+/* =================================================
+   CHECKOUT SCHEDULE STEP
+   Date and time picker
+   ================================================= */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+/* =================================================
+   HEADER
+   ================================================= */
+
+.header {
+  text-align: center;
+}
+
+.iconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: var(--rr-color-sandstone-light, #f5f0e1);
+  color: var(--rr-color-sandstone-dark, #8b7035);
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  margin: 0 0 0.25rem;
+}
+
+.subtitle {
+  font-size: 0.9375rem;
+  color: var(--rr-color-gray-600, #525252);
+  margin: 0;
+}
+
+/* =================================================
+   SECTION TITLES
+   ================================================= */
+
+.sectionTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  margin: 0 0 0.75rem;
+}
+
+/* =================================================
+   DATE SECTION
+   ================================================= */
+
+.dateSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dateHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.weekNav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.weekNavButton {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--rr-color-gray-300, #d4d4d4);
+  border-radius: 8px;
+  color: var(--rr-color-gray-600, #525252);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  /* Touch target: 44x44px minimum per Apple HIG */
+}
+
+.weekNavButton:hover:not(:disabled) {
+  border-color: var(--rr-color-gray-400, #a3a3a3);
+  background-color: var(--rr-color-gray-50, #fafafa);
+}
+
+.weekNavButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.weekLabel {
+  font-size: 0.8125rem;
+  color: var(--rr-color-gray-600, #525252);
+  min-width: 140px;
+  text-align: center;
+}
+
+/* =================================================
+   DATE GRID
+   ================================================= */
+
+.dateGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+@media (max-width: 480px) {
+  .dateGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.dateCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.75rem 0.5rem;
+  background-color: white;
+  border: 1px solid var(--rr-color-gray-200, #e5e5e5);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dateCard:hover {
+  border-color: var(--rr-color-sandstone, #c4a35a);
+  background-color: var(--rr-color-sandstone-light, #f5f0e1);
+}
+
+.dateCard.dateSelected {
+  border-color: var(--rr-color-sandstone, #c4a35a);
+  background-color: var(--rr-color-sandstone, #c4a35a);
+  color: white;
+}
+
+.dateDayName {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--rr-color-gray-500, #737373);
+}
+
+.dateCard.dateSelected .dateDayName {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.dateDayNumber {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.dateMonth {
+  font-size: 0.6875rem;
+  color: var(--rr-color-gray-500, #737373);
+}
+
+.dateCard.dateSelected .dateMonth {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* =================================================
+   TIME SECTION
+   ================================================= */
+
+.timeSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timeSlots {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.timeSlot {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: white;
+  border: 1px solid var(--rr-color-gray-200, #e5e5e5);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.timeSlot:hover {
+  border-color: var(--rr-color-sandstone, #c4a35a);
+}
+
+.timeSlot.timeSelected {
+  border-color: var(--rr-color-sandstone, #c4a35a);
+  background-color: var(--rr-color-sandstone-light, #f5f0e1);
+}
+
+.timeSlot svg {
+  color: var(--rr-color-gray-500, #737373);
+  flex-shrink: 0;
+}
+
+.timeSlot.timeSelected svg {
+  color: var(--rr-color-sandstone-dark, #8b7035);
+}
+
+.timeContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeLabel {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--rr-color-charcoal, #1a1a1a);
+}
+
+.timeRange {
+  font-size: 0.8125rem;
+  color: var(--rr-color-gray-600, #525252);
+}
+
+/* =================================================
+   SUMMARY
+   ================================================= */
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: var(--rr-color-green-50, #f0fdf4);
+  border: 1px solid var(--rr-color-green-200, #bbf7d0);
+  border-radius: 8px;
+  color: var(--rr-color-green-700, #15803d);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* =================================================
+   ACTIONS
+   ================================================= */
+
+.actions {
+  margin-top: 0.5rem;
+}
+
+/* =================================================
+   DESKTOP NAV
+   ================================================= */
+
+.desktopNav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .desktopNav {
+    display: flex;
+    justify-content: flex-start;
+  }
+}
+
+/* =================================================
+   NOTE
+   ================================================= */
+
+.note {
+  font-size: 0.75rem;
+  color: var(--rr-color-gray-500, #737373);
+  text-align: center;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* =================================================
+   REDUCED MOTION
+   ================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .dateCard,
+  .timeSlot,
+  .weekNavButton {
+    transition: none;
+  }
+}

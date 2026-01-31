@@ -1,0 +1,43 @@
+/* =================================================
+   LOADING STEP
+   Display during async operations
+   ================================================= */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.spinner {
+  color: var(--rr-color-sandstone, #c4a35a);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.message {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: var(--rr-color-gray-600, #525252);
+}
+
+/* =================================================
+   REDUCED MOTION
+   ================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}

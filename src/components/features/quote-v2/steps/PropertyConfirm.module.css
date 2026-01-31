@@ -1,0 +1,228 @@
+/* =================================================
+   PROPERTY CONFIRM STEP
+   Satellite confirmation screen
+   ================================================= */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+/* =================================================
+   HEADER
+   ================================================= */
+
+.header {
+  text-align: center;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  margin: 0 0 0.25rem;
+}
+
+.subtitle {
+  font-size: 0.9375rem;
+  color: var(--rr-color-gray-600, #525252);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 1.75rem;
+  }
+}
+
+/* =================================================
+   SATELLITE IMAGE
+   ================================================= */
+
+.imageWrapper {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+  background-color: var(--rr-color-gray-100, #f5f5f5);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  background-color: var(--rr-color-sandstone, #c4a35a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 12px rgba(196, 163, 90, 0.4);
+}
+
+/* =================================================
+   ADDRESS CARD
+   ================================================= */
+
+.addressCard {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: white;
+  border: 1px solid var(--rr-color-gray-200, #e5e5e5);
+  border-radius: 10px;
+}
+
+.addressIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: var(--rr-color-sandstone-light, #f5f0e1);
+  color: var(--rr-color-sandstone-dark, #8b7035);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.addressContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.addressStreet {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.addressCity {
+  font-size: 0.875rem;
+  color: var(--rr-color-gray-600, #525252);
+}
+
+/* =================================================
+   ESTIMATE PREVIEW
+   ================================================= */
+
+.estimate {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: var(--rr-color-green-50, #f0fdf4);
+  border: 1px solid var(--rr-color-green-200, #bbf7d0);
+  border-radius: 10px;
+}
+
+.estimateItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.estimateLabel {
+  font-size: 0.875rem;
+  color: var(--rr-color-gray-600, #525252);
+}
+
+.estimateValue {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--rr-color-charcoal, #1a1a1a);
+}
+
+.estimatePrice {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--rr-color-green-700, #15803d);
+}
+
+/* =================================================
+   ERROR MESSAGE
+   ================================================= */
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--rr-color-red-50, #fef2f2);
+  border: 1px solid var(--rr-color-red-200, #fecaca);
+  border-radius: 8px;
+  color: var(--rr-color-red-700, #b91c1c);
+  font-size: 0.875rem;
+}
+
+/* =================================================
+   NOT MY PROPERTY MESSAGE
+   ================================================= */
+
+.notMyProperty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: var(--rr-color-blue-50, #eff6ff);
+  border-radius: 8px;
+  color: var(--rr-color-blue-700, #1d4ed8);
+  font-size: 0.875rem;
+}
+
+/* =================================================
+   ACTIONS
+   ================================================= */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.notMyPropertyButton {
+  background: none;
+  border: none;
+  padding: 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--rr-color-gray-600, #525252);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.notMyPropertyButton:hover:not(:disabled) {
+  color: var(--rr-color-charcoal, #1a1a1a);
+}
+
+.notMyPropertyButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =================================================
+   DISCLAIMER
+   ================================================= */
+
+.disclaimer {
+  font-size: 0.75rem;
+  color: var(--rr-color-gray-500, #737373);
+  text-align: center;
+  margin: 0;
+  line-height: 1.4;
+}

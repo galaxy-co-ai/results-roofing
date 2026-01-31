@@ -1,0 +1,207 @@
+/* =================================================
+   CHECKOUT SUCCESS STEP
+   Confirmation page
+   ================================================= */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* =================================================
+   SUCCESS ICON
+   ================================================= */
+
+.successIcon {
+  color: var(--rr-color-green-500, #22c55e);
+  animation: successBounce 0.5s ease-out;
+}
+
+@keyframes successBounce {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =================================================
+   HEADER
+   ================================================= */
+
+.header {
+  text-align: center;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  margin: 0 0 0.5rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--rr-color-gray-600, #525252);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.subtitle strong {
+  color: var(--rr-color-charcoal, #1a1a1a);
+}
+
+/* =================================================
+   DETAILS CARD
+   ================================================= */
+
+.detailsCard {
+  width: 100%;
+  padding: 1.25rem;
+  background-color: white;
+  border: 1px solid var(--rr-color-gray-200, #e5e5e5);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.detailsTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  margin: 0 0 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rr-color-gray-200, #e5e5e5);
+}
+
+.detailsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detailItem {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.detailIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: var(--rr-color-sandstone-light, #f5f0e1);
+  color: var(--rr-color-sandstone-dark, #8b7035);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.detailContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.detailLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--rr-color-gray-500, #737373);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.125rem;
+}
+
+.detailValue {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  line-height: 1.4;
+}
+
+.detailSubvalue {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--rr-color-gray-600, #525252);
+  margin-top: 0.125rem;
+}
+
+/* =================================================
+   WHAT HAPPENS NEXT
+   ================================================= */
+
+.whatNext {
+  width: 100%;
+  padding: 1.25rem;
+  background-color: var(--rr-color-gray-50, #fafafa);
+  border-radius: 12px;
+}
+
+.whatNextTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  margin: 0 0 0.75rem;
+}
+
+.whatNextList {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.whatNextList li {
+  font-size: 0.875rem;
+  color: var(--rr-color-gray-700, #404040);
+  line-height: 1.4;
+}
+
+.whatNextList li strong {
+  color: var(--rr-color-charcoal, #1a1a1a);
+}
+
+/* =================================================
+   QUESTIONS
+   ================================================= */
+
+.questions {
+  text-align: center;
+}
+
+.questions p {
+  font-size: 0.875rem;
+  color: var(--rr-color-gray-600, #525252);
+  margin: 0;
+}
+
+.questions a {
+  color: var(--rr-color-sandstone-dark, #8b7035);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.questions a:hover {
+  text-decoration: none;
+}
+
+/* =================================================
+   REDUCED MOTION
+   ================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .successIcon {
+    animation: none;
+  }
+}

@@ -1,0 +1,97 @@
+/* =================================================
+   WIZARD FOOTER
+   Mobile sticky navigation footer
+   ================================================= */
+
+.container {
+  background-color: white;
+  border-top: 1px solid var(--rr-color-gray-200, #e5e5e5);
+  padding: 0.75rem 1rem;
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* =================================================
+   BACK BUTTON SECTION
+   ================================================= */
+
+.backSection {
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.backButton {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--rr-color-gray-300, #d4d4d4);
+  border-radius: 8px;
+  background-color: white;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.backButton:hover:not(:disabled) {
+  background-color: var(--rr-color-gray-50, #fafafa);
+  border-color: var(--rr-color-gray-400, #a3a3a3);
+}
+
+.backButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.backButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =================================================
+   SUMMARY TEXT (middle)
+   ================================================= */
+
+.summary {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+
+.summaryText {
+  font-size: 0.875rem;
+  color: var(--rr-color-gray-600, #525252);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+/* =================================================
+   ACTION SECTION (placeholder for alignment)
+   ================================================= */
+
+.actionSection {
+  width: 44px;
+  flex-shrink: 0;
+}
+
+/* =================================================
+   REDUCED MOTION
+   ================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .backButton {
+    transition: none;
+  }
+
+  .backButton:active:not(:disabled) {
+    transform: none;
+  }
+}

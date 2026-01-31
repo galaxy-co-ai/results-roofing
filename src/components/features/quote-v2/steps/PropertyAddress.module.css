@@ -1,0 +1,137 @@
+/* =================================================
+   PROPERTY ADDRESS STEP
+   Initial address entry screen
+   ================================================= */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem 0;
+}
+
+/* =================================================
+   HEADER
+   ================================================= */
+
+.header {
+  text-align: center;
+}
+
+.iconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background-color: var(--rr-color-sandstone-light, #f5f0e1);
+  color: var(--rr-color-sandstone-dark, #8b7035);
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--rr-color-charcoal, #1a1a1a);
+  margin: 0 0 0.5rem;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--rr-color-gray-600, #525252);
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+}
+
+/* =================================================
+   FORM SECTION
+   ================================================= */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* =================================================
+   OUT OF AREA MESSAGE
+   ================================================= */
+
+.outOfArea {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: var(--rr-color-amber-50, #fffbeb);
+  border: 1px solid var(--rr-color-amber-200, #fde68a);
+  border-radius: 8px;
+  color: var(--rr-color-amber-800, #92400e);
+}
+
+.outOfArea svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.outOfAreaTitle {
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+}
+
+.outOfAreaText {
+  font-size: 0.875rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* =================================================
+   ERROR MESSAGE
+   ================================================= */
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--rr-color-red-50, #fef2f2);
+  border: 1px solid var(--rr-color-red-200, #fecaca);
+  border-radius: 8px;
+  color: var(--rr-color-red-700, #b91c1c);
+  font-size: 0.875rem;
+}
+
+.error svg {
+  flex-shrink: 0;
+}
+
+/* =================================================
+   TRUST INDICATORS
+   ================================================= */
+
+.trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem 1.5rem;
+  padding-top: 0.5rem;
+}
+
+.trustItem {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--rr-color-gray-600, #525252);
+}
+
+.trustCheck {
+  color: var(--rr-color-green-600, #16a34a);
+  font-weight: 700;
+}
