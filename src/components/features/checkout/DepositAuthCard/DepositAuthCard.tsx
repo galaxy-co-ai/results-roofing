@@ -154,55 +154,6 @@ export function DepositAuthCard({
               </span>
             </div>
           </div>
-
-          {/* Address & Date */}
-          <div className={styles.infoRow}>
-            <Home size={14} aria-hidden="true" />
-            <span>{quoteSummary.address}</span>
-          </div>
-          <div className={styles.infoRow}>
-            <Calendar size={14} aria-hidden="true" />
-            <span>{formatDate(quoteSummary.installDate, quoteSummary.timeSlot)}</span>
-          </div>
-        </div>
-
-        {/* What Happens Next - Collapsible */}
-        <div className={styles.timelineSection}>
-          <button
-            type="button"
-            className={styles.timelineToggle}
-            onClick={() => setIsTimelineOpen(!isTimelineOpen)}
-            aria-expanded={isTimelineOpen}
-          >
-            <span>What Happens Next</span>
-            {isTimelineOpen ? (
-              <ChevronUp size={18} aria-hidden="true" />
-            ) : (
-              <ChevronDown size={18} aria-hidden="true" />
-            )}
-          </button>
-
-          {isTimelineOpen && (
-            <ol className={styles.timeline}>
-              {timelineSteps.map((step, index) => {
-                const Icon = step.icon;
-                return (
-                  <li key={index} className={styles.timelineStep}>
-                    <div className={styles.stepNumber}>
-                      <span>{index + 1}</span>
-                    </div>
-                    <div className={styles.stepContent}>
-                      <div className={styles.stepHeader}>
-                        <Icon size={14} className={styles.stepIcon} aria-hidden="true" />
-                        <span className={styles.stepTitle}>{step.title}</span>
-                      </div>
-                      <p className={styles.stepDescription}>{step.description}</p>
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
-          )}
         </div>
       </div>
 
@@ -210,10 +161,17 @@ export function DepositAuthCard({
           RIGHT COLUMN: AUTHORIZATION FORM
           ============================================ */}
       <div className={styles.authorizationForm}>
-        {/* Deposit Badge */}
-        <div className={styles.depositBadge}>
-          <div className={styles.depositAmount}>${quoteSummary.depositAmount} Deposit</div>
-          <div className={styles.depositRefund}>Fully refundable within 3 days</div>
+        {/* Tier Header with Address and Date */}
+        <div className={styles.tierHeader}>
+          <h2 className={styles.tierTitle}>{quoteSummary.tierDisplayName} Tier</h2>
+          <div className={styles.tierInfoRow}>
+            <Home size={14} aria-hidden="true" />
+            <span>{quoteSummary.address}</span>
+          </div>
+          <div className={styles.tierInfoRow}>
+            <Calendar size={14} aria-hidden="true" />
+            <span>{formatDate(quoteSummary.installDate, quoteSummary.timeSlot)}</span>
+          </div>
         </div>
 
         {/* Signature Pad */}
@@ -283,6 +241,45 @@ export function DepositAuthCard({
                 within <strong className={styles.highlight}>3 business days</strong>.
               </p>
             </div>
+          )}
+        </div>
+
+        {/* What Happens Next - Collapsible */}
+        <div className={styles.timelineSection}>
+          <button
+            type="button"
+            className={styles.timelineToggle}
+            onClick={() => setIsTimelineOpen(!isTimelineOpen)}
+            aria-expanded={isTimelineOpen}
+          >
+            <span>What Happens Next</span>
+            {isTimelineOpen ? (
+              <ChevronUp size={18} aria-hidden="true" />
+            ) : (
+              <ChevronDown size={18} aria-hidden="true" />
+            )}
+          </button>
+
+          {isTimelineOpen && (
+            <ol className={styles.timeline}>
+              {timelineSteps.map((step, index) => {
+                const Icon = step.icon;
+                return (
+                  <li key={index} className={styles.timelineStep}>
+                    <div className={styles.stepNumber}>
+                      <span>{index + 1}</span>
+                    </div>
+                    <div className={styles.stepContent}>
+                      <div className={styles.stepHeader}>
+                        <Icon size={14} className={styles.stepIcon} aria-hidden="true" />
+                        <span className={styles.stepTitle}>{step.title}</span>
+                      </div>
+                      <p className={styles.stepDescription}>{step.description}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
           )}
         </div>
 

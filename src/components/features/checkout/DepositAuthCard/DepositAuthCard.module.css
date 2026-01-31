@@ -151,15 +151,7 @@
 
 /* Timeline Section */
 .timelineSection {
-  margin-top: var(--rr-space-4);
-  padding-top: var(--rr-space-4);
-  border-top: 1px solid var(--rr-color-border-default);
-}
-
-@media (min-width: 768px) {
-  .timelineSection {
-    margin-top: auto;
-  }
+  margin-top: 0;
 }
 
 .timelineToggle {
@@ -279,26 +271,36 @@
   }
 }
 
-/* Deposit Badge */
-.depositBadge {
-  text-align: center;
-  padding: var(--rr-space-4);
-  background: linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 100%);
-  border: 2px solid var(--rr-color-success, #22C55E);
-  border-radius: var(--rr-radius-lg);
+/* Tier Header */
+.tierHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-2);
+  padding-bottom: var(--rr-space-3);
+  border-bottom: 1px solid var(--rr-color-border-default);
 }
 
-.depositAmount {
-  font-size: 1.5rem;
+.tierTitle {
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--rr-color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0;
 }
 
-.depositRefund {
+.tierInfoRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rr-space-2);
   font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--rr-color-success-dark, #166534);
-  margin-top: 4px;
+  color: var(--rr-color-text-secondary);
+}
+
+.tierInfoRow svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--rr-color-text-tertiary);
 }
 
 /* Terms & Agreement Container */

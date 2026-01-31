@@ -22,7 +22,7 @@
 .canvasWrapper {
   position: relative;
   width: 100%;
-  height: 140px;
+  height: 100px;
   background: var(--rr-color-white);
   border: 2px dashed var(--rr-color-border-default);
   border-radius: var(--rr-radius-lg);
@@ -124,13 +124,13 @@
 /* Responsive - Mobile first: larger touch target on mobile */
 @media (max-width: 639px) {
   .canvasWrapper {
-    height: 160px;
+    height: 110px;
   }
 }
 
 @media (min-width: 640px) {
   .canvasWrapper {
-    height: 140px;
+    height: 100px;
   }
 }
 
