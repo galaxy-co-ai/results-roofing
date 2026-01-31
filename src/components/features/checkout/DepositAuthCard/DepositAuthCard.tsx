@@ -9,7 +9,6 @@ import {
   Check,
   ArrowRight,
   Lock,
-  ExternalLink,
   CalendarCheck,
   ShieldCheck,
   ChevronDown,
@@ -61,7 +60,7 @@ interface DepositAuthCardProps {
 
 /**
  * Deposit Authorization Card
- * Two-column layout: Order Summary (left) | Authorization Form (right)
+ * Single-column, mobile-first layout with pricing above CTA
  */
 export function DepositAuthCard({
   quoteId,
@@ -130,50 +129,37 @@ export function DepositAuthCard({
   return (
     <div className={styles.card}>
       {/* ============================================
-          LEFT COLUMN: ORDER SUMMARY
+          HEADER: Tier, Address, Date, Edit Link
           ============================================ */}
-      <div className={styles.orderSummary}>
-        <div className={styles.summaryHeader}>
-          <h2 className={styles.summaryTitle}>Order Summary</h2>
+      <header className={styles.header}>
+        <div className={styles.headerTop}>
+          <div className={styles.tierBadge}>
+            <Sparkles size={18} aria-hidden="true" />
+            <h2 className={styles.tierTitle}>{quoteSummary.tierDisplayName} Tier</h2>
+          </div>
           <Link href={`/quote/${quoteId}/customize`} className={styles.editLink}>
             Edit
-            <ExternalLink size={12} aria-hidden="true" />
+            <ArrowRight size={12} aria-hidden="true" />
           </Link>
         </div>
-
-        <div className={styles.summaryContent}>
-          {/* Package & Price */}
-          <div className={styles.packageInfo}>
-            <div className={styles.packageIcon}>
-              <Sparkles size={18} aria-hidden="true" />
-            </div>
-            <div className={styles.packageDetails}>
-              <span className={styles.packageName}>{quoteSummary.tierDisplayName} Package</span>
-              <span className={styles.packagePrice}>
-                ${quoteSummary.totalPrice.toLocaleString()} total
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ============================================
-          RIGHT COLUMN: AUTHORIZATION FORM
-          ============================================ */}
-      <div className={styles.authorizationForm}>
-        {/* Tier Header with Address and Date */}
-        <div className={styles.tierHeader}>
-          <h2 className={styles.tierTitle}>{quoteSummary.tierDisplayName} Tier</h2>
-          <div className={styles.tierInfoRow}>
+        <div className={styles.headerDetails}>
+          <div className={styles.detailRow}>
             <Home size={14} aria-hidden="true" />
             <span>{quoteSummary.address}</span>
           </div>
-          <div className={styles.tierInfoRow}>
+          <div className={styles.detailRow}>
             <Calendar size={14} aria-hidden="true" />
             <span>{formatDate(quoteSummary.installDate, quoteSummary.timeSlot)}</span>
           </div>
         </div>
+      </header>
 
+      <div className={styles.divider} aria-hidden="true" />
+
+      {/* ============================================
+          FORM SECTION: Signature, Email, Terms, Timeline
+          ============================================ */}
+      <section className={styles.formSection}>
         {/* Signature Pad */}
         <div className={styles.signatureContainer}>
           <SignaturePad
@@ -282,7 +268,26 @@ export function DepositAuthCard({
             </ol>
           )}
         </div>
+      </section>
 
+      <div className={styles.divider} aria-hidden="true" />
+
+      {/* ============================================
+          PRICING SUMMARY
+          ============================================ */}
+      <section className={styles.pricingSummary}>
+        <div className={styles.totalPrice}>
+          ${quoteSummary.totalPrice.toLocaleString()} total
+        </div>
+        <div className={styles.depositPrice}>
+          ${quoteSummary.depositAmount} deposit today · <span className={styles.refundable}>fully refundable</span>
+        </div>
+      </section>
+
+      {/* ============================================
+          ACTION SECTION: CTA, Trust, Secondary Link
+          ============================================ */}
+      <section className={styles.actionSection}>
         {/* Error Display */}
         {error && (
           <div className={styles.error} role="alert">
@@ -344,7 +349,7 @@ export function DepositAuthCard({
           Not ready? Save this quote
           <ArrowRight size={14} aria-hidden="true" />
         </button>
-      </div>
+      </section>
     </div>
   );
 }

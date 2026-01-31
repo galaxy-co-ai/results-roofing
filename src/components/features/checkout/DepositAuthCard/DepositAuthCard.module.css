@@ -1,19 +1,13 @@
 /* =================================================
    DEPOSIT AUTH CARD STYLES
-   Two-column layout: Order Summary | Authorization Form
+   Single-column, mobile-first layout
    ================================================= */
 
 .card {
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
   background: var(--rr-color-white);
-  border: 1px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-lg);
-  overflow: hidden;
+  border-top: 1px solid var(--rr-color-border-default);
+  border-bottom: 1px solid var(--rr-color-border-default);
   animation: slideUp 0.4s ease-out;
 }
 
@@ -28,46 +22,63 @@
   }
 }
 
-/* Two-column layout on desktop */
+/* Tablet and up: centered card with max-width */
+@media (min-width: 480px) {
+  .card {
+    max-width: 480px;
+    margin: 0 auto;
+    border: 1px solid var(--rr-color-border-default);
+    border-radius: var(--rr-radius-lg);
+  }
+}
+
+/* Desktop: slightly wider */
 @media (min-width: 768px) {
   .card {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr auto;
+    max-width: 520px;
   }
 }
 
 /* ========================================
-   LEFT COLUMN: ORDER SUMMARY
+   HEADER SECTION
    ======================================== */
 
-.orderSummary {
+.header {
   padding: var(--rr-space-5);
-  background: var(--rr-color-gray-50);
-  border-bottom: 1px solid var(--rr-color-border-default);
+  padding-bottom: 0;
 }
 
 @media (min-width: 768px) {
-  .orderSummary {
-    border-bottom: none;
-    border-right: 1px solid var(--rr-color-border-default);
-    display: flex;
-    flex-direction: column;
+  .header {
+    padding: var(--rr-space-6);
+    padding-bottom: 0;
   }
 }
 
-.summaryHeader {
+.headerTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--rr-space-4);
+  margin-bottom: var(--rr-space-3);
 }
 
-.summaryTitle {
-  font-size: 0.6875rem;
+.tierBadge {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-3);
+  color: var(--rr-color-blue);
+}
+
+.tierBadge svg {
+  flex-shrink: 0;
+}
+
+.tierTitle {
+  font-size: 1.125rem;
   font-weight: 700;
-  color: var(--rr-color-text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
+  color: var(--rr-color-text-primary);
   margin: 0;
 }
 
@@ -87,69 +98,209 @@
   text-decoration: underline;
 }
 
-.summaryContent {
+.headerDetails {
   display: flex;
   flex-direction: column;
-  gap: var(--rr-space-3);
+  gap: var(--rr-space-2);
 }
 
-/* Package Info */
-.packageInfo {
-  display: flex;
-  align-items: center;
-  gap: var(--rr-space-3);
-  padding: var(--rr-space-3);
-  background: var(--rr-color-white);
-  border: 1px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-md);
-}
-
-.packageIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
-  border-radius: var(--rr-radius-md);
-  color: white;
-  flex-shrink: 0;
-}
-
-.packageDetails {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.packageName {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--rr-color-text-primary);
-}
-
-.packagePrice {
-  font-size: 0.875rem;
-  color: var(--rr-color-text-secondary);
-}
-
-/* Info Rows (Address, Date) */
-.infoRow {
+.detailRow {
   display: flex;
   align-items: flex-start;
   gap: var(--rr-space-2);
   font-size: 0.875rem;
   color: var(--rr-color-text-secondary);
-  padding-left: var(--rr-space-1);
 }
 
-.infoRow svg {
+.detailRow svg {
   flex-shrink: 0;
   margin-top: 2px;
   color: var(--rr-color-text-tertiary);
 }
 
-/* Timeline Section */
+/* ========================================
+   DIVIDER
+   ======================================== */
+
+.divider {
+  height: 1px;
+  background: var(--rr-color-border-default);
+  margin: var(--rr-space-4) var(--rr-space-5);
+}
+
+@media (min-width: 768px) {
+  .divider {
+    margin: var(--rr-space-4) var(--rr-space-6);
+  }
+}
+
+/* ========================================
+   FORM SECTION
+   ======================================== */
+
+.formSection {
+  padding: 0 var(--rr-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-4);
+}
+
+@media (min-width: 768px) {
+  .formSection {
+    padding: 0 var(--rr-space-6);
+  }
+}
+
+/* Signature Container */
+.signatureContainer {
+  /* SignaturePad component handles its own styling */
+}
+
+/* Email Input */
+.emailContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.emailLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--rr-color-text-primary);
+}
+
+.emailInput {
+  width: 100%;
+  padding: var(--rr-space-3);
+  font-size: 1rem;
+  border: 2px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.emailInput:focus {
+  border-color: var(--rr-color-blue);
+}
+
+.emailInput:disabled {
+  background: var(--rr-color-gray-50);
+  cursor: not-allowed;
+}
+
+.emailHelp {
+  font-size: 0.75rem;
+  color: var(--rr-color-text-tertiary);
+  margin: 0;
+}
+
+/* ========================================
+   TERMS & AGREEMENT
+   ======================================== */
+
+.termsContainer {
+  background: var(--rr-color-gray-50);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  overflow: hidden;
+}
+
+.termsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: var(--rr-space-2);
+}
+
+.termsToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: var(--rr-radius-sm);
+  cursor: pointer;
+  color: var(--rr-color-text-tertiary);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.termsToggle:hover {
+  background: var(--rr-color-gray-100);
+  color: var(--rr-color-text-primary);
+}
+
+.termsContent {
+  padding: var(--rr-space-3);
+  padding-top: 0;
+  border-top: 1px solid var(--rr-color-border-default);
+  background: var(--rr-color-white);
+}
+
+.termsText {
+  font-size: 0.8125rem;
+  color: var(--rr-color-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  padding: var(--rr-space-3) 0;
+}
+
+.highlight {
+  color: var(--rr-color-text-primary);
+  font-weight: 600;
+}
+
+.highlightGreen {
+  color: var(--rr-color-success-dark, #166534);
+  font-weight: 600;
+}
+
+/* Agreement Checkbox */
+.agreementLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-3);
+  cursor: pointer;
+  padding: var(--rr-space-3);
+  flex: 1;
+  min-height: 48px;
+}
+
+.agreementLabel:hover {
+  background: var(--rr-color-gray-100);
+}
+
+.agreementCheckbox {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--rr-color-success, #22C55E);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.agreementCheckbox:checked + .agreementText {
+  color: var(--rr-color-success-dark, #166534);
+}
+
+.agreementText {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: var(--rr-color-text-primary);
+  font-weight: 500;
+}
+
+.agreementIcon {
+  color: var(--rr-color-success, #22C55E);
+  flex-shrink: 0;
+}
+
+/* ========================================
+   TIMELINE SECTION
+   ======================================== */
+
 .timelineSection {
   margin-top: 0;
 }
@@ -252,203 +403,58 @@
 }
 
 /* ========================================
-   RIGHT COLUMN: AUTHORIZATION FORM
+   PRICING SUMMARY
    ======================================== */
 
-.authorizationForm {
-  padding: var(--rr-space-5);
-  display: flex;
-  flex-direction: column;
-  gap: var(--rr-space-4);
+.pricingSummary {
+  text-align: center;
+  padding: var(--rr-space-4) var(--rr-space-5);
 }
 
 @media (min-width: 768px) {
-  .authorizationForm {
-    /* Sticky on desktop so form stays visible */
-    position: sticky;
-    top: 20px;
-    align-self: start;
+  .pricingSummary {
+    padding: var(--rr-space-4) var(--rr-space-6);
   }
 }
 
-/* Tier Header */
-.tierHeader {
-  display: flex;
-  flex-direction: column;
-  gap: var(--rr-space-2);
-  padding-bottom: var(--rr-space-3);
-  border-bottom: 1px solid var(--rr-color-border-default);
-}
-
-.tierTitle {
-  font-size: 1.25rem;
+.totalPrice {
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--rr-color-text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  margin: 0;
 }
 
-.tierInfoRow {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--rr-space-2);
-  font-size: 0.875rem;
-  color: var(--rr-color-text-secondary);
-}
-
-.tierInfoRow svg {
-  flex-shrink: 0;
-  margin-top: 2px;
-  color: var(--rr-color-text-tertiary);
-}
-
-/* Terms & Agreement Container */
-.termsContainer {
-  background: var(--rr-color-gray-50);
-  border: 2px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-md);
-  overflow: hidden;
-}
-
-.termsHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-right: var(--rr-space-2);
-}
-
-.termsToggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: transparent;
-  border: none;
-  border-radius: var(--rr-radius-sm);
-  cursor: pointer;
-  color: var(--rr-color-text-tertiary);
-  transition: background 0.15s ease, color 0.15s ease;
-}
-
-.termsToggle:hover {
-  background: var(--rr-color-gray-100);
-  color: var(--rr-color-text-primary);
-}
-
-.termsContent {
-  padding: var(--rr-space-3);
-  padding-top: 0;
-  border-top: 1px solid var(--rr-color-border-default);
-  margin-top: 0;
-  background: var(--rr-color-white);
-}
-
-.termsText {
-  font-size: 0.8125rem;
-  color: var(--rr-color-text-secondary);
-  line-height: 1.6;
-  margin: 0;
-  padding: var(--rr-space-3) 0;
-}
-
-.highlight {
-  color: var(--rr-color-text-primary);
+.depositPrice {
+  font-size: 1rem;
   font-weight: 600;
-}
-
-.highlightGreen {
   color: var(--rr-color-success-dark, #166534);
+  margin-top: 4px;
+}
+
+.refundable {
   font-weight: 600;
 }
 
-/* Signature Container */
-.signatureContainer {
-  /* SignaturePad component handles its own styling */
-}
+/* ========================================
+   ACTION SECTION
+   ======================================== */
 
-/* Email Input */
-.emailContainer {
+.actionSection {
+  padding: 0 var(--rr-space-5) var(--rr-space-5);
   display: flex;
   flex-direction: column;
-  gap: var(--rr-space-1);
-}
-
-.emailLabel {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--rr-color-text-primary);
-}
-
-.emailInput {
-  width: 100%;
-  padding: var(--rr-space-3);
-  font-size: 1rem;
-  border: 2px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-md);
-  outline: none;
-  transition: border-color 0.2s ease;
-}
-
-.emailInput:focus {
-  border-color: var(--rr-color-blue);
-}
-
-.emailInput:disabled {
-  background: var(--rr-color-gray-50);
-  cursor: not-allowed;
-}
-
-.emailHelp {
-  font-size: 0.75rem;
-  color: var(--rr-color-text-tertiary);
-  margin: 0;
-}
-
-/* Agreement Checkbox */
-.agreementLabel {
-  display: flex;
   align-items: center;
   gap: var(--rr-space-3);
-  cursor: pointer;
-  padding: var(--rr-space-3);
-  flex: 1;
-  min-height: 48px;
 }
 
-.agreementLabel:hover {
-  background: var(--rr-color-gray-100);
-}
-
-.agreementCheckbox {
-  width: 20px;
-  height: 20px;
-  accent-color: var(--rr-color-success, #22C55E);
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.agreementCheckbox:checked + .agreementText {
-  color: var(--rr-color-success-dark, #166534);
-}
-
-.agreementText {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.875rem;
-  color: var(--rr-color-text-primary);
-  font-weight: 500;
-}
-
-.agreementIcon {
-  color: var(--rr-color-success, #22C55E);
-  flex-shrink: 0;
+@media (min-width: 768px) {
+  .actionSection {
+    padding: 0 var(--rr-space-6) var(--rr-space-6);
+  }
 }
 
 /* Error */
 .error {
+  width: 100%;
   padding: var(--rr-space-3);
   background: #FEE2E2;
   border: 1px solid #FECACA;
@@ -460,6 +466,7 @@
 
 /* CTA Wrapper */
 .ctaWrapper {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -472,7 +479,7 @@
   justify-content: center;
   gap: var(--rr-space-2);
   width: 100%;
-  height: 56px;
+  height: 52px;
   padding: 0 var(--rr-space-5);
   font-size: 1.0625rem;
   font-weight: 600;
@@ -596,52 +603,6 @@
 }
 
 /* ========================================
-   RESPONSIVE - MOBILE
-   ======================================== */
-
-@media (max-width: 767px) {
-  .card {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-    max-width: 100%;
-  }
-
-  .orderSummary {
-    padding: var(--rr-space-4);
-  }
-
-  .authorizationForm {
-    padding: var(--rr-space-4);
-    gap: var(--rr-space-3);
-  }
-
-  .depositBadge {
-    padding: var(--rr-space-3);
-  }
-
-  .depositAmount {
-    font-size: 1.25rem;
-  }
-}
-
-/* Hide main CTA on mobile for sticky version */
-@media (max-width: 639px) {
-  .payButton {
-    display: none;
-  }
-
-  .ctaHint {
-    display: none;
-  }
-
-  .laterLink {
-    padding: var(--rr-space-3) var(--rr-space-4);
-    min-height: 48px;
-  }
-}
-
-/* ========================================
    REDUCED MOTION
    ======================================== */
 
@@ -655,6 +616,7 @@
   .laterLink,
   .editLink,
   .timelineToggle,
+  .termsToggle,
   .emailInput {
     transition: none;
   }
