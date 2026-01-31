@@ -567,36 +567,6 @@
 }
 
 /* ========================================
-   FOOTER: TRUST BAR
-   ======================================== */
-
-.trust {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: var(--rr-space-4);
-  padding: var(--rr-space-3) var(--rr-space-5);
-  background: var(--rr-color-gray-50);
-  border-top: 1px solid var(--rr-color-border-default);
-}
-
-.trustItem {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--rr-color-text-secondary);
-}
-
-.trustIcon {
-  color: var(--rr-color-success, #22C55E);
-  flex-shrink: 0;
-}
-
-/* ========================================
    SPINNER
    ======================================== */
 

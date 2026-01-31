@@ -349,25 +349,6 @@ export function DepositAuthCard({
         </button>
       </div>
 
-      {/* ============================================
-          FOOTER: TRUST BAR (spans full width)
-          ============================================ */}
-      <div className={styles.trust}>
-        <div className={styles.trustItem}>
-          <Lock size={14} className={styles.trustIcon} aria-hidden="true" />
-          <span>256-bit SSL</span>
-        </div>
-        <div className={styles.trustItem}>
-          <span>Licensed & Insured</span>
-        </div>
-        <div className={styles.trustItem}>
-          <span>GAF Certified</span>
-        </div>
-        <div className={styles.trustItem}>
-          <Star size={14} className={styles.trustIcon} fill="currentColor" aria-hidden="true" />
-          <span>4.9 Rating</span>
-        </div>
-      </div>
     </div>
   );
 }
