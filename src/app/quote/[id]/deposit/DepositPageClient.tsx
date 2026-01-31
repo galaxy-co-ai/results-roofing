@@ -18,6 +18,7 @@ export function DepositPageClient({ quoteId, quoteSummary }: DepositPageClientPr
   const router = useRouter();
   const [step, setStep] = useState<FlowStep>('authorization');
   const [signature, setSignature] = useState<string | null>(null);
+  const [email, setEmail] = useState('');
   const [hasAgreed, setHasAgreed] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,6 +35,12 @@ export function DepositPageClient({ quoteId, quoteSummary }: DepositPageClientPr
     setError(null);
   }, []);
 
+  // Handle email change
+  const handleEmailChange = useCallback((value: string) => {
+    setEmail(value);
+    setError(null);
+  }, []);
+
   // Handle "I need more time" - go to dashboard with pending state
   const handleNeedMoreTime = useCallback(() => {
     router.push('/portal/dashboard?pending=true');
@@ -41,8 +48,10 @@ export function DepositPageClient({ quoteId, quoteSummary }: DepositPageClientPr
 
   // Handle pay button click - save authorization then show payment
   const handlePayClick = useCallback(async () => {
-    if (!signature || !hasAgreed) {
-      setError('Please sign and agree to the terms to continue.');
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+
+    if (!signature || !email || !isValidEmail || !hasAgreed) {
+      setError('Please sign, enter your email, and agree to the terms to continue.');
       return;
     }
 
@@ -50,12 +59,13 @@ export function DepositPageClient({ quoteId, quoteSummary }: DepositPageClientPr
     setError(null);
 
     try {
-      // Save the deposit authorization (signature + agreement)
+      // Save the deposit authorization (signature + email + agreement)
       const response = await fetch(`/api/quotes/${quoteId}/deposit-auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           signature,
+          email: email.trim(),
           agreedToTerms: true,
           termsVersion: '1.0',
         }),
@@ -73,7 +83,7 @@ export function DepositPageClient({ quoteId, quoteSummary }: DepositPageClientPr
     } finally {
       setIsProcessing(false);
     }
-  }, [quoteId, signature, hasAgreed]);
+  }, [quoteId, signature, email, hasAgreed]);
 
   // Handle payment success
   const handlePaymentSuccess = useCallback(() => {
@@ -92,7 +102,8 @@ export function DepositPageClient({ quoteId, quoteSummary }: DepositPageClientPr
     setError(null);
   }, []);
 
-  const canProceed = signature && hasAgreed && !isProcessing;
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const canProceed = signature && email && isValidEmail && hasAgreed && !isProcessing;
 
   // Authorization step
   if (step === 'authorization') {
@@ -103,10 +114,12 @@ export function DepositPageClient({ quoteId, quoteSummary }: DepositPageClientPr
             quoteId={quoteId}
             quoteSummary={quoteSummary}
             onSignatureChange={handleSignatureChange}
+            onEmailChange={handleEmailChange}
             onAgreementChange={handleAgreementChange}
             onPayClick={handlePayClick}
             onNeedMoreTime={handleNeedMoreTime}
             signature={signature}
+            email={email}
             hasAgreed={hasAgreed}
             isProcessing={isProcessing}
             error={error}

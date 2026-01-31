@@ -26,6 +26,8 @@ interface DepositAuthCardProps {
   quoteSummary: QuoteSummary;
   /** Called when signature changes */
   onSignatureChange: (signature: string | null) => void;
+  /** Called when email changes */
+  onEmailChange: (email: string) => void;
   /** Called when agreement checkbox changes */
   onAgreementChange: (agreed: boolean) => void;
   /** Called when ready to pay */
@@ -34,6 +36,8 @@ interface DepositAuthCardProps {
   onNeedMoreTime: () => void;
   /** Current signature value */
   signature: string | null;
+  /** Current email value */
+  email: string;
   /** Whether user has agreed to terms */
   hasAgreed: boolean;
   /** Whether payment is being processed */
@@ -50,10 +54,12 @@ export function DepositAuthCard({
   quoteId,
   quoteSummary,
   onSignatureChange,
+  onEmailChange,
   onAgreementChange,
   onPayClick,
   onNeedMoreTime,
   signature,
+  email,
   hasAgreed,
   isProcessing = false,
   error = null,
@@ -69,7 +75,8 @@ export function DepositAuthCard({
     return `${dateFormatted} @ ${time}`;
   };
 
-  const canProceed = signature && hasAgreed && !isProcessing;
+  const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.trim());
+  const canProceed = signature && email && isValidEmail(email) && hasAgreed && !isProcessing;
 
   return (
     <div className={styles.card}>
@@ -176,6 +183,25 @@ export function DepositAuthCard({
             disabled={isProcessing}
             placeholder="Sign here"
           />
+        </div>
+
+        <div className={styles.emailContainer}>
+          <label htmlFor="customer-email" className={styles.emailLabel}>
+            Your Email *
+          </label>
+          <input
+            id="customer-email"
+            type="email"
+            className={styles.emailInput}
+            value={email}
+            onChange={(e) => onEmailChange(e.target.value)}
+            placeholder="your@email.com"
+            disabled={isProcessing}
+            autoComplete="email"
+          />
+          <p className={styles.emailHelp}>
+            We&apos;ll send your contract and receipt here
+          </p>
         </div>
 
         <label className={styles.agreementLabel}>

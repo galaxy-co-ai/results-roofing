@@ -7,6 +7,7 @@ import { logger } from '@/lib/utils';
 // Request validation schema
 const depositAuthSchema = z.object({
   signature: z.string().min(1, 'Signature is required'),
+  email: z.string().email('Please enter a valid email address'),
   agreedToTerms: z.literal(true, {
     errorMap: () => ({ message: 'You must agree to the terms' }),
   }),
@@ -35,7 +36,7 @@ export async function POST(
       );
     }
 
-    const { termsVersion } = validation.data;
+    const { email, termsVersion } = validation.data;
     // signature and agreedToTerms are validated by schema but stored implicitly via contract record
 
     // Fetch the quote
@@ -68,10 +69,11 @@ export async function POST(
     });
 
     if (existingContract) {
-      // Update existing contract with deposit authorization
+      // Update existing contract with deposit authorization and email
       await db
         .update(schema.contracts)
         .set({
+          customerEmail: email,
           status: 'pending', // Pending payment
           signedAt: timestamp,
           signatureIp: ip,
@@ -88,7 +90,7 @@ export async function POST(
         .values({
           quoteId,
           status: 'pending', // Pending payment
-          customerEmail: '', // Will be updated when we have the email
+          customerEmail: email,
           signedAt: timestamp,
           signatureIp: ip,
           signatureUserAgent: userAgent,
@@ -97,6 +99,23 @@ export async function POST(
         .returning();
 
       logger.info(`Created contract ${newContract?.id} with deposit authorization for quote ${quoteId}`);
+    }
+
+    // Also update the lead with the email if it exists and doesn't have one
+    if (quote.leadId) {
+      const lead = await db.query.leads.findFirst({
+        where: eq(schema.leads.id, quote.leadId),
+      });
+      if (lead && !lead.email) {
+        await db
+          .update(schema.leads)
+          .set({
+            email,
+            updatedAt: timestamp,
+          })
+          .where(eq(schema.leads.id, quote.leadId));
+        logger.info(`Updated lead ${quote.leadId} with email for quote ${quoteId}`);
+      }
     }
 
     // Update quote status to indicate deposit authorization received
@@ -109,6 +128,7 @@ export async function POST(
       .where(eq(schema.quotes.id, quoteId));
 
     logger.info(`Deposit authorization saved for quote ${quoteId}`, {
+      email,
       ip,
       userAgent: userAgent.substring(0, 100),
       timestamp: timestamp.toISOString(),
