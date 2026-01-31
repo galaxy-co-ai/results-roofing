@@ -57,6 +57,7 @@
   "devDependencies": {
     "@playwright/test": "^1.49.1",
     "@testing-library/react": "^16.1.0",
+    "jsdom": "^26.0.0",
     "@types/google.maps": "^3.58.1",
     "@types/node": "^22.10.5",
     "@types/react": "^18.3.18",
