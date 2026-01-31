@@ -1,12 +1,25 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { Home, Sparkles, Calendar, Check, CreditCard, ArrowRight, Lock, ExternalLink, CalendarCheck, ShieldCheck } from 'lucide-react';
+import {
+  Home,
+  Sparkles,
+  Calendar,
+  Check,
+  ArrowRight,
+  Lock,
+  ExternalLink,
+  CalendarCheck,
+  ShieldCheck,
+  ChevronDown,
+  ChevronUp,
+  Mail,
+  Phone,
+  CheckCircle,
+  Star,
+} from 'lucide-react';
 import { SignaturePad } from '@/components/ui/SignaturePad/SignaturePad';
-import { BenefitPills } from './BenefitPills';
-import { DepositIncludes } from './DepositIncludes';
-import { SocialProof } from './SocialProof';
-import { Timeline } from './Timeline';
 import styles from './DepositAuthCard.module.css';
 
 export interface QuoteSummary {
@@ -48,7 +61,7 @@ interface DepositAuthCardProps {
 
 /**
  * Deposit Authorization Card
- * Collects signature and agreement before payment
+ * Two-column layout: Order Summary (left) | Authorization Form (right)
  */
 export function DepositAuthCard({
   quoteId,
@@ -64,6 +77,8 @@ export function DepositAuthCard({
   isProcessing = false,
   error = null,
 }: DepositAuthCardProps) {
+  const [isTimelineOpen, setIsTimelineOpen] = useState(false);
+
   const formatDate = (dateStr: string, timeSlot: 'morning' | 'afternoon') => {
     const date = new Date(dateStr);
     const dateFormatted = date.toLocaleDateString('en-US', {
@@ -75,108 +90,161 @@ export function DepositAuthCard({
     return `${dateFormatted} @ ${time}`;
   };
 
+  const formatShortDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
   const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.trim());
   const canProceed = signature && email && isValidEmail(email) && hasAgreed && !isProcessing;
 
+  // Benefits to show in order summary
+  const benefits = [
+    { label: 'Secures your date', icon: CalendarCheck },
+    { label: 'Fully refundable', icon: ShieldCheck },
+    { label: '3-day cancellation', icon: Check },
+    { label: 'Price protection', icon: Check },
+  ];
+
+  // Timeline steps
+  const timelineSteps = [
+    {
+      icon: Mail,
+      title: 'Instant Confirmation',
+      description: "You'll receive an email confirmation within 5 minutes",
+    },
+    {
+      icon: Phone,
+      title: 'Pre-Installation Call',
+      description: `We'll contact you 24 hours before your ${formatShortDate(quoteSummary.installDate)} installation`,
+    },
+    {
+      icon: Home,
+      title: 'Installation Day',
+      description: `Our certified crew arrives ${formatShortDate(quoteSummary.installDate)} @ 8 AM`,
+    },
+    {
+      icon: CheckCircle,
+      title: 'Final Walkthrough',
+      description: 'We inspect everything together and collect final payment',
+    },
+  ];
+
   return (
     <div className={styles.card}>
-      {/* Header */}
-      <div className={styles.header}>
-        <div className={styles.headerTop}>
-          <div className={styles.headerIcon}>
-            <Home size={20} />
-          </div>
-          <div className={styles.headerContent}>
-            <h1 className={styles.headerTitle}>Save Your Spot Today!</h1>
-            <p className={styles.headerSubtitle}>
-              One final step to secure your installation date
-            </p>
-          </div>
-        </div>
-        <BenefitPills className={styles.benefitPills} />
-      </div>
-
-      {/* Quote Summary Card */}
-      <div className={styles.summaryCard}>
+      {/* ============================================
+          LEFT COLUMN: ORDER SUMMARY
+          ============================================ */}
+      <div className={styles.orderSummary}>
         <div className={styles.summaryHeader}>
-          <h2 className={styles.summaryTitle}>Quote Summary</h2>
-          <Link
-            href={`/quote/${quoteId}/customize`}
-            className={styles.editLink}
-          >
+          <h2 className={styles.summaryTitle}>Order Summary</h2>
+          <Link href={`/quote/${quoteId}/customize`} className={styles.editLink}>
             Edit
             <ExternalLink size={12} aria-hidden="true" />
           </Link>
         </div>
+
         <div className={styles.summaryContent}>
-          <div className={styles.summaryRow}>
-            <div className={styles.summaryIconWrapper}>
-              <Home size={16} aria-hidden="true" />
+          {/* Package & Price */}
+          <div className={styles.packageInfo}>
+            <div className={styles.packageIcon}>
+              <Sparkles size={18} aria-hidden="true" />
             </div>
-            <div className={styles.summaryDetails}>
-              <span className={styles.summaryLabel}>Address</span>
-              <span className={styles.summaryValue}>{quoteSummary.address}</span>
-            </div>
-          </div>
-          <div className={styles.summaryRow}>
-            <div className={styles.summaryIconWrapper}>
-              <Sparkles size={16} aria-hidden="true" />
-            </div>
-            <div className={styles.summaryDetails}>
-              <span className={styles.summaryLabel}>Package</span>
-              <span className={styles.summaryValue}>{quoteSummary.tierDisplayName}</span>
-            </div>
-          </div>
-          <div className={styles.summaryRow}>
-            <div className={styles.summaryIconWrapper}>
-              <Calendar size={16} aria-hidden="true" />
-            </div>
-            <div className={styles.summaryDetails}>
-              <span className={styles.summaryLabel}>Install Date</span>
-              <span className={styles.summaryValue}>
-                {formatDate(quoteSummary.installDate, quoteSummary.timeSlot)}
+            <div className={styles.packageDetails}>
+              <span className={styles.packageName}>{quoteSummary.tierDisplayName} Package</span>
+              <span className={styles.packagePrice}>
+                ${quoteSummary.totalPrice.toLocaleString()} total
               </span>
             </div>
           </div>
-          <div className={styles.summaryTotal}>
-            <div className={styles.summaryTotalLabel}>
-              <CreditCard size={16} aria-hidden="true" />
-              <span>Total</span>
-            </div>
-            <div className={styles.summaryTotalValue}>
-              <span className={styles.totalPrice}>
-                ${quoteSummary.totalPrice.toLocaleString()}
-              </span>
-              <span className={styles.depositNote}>
-                (Deposit: ${quoteSummary.depositAmount} today)
-              </span>
-            </div>
+
+          {/* Address & Date */}
+          <div className={styles.infoRow}>
+            <Home size={14} aria-hidden="true" />
+            <span>{quoteSummary.address}</span>
           </div>
+          <div className={styles.infoRow}>
+            <Calendar size={14} aria-hidden="true" />
+            <span>{formatDate(quoteSummary.installDate, quoteSummary.timeSlot)}</span>
+          </div>
+
+          {/* Benefits List */}
+          <div className={styles.benefitsList}>
+            {benefits.map((benefit, index) => (
+              <div key={index} className={styles.benefitItem}>
+                <Check size={14} className={styles.benefitIcon} aria-hidden="true" />
+                <span>{benefit.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* What Happens Next - Collapsible */}
+        <div className={styles.timelineSection}>
+          <button
+            type="button"
+            className={styles.timelineToggle}
+            onClick={() => setIsTimelineOpen(!isTimelineOpen)}
+            aria-expanded={isTimelineOpen}
+          >
+            <span>What Happens Next</span>
+            {isTimelineOpen ? (
+              <ChevronUp size={18} aria-hidden="true" />
+            ) : (
+              <ChevronDown size={18} aria-hidden="true" />
+            )}
+          </button>
+
+          {isTimelineOpen && (
+            <ol className={styles.timeline}>
+              {timelineSteps.map((step, index) => {
+                const Icon = step.icon;
+                return (
+                  <li key={index} className={styles.timelineStep}>
+                    <div className={styles.stepNumber}>
+                      <span>{index + 1}</span>
+                    </div>
+                    <div className={styles.stepContent}>
+                      <div className={styles.stepHeader}>
+                        <Icon size={14} className={styles.stepIcon} aria-hidden="true" />
+                        <span className={styles.stepTitle}>{step.title}</span>
+                      </div>
+                      <p className={styles.stepDescription}>{step.description}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          )}
         </div>
       </div>
 
-      {/* Deposit Includes */}
-      <DepositIncludes
-        installDate={quoteSummary.installDate}
-        totalPrice={quoteSummary.totalPrice}
-        depositAmount={quoteSummary.depositAmount}
-      />
+      {/* ============================================
+          RIGHT COLUMN: AUTHORIZATION FORM
+          ============================================ */}
+      <div className={styles.authorizationForm}>
+        {/* Deposit Badge */}
+        <div className={styles.depositBadge}>
+          <div className={styles.depositAmount}>${quoteSummary.depositAmount} Deposit</div>
+          <div className={styles.depositRefund}>Fully refundable within 3 days</div>
+        </div>
 
-      {/* Deposit Authorization */}
-      <div className={styles.authSection}>
-        <h2 className={styles.authTitle}>Deposit Authorization</h2>
-
+        {/* Authorization Text */}
         <div className={styles.authTerms}>
           <p className={styles.termsText}>
             I authorize Results Roofing to charge{' '}
-            <strong className={styles.highlight}>${quoteSummary.depositAmount}</strong>{' '}
-            to secure my installation date. This deposit is{' '}
-            <strong className={styles.highlightGreen}>fully refundable</strong>{' '}
-            if I cancel within{' '}
+            <strong className={styles.highlight}>${quoteSummary.depositAmount}</strong> to secure my
+            installation date. This deposit is{' '}
+            <strong className={styles.highlightGreen}>fully refundable</strong> if I cancel within{' '}
             <strong className={styles.highlight}>3 business days</strong>.
           </p>
         </div>
 
+        {/* Signature Pad */}
         <div className={styles.signatureContainer}>
           <SignaturePad
             onSignatureChange={onSignatureChange}
@@ -185,6 +253,7 @@ export function DepositAuthCard({
           />
         </div>
 
+        {/* Email Input */}
         <div className={styles.emailContainer}>
           <label htmlFor="customer-email" className={styles.emailLabel}>
             Your Email *
@@ -199,11 +268,10 @@ export function DepositAuthCard({
             disabled={isProcessing}
             autoComplete="email"
           />
-          <p className={styles.emailHelp}>
-            We&apos;ll send your contract and receipt here
-          </p>
+          <p className={styles.emailHelp}>We&apos;ll send your contract and receipt here</p>
         </div>
 
+        {/* Agreement Checkbox */}
         <label className={styles.agreementLabel}>
           <input
             type="checkbox"
@@ -213,33 +281,19 @@ export function DepositAuthCard({
             disabled={isProcessing}
           />
           <span className={styles.agreementText}>
-            <Check size={14} className={styles.agreementIcon} aria-hidden="true" />
-            I agree to the terms above
+            <Check size={14} className={styles.agreementIcon} aria-hidden="true" />I agree to the
+            terms above
           </span>
         </label>
-      </div>
 
-      {/* Error Display */}
-      {error && (
-        <div className={styles.error} role="alert">
-          {error}
-        </div>
-      )}
+        {/* Error Display */}
+        {error && (
+          <div className={styles.error} role="alert">
+            {error}
+          </div>
+        )}
 
-      {/* Actions */}
-      <div className={styles.actions}>
-        {/* Mini trust bar above CTA */}
-        <div className={styles.miniTrust}>
-          <span className={styles.miniTrustItem}>
-            <ShieldCheck size={14} aria-hidden="true" />
-            Secure Payment
-          </span>
-          <span className={styles.miniTrustItem}>
-            <CalendarCheck size={14} aria-hidden="true" />
-            3-Day Refund
-          </span>
-        </div>
-
+        {/* CTA Button */}
         <div className={styles.ctaWrapper}>
           <button
             type="button"
@@ -251,22 +305,39 @@ export function DepositAuthCard({
             {isProcessing ? (
               <>
                 <span className={styles.spinner} aria-hidden="true" />
-                Processing your deposit...
+                Processing...
               </>
             ) : (
               <>
                 <Lock size={18} aria-hidden="true" />
-                <span>Secure My Spot — ${quoteSummary.depositAmount} Deposit</span>
+                <span>Secure My Spot — ${quoteSummary.depositAmount}</span>
               </>
             )}
           </button>
           {!canProceed && !isProcessing && (
             <p id="cta-hint" className={styles.ctaHint}>
-              Please sign above and agree to the terms to continue
+              Please sign above and agree to the terms
             </p>
           )}
         </div>
 
+        {/* Trust indicators below CTA */}
+        <div className={styles.miniTrust}>
+          <span className={styles.miniTrustItem}>
+            <ShieldCheck size={14} aria-hidden="true" />
+            Secure
+          </span>
+          <span className={styles.miniTrustItem}>
+            <CalendarCheck size={14} aria-hidden="true" />
+            3-Day Refund
+          </span>
+          <span className={styles.miniTrustItem}>
+            <Star size={14} fill="currentColor" aria-hidden="true" />
+            4.9 Rating
+          </span>
+        </div>
+
+        {/* Not Ready Link */}
         <button
           type="button"
           className={styles.laterLink}
@@ -278,28 +349,23 @@ export function DepositAuthCard({
         </button>
       </div>
 
-      {/* Social Proof */}
-      <SocialProof className={styles.socialProof} />
-
-      {/* What Happens Next Timeline */}
-      <Timeline installDate={quoteSummary.installDate} className={styles.timeline} />
-
-      {/* Trust indicators */}
+      {/* ============================================
+          FOOTER: TRUST BAR (spans full width)
+          ============================================ */}
       <div className={styles.trust}>
         <div className={styles.trustItem}>
           <Lock size={14} className={styles.trustIcon} aria-hidden="true" />
-          <span>256-bit SSL Encryption</span>
+          <span>256-bit SSL</span>
         </div>
         <div className={styles.trustItem}>
-          <CalendarCheck size={14} className={styles.trustIcon} aria-hidden="true" />
-          <span>3-Day Free Cancellation</span>
+          <span>Licensed & Insured</span>
         </div>
         <div className={styles.trustItem}>
-          <div className={styles.stripeLogo} aria-label="Powered by Stripe">
-            <svg viewBox="0 0 60 25" width="48" height="20" aria-hidden="true">
-              <path fill="#635BFF" d="M59.64 14.28h-8.06c.19 1.93 1.6 2.55 3.2 2.55 1.64 0 2.96-.37 4.05-.95v3.32a10.3 10.3 0 0 1-4.56 1c-4.01 0-6.83-2.5-6.83-7.14 0-4.07 2.5-7.18 6.25-7.18 3.78 0 5.98 2.96 5.98 7.14 0 .47-.02.95-.03 1.26zm-4.1-5.73c-1.1 0-2.01.85-2.14 2.59h4.27c-.05-1.57-.75-2.59-2.13-2.59zm-9.7 10.67c-1.4 0-2.14-.67-2.14-1.93 0-1.24.74-1.93 2.14-1.93s2.14.69 2.14 1.93c0 1.26-.74 1.93-2.14 1.93zm-.35-12.8c1.57 0 2.86.37 3.93.97v3.36c-.97-.6-2.21-.95-3.46-.95-1.03 0-1.57.33-1.57.9 0 .64.79.9 1.76 1.14l.97.26c2.21.6 3.28 1.74 3.28 3.78 0 2.74-2.07 4.32-5.28 4.32a11 11 0 0 1-4.56-.97v-3.46c1.14.74 2.74 1.26 4.13 1.26 1.1 0 1.67-.33 1.67-.95s-.55-.9-1.76-1.17l-.95-.26c-2-.55-3.2-1.55-3.2-3.65 0-2.59 1.98-4.18 5.04-4.18v-.4zm-10.3 12.45V6.68h4.22v12.54h-4.22zm2.11-14.26c-1.3 0-2.28-.95-2.28-2.14s.98-2.14 2.28-2.14c1.33 0 2.31.95 2.31 2.14s-.98 2.14-2.31 2.14zm-9.18 14.32c-1.76 0-3.01-.67-3.81-1.76l-.07 1.5H20.1V.53h4.22v7.14c.79-.93 1.93-1.52 3.53-1.52 3.25 0 5.32 2.76 5.32 6.8 0 4.42-2.33 7.22-5.86 7.22v.05zm-.98-10.6c-1.33 0-2.31.93-2.55 2.33v2.76c.24 1.36 1.17 2.21 2.5 2.21 1.57 0 2.59-1.26 2.59-3.65 0-2.33-1.02-3.65-2.54-3.65zm-8.68 10.6c-2 0-3.55-.57-4.75-1.45v-3.4c1.17.88 2.76 1.5 4.42 1.5 1.1 0 1.67-.33 1.67-.9 0-.6-.57-.88-1.76-1.12l-.95-.24c-2.24-.55-3.28-1.6-3.28-3.7 0-2.64 2-4.18 5.04-4.18 1.5 0 2.83.31 3.93.86v3.32c-.97-.57-2.24-.88-3.48-.88-1.02 0-1.55.31-1.55.85 0 .57.55.83 1.74 1.1l.97.23c2.33.57 3.28 1.67 3.28 3.72 0 2.83-2.1 4.4-5.28 4.4v-.11z"/>
-            </svg>
-          </div>
+          <span>GAF Certified</span>
+        </div>
+        <div className={styles.trustItem}>
+          <Star size={14} className={styles.trustIcon} fill="currentColor" aria-hidden="true" />
+          <span>4.9 Rating</span>
         </div>
       </div>
     </div>
