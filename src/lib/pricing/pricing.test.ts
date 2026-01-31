@@ -74,24 +74,24 @@ describe('Pricing Engine', () => {
   });
 
   describe('calculateDeposit', () => {
-    it('should calculate 10% deposit', () => {
+    it('should calculate 5% deposit', () => {
       const deposit = calculateDeposit(10000);
-      expect(deposit).toBe(1000);
+      expect(deposit).toBe(500); // 5% of 10000 = 500
     });
 
     it('should enforce minimum deposit of $500', () => {
       const deposit = calculateDeposit(3000);
-      expect(deposit).toBe(500); // 10% of 3000 = 300, but min is 500
+      expect(deposit).toBe(500); // 5% of 3000 = 150, but min is 500
     });
 
     it('should enforce maximum deposit of $2500', () => {
-      const deposit = calculateDeposit(50000);
-      expect(deposit).toBe(2500); // 10% of 50000 = 5000, but max is 2500
+      const deposit = calculateDeposit(60000);
+      expect(deposit).toBe(2500); // 5% of 60000 = 3000, but max is 2500
     });
 
     it('should return minimum for very small totals', () => {
       const deposit = calculateDeposit(1000);
-      expect(deposit).toBe(500); // 10% = 100, but min is 500
+      expect(deposit).toBe(500); // 5% = 50, but min is 500
     });
   });
 
@@ -194,11 +194,11 @@ describe('Pricing Engine', () => {
 
     it('should calculate deposit ranges correctly', () => {
       const result = calculatePriceRanges(2000, 3000, mockTiers as never);
-      
-      // Good tier min deposit: 10% of 11000 = 1100
-      expect(result[0].depositMin).toBe(1100);
-      // Good tier max deposit: 10% of 16500 = 1650
-      expect(result[0].depositMax).toBe(1650);
+
+      // Good tier min deposit: 5% of 11000 = 550, but min is 500
+      expect(result[0].depositMin).toBe(550);
+      // Good tier max deposit: 5% of 16500 = 825
+      expect(result[0].depositMax).toBe(825);
     });
   });
 
