@@ -65,9 +65,6 @@ export default async function DepositPage({ params }: DepositPageProps) {
         {/* Progress Indicator */}
         <div className={styles.progressSection}>
           <ProgressIndicator steps={PROGRESS_STEPS} currentStep={4} />
-          <p className={styles.addressSubtitle}>
-            Quote for {address}
-          </p>
         </div>
 
         <DepositPageClient

@@ -78,6 +78,7 @@ export function DepositAuthCard({
   error = null,
 }: DepositAuthCardProps) {
   const [isTimelineOpen, setIsTimelineOpen] = useState(false);
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
 
   const formatDate = (dateStr: string, timeSlot: 'morning' | 'afternoon') => {
     const date = new Date(dateStr);
@@ -101,14 +102,6 @@ export function DepositAuthCard({
 
   const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.trim());
   const canProceed = signature && email && isValidEmail(email) && hasAgreed && !isProcessing;
-
-  // Benefits to show in order summary
-  const benefits = [
-    { label: 'Secures your date', icon: CalendarCheck },
-    { label: 'Fully refundable', icon: ShieldCheck },
-    { label: '3-day cancellation', icon: Check },
-    { label: 'Price protection', icon: Check },
-  ];
 
   // Timeline steps
   const timelineSteps = [
@@ -171,16 +164,6 @@ export function DepositAuthCard({
             <Calendar size={14} aria-hidden="true" />
             <span>{formatDate(quoteSummary.installDate, quoteSummary.timeSlot)}</span>
           </div>
-
-          {/* Benefits List */}
-          <div className={styles.benefitsList}>
-            {benefits.map((benefit, index) => (
-              <div key={index} className={styles.benefitItem}>
-                <Check size={14} className={styles.benefitIcon} aria-hidden="true" />
-                <span>{benefit.label}</span>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* What Happens Next - Collapsible */}
@@ -233,17 +216,6 @@ export function DepositAuthCard({
           <div className={styles.depositRefund}>Fully refundable within 3 days</div>
         </div>
 
-        {/* Authorization Text */}
-        <div className={styles.authTerms}>
-          <p className={styles.termsText}>
-            I authorize Results Roofing to charge{' '}
-            <strong className={styles.highlight}>${quoteSummary.depositAmount}</strong> to secure my
-            installation date. This deposit is{' '}
-            <strong className={styles.highlightGreen}>fully refundable</strong> if I cancel within{' '}
-            <strong className={styles.highlight}>3 business days</strong>.
-          </p>
-        </div>
-
         {/* Signature Pad */}
         <div className={styles.signatureContainer}>
           <SignaturePad
@@ -271,20 +243,48 @@ export function DepositAuthCard({
           <p className={styles.emailHelp}>We&apos;ll send your contract and receipt here</p>
         </div>
 
-        {/* Agreement Checkbox */}
-        <label className={styles.agreementLabel}>
-          <input
-            type="checkbox"
-            className={styles.agreementCheckbox}
-            checked={hasAgreed}
-            onChange={(e) => onAgreementChange(e.target.checked)}
-            disabled={isProcessing}
-          />
-          <span className={styles.agreementText}>
-            <Check size={14} className={styles.agreementIcon} aria-hidden="true" />I agree to the
-            terms above
-          </span>
-        </label>
+        {/* Terms & Agreement - Collapsible with checkbox */}
+        <div className={styles.termsContainer}>
+          <div className={styles.termsHeader}>
+            <label className={styles.agreementLabel}>
+              <input
+                type="checkbox"
+                className={styles.agreementCheckbox}
+                checked={hasAgreed}
+                onChange={(e) => onAgreementChange(e.target.checked)}
+                disabled={isProcessing}
+              />
+              <span className={styles.agreementText}>
+                <Check size={14} className={styles.agreementIcon} aria-hidden="true" />
+                Terms & Agreement
+              </span>
+            </label>
+            <button
+              type="button"
+              className={styles.termsToggle}
+              onClick={() => setIsTermsOpen(!isTermsOpen)}
+              aria-expanded={isTermsOpen}
+            >
+              {isTermsOpen ? (
+                <ChevronUp size={16} aria-hidden="true" />
+              ) : (
+                <ChevronDown size={16} aria-hidden="true" />
+              )}
+            </button>
+          </div>
+
+          {isTermsOpen && (
+            <div className={styles.termsContent}>
+              <p className={styles.termsText}>
+                I authorize Results Roofing to charge{' '}
+                <strong className={styles.highlight}>${quoteSummary.depositAmount}</strong> to
+                secure my installation date. This deposit is{' '}
+                <strong className={styles.highlightGreen}>fully refundable</strong> if I cancel
+                within <strong className={styles.highlight}>3 business days</strong>.
+              </p>
+            </div>
+          )}
+        </div>
 
         {/* Error Display */}
         {error && (
@@ -348,7 +348,6 @@ export function DepositAuthCard({
           <ArrowRight size={14} aria-hidden="true" />
         </button>
       </div>
-
     </div>
   );
 }

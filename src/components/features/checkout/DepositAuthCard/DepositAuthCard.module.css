@@ -149,29 +149,6 @@
   color: var(--rr-color-text-tertiary);
 }
 
-/* Benefits List */
-.benefitsList {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--rr-space-2);
-  padding-top: var(--rr-space-3);
-  margin-top: var(--rr-space-2);
-  border-top: 1px solid var(--rr-color-border-default);
-}
-
-.benefitItem {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8125rem;
-  color: var(--rr-color-text-secondary);
-}
-
-.benefitIcon {
-  color: var(--rr-color-success, #22C55E);
-  flex-shrink: 0;
-}
-
 /* Timeline Section */
 .timelineSection {
   margin-top: var(--rr-space-4);
@@ -324,12 +301,46 @@
   margin-top: 4px;
 }
 
-/* Auth Terms */
-.authTerms {
-  padding: var(--rr-space-3);
+/* Terms & Agreement Container */
+.termsContainer {
   background: var(--rr-color-gray-50);
-  border: 1px solid var(--rr-color-border-default);
+  border: 2px solid var(--rr-color-border-default);
   border-radius: var(--rr-radius-md);
+  overflow: hidden;
+}
+
+.termsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: var(--rr-space-2);
+}
+
+.termsToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: var(--rr-radius-sm);
+  cursor: pointer;
+  color: var(--rr-color-text-tertiary);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.termsToggle:hover {
+  background: var(--rr-color-gray-100);
+  color: var(--rr-color-text-primary);
+}
+
+.termsContent {
+  padding: var(--rr-space-3);
+  padding-top: 0;
+  border-top: 1px solid var(--rr-color-border-default);
+  margin-top: 0;
+  background: var(--rr-color-white);
 }
 
 .termsText {
@@ -337,6 +348,7 @@
   color: var(--rr-color-text-secondary);
   line-height: 1.6;
   margin: 0;
+  padding: var(--rr-space-3) 0;
 }
 
 .highlight {
@@ -399,16 +411,12 @@
   gap: var(--rr-space-3);
   cursor: pointer;
   padding: var(--rr-space-3);
-  background: var(--rr-color-gray-50);
-  border: 2px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-md);
-  transition: background 0.15s ease, border-color 0.15s ease;
+  flex: 1;
   min-height: 48px;
 }
 
 .agreementLabel:hover {
   background: var(--rr-color-gray-100);
-  border-color: var(--rr-color-blue-light, #93C5FD);
 }
 
 .agreementCheckbox {
@@ -612,13 +620,6 @@
 
   .depositAmount {
     font-size: 1.25rem;
-  }
-
-  /* Benefits in single column on very small screens */
-  @media (max-width: 400px) {
-    .benefitsList {
-      grid-template-columns: 1fr;
-    }
   }
 }
 
