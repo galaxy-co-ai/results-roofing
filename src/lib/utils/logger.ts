@@ -23,8 +23,8 @@ function formatMessage(level: LogLevel, message: string, context?: LogContext): 
 
 /**
  * Logger that respects environment settings
- * - In production: only warn and error are logged
- * - In development: all levels are logged
+ * - In production: info, warn and error are logged (important for operational visibility)
+ * - In development: all levels including debug are logged
  * - In test: nothing is logged (can be overridden)
  */
 export const logger = {
@@ -39,10 +39,11 @@ export const logger = {
   },
 
   /**
-   * Info level - only in development
+   * Info level - logged in both development and production
+   * Use for important operational events (payments, orders, etc.)
    */
   info(message: string, context?: LogContext): void {
-    if (isDevelopment && !isTest) {
+    if (!isTest) {
       // eslint-disable-next-line no-console
       console.info(formatMessage('info', message, context));
     }

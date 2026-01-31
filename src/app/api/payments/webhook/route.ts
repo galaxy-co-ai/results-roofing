@@ -32,24 +32,38 @@ function generateConfirmationNumber(): string {
 /**
  * POST /api/payments/webhook
  * Handle Stripe webhook events
- * 
+ *
  * Events handled:
  * - payment_intent.succeeded: Update quote status, send confirmation
  * - payment_intent.payment_failed: Log failure, update status
  */
 export async function POST(request: NextRequest) {
+  logger.info('[WEBHOOK] Incoming webhook request received');
+
   const stripe = getStripeClient();
-  
-  if (!stripe || !STRIPE_WEBHOOK_SECRET) {
-    logger.warn('Stripe webhook received but Stripe not configured');
-    return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 });
+
+  if (!stripe) {
+    logger.error('[WEBHOOK] STRIPE_SECRET_KEY not configured');
+    return NextResponse.json({ error: 'Stripe secret key not configured' }, { status: 500 });
+  }
+
+  if (!STRIPE_WEBHOOK_SECRET) {
+    logger.error('[WEBHOOK] STRIPE_WEBHOOK_SECRET not configured');
+    return NextResponse.json({ error: 'Stripe webhook secret not configured' }, { status: 500 });
   }
 
   const body = await request.text();
   const signature = request.headers.get('stripe-signature');
 
+  logger.info('[WEBHOOK] Request details', {
+    hasBody: !!body,
+    bodyLength: body.length,
+    hasSignature: !!signature,
+    webhookSecretPrefix: STRIPE_WEBHOOK_SECRET?.substring(0, 12) + '...',
+  });
+
   if (!signature) {
-    logger.warn('Webhook received without signature');
+    logger.error('[WEBHOOK] Missing stripe-signature header');
     return NextResponse.json({ error: 'Missing signature' }, { status: 400 });
   }
 
@@ -57,14 +71,16 @@ export async function POST(request: NextRequest) {
 
   try {
     event = stripe.webhooks.constructEvent(body, signature, STRIPE_WEBHOOK_SECRET);
+    logger.info('[WEBHOOK] Signature verified successfully');
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
-    logger.error(`Webhook signature verification failed: ${message}`);
+    console.error('[WEBHOOK] Signature verification failed:', message);
+    logger.error(`[WEBHOOK] Signature verification failed: ${message}`);
     return NextResponse.json({ error: `Webhook error: ${message}` }, { status: 400 });
   }
 
   // Log the event for debugging
-  logger.info(`Received Stripe webhook: ${event.type}`);
+  logger.info(`[WEBHOOK] Processing event: ${event.type}`, { eventId: event.id });
 
   try {
     // Store the webhook event
@@ -107,14 +123,23 @@ export async function POST(request: NextRequest) {
  * Handle successful payment
  */
 async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
+  logger.info('[WEBHOOK] handlePaymentSuccess called', {
+    paymentIntentId: paymentIntent.id,
+    amount: paymentIntent.amount,
+    metadata: paymentIntent.metadata,
+  });
+
   const quoteId = paymentIntent.metadata.quote_id;
 
   if (!quoteId) {
-    logger.warn(`Payment succeeded but no quote_id in metadata: ${paymentIntent.id}`);
+    logger.error(`[WEBHOOK] Payment succeeded but no quote_id in metadata`, {
+      paymentIntentId: paymentIntent.id,
+      metadata: paymentIntent.metadata,
+    });
     return;
   }
 
-  logger.info(`Payment succeeded for quote ${quoteId}: ${paymentIntent.id}`);
+  logger.info(`[WEBHOOK] Processing payment for quote ${quoteId}`);
 
   // Fetch the quote with its lead
   const quote = await db.query.quotes.findFirst({
@@ -125,9 +150,16 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   });
 
   if (!quote) {
-    logger.error(`Quote not found for payment: ${quoteId}`);
+    logger.error(`[WEBHOOK] Quote not found in database`, { quoteId });
     return;
   }
+
+  logger.info(`[WEBHOOK] Found quote`, {
+    quoteId,
+    address: quote.address,
+    totalPrice: quote.totalPrice,
+    leadEmail: quote.lead?.email,
+  });
 
   // Check if order already exists (idempotency)
   const existingOrder = await db.query.orders.findFirst({
@@ -135,9 +167,15 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   });
 
   if (existingOrder) {
-    logger.info(`Order already exists for quote ${quoteId}: ${existingOrder.confirmationNumber}`);
+    logger.info(`[WEBHOOK] Order already exists (idempotent)`, {
+      quoteId,
+      orderId: existingOrder.id,
+      confirmationNumber: existingOrder.confirmationNumber,
+    });
     return;
   }
+
+  logger.info(`[WEBHOOK] No existing order found, creating new order`);
 
   // Look up or create a contract for this quote
   let contract = await db.query.contracts.findFirst({
@@ -197,7 +235,14 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     })
     .returning();
 
-  logger.info(`Created order ${order.confirmationNumber} for quote ${quoteId}`);
+  logger.info(`[WEBHOOK] Order created successfully`, {
+    orderId: order.id,
+    confirmationNumber: order.confirmationNumber,
+    quoteId,
+    customerEmail: order.customerEmail,
+    totalPrice: order.totalPrice,
+    depositAmount: order.depositAmount,
+  });
 
   // Create the payment record
   await db.insert(schema.payments).values({
@@ -212,7 +257,11 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     processedAt: new Date(),
   });
 
-  logger.info(`Recorded deposit payment for order ${order.confirmationNumber}`);
+  logger.info(`[WEBHOOK] Payment record created`, {
+    orderId: order.id,
+    confirmationNumber: order.confirmationNumber,
+    amount: depositAmount,
+  });
 
   // Update quote status to 'converted'
   await db
@@ -222,6 +271,15 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
       updatedAt: new Date(),
     })
     .where(eq(schema.quotes.id, quoteId));
+
+  logger.info(`[WEBHOOK] Quote status updated to 'converted'`, { quoteId });
+
+  logger.info(`[WEBHOOK] Payment flow completed successfully`, {
+    quoteId,
+    orderId: order.id,
+    confirmationNumber: order.confirmationNumber,
+    customerEmail: order.customerEmail,
+  });
 
   // TODO: Send confirmation email via Resend
   // TODO: Send confirmation SMS if consent given
