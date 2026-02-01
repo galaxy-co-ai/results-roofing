@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { CheckCircle, Loader2, MapPin, ArrowLeft } from 'lucide-react';
 import type { ParsedAddress } from '@/components/features/address';
@@ -27,6 +27,19 @@ export function PropertyConfirm({
 }: PropertyConfirmProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  // Timeout fallback: show map unavailable after 10s if image never loads
+  useEffect(() => {
+    if (imageLoaded || imageError) return;
+
+    const timeout = setTimeout(() => {
+      if (!imageLoaded) {
+        setImageError(true);
+      }
+    }, 10000);
+
+    return () => clearTimeout(timeout);
+  }, [imageLoaded, imageError]);
 
   const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
   const satelliteUrl = mapboxToken
@@ -64,6 +77,7 @@ export function PropertyConfirm({
                 onLoad={() => setImageLoaded(true)}
                 onError={() => setImageError(true)}
                 unoptimized
+                loading="eager"
               />
             </>
           ) : (

@@ -1,22 +1,21 @@
 'use client';
 
-import { useState } from 'react';
-import { MapPin, Home, ArrowRight, AlertCircle, Check } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { MapPin, Home, ArrowRight, AlertCircle, Check, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useWizard } from '../WizardContext';
 import styles from './PropertyConfirm.module.css';
 
 /**
- * Get satellite image URL from Google Maps Static API
+ * Get satellite image URL from Mapbox Static Images API
  */
-function getSatelliteImageUrl(lat: number, lng: number): string {
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-  if (!apiKey) {
-    // Return a placeholder if no API key
-    return '/images/placeholder-property.jpg';
+function getSatelliteImageUrl(lat: number, lng: number): string | null {
+  const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+  if (!token) {
+    return null;
   }
 
-  return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=19&size=600x400&maptype=satellite&key=${apiKey}`;
+  return `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/${lng},${lat},18,0/600x400@2x?access_token=${token}`;
 }
 
 /**
@@ -40,6 +39,26 @@ export function PropertyConfirm() {
   const { context, goBack, selectTier, error: wizardError } = useWizard();
   const { address, sqftEstimate, priceRanges } = context;
   const [notMyProperty, setNotMyProperty] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  // Get satellite URL
+  const satelliteUrl = address?.lat && address?.lng
+    ? getSatelliteImageUrl(address.lat, address.lng)
+    : null;
+
+  // Timeout fallback: show placeholder after 10s if image never loads
+  useEffect(() => {
+    if (!satelliteUrl || imageLoaded || imageError) return;
+
+    const timeout = setTimeout(() => {
+      if (!imageLoaded) {
+        setImageError(true);
+      }
+    }, 10000);
+
+    return () => clearTimeout(timeout);
+  }, [satelliteUrl, imageLoaded, imageError]);
 
   // Get the "better" tier for display (default recommendation)
   const betterTier = priceRanges?.find((t) => t.tier === 'better');
@@ -66,10 +85,6 @@ export function PropertyConfirm() {
     return null;
   }
 
-  const satelliteUrl = address.lat && address.lng
-    ? getSatelliteImageUrl(address.lat, address.lng)
-    : '/images/placeholder-property.jpg';
-
   return (
     <div className={styles.container}>
       {/* Header */}
@@ -82,14 +97,34 @@ export function PropertyConfirm() {
 
       {/* Satellite image */}
       <div className={styles.imageWrapper}>
-        <img
-          src={satelliteUrl}
-          alt={`Satellite view of ${address.formattedAddress}`}
-          className={styles.image}
-        />
-        <div className={styles.imageOverlay}>
-          <MapPin size={24} />
-        </div>
+        {satelliteUrl && !imageError ? (
+          <>
+            {!imageLoaded && (
+              <div className={styles.imagePlaceholder}>
+                <Loader2 size={32} className={styles.spinner} />
+                <span>Loading satellite view...</span>
+              </div>
+            )}
+            <img
+              src={satelliteUrl}
+              alt={`Satellite view of ${address.formattedAddress}`}
+              className={styles.image}
+              style={{ display: imageLoaded ? 'block' : 'none' }}
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageError(true)}
+            />
+          </>
+        ) : (
+          <div className={styles.imagePlaceholder}>
+            <MapPin size={32} />
+            <span>Map view unavailable</span>
+          </div>
+        )}
+        {imageLoaded && (
+          <div className={styles.imageOverlay}>
+            <MapPin size={24} />
+          </div>
+        )}
       </div>
 
       {/* Address display */}
