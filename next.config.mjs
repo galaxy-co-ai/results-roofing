@@ -24,6 +24,16 @@ const nextConfig = {
     },
   },
 
+  // Rewrites for clean URLs
+  async rewrites() {
+    return [
+      {
+        source: '/showcase',
+        destination: '/showcase.html',
+      },
+    ];
+  },
+
   // Headers for security
   async headers() {
     return [
