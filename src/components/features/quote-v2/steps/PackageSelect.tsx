@@ -86,7 +86,6 @@ export function PackageSelect() {
   const { context, selectTier, goBack } = useWizard();
   const { priceRanges, selectedTier } = context;
   const [showComparison, setShowComparison] = useState(false);
-  const [hoveredTier, setHoveredTier] = useState<string | null>(null);
 
   const handleSelectTier = (tier: 'good' | 'better' | 'best', tierId: string) => {
     selectTier(tier, tierId);
@@ -112,7 +111,6 @@ export function PackageSelect() {
         {TIER_CONFIGS.map((config) => {
           const priceData = getTierPrice(config.key);
           const isSelected = selectedTier === config.key;
-          const _isHovered = hoveredTier === config.key;
           const Icon = config.icon;
 
           return (
@@ -124,8 +122,6 @@ export function PackageSelect() {
               aria-describedby={`${config.key}-price ${config.key}-features`}
               className={`${styles.tierCard} ${isSelected ? styles.selected : ''} ${config.badge ? styles.popular : ''}`}
               onClick={() => priceData && handleSelectTier(config.key, priceData.tierId)}
-              onMouseEnter={() => setHoveredTier(config.key)}
-              onMouseLeave={() => setHoveredTier(null)}
               disabled={!priceData}
             >
               {/* Badge */}
