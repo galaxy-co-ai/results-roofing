@@ -9,6 +9,11 @@ import styles from './page.module.css';
 // Force dynamic rendering to ensure fresh database queries
 export const dynamic = 'force-dynamic';
 
+export const metadata = {
+  title: 'Schedule Installation | Results Roofing',
+  description: 'Choose your preferred installation date and time.',
+};
+
 interface SchedulePageProps {
   params: Promise<{ id: string }>;
 }

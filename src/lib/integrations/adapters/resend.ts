@@ -35,7 +35,8 @@ export type EmailTemplate =
   | 'payment_confirmation'
   | 'booking_confirmation'
   | 'booking_reminder'
-  | 'project_update';
+  | 'project_update'
+  | 'feedback_notification';
 
 /**
  * Email response
@@ -245,6 +246,46 @@ function renderTemplate(template: EmailTemplate, data: Record<string, unknown>):
       </body>
       </html>
     `,
+
+    feedback_notification: `
+      <!DOCTYPE html>
+      <html>
+      <head><style>${baseStyles}
+        .priority-critical { background: #FEE2E2; color: #DC2626; }
+        .priority-high { background: #FFEDD5; color: #EA580C; }
+        .priority-medium { background: #FEF9C3; color: #CA8A04; }
+        .priority-low { background: #DCFCE7; color: #16A34A; }
+        .type-bug { border-left: 4px solid #EF4444; }
+        .type-suggestion { border-left: 4px solid #8B5CF6; }
+        .type-general { border-left: 4px solid #3B82F6; }
+      </style></head>
+      <body>
+        <div class="header" style="background: ${data.reason === 'bug' ? '#EF4444' : data.reason === 'suggestion' ? '#8B5CF6' : '#3B82F6'};">
+          <h1>${data.reason === 'bug' ? '🐛 Bug Report' : data.reason === 'suggestion' ? '💡 Feature Suggestion' : '💬 Feedback'}</h1>
+        </div>
+        <div class="content type-${data.reason}">
+          <div class="highlight">
+            <strong>Type:</strong> ${data.subOption}<br>
+            <strong>Priority:</strong> <span class="priority-${data.priority}" style="padding: 2px 8px; border-radius: 4px; font-weight: 600;">${String(data.priority).toUpperCase()}</span><br>
+            <strong>Page:</strong> ${data.page}
+          </div>
+          ${data.notes ? `<p><strong>User Notes:</strong><br>${data.notes}</p>` : ''}
+          ${data.targetElement ? `<p><strong>Element:</strong> <code>${data.targetElement}</code></p>` : ''}
+          ${data.deviceType ? `<p><strong>Device:</strong> ${data.deviceType} (${data.viewport})</p>` : ''}
+          <div style="text-align: center; margin-top: 20px;">
+            <a href="${data.adminUrl}" class="button">View in Admin Panel</a>
+          </div>
+          <p style="color: #64748b; font-size: 12px; margin-top: 20px;">
+            Submitted: ${data.timestamp}<br>
+            Feedback ID: ${data.feedbackId}
+          </p>
+        </div>
+        <div class="footer">
+          <p>Results Roofing Admin Notification</p>
+        </div>
+      </body>
+      </html>
+    `,
   };
 
   return templates[template] || templates.project_update;
@@ -407,6 +448,41 @@ export const resendAdapter = {
       to: email,
       subject: 'Project Update - Results Roofing',
       template: 'project_update',
+      data,
+    });
+  },
+
+  /**
+   * Send feedback notification to admin
+   */
+  async sendFeedbackNotification(
+    data: {
+      feedbackId: string;
+      reason: 'bug' | 'suggestion' | 'general';
+      subOption: string;
+      priority: string;
+      page: string;
+      notes?: string;
+      targetElement?: string;
+      deviceType?: string;
+      viewport?: string;
+      timestamp: string;
+      adminUrl: string;
+    }
+  ): Promise<EmailResponse> {
+    const adminEmail = process.env.FEEDBACK_NOTIFICATION_EMAIL;
+    if (!adminEmail) {
+      logger.warn('FEEDBACK_NOTIFICATION_EMAIL not configured - skipping notification');
+      return { id: '', success: false, error: 'Admin email not configured' };
+    }
+
+    const subjectPrefix = data.reason === 'bug' ? '🐛 Bug' : data.reason === 'suggestion' ? '💡 Suggestion' : '💬 Feedback';
+    const priorityTag = data.priority === 'critical' || data.priority === 'high' ? ` [${data.priority.toUpperCase()}]` : '';
+
+    return this.send({
+      to: adminEmail,
+      subject: `${subjectPrefix}${priorityTag}: ${data.subOption} - Results Roofing`,
+      template: 'feedback_notification',
       data,
     });
   },

@@ -174,10 +174,10 @@ export function WizardProvider({
   const prevStateRef = useRef<string | null>(null);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // States where we save a checkpoint (user can resume from these)
-  const SAVEABLE_STATES = ['confirm', 'select', 'schedule', 'contact', 'payment'];
-
   useEffect(() => {
+    // States where we save a checkpoint (user can resume from these)
+    const SAVEABLE_STATES = ['confirm', 'select', 'schedule', 'contact', 'payment'];
+
     const shouldSave =
       SAVEABLE_STATES.includes(stateValue) &&
       prevStateRef.current !== stateValue &&

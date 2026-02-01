@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { MapPin, Home, ArrowRight, AlertCircle, Check, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useWizard } from '../WizardContext';
@@ -105,13 +106,16 @@ export function PropertyConfirm() {
                 <span>Loading satellite view...</span>
               </div>
             )}
-            <img
+            <Image
               src={satelliteUrl}
               alt={`Satellite view of ${address.formattedAddress}`}
               className={styles.image}
               style={{ display: imageLoaded ? 'block' : 'none' }}
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageError(true)}
+              width={600}
+              height={400}
+              unoptimized
             />
           </>
         ) : (

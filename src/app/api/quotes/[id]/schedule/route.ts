@@ -8,6 +8,8 @@ const scheduleSchema = z.object({
   scheduledDate: z.string().datetime({ message: 'Invalid date format' }),
   timeSlot: z.enum(['morning', 'afternoon']),
   timezone: z.string().default('America/Chicago'),
+  phone: z.string().min(10).max(15).optional(),
+  smsConsent: z.boolean().optional(),
 });
 
 interface RouteParams {
@@ -87,10 +89,38 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       );
     }
 
+    // Save phone number to lead if provided
+    if (parsed.data.phone && quote.leadId) {
+      await db
+        .update(schema.leads)
+        .set({
+          phone: parsed.data.phone,
+          updatedAt: new Date(),
+        })
+        .where(eq(schema.leads.id, quote.leadId));
+
+      // Record SMS consent if given (TCPA compliance)
+      if (parsed.data.smsConsent) {
+        await db.insert(schema.smsConsents).values({
+          leadId: quote.leadId,
+          phone: parsed.data.phone,
+          consentGiven: true,
+          consentSource: 'web_form',
+          consentText: 'Send me text updates about my roofing project',
+          ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || null,
+          userAgent: request.headers.get('user-agent') || null,
+        });
+
+        logger.info('SMS consent recorded', { leadId: quote.leadId, phone: parsed.data.phone });
+      }
+    }
+
     logger.info('Quote scheduled', {
       quoteId,
       scheduledDate: parsed.data.scheduledDate,
       timeSlot: parsed.data.timeSlot,
+      phoneProvided: !!parsed.data.phone,
+      smsConsent: !!parsed.data.smsConsent,
     });
 
     return NextResponse.json({

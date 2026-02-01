@@ -16,6 +16,11 @@ const PROGRESS_STEPS = [
 // Force dynamic rendering to ensure fresh database queries
 export const dynamic = 'force-dynamic';
 
+export const metadata = {
+  title: 'Secure Your Installation | Results Roofing',
+  description: 'Complete your deposit to lock in your installation date.',
+};
+
 interface DepositPageProps {
   params: Promise<{ id: string }>;
 }

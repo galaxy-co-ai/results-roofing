@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { db, desc, eq, and, or } from '@/db';
 import { like } from 'drizzle-orm';
 import { feedback, type NewFeedback } from '@/db/schema';
+import { resendAdapter } from '@/lib/integrations/adapters/resend';
 
 /**
  * POST /api/admin/feedback
@@ -96,6 +97,26 @@ export async function POST(request: NextRequest) {
     };
 
     const [created] = await db.insert(feedback).values(newFeedback).returning();
+
+    // Send email notification for new feedback
+    const adminUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/admin/feedback?id=${created.id}`;
+    const viewport = validated.userContext?.viewportWidth && validated.userContext?.viewportHeight
+      ? `${validated.userContext.viewportWidth}x${validated.userContext.viewportHeight}`
+      : undefined;
+
+    await resendAdapter.sendFeedbackNotification({
+      feedbackId: created.id,
+      reason: validated.reason,
+      subOption: validated.subOption,
+      priority,
+      page: validated.page,
+      notes: validated.notes,
+      targetElement: validated.targetElement,
+      deviceType: validated.userContext?.deviceType,
+      viewport,
+      timestamp: new Date(validated.timestamp).toLocaleString(),
+      adminUrl,
+    });
 
     return NextResponse.json({ success: true, feedback: created }, { status: 201 });
   } catch (error) {

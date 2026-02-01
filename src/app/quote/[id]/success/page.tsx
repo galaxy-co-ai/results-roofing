@@ -9,6 +9,11 @@ import styles from './page.module.css';
 // Force dynamic rendering to ensure fresh database queries
 export const dynamic = 'force-dynamic';
 
+export const metadata = {
+  title: 'Booking Confirmed | Results Roofing',
+  description: 'Your roofing installation has been scheduled successfully.',
+};
+
 interface SuccessPageProps {
   params: Promise<{ id: string }>;
 }
