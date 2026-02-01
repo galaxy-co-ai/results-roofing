@@ -1,14 +1,14 @@
 /**
  * Integration Adapters
  * Centralized exports for external service adapters
- * 
+ *
  * Status:
  * ✅ calcom - Adapter complete, webhook handler complete
+ * ✅ resend - Email delivery complete with templates
  * ⚠️ documenso - STUB (awaiting client account)
  * ⚠️ wisetack - STUB (awaiting client merchant account)
  * ⚠️ roofr - STUB (awaiting client API credentials)
  * ⚠️ jobnimbus - STUB (awaiting client API access)
- * ⚠️ resend - STUB (awaiting client account)
  * ⚠️ signalwire - STUB (awaiting client account)
  */
 
