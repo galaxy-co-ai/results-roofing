@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { createHmac } from 'crypto';
 import { db, schema, eq } from '@/db/index';
 import { logger } from '@/lib/utils';
+import { resendAdapter } from '@/lib/integrations/adapters';
 
 const WEBHOOK_SECRET = process.env.CALCOM_WEBHOOK_SECRET || '';
 
@@ -149,7 +150,15 @@ async function handleBookingCreated(booking: CalcomBooking) {
     startTime: booking.startTime,
   });
 
+  let quote = null;
+
   if (quoteId) {
+    // Fetch quote with lead info
+    quote = await db.query.quotes.findFirst({
+      where: eq(schema.quotes.id, quoteId),
+      with: { lead: true },
+    });
+
     // Update quote with scheduling info
     await db
       .update(schema.quotes)
@@ -164,7 +173,53 @@ async function handleBookingCreated(booking: CalcomBooking) {
     logger.info(`Quote ${quoteId} updated with booking ${booking.uid}`);
   }
 
-  // TODO: Send confirmation email via Resend
+  // Send booking confirmation email
+  const customerEmail = attendee?.email || quote?.lead?.email;
+  if (customerEmail) {
+    try {
+      const customerName = attendee?.name ||
+        (quote?.lead?.firstName && quote?.lead?.lastName
+          ? `${quote.lead.firstName} ${quote.lead.lastName}`
+          : 'Valued Customer');
+
+      const formattedDate = new Date(booking.startTime).toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+
+      const address = quote
+        ? `${quote.address}, ${quote.city}, ${quote.state} ${quote.zip}`
+        : booking.responses?.location?.value || 'Address on file';
+
+      const emailResult = await resendAdapter.sendBookingConfirmation(
+        customerEmail,
+        {
+          customerName,
+          date: formattedDate,
+          address,
+          confirmationNumber: booking.uid,
+        }
+      );
+
+      if (emailResult.success) {
+        logger.info('Booking confirmation email sent', {
+          emailId: emailResult.id,
+          to: customerEmail,
+          bookingUid: booking.uid,
+        });
+      } else {
+        logger.error('Failed to send booking confirmation email', {
+          error: emailResult.error,
+          to: customerEmail,
+        });
+      }
+    } catch (emailError) {
+      logger.error('Exception sending booking confirmation email', emailError);
+    }
+  }
+
   // TODO: Send confirmation SMS if consent given
   // TODO: Sync to JobNimbus CRM
 }
@@ -174,6 +229,7 @@ async function handleBookingCreated(booking: CalcomBooking) {
  */
 async function handleBookingCancelled(booking: CalcomBooking) {
   const quoteId = booking.metadata?.quoteId;
+  const attendee = booking.attendees[0];
 
   logger.info('Booking cancelled', {
     bookingId: booking.id,
@@ -181,7 +237,15 @@ async function handleBookingCancelled(booking: CalcomBooking) {
     quoteId,
   });
 
+  let quote = null;
+
   if (quoteId) {
+    // Fetch quote with lead info before updating
+    quote = await db.query.quotes.findFirst({
+      where: eq(schema.quotes.id, quoteId),
+      with: { lead: true },
+    });
+
     // Update quote to remove scheduling
     await db
       .update(schema.quotes)
@@ -196,7 +260,32 @@ async function handleBookingCancelled(booking: CalcomBooking) {
     logger.info(`Quote ${quoteId} scheduling cleared due to cancellation`);
   }
 
-  // TODO: Send cancellation email
+  // Send cancellation notification email
+  const customerEmail = attendee?.email || quote?.lead?.email;
+  if (customerEmail) {
+    try {
+      const customerName = attendee?.name ||
+        (quote?.lead?.firstName && quote?.lead?.lastName
+          ? `${quote.lead.firstName} ${quote.lead.lastName}`
+          : 'Valued Customer');
+
+      const emailResult = await resendAdapter.sendProjectUpdate(
+        customerEmail,
+        {
+          customerName,
+          message: 'Your roofing installation appointment has been cancelled. If you did not request this cancellation or would like to reschedule, please contact us or visit your quote page to select a new date.',
+          portalUrl: quoteId ? `${process.env.NEXT_PUBLIC_APP_URL || 'https://results-roofing.vercel.app'}/quote/${quoteId}` : undefined,
+        }
+      );
+
+      if (emailResult.success) {
+        logger.info('Cancellation email sent', { emailId: emailResult.id, to: customerEmail });
+      }
+    } catch (emailError) {
+      logger.error('Exception sending cancellation email', emailError);
+    }
+  }
+
   // TODO: Update JobNimbus
 }
 
@@ -205,6 +294,7 @@ async function handleBookingCancelled(booking: CalcomBooking) {
  */
 async function handleBookingRescheduled(booking: CalcomBooking) {
   const quoteId = booking.metadata?.quoteId;
+  const attendee = booking.attendees[0];
 
   logger.info('Booking rescheduled', {
     bookingId: booking.id,
@@ -213,7 +303,15 @@ async function handleBookingRescheduled(booking: CalcomBooking) {
     newStartTime: booking.startTime,
   });
 
+  let quote = null;
+
   if (quoteId) {
+    // Fetch quote with lead info
+    quote = await db.query.quotes.findFirst({
+      where: eq(schema.quotes.id, quoteId),
+      with: { lead: true },
+    });
+
     // Update quote with new scheduling
     await db
       .update(schema.quotes)
@@ -226,6 +324,48 @@ async function handleBookingRescheduled(booking: CalcomBooking) {
     logger.info(`Quote ${quoteId} rescheduled to ${booking.startTime}`);
   }
 
-  // TODO: Send reschedule confirmation email
+  // Send reschedule confirmation email
+  const customerEmail = attendee?.email || quote?.lead?.email;
+  if (customerEmail) {
+    try {
+      const customerName = attendee?.name ||
+        (quote?.lead?.firstName && quote?.lead?.lastName
+          ? `${quote.lead.firstName} ${quote.lead.lastName}`
+          : 'Valued Customer');
+
+      const formattedDate = new Date(booking.startTime).toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+
+      const address = quote
+        ? `${quote.address}, ${quote.city}, ${quote.state} ${quote.zip}`
+        : 'Address on file';
+
+      // Send as a new booking confirmation with the updated date
+      const emailResult = await resendAdapter.sendBookingConfirmation(
+        customerEmail,
+        {
+          customerName,
+          date: formattedDate,
+          address,
+          confirmationNumber: booking.uid,
+        }
+      );
+
+      if (emailResult.success) {
+        logger.info('Reschedule confirmation email sent', {
+          emailId: emailResult.id,
+          to: customerEmail,
+          newDate: formattedDate,
+        });
+      }
+    } catch (emailError) {
+      logger.error('Exception sending reschedule email', emailError);
+    }
+  }
+
   // TODO: Update JobNimbus
 }

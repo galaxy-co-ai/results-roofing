@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { db, schema, eq } from '@/db/index';
 import { logger } from '@/lib/utils';
+import { resendAdapter } from '@/lib/integrations/adapters';
 
 // Check for Stripe configuration
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
@@ -281,7 +282,36 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     customerEmail: order.customerEmail,
   });
 
-  // TODO: Send confirmation email via Resend
+  // Send payment confirmation email
+  if (order.customerEmail) {
+    try {
+      const customerName = order.customerName || 'Valued Customer';
+      const emailResult = await resendAdapter.sendPaymentConfirmation(
+        order.customerEmail,
+        {
+          customerName,
+          amount: depositAmount,
+          confirmationNumber: order.confirmationNumber,
+        }
+      );
+
+      if (emailResult.success) {
+        logger.info(`[WEBHOOK] Payment confirmation email sent`, {
+          emailId: emailResult.id,
+          to: order.customerEmail,
+        });
+      } else {
+        logger.error(`[WEBHOOK] Failed to send payment confirmation email`, {
+          error: emailResult.error,
+          to: order.customerEmail,
+        });
+      }
+    } catch (emailError) {
+      // Don't fail the webhook if email fails
+      logger.error(`[WEBHOOK] Exception sending payment confirmation email`, emailError);
+    }
+  }
+
   // TODO: Send confirmation SMS if consent given
   // TODO: Sync to JobNimbus CRM
 }
