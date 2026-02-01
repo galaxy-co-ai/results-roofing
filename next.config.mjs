@@ -9,6 +9,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: '*.vercel-storage.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'api.mapbox.com',
+      },
     ],
   },
 

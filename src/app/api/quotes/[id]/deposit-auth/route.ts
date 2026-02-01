@@ -8,6 +8,7 @@ import { logger } from '@/lib/utils';
 const depositAuthSchema = z.object({
   signature: z.string().min(1, 'Signature is required'),
   email: z.string().email('Please enter a valid email address'),
+  fullName: z.string().min(1, 'Full name is required').optional(),
   agreedToTerms: z.literal(true, {
     errorMap: () => ({ message: 'You must agree to the terms' }),
   }),
@@ -36,8 +37,17 @@ export async function POST(
       );
     }
 
-    const { email, termsVersion } = validation.data;
+    const { email, termsVersion, fullName } = validation.data;
     // signature and agreedToTerms are validated by schema but stored implicitly via contract record
+
+    // Parse full name into first and last name
+    let firstName: string | null = null;
+    let lastName: string | null = null;
+    if (fullName) {
+      const nameParts = fullName.trim().split(/\s+/);
+      firstName = nameParts[0] || null;
+      lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : null;
+    }
 
     // Fetch the quote
     const quote = await db.query.quotes.findFirst({
@@ -101,20 +111,40 @@ export async function POST(
       logger.info(`Created contract ${newContract?.id} with deposit authorization for quote ${quoteId}`);
     }
 
-    // Also update the lead with the email if it exists and doesn't have one
+    // Also update the lead with the email and name if it exists
     if (quote.leadId) {
       const lead = await db.query.leads.findFirst({
         where: eq(schema.leads.id, quote.leadId),
       });
-      if (lead && !lead.email) {
-        await db
-          .update(schema.leads)
-          .set({
-            email,
-            updatedAt: timestamp,
-          })
-          .where(eq(schema.leads.id, quote.leadId));
-        logger.info(`Updated lead ${quote.leadId} with email for quote ${quoteId}`);
+      if (lead) {
+        const leadUpdates: Record<string, unknown> = {
+          updatedAt: timestamp,
+        };
+
+        // Update email if not already set
+        if (!lead.email) {
+          leadUpdates.email = email;
+        }
+
+        // Update name if provided and not already set
+        if (firstName && !lead.firstName) {
+          leadUpdates.firstName = firstName;
+        }
+        if (lastName && !lead.lastName) {
+          leadUpdates.lastName = lastName;
+        }
+
+        // Only update if there are changes
+        if (Object.keys(leadUpdates).length > 1) {
+          await db
+            .update(schema.leads)
+            .set(leadUpdates)
+            .where(eq(schema.leads.id, quote.leadId));
+          logger.info(`Updated lead ${quote.leadId} with customer info for quote ${quoteId}`, {
+            hasEmail: 'email' in leadUpdates,
+            hasName: 'firstName' in leadUpdates,
+          });
+        }
       }
     }
 

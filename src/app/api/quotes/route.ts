@@ -22,6 +22,8 @@ interface StructuredAddress {
   lng?: number;
   placeId?: string;
   phone?: string;
+  firstName?: string;
+  lastName?: string;
   smsConsent?: {
     consented: boolean;
     consentText: string;
@@ -133,8 +135,10 @@ export async function POST(request: NextRequest) {
       pricingTiers
     );
 
-    // Extract phone and SMS consent from body
+    // Extract phone, lat/lng, and SMS consent from body
     const phone = isStructuredAddress(body) ? body.phone : undefined;
+    const lat = isStructuredAddress(body) ? body.lat : undefined;
+    const lng = isStructuredAddress(body) ? body.lng : undefined;
     const smsConsentData = isStructuredAddress(body) ? body.smsConsent : undefined;
 
     // Get IP and user agent for TCPA compliance tracking
@@ -152,6 +156,8 @@ export async function POST(request: NextRequest) {
         state: addressData.state,
         zip: addressData.zip,
         phone: phone || null,
+        lat: lat?.toString() || null,
+        lng: lng?.toString() || null,
       })
       .returning();
 

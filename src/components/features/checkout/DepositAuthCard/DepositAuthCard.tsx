@@ -40,6 +40,8 @@ interface DepositAuthCardProps {
   onSignatureChange: (signature: string | null) => void;
   /** Called when email changes */
   onEmailChange: (email: string) => void;
+  /** Called when full name changes */
+  onFullNameChange?: (fullName: string) => void;
   /** Called when agreement checkbox changes */
   onAgreementChange: (agreed: boolean) => void;
   /** Called when ready to pay */
@@ -50,6 +52,8 @@ interface DepositAuthCardProps {
   signature: string | null;
   /** Current email value */
   email: string;
+  /** Current full name value */
+  fullName?: string;
   /** Whether user has agreed to terms */
   hasAgreed: boolean;
   /** Whether payment is being processed */
@@ -67,11 +71,13 @@ export function DepositAuthCard({
   quoteSummary,
   onSignatureChange,
   onEmailChange,
+  onFullNameChange,
   onAgreementChange,
   onPayClick,
   onNeedMoreTime,
   signature,
   email,
+  fullName = '',
   hasAgreed,
   isProcessing = false,
   error = null,
@@ -100,7 +106,8 @@ export function DepositAuthCard({
   };
 
   const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.trim());
-  const canProceed = signature && email && isValidEmail(email) && hasAgreed && !isProcessing;
+  const hasValidName = fullName.trim().length >= 2;
+  const canProceed = signature && email && isValidEmail(email) && hasValidName && hasAgreed && !isProcessing;
 
   // Timeline steps
   const timelineSteps = [
@@ -166,6 +173,23 @@ export function DepositAuthCard({
             onSignatureChange={onSignatureChange}
             disabled={isProcessing}
             placeholder="Sign here"
+          />
+        </div>
+
+        {/* Full Name Input */}
+        <div className={styles.emailContainer}>
+          <label htmlFor="customer-name" className={styles.emailLabel}>
+            Your Full Name *
+          </label>
+          <input
+            id="customer-name"
+            type="text"
+            className={styles.emailInput}
+            value={fullName}
+            onChange={(e) => onFullNameChange?.(e.target.value)}
+            placeholder="John Smith"
+            disabled={isProcessing}
+            autoComplete="name"
           />
         </div>
 
@@ -318,7 +342,7 @@ export function DepositAuthCard({
           </button>
           {!canProceed && !isProcessing && (
             <p id="cta-hint" className={styles.ctaHint}>
-              Please sign above and agree to the terms
+              Please sign above, enter your name, and agree to the terms
             </p>
           )}
         </div>
