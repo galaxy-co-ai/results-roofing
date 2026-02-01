@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./github-cover.jpg" alt="Results Roofing - Your Roof Quote In Minutes" width="100%" />
+</p>
+
 # Results Roofing
 
 [![CI](https://github.com/galaxy-co-ai/results-roofing/actions/workflows/ci.yml/badge.svg)](https://github.com/galaxy-co-ai/results-roofing/actions/workflows/ci.yml)
