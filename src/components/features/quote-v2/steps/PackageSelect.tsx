@@ -112,7 +112,7 @@ export function PackageSelect() {
         {TIER_CONFIGS.map((config) => {
           const priceData = getTierPrice(config.key);
           const isSelected = selectedTier === config.key;
-          const isHovered = hoveredTier === config.key;
+          const _isHovered = hoveredTier === config.key;
           const Icon = config.icon;
 
           return (

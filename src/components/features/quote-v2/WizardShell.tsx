@@ -54,7 +54,7 @@ function getStepComponent(state: string): ReactNode {
  * Handles layout, progress, sidebar, and step rendering
  */
 export function WizardShell() {
-  const { state, stage, context, isLoading } = useWizardData();
+  const { state } = useWizardData();
 
   // Success state has a different layout (full width, no sidebar)
   if (state === 'success') {

@@ -38,7 +38,7 @@ function formatPriceRange(min: number, max: number): string {
  */
 export function PropertyConfirm() {
   const { context, goBack, selectTier, error: wizardError } = useWizard();
-  const { address, sqftEstimate, priceRanges, quoteId } = context;
+  const { address, sqftEstimate, priceRanges } = context;
   const [notMyProperty, setNotMyProperty] = useState(false);
 
   // Get the "better" tier for display (default recommendation)

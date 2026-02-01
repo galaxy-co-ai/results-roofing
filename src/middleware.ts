@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import {
   getQuoteVersion,
-  getQuoteVersionCookie,
   getQuoteUrl,
   isQuoteRoute,
 } from '@/lib/feature-flags';

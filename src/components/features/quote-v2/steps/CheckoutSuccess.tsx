@@ -31,7 +31,7 @@ function formatTimeSlot(slot: 'morning' | 'afternoon' | null): string {
  */
 export function CheckoutSuccess() {
   const { context } = useWizardData();
-  const { address, scheduledDate, timeSlot, phone, email, quoteId, selectedTier } = context;
+  const { address, scheduledDate, timeSlot, phone, email, quoteId } = context;
 
   const handleAddToCalendar = () => {
     if (!scheduledDate || !timeSlot) return;

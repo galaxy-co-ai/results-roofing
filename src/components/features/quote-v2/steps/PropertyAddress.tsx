@@ -22,7 +22,7 @@ export function PropertyAddress() {
     setOutOfArea(false);
   };
 
-  const handleServiceAreaError = (state: string) => {
+  const handleServiceAreaError = (_state: string) => {
     setOutOfArea(true);
   };
 
