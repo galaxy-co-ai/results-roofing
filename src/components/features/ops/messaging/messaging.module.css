@@ -1,0 +1,818 @@
+/* ===== Conversation List ===== */
+.conversationList {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-right: 1px solid var(--border);
+  background: var(--card);
+}
+
+.listHeader {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.searchWrapper {
+  position: relative;
+  margin-bottom: 0.75rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted-foreground);
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--background);
+  font-size: 0.8125rem;
+  color: var(--foreground);
+  transition: border-color 0.15s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.filterTabs {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.filterTab {
+  flex: 1;
+  padding: 0.375rem 0.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filterTab:hover {
+  background: rgba(6, 182, 212, 0.05);
+  color: var(--foreground);
+}
+
+.filterTab.active {
+  background: rgba(6, 182, 212, 0.1);
+  color: #06B6D4;
+}
+
+.listContent {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Skeleton Loading */
+.loadingState {
+  padding: 0.5rem;
+}
+
+.skeletonItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.skeletonAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, var(--border) 25%, var(--muted) 50%, var(--border) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonText {
+  flex: 1;
+}
+
+.skeletonLine {
+  height: 0.875rem;
+  width: 60%;
+  border-radius: 0.25rem;
+  background: linear-gradient(90deg, var(--border) 25%, var(--muted) 50%, var(--border) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  margin-bottom: 0.375rem;
+}
+
+.skeletonLineSm {
+  height: 0.75rem;
+  width: 80%;
+  border-radius: 0.25rem;
+  background: linear-gradient(90deg, var(--border) 25%, var(--muted) 50%, var(--border) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--muted-foreground);
+  gap: 0.5rem;
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Conversation Item */
+.conversationItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border-bottom: 1px solid var(--border);
+}
+
+.conversationItem:hover {
+  background: rgba(6, 182, 212, 0.03);
+}
+
+.conversationItem.selected {
+  background: rgba(6, 182, 212, 0.08);
+  border-left: 2px solid #06B6D4;
+}
+
+.conversationItem.unread .contactName {
+  font-weight: 600;
+}
+
+.conversationItem.unread .previewText {
+  color: var(--foreground);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatar span {
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.conversationContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.conversationHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.contactName {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.timestamp {
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+
+.conversationPreview {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.typeIcon {
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+
+.directionIcon {
+  color: #06B6D4;
+  flex-shrink: 0;
+}
+
+.previewText {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.conversationActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.unreadBadge {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 0.375rem;
+  border-radius: 9px;
+  background: #06B6D4;
+  color: white;
+  font-size: 0.625rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.starredIcon {
+  color: #F59E0B;
+  fill: #F59E0B;
+}
+
+.actionButton {
+  padding: 0.25rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.25rem;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.15s ease;
+}
+
+.conversationItem:hover .actionButton {
+  opacity: 1;
+}
+
+.actionButton:hover {
+  background: rgba(6, 182, 212, 0.1);
+  color: var(--foreground);
+}
+
+/* ===== Message Thread ===== */
+.messageThread {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.threadLoading,
+.threadEmpty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-foreground);
+  gap: 0.5rem;
+}
+
+.threadEmpty span {
+  font-size: 0.75rem;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border);
+  border-top-color: #06B6D4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loadMoreWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.loadMoreButton {
+  padding: 0.5rem 1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.loadMoreButton:hover:not(:disabled) {
+  background: rgba(6, 182, 212, 0.05);
+  color: var(--foreground);
+}
+
+.loadMoreButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dateGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dateDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.75rem 0;
+}
+
+.dateDivider span {
+  padding: 0.25rem 0.75rem;
+  background: var(--muted);
+  border-radius: 1rem;
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+}
+
+/* Message Bubble */
+.messageBubbleWrapper {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 80%;
+}
+
+.messageBubbleWrapper.inbound {
+  align-self: flex-start;
+}
+
+.messageBubbleWrapper.outbound {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.messageAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.messageAvatar span {
+  color: white;
+  font-size: 0.625rem;
+  font-weight: 600;
+}
+
+.messageBubble {
+  padding: 0.625rem 0.875rem;
+  border-radius: 1rem;
+  max-width: 100%;
+}
+
+.messageBubble.inbound {
+  background: var(--muted);
+  border-bottom-left-radius: 0.25rem;
+}
+
+.messageBubble.outbound {
+  background: #06B6D4;
+  color: white;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.emailSubject {
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.messageBubble.inbound .emailSubject {
+  border-bottom-color: var(--border);
+}
+
+.messageBody {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.emailBody {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.emailBody img {
+  max-width: 100%;
+  height: auto;
+}
+
+.attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+}
+
+.attachment {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 0.25rem;
+  font-size: 0.6875rem;
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.messageBubble.inbound .attachment {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.attachment:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.messageBubble.inbound .attachment:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.messageFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  margin-top: 0.375rem;
+}
+
+.messageTime {
+  font-size: 0.625rem;
+  opacity: 0.7;
+}
+
+.statusDelivered {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.statusSent {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.statusPending {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.statusFailed {
+  color: #EF4444;
+}
+
+.messageBubble.inbound .statusDelivered,
+.messageBubble.inbound .statusSent,
+.messageBubble.inbound .statusPending {
+  color: var(--muted-foreground);
+}
+
+/* ===== Message Composer ===== */
+.composer {
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+}
+
+.subjectInput {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--background);
+  font-size: 0.8125rem;
+  color: var(--foreground);
+  transition: border-color 0.15s ease;
+}
+
+.subjectInput:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.attachmentsPreview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.attachmentPreview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  background: var(--muted);
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  color: var(--foreground);
+}
+
+.attachmentImage {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+}
+
+.attachmentDoc {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 182, 212, 0.1);
+  border-radius: 0.25rem;
+  color: #06B6D4;
+}
+
+.attachmentName {
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.removeAttachment {
+  position: absolute;
+  top: -0.25rem;
+  right: -0.25rem;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background: #EF4444;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.inputWrapper {
+  position: relative;
+  margin-bottom: 0.75rem;
+}
+
+.messageInput {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--background);
+  font-size: 0.8125rem;
+  color: var(--foreground);
+  resize: none;
+  transition: border-color 0.15s ease;
+  font-family: inherit;
+}
+
+.messageInput:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.messageInput.overLimit {
+  border-color: #EF4444;
+}
+
+.charCount {
+  position: absolute;
+  bottom: 0.375rem;
+  right: 0.5rem;
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+}
+
+.charCount.overLimit {
+  color: #EF4444;
+}
+
+.segmentCount {
+  margin-left: 0.25rem;
+  color: var(--muted-foreground);
+}
+
+.composerActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.leftActions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.actionBtn {
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.375rem;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.actionBtn:hover:not(:disabled) {
+  background: rgba(6, 182, 212, 0.1);
+  color: #06B6D4;
+}
+
+.actionBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.sendBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  background: #06B6D4;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sendBtn:hover:not(:disabled) {
+  background: #0891B2;
+}
+
+.sendBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sendBtn .spinner {
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+}
+
+/* Templates Popover */
+.templatesPopover {
+  padding: 0.5rem;
+  min-width: 240px;
+}
+
+.templatesTitle {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.5rem 0.5rem;
+}
+
+.templatesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.templateItem {
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--foreground);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.templateItem:hover {
+  background: rgba(6, 182, 212, 0.1);
+}
+
+/* ===== Messaging Page Layout ===== */
+.messagingLayout {
+  display: flex;
+  height: calc(100vh - 60px);
+  background: var(--background);
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.conversationListPane {
+  width: 320px;
+  flex-shrink: 0;
+}
+
+.chatPane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+}
+
+.chatHeaderInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.chatHeaderName {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.chatHeaderSubtitle {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.chatHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.noConversation {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-foreground);
+  gap: 0.5rem;
+}
+
+.noConversation p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.noConversation span {
+  font-size: 0.75rem;
+}

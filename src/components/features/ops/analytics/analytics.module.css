@@ -1,0 +1,448 @@
+/* Analytics Components Styles */
+
+/* Stats Card */
+.statsCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px;
+  background: var(--color-bg-primary, #ffffff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px;
+  transition: box-shadow 0.2s ease;
+}
+
+.statsCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.statsIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.statsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.statsTitle {
+  font-size: 13px;
+  color: var(--color-text-tertiary, #9ca3af);
+  font-weight: 500;
+}
+
+.statsValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary, #111827);
+  line-height: 1.2;
+}
+
+.statsChange {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--color-text-tertiary, #9ca3af);
+  margin-top: 4px;
+}
+
+.statsChange.positive {
+  color: #22c55e;
+}
+
+.statsChange.negative {
+  color: #ef4444;
+}
+
+/* Stats Card Skeleton */
+.statsCardSkeleton {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+}
+
+.skeletonIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeletonTitle {
+  width: 80px;
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonValue {
+  width: 100px;
+  height: 28px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Chart Card */
+.chartCard {
+  background: var(--color-bg-primary, #ffffff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.chartTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary, #111827);
+  margin: 0;
+}
+
+.chartSubtitle {
+  font-size: 12px;
+  color: var(--color-text-tertiary, #9ca3af);
+}
+
+.chartSkeleton {
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Area Chart */
+.chartContainer {
+  position: relative;
+  padding-left: 40px;
+}
+
+.chartSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.gridLines line {
+  stroke: var(--color-border, #e5e7eb);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.chartArea {
+  transition: d 0.3s ease;
+}
+
+.chartLine {
+  transition: d 0.3s ease;
+}
+
+.chartPoint {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.chartCard:hover .chartPoint {
+  opacity: 1;
+}
+
+.yAxisLabels {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--color-text-tertiary, #9ca3af);
+  padding: 4px 0;
+}
+
+.xAxisLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-left: 40px;
+  font-size: 11px;
+  color: var(--color-text-tertiary, #9ca3af);
+}
+
+/* Bar Chart - Horizontal */
+.horizontalBars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.horizontalBarRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.barLabel {
+  width: 100px;
+  font-size: 13px;
+  color: var(--color-text-secondary, #6b7280);
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.horizontalBarTrack {
+  flex: 1;
+  height: 24px;
+  background: var(--color-bg-tertiary, #f3f4f6);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.horizontalBarFill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+.barValue {
+  width: 60px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary, #111827);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Bar Chart - Vertical */
+.verticalBarsContainer {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.verticalBars {
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.verticalBarColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  max-width: 60px;
+  height: 100%;
+}
+
+.verticalBarTrack {
+  width: 100%;
+  flex: 1;
+  background: var(--color-bg-tertiary, #f3f4f6);
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.verticalBarFill {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  transition: height 0.5s ease;
+}
+
+.barLabelVertical {
+  font-size: 11px;
+  color: var(--color-text-tertiary, #9ca3af);
+  margin-top: 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Donut Chart */
+.donutContainer {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.donutChart {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.donutCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.donutValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary, #111827);
+}
+
+.donutLabel {
+  font-size: 12px;
+  color: var(--color-text-tertiary, #9ca3af);
+}
+
+.donutSkeleton {
+  border-radius: 50%;
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  margin: 0 auto;
+}
+
+/* Legend */
+.donutLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legendColor {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.legendLabel {
+  font-size: 13px;
+  color: var(--color-text-secondary, #6b7280);
+  flex: 1;
+}
+
+.legendValue {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary, #111827);
+}
+
+/* Activity Feed */
+.activityFeed {
+  background: var(--color-bg-primary, #ffffff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.feedHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.feedTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary, #111827);
+  margin: 0;
+}
+
+.feedList {
+  display: flex;
+  flex-direction: column;
+}
+
+.feedItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.feedItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.feedIcon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.feedContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.feedText {
+  font-size: 13px;
+  color: var(--color-text-primary, #111827);
+  line-height: 1.4;
+  margin: 0 0 4px 0;
+}
+
+.feedText strong {
+  font-weight: 600;
+}
+
+.feedTime {
+  font-size: 12px;
+  color: var(--color-text-tertiary, #9ca3af);
+}
+
+/* Animations */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
