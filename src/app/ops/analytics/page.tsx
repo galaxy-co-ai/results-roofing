@@ -1,274 +1,381 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
+import { format, subDays, addDays, differenceInDays } from 'date-fns';
 import {
-  Users,
-  DollarSign,
-  MessageSquare,
-  FileText,
-  TrendingUp,
-  Eye,
-  Mail,
-  Phone,
-  CheckCircle2,
-  AlertCircle,
-} from 'lucide-react';
-import {
-  StatsCard,
+  Area,
   AreaChart,
+  Bar,
   BarChart,
-  DonutChart,
-  ActivityFeed,
-} from '@/components/features/ops/analytics';
+  Line,
+  LineChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Pie,
+  PieChart,
+  ComposedChart,
+} from 'recharts';
+import {
+  CalendarIcon,
+  TrendingUp,
+  TrendingDown,
+  ChevronLeft,
+  ChevronRight,
+  MoreHorizontal,
+  Download,
+  RefreshCw,
+  Settings,
+} from 'lucide-react';
+import type { DateRange } from 'react-day-picker';
 
-// Mock data generators
-function generateRevenueData() {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-  return months.map((label, i) => ({
-    label,
-    value: 50000 + Math.random() * 30000 + i * 5000,
-  }));
-}
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+} from '@/components/ui/chart';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 
-function generateLeadSourceData() {
-  return [
-    { label: 'Google Ads', value: 145, color: '#06b6d4' },
-    { label: 'Facebook', value: 98, color: '#8b5cf6' },
-    { label: 'Referrals', value: 76, color: '#22c55e' },
-    { label: 'Website', value: 54, color: '#f59e0b' },
-    { label: 'Other', value: 23, color: '#6b7280' },
-  ];
-}
+// Seeded random for consistent demo data
+const seededRandom = (seed: number) => {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+};
 
-function generateConversionData() {
-  return [
-    { label: 'Converted', value: 42, color: '#22c55e' },
-    { label: 'In Progress', value: 28, color: '#f59e0b' },
-    { label: 'Lost', value: 18, color: '#ef4444' },
-  ];
-}
+// Generate data for date range
+const generateDataForRange = (from: Date, to: Date) => {
+  const data = [];
+  let currentDate = new Date(from);
 
-function generateWeeklyLeads() {
-  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  return days.map((label) => ({
-    label,
-    value: Math.floor(5 + Math.random() * 15),
-  }));
-}
+  while (currentDate <= to) {
+    const seed = currentDate.getTime() / 86400000;
+    const baseRevenue = 8000 + Math.sin(seed / 7) * 2000;
+    const baseCost = 3000 + Math.sin(seed / 7) * 1000;
 
-function generateActivityItems() {
-  const now = Date.now();
-  return [
-    {
-      id: '1',
-      icon: Users,
-      iconColor: '#06b6d4',
-      iconBg: '#06b6d415',
-      text: <><strong>John Smith</strong> became a new lead via Google Ads</>,
-      timestamp: new Date(now - 15 * 60000).toISOString(),
-    },
-    {
-      id: '2',
-      icon: DollarSign,
-      iconColor: '#22c55e',
-      iconBg: '#22c55e15',
-      text: <><strong>Sarah Johnson</strong> paid invoice #1234 ($3,450)</>,
-      timestamp: new Date(now - 45 * 60000).toISOString(),
-    },
-    {
-      id: '3',
-      icon: MessageSquare,
-      iconColor: '#8b5cf6',
-      iconBg: '#8b5cf615',
-      text: <>New SMS received from <strong>Mike Brown</strong></>,
-      timestamp: new Date(now - 2 * 3600000).toISOString(),
-    },
-    {
-      id: '4',
-      icon: CheckCircle2,
-      iconColor: '#22c55e',
-      iconBg: '#22c55e15',
-      text: <>Opportunity <strong>&quot;Roof Replacement - Davis&quot;</strong> moved to Won</>,
-      timestamp: new Date(now - 4 * 3600000).toISOString(),
-    },
-    {
-      id: '5',
-      icon: Mail,
-      iconColor: '#f59e0b',
-      iconBg: '#f59e0b15',
-      text: <>Email campaign <strong>&quot;Spring Promotion&quot;</strong> sent to 234 contacts</>,
-      timestamp: new Date(now - 6 * 3600000).toISOString(),
-    },
-    {
-      id: '6',
-      icon: FileText,
-      iconColor: '#06b6d4',
-      iconBg: '#06b6d415',
-      text: <>Blog post <strong>&quot;5 Signs Your Roof Needs Attention&quot;</strong> published</>,
-      timestamp: new Date(now - 24 * 3600000).toISOString(),
-    },
-    {
-      id: '7',
-      icon: AlertCircle,
-      iconColor: '#ef4444',
-      iconBg: '#ef444415',
-      text: <>Support ticket <strong>#4523</strong> marked as urgent</>,
-      timestamp: new Date(now - 26 * 3600000).toISOString(),
-    },
-    {
-      id: '8',
-      icon: Phone,
-      iconColor: '#8b5cf6',
-      iconBg: '#8b5cf615',
-      text: <>Missed call from <strong>(469) 555-0123</strong></>,
-      timestamp: new Date(now - 28 * 3600000).toISOString(),
-    },
-  ];
-}
+    data.push({
+      date: new Date(currentDate),
+      dateStr: format(currentDate, 'MMM d'),
+      revenue: Math.floor(baseRevenue + seededRandom(seed * 1) * 1500),
+      cost: Math.floor(baseCost + seededRandom(seed * 2) * 800),
+      profit: Math.floor((baseRevenue - baseCost) + seededRandom(seed * 3) * 700),
+      leads: Math.floor(seededRandom(seed * 4) * 15) + 5,
+      jobs: Math.floor(seededRandom(seed * 5) * 5) + 1,
+      newCustomers: Math.floor(seededRandom(seed * 6) * 8) + 2,
+      returning: Math.floor(seededRandom(seed * 7) * 12) + 3,
+    });
+
+    currentDate = addDays(currentDate, 1);
+  }
+  return data;
+};
+
+// Hourly traffic data
+const hourlyData = Array.from({ length: 24 }, (_, i) => {
+  const seed = i * 1000;
+  return {
+    hour: `${i.toString().padStart(2, '0')}:00`,
+    visitors: Math.floor(seededRandom(seed) * 200) + (i >= 9 && i <= 17 ? 150 : 30),
+    conversions: Math.floor(seededRandom(seed + 1) * 10) + (i >= 9 && i <= 17 ? 5 : 1),
+  };
+});
+
+// Lead source data
+const leadSourceData = [
+  { name: 'Google Ads', value: 42, fill: 'hsl(var(--primary))' },
+  { name: 'Referrals', value: 28, fill: 'hsl(217 91% 60%)' },
+  { name: 'Website', value: 18, fill: 'hsl(142 76% 36%)' },
+  { name: 'Other', value: 12, fill: 'hsl(215 16% 47%)' },
+];
+
+// Chart configs
+const revenueConfig = {
+  revenue: { label: 'Revenue', color: 'hsl(var(--primary))' },
+  cost: { label: 'Cost', color: 'hsl(0 84% 60%)' },
+  profit: { label: 'Profit', color: 'hsl(142 76% 36%)' },
+} satisfies ChartConfig;
+
+const customerConfig = {
+  newCustomers: { label: 'New', color: 'hsl(var(--primary))' },
+  returning: { label: 'Returning', color: 'hsl(217 91% 60%)' },
+} satisfies ChartConfig;
+
+const hourlyConfig = {
+  visitors: { label: 'Visitors', color: 'hsl(var(--primary))' },
+  conversions: { label: 'Conversions', color: 'hsl(142 76% 36%)' },
+} satisfies ChartConfig;
+
+const sourceConfig = {
+  'Google Ads': { label: 'Google Ads', color: 'hsl(var(--primary))' },
+  Referrals: { label: 'Referrals', color: 'hsl(217 91% 60%)' },
+  Website: { label: 'Website', color: 'hsl(142 76% 36%)' },
+  Other: { label: 'Other', color: 'hsl(215 16% 47%)' },
+} satisfies ChartConfig;
 
 export default function AnalyticsPage() {
-  const [loading, setLoading] = useState(true);
-  const [revenueData, setRevenueData] = useState<{ label: string; value: number }[]>([]);
-  const [leadSourceData, setLeadSourceData] = useState<{ label: string; value: number; color: string }[]>([]);
-  const [conversionData, setConversionData] = useState<{ label: string; value: number; color: string }[]>([]);
-  const [weeklyLeads, setWeeklyLeads] = useState<{ label: string; value: number }[]>([]);
-  const [activityItems, setActivityItems] = useState<ReturnType<typeof generateActivityItems>>([]);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: subDays(new Date(), 29),
+    to: new Date(),
+  });
+  const [chartView, setChartView] = useState<'revenue' | 'profit' | 'leads'>('revenue');
 
-  useEffect(() => {
-    // Simulate API call
-    const timer = setTimeout(() => {
-      setRevenueData(generateRevenueData());
-      setLeadSourceData(generateLeadSourceData());
-      setConversionData(generateConversionData());
-      setWeeklyLeads(generateWeeklyLeads());
-      setActivityItems(generateActivityItems());
-      setLoading(false);
-    }, 1000);
+  const filteredData = useMemo(() => {
+    if (!dateRange?.from) {
+      return generateDataForRange(subDays(new Date(), 29), new Date());
+    }
+    return generateDataForRange(dateRange.from, dateRange.to || dateRange.from);
+  }, [dateRange]);
 
-    return () => clearTimeout(timer);
-  }, []);
+  const stats = useMemo(() => {
+    const totalRevenue = filteredData.reduce((sum, item) => sum + item.revenue, 0);
+    const totalCost = filteredData.reduce((sum, item) => sum + item.cost, 0);
+    const totalProfit = filteredData.reduce((sum, item) => sum + item.profit, 0);
+    const totalLeads = filteredData.reduce((sum, item) => sum + item.leads, 0);
+    const totalJobs = filteredData.reduce((sum, item) => sum + item.jobs, 0);
+    const profitMargin = totalRevenue > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(1) : '0';
+    return { totalRevenue, totalCost, totalProfit, totalLeads, totalJobs, profitMargin };
+  }, [filteredData]);
 
-  const totalLeads = leadSourceData.reduce((sum, d) => sum + d.value, 0);
-  const totalConversions = conversionData.find((d) => d.label === 'Converted')?.value || 0;
+  const daysDiff = dateRange?.from && dateRange?.to
+    ? differenceInDays(dateRange.to, dateRange.from) + 1
+    : 30;
+
+  const navigateRange = (direction: 'prev' | 'next') => {
+    if (!dateRange?.from || !dateRange?.to) return;
+    const shift = direction === 'prev' ? -daysDiff : daysDiff;
+    setDateRange({
+      from: addDays(dateRange.from, shift),
+      to: addDays(dateRange.to, shift),
+    });
+  };
 
   return (
-    <div style={{ padding: 24, maxWidth: 1400, margin: '0 auto' }}>
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0 }}>Analytics Dashboard</h1>
-        <p style={{ fontSize: 14, color: '#6b7280', margin: '4px 0 0' }}>
-          Track your business performance and key metrics
-        </p>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Business Analytics</h1>
+          <p className="text-muted-foreground">
+            {daysDiff} day{daysDiff !== 1 ? 's' : ''} selected
+            {dateRange?.from && ` · ${format(dateRange.from, 'MMM d')} - ${format(dateRange.to || dateRange.from, 'MMM d, yyyy')}`}
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center rounded-lg border">
+            <Button variant="ghost" size="icon" className="rounded-r-none" onClick={() => navigateRange('prev')}>
+              <ChevronLeft className="size-4" />
+            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" className="rounded-none border-x px-3">
+                  <CalendarIcon className="mr-2 size-4" />
+                  {dateRange?.from ? format(dateRange.from, 'MMM d') : 'Start'} - {dateRange?.to ? format(dateRange.to, 'MMM d') : 'End'}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="center">
+                <Calendar
+                  mode="range"
+                  numberOfMonths={2}
+                  selected={dateRange}
+                  onSelect={setDateRange}
+                />
+              </PopoverContent>
+            </Popover>
+            <Button variant="ghost" size="icon" className="rounded-l-none" onClick={() => navigateRange('next')}>
+              <ChevronRight className="size-4" />
+            </Button>
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon">
+                <MoreHorizontal className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem><Download className="mr-2 size-4" /> Export CSV</DropdownMenuItem>
+              <DropdownMenuItem><RefreshCw className="mr-2 size-4" /> Refresh</DropdownMenuItem>
+              <DropdownMenuItem><Settings className="mr-2 size-4" /> Settings</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
-      {/* Stats Grid */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-          gap: 16,
-          marginBottom: 24,
-        }}
-      >
-        <StatsCard
-          title="Total Revenue"
-          value="$142,580"
-          change={12.5}
-          changeLabel="vs last month"
-          icon={DollarSign}
-          iconColor="#22c55e"
-          loading={loading}
-        />
-        <StatsCard
-          title="New Leads"
-          value={loading ? '...' : totalLeads.toString()}
-          change={8.2}
-          changeLabel="vs last month"
-          icon={Users}
-          iconColor="#06b6d4"
-          loading={loading}
-        />
-        <StatsCard
-          title="Conversions"
-          value={loading ? '...' : totalConversions.toString()}
-          change={-2.4}
-          changeLabel="vs last month"
-          icon={TrendingUp}
-          iconColor="#8b5cf6"
-          loading={loading}
-        />
-        <StatsCard
-          title="Blog Views"
-          value="12,847"
-          change={23.1}
-          changeLabel="vs last month"
-          icon={Eye}
-          iconColor="#f59e0b"
-          loading={loading}
-        />
+      {/* Stats Row */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {[
+          { label: 'Revenue', value: `$${stats.totalRevenue.toLocaleString()}`, change: 12.5 },
+          { label: 'Cost', value: `$${stats.totalCost.toLocaleString()}`, change: 8.2 },
+          { label: 'Profit', value: `$${stats.totalProfit.toLocaleString()}`, change: 18.3 },
+          { label: 'Leads', value: stats.totalLeads.toLocaleString(), change: 5.7 },
+          { label: 'Profit Margin', value: `${stats.profitMargin}%`, change: 2.1 },
+        ].map((stat) => (
+          <Card key={stat.label}>
+            <CardContent className="pt-6">
+              <p className="text-sm text-muted-foreground">{stat.label}</p>
+              <div className="flex items-baseline justify-between">
+                <p className="text-2xl font-bold">{stat.value}</p>
+                <span className={cn('flex items-center text-sm', stat.change >= 0 ? 'text-green-600' : 'text-red-600')}>
+                  {stat.change >= 0 ? <TrendingUp className="mr-1 size-3" /> : <TrendingDown className="mr-1 size-3" />}
+                  {stat.change >= 0 ? '+' : ''}{stat.change}%
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      {/* Charts Row 1 */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-          gap: 16,
-          marginBottom: 24,
-        }}
-      >
-        <AreaChart
-          title="Revenue Trend"
-          subtitle="Last 6 months"
-          data={revenueData}
-          color="#22c55e"
-          height={220}
-          loading={loading}
-          formatValue={(v) => `$${Math.round(v / 1000)}k`}
-        />
-        <BarChart
-          title="Leads This Week"
-          subtitle="Daily breakdown"
-          data={weeklyLeads}
-          color="#06b6d4"
-          height={220}
-          loading={loading}
-        />
-      </div>
+      {/* Main Charts */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        {/* Performance Overview */}
+        <Card className="lg:col-span-2">
+          <Tabs value={chartView} onValueChange={(v) => setChartView(v as typeof chartView)}>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <div>
+                <CardTitle className="text-base">Performance Overview</CardTitle>
+                <CardDescription>Revenue, cost, and lead trends</CardDescription>
+              </div>
+              <TabsList className="h-8">
+                <TabsTrigger value="revenue" className="text-xs">Revenue</TabsTrigger>
+                <TabsTrigger value="profit" className="text-xs">Profit</TabsTrigger>
+                <TabsTrigger value="leads" className="text-xs">Leads</TabsTrigger>
+              </TabsList>
+            </CardHeader>
+            <CardContent>
+              <TabsContent value="revenue" className="mt-0">
+                <ChartContainer config={revenueConfig} className="h-72 w-full">
+                  <AreaChart data={filteredData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="var(--color-revenue)" stopOpacity={0.3} />
+                        <stop offset="100%" stopColor="var(--color-revenue)" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="dateStr" axisLine={false} tickLine={false} tickMargin={8} fontSize={11} interval="preserveStartEnd" />
+                    <YAxis axisLine={false} tickLine={false} tickMargin={8} fontSize={11} tickFormatter={(v) => `$${v / 1000}k`} />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <ChartLegend content={<ChartLegendContent />} />
+                    <Area type="monotone" dataKey="revenue" stroke="var(--color-revenue)" strokeWidth={2} fill="url(#revGrad)" />
+                    <Line type="monotone" dataKey="cost" stroke="var(--color-cost)" strokeWidth={2} dot={false} strokeDasharray="4 4" />
+                  </AreaChart>
+                </ChartContainer>
+              </TabsContent>
+              <TabsContent value="profit" className="mt-0">
+                <ChartContainer config={revenueConfig} className="h-72 w-full">
+                  <BarChart data={filteredData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="dateStr" axisLine={false} tickLine={false} tickMargin={8} fontSize={11} interval="preserveStartEnd" />
+                    <YAxis axisLine={false} tickLine={false} tickMargin={8} fontSize={11} tickFormatter={(v) => `$${v / 1000}k`} />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Bar dataKey="profit" fill="var(--color-profit)" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ChartContainer>
+              </TabsContent>
+              <TabsContent value="leads" className="mt-0">
+                <ChartContainer config={revenueConfig} className="h-72 w-full">
+                  <LineChart data={filteredData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="dateStr" axisLine={false} tickLine={false} tickMargin={8} fontSize={11} interval="preserveStartEnd" />
+                    <YAxis axisLine={false} tickLine={false} tickMargin={8} fontSize={11} />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Line type="monotone" dataKey="leads" stroke="var(--color-revenue)" strokeWidth={2} dot={false} />
+                  </LineChart>
+                </ChartContainer>
+              </TabsContent>
+            </CardContent>
+          </Tabs>
+        </Card>
 
-      {/* Charts Row 2 */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-          gap: 16,
-          marginBottom: 24,
-        }}
-      >
-        <BarChart
-          title="Lead Sources"
-          subtitle="Top acquisition channels"
-          data={leadSourceData}
-          horizontal
-          loading={loading}
-        />
-        <DonutChart
-          title="Conversion Pipeline"
-          subtitle="Current opportunities"
-          data={conversionData}
-          centerValue={totalConversions + (conversionData.find((d) => d.label === 'In Progress')?.value || 0)}
-          centerLabel="Active"
-          loading={loading}
-        />
-      </div>
+        {/* Lead Sources */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Lead Sources</CardTitle>
+            <CardDescription>Where leads come from</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col items-center gap-4">
+            <ChartContainer config={sourceConfig} className="mx-auto aspect-square h-40">
+              <PieChart>
+                <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel nameKey="name" />} />
+                <Pie
+                  data={leadSourceData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={70}
+                  paddingAngle={3}
+                  dataKey="value"
+                  nameKey="name"
+                  strokeWidth={0}
+                />
+              </PieChart>
+            </ChartContainer>
+            <div className="w-full space-y-2">
+              {leadSourceData.map((item) => (
+                <div key={item.name} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="size-3 rounded-sm" style={{ backgroundColor: item.fill }} />
+                    <span className="text-sm">{item.name}</span>
+                  </div>
+                  <span className="text-sm font-medium">{item.value}%</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
-      {/* Activity Feed */}
-      <div style={{ maxWidth: 600 }}>
-        <ActivityFeed
-          title="Recent Activity"
-          items={activityItems}
-          loading={loading}
-          maxItems={8}
-        />
+        {/* Customer Types */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Customer Types</CardTitle>
+            <CardDescription>New vs returning customers</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={customerConfig} className="h-48 w-full">
+              <BarChart data={filteredData.slice(-14)} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="dateStr" axisLine={false} tickLine={false} tickMargin={8} fontSize={10} />
+                <YAxis axisLine={false} tickLine={false} tickMargin={8} fontSize={10} />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar dataKey="newCustomers" stackId="a" fill="var(--color-newCustomers)" radius={[0, 0, 0, 0]} />
+                <Bar dataKey="returning" stackId="a" fill="var(--color-returning)" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
+        {/* Hourly Traffic */}
+        <Card className="lg:col-span-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Hourly Traffic</CardTitle>
+            <CardDescription>Website visitors and conversions by hour (today)</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={hourlyConfig} className="h-48 w-full">
+              <ComposedChart data={hourlyData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="hour" axisLine={false} tickLine={false} tickMargin={8} fontSize={10} interval={2} />
+                <YAxis yAxisId="left" axisLine={false} tickLine={false} tickMargin={8} fontSize={10} />
+                <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} tickMargin={8} fontSize={10} />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar yAxisId="left" dataKey="visitors" fill="var(--color-visitors)" radius={[2, 2, 0, 0]} opacity={0.8} />
+                <Line yAxisId="right" type="monotone" dataKey="conversions" stroke="var(--color-conversions)" strokeWidth={2} dot={false} />
+              </ComposedChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

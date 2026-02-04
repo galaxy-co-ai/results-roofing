@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import { OpsSidebar } from './OpsSidebar';
+import { OpsLayoutClient } from './OpsLayoutClient';
 import { OpsLogin } from './OpsLogin';
 import '@/styles/globals.css';
 
@@ -33,14 +33,5 @@ export default async function OpsLayout({ children }: { children: React.ReactNod
     return <OpsLogin />;
   }
 
-  return (
-    <div className="flex h-screen bg-background">
-      <OpsSidebar />
-
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto bg-muted/30">
-        <div className="p-6 max-w-[1600px]">{children}</div>
-      </main>
-    </div>
-  );
+  return <OpsLayoutClient>{children}</OpsLayoutClient>;
 }

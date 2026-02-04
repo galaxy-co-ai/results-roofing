@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { motion } from 'motion/react';
 import {
   MessageSquare,
   RefreshCw,
@@ -17,8 +16,6 @@ import {
   type Message,
 } from '@/components/features/ops/messaging';
 import { Button } from '@/components/ui/button';
-import { staggerContainer, fadeInUp } from '@/lib/animation-variants';
-import styles from '../../ops.module.css';
 import messagingStyles from '@/components/features/ops/messaging/messaging.module.css';
 
 interface Contact {
@@ -79,7 +76,6 @@ export default function SMSPage() {
   useEffect(() => {
     if (selectedConversation) {
       fetchMessages(selectedConversation.id);
-      // Mark as read
       fetch(`/api/ops/conversations/${selectedConversation.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -128,7 +124,6 @@ export default function SMSPage() {
   const handleSendMessage = async (data: { body: string }) => {
     if (!selectedConversation) return;
 
-    // Optimistic update
     const newMessage: Message = {
       id: `temp-${Date.now()}`,
       conversationId: selectedConversation.id,
@@ -153,11 +148,9 @@ export default function SMSPage() {
 
       if (response.ok) {
         const { message } = await response.json();
-        // Update the temp message with the real one
         setMessages((prev) =>
           prev.map((m) => (m.id === newMessage.id ? { ...m, ...message, status: 'sent' } : m))
         );
-        // Update conversation preview
         setConversations((prev) =>
           prev.map((c) =>
             c.id === selectedConversation.id
@@ -166,7 +159,6 @@ export default function SMSPage() {
           )
         );
       } else {
-        // Mark as failed
         setMessages((prev) =>
           prev.map((m) => (m.id === newMessage.id ? { ...m, status: 'failed' } : m))
         );
@@ -181,19 +173,16 @@ export default function SMSPage() {
   const contact: Contact | undefined = selectedConversation?.contact;
 
   return (
-    <motion.div initial="initial" animate="animate" variants={staggerContainer}>
+    <div className="space-y-6">
       {/* Header */}
-      <motion.header variants={fadeInUp} className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <div
-            className="p-2 rounded-lg"
-            style={{ background: 'rgba(139, 92, 246, 0.1)' }}
-          >
-            <MessageSquare size={24} style={{ color: '#8B5CF6' }} />
+          <div className="rounded-lg bg-violet-500/10 p-2">
+            <MessageSquare className="size-6 text-violet-500" />
           </div>
           <div>
-            <h1 className={styles.pageTitle}>SMS Conversations</h1>
-            <p className={styles.pageDescription}>
+            <h1 className="text-2xl font-bold tracking-tight">SMS Conversations</h1>
+            <p className="text-sm text-muted-foreground">
               Manage text message conversations
             </p>
           </div>
@@ -205,13 +194,13 @@ export default function SMSPage() {
           onClick={fetchConversations}
           disabled={loadingList}
         >
-          <RefreshCw size={14} className={loadingList ? 'animate-spin' : ''} />
+          <RefreshCw className={`mr-2 size-4 ${loadingList ? 'animate-spin' : ''}`} />
           Refresh
         </Button>
-      </motion.header>
+      </div>
 
       {/* Messaging Interface */}
-      <motion.div variants={fadeInUp} className={messagingStyles.messagingLayout}>
+      <div className={messagingStyles.messagingLayout}>
         {/* Conversation List */}
         <div className={messagingStyles.conversationListPane}>
           <ConversationList
@@ -256,20 +245,20 @@ export default function SMSPage() {
                   {contact?.phone && (
                     <Button variant="ghost" size="sm" asChild>
                       <a href={`tel:${contact.phone}`}>
-                        <Phone size={14} />
+                        <Phone className="size-4" />
                       </a>
                     </Button>
                   )}
                   {contact?.email && (
                     <Button variant="ghost" size="sm" asChild>
                       <a href={`mailto:${contact.email}`}>
-                        <Mail size={14} />
+                        <Mail className="size-4" />
                       </a>
                     </Button>
                   )}
                   <Button variant="ghost" size="sm" asChild>
                     <a href={`/ops/crm/contacts/${contact?.id}`}>
-                      <User size={14} />
+                      <User className="size-4" />
                     </a>
                   </Button>
                 </div>
@@ -291,13 +280,13 @@ export default function SMSPage() {
             </>
           ) : (
             <div className={messagingStyles.noConversation}>
-              <MessageSquare size={48} style={{ color: 'var(--muted-foreground)' }} />
+              <MessageSquare className="size-12 text-muted-foreground" />
               <p>Select a conversation</p>
               <span>Choose from the list on the left to start messaging</span>
             </div>
           )}
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }

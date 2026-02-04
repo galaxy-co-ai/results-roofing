@@ -13,9 +13,30 @@ import {
   ArrowLeft,
   Kanban,
   Inbox,
+  Search,
+  ChevronRight,
   type LucideIcon,
 } from 'lucide-react';
-import styles from './ops.module.css';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInput,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+  useSidebar,
+} from '@/components/ui/sidebar';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
 
 interface NavItem {
   id: string;
@@ -30,19 +51,22 @@ interface NavSection {
   id: string;
   label: string;
   items: NavItem[];
+  collapsible?: boolean;
 }
 
 const NAV_SECTIONS: NavSection[] = [
   {
     id: 'overview',
-    label: 'Overview',
+    label: 'General',
     items: [
       { id: 'dashboard', label: 'Dashboard', href: '/ops', icon: LayoutDashboard, exact: true },
+      { id: 'analytics', label: 'Analytics', href: '/ops/analytics', icon: BarChart3 },
     ],
   },
   {
     id: 'crm',
     label: 'CRM',
+    collapsible: true,
     items: [
       { id: 'contacts', label: 'Contacts', href: '/ops/crm/contacts', icon: Users },
       { id: 'pipeline', label: 'Pipeline', href: '/ops/crm/pipeline', icon: Kanban },
@@ -51,30 +75,18 @@ const NAV_SECTIONS: NavSection[] = [
   {
     id: 'messaging',
     label: 'Messaging',
+    collapsible: true,
     items: [
       { id: 'sms', label: 'SMS', href: '/ops/messaging/sms', icon: MessageSquare },
       { id: 'email', label: 'Email', href: '/ops/messaging/email', icon: Mail },
     ],
   },
   {
-    id: 'support',
-    label: 'Support',
+    id: 'other',
+    label: 'Other',
     items: [
-      { id: 'inbox', label: 'Inbox', href: '/ops/support', icon: Inbox },
-    ],
-  },
-  {
-    id: 'content',
-    label: 'Content',
-    items: [
-      { id: 'blog', label: 'Blog', href: '/ops/blog/posts', icon: FileText },
-    ],
-  },
-  {
-    id: 'insights',
-    label: 'Insights',
-    items: [
-      { id: 'analytics', label: 'Analytics', href: '/ops/analytics', icon: BarChart3 },
+      { id: 'inbox', label: 'Support Inbox', href: '/ops/support', icon: Inbox },
+      { id: 'blog', label: 'Blog Posts', href: '/ops/blog/posts', icon: FileText },
     ],
   },
 ];
@@ -84,7 +96,7 @@ async function handleLogout() {
   window.location.href = '/';
 }
 
-export function OpsSidebar() {
+function NavGroup({ section }: { section: NavSection }) {
   const pathname = usePathname();
 
   const isActive = (href: string, exact?: boolean) => {
@@ -94,64 +106,122 @@ export function OpsSidebar() {
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
+  // Check if any item in this section is active
+  const hasActiveItem = section.items.some((item) => isActive(item.href, item.exact));
+
+  if (section.collapsible) {
+    return (
+      <Collapsible defaultOpen={hasActiveItem} className="group/collapsible">
+        <SidebarGroup>
+          <SidebarGroupLabel asChild>
+            <CollapsibleTrigger className="flex w-full items-center justify-between">
+              {section.label}
+              <ChevronRight className="ml-auto size-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
+            </CollapsibleTrigger>
+          </SidebarGroupLabel>
+          <CollapsibleContent>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {section.items.map((item) => (
+                  <SidebarMenuItem key={item.id}>
+                    <SidebarMenuButton asChild isActive={isActive(item.href, item.exact)} tooltip={item.label}>
+                      <Link href={item.href}>
+                        <item.icon />
+                        <span>{item.label}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </CollapsibleContent>
+        </SidebarGroup>
+      </Collapsible>
+    );
+  }
+
   return (
-    <aside className={styles.sidebar} aria-label="Ops navigation">
-      {/* Logo */}
-      <div className={styles.logoArea}>
-        <Link href="/ops" className={styles.logoLink}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/brand/logo/primary/results-roofing-horizontal-dark.svg"
-            alt="Results Roofing"
-            className={styles.logoImage}
-            style={{ height: '28px', width: 'auto' }}
-          />
-        </Link>
-        <span className={styles.opsBadge}>OPS</span>
-      </div>
+    <SidebarGroup>
+      <SidebarGroupLabel>{section.label}</SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {section.items.map((item) => (
+            <SidebarMenuItem key={item.id}>
+              <SidebarMenuButton asChild isActive={isActive(item.href, item.exact)} tooltip={item.label}>
+                <Link href={item.href}>
+                  <item.icon />
+                  <span>{item.label}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+}
+
+export function OpsSidebar() {
+  const { state } = useSidebar();
+
+  return (
+    <Sidebar collapsible="icon">
+      {/* Header with Logo */}
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <Link href="/ops">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/brand/logo/primary/rr-mark-only.svg"
+                  alt=""
+                  className="size-8"
+                />
+                <div className="flex flex-col gap-0.5 leading-none">
+                  <span className="font-semibold">Results Roofing</span>
+                  <span className="text-xs text-muted-foreground">Operations</span>
+                </div>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+        {/* Search */}
+        <div className="relative group-data-[collapsible=icon]:hidden">
+          <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <SidebarInput placeholder="Search... (⌘K)" className="pl-8" />
+        </div>
+      </SidebarHeader>
 
       {/* Navigation */}
-      <nav className={styles.nav}>
+      <SidebarContent>
         {NAV_SECTIONS.map((section) => (
-          <div key={section.id}>
-            <div className={styles.navSection}>
-              <span className={styles.navSectionLabel}>{section.label}</span>
-            </div>
-            <ul className={styles.navList}>
-              {section.items.map((item) => {
-                const active = isActive(item.href, item.exact);
-                return (
-                  <li key={item.id}>
-                    <Link
-                      href={item.href}
-                      className={`${styles.navItem} ${active ? styles.active : ''}`}
-                    >
-                      <item.icon size={16} className={styles.navIcon} />
-                      <span>{item.label}</span>
-                      {item.badge !== undefined && item.badge > 0 && (
-                        <span className={styles.navBadge}>{item.badge}</span>
-                      )}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+          <NavGroup key={section.id} section={section} />
         ))}
-      </nav>
+      </SidebarContent>
 
       {/* Footer */}
-      <div className={styles.sidebarFooter}>
-        <Link href="/" className={styles.footerLink}>
-          <ArrowLeft size={14} />
-          <span>Back to Site</span>
-        </Link>
-        <button onClick={handleLogout} className={styles.footerButton}>
-          <LogOut size={14} />
-          <span>Exit Ops</span>
-        </button>
-      </div>
-    </aside>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild tooltip="Back to Site">
+              <Link href="/">
+                <ArrowLeft />
+                <span>Back to Site</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={handleLogout} tooltip="Exit Ops">
+              <LogOut />
+              <span>Exit Ops</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+
+      <SidebarRail />
+    </Sidebar>
   );
 }
 

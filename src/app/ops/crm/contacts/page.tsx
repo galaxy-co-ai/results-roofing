@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { motion } from 'motion/react';
 import {
   Users,
   Plus,
@@ -13,14 +12,39 @@ import {
 import { ContactsTable, type Contact } from '@/components/features/ops/crm/ContactsTable';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { staggerContainer, fadeInUp } from '@/lib/animation-variants';
-import styles from '../../ops.module.css';
+import { Label } from '@/components/ui/label';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Alert,
+  AlertDescription,
+} from '@/components/ui/alert';
 
 export default function ContactsPage() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showAddForm, setShowAddForm] = useState(false);
+  const [showAddDialog, setShowAddDialog] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [newContact, setNewContact] = useState({
     firstName: '',
@@ -78,7 +102,7 @@ export default function ContactsPage() {
           state: '',
           source: 'manual',
         });
-        setShowAddForm(false);
+        setShowAddDialog(false);
       } else {
         const data = await response.json();
         setError(data.error || 'Failed to create contact');
@@ -102,7 +126,6 @@ export default function ContactsPage() {
         setContacts((prev) => prev.filter((c) => c.id !== contactId));
       }
     } catch {
-      // Refresh on error
       fetchContacts();
     }
   };
@@ -120,19 +143,16 @@ export default function ContactsPage() {
   };
 
   return (
-    <motion.div initial="initial" animate="animate" variants={staggerContainer}>
+    <div className="space-y-6">
       {/* Header */}
-      <motion.header variants={fadeInUp} className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <div
-            className="p-2 rounded-lg"
-            style={{ background: 'rgba(6, 182, 212, 0.1)' }}
-          >
-            <Users size={24} style={{ color: '#06B6D4' }} />
+          <div className="rounded-lg bg-cyan-500/10 p-2">
+            <Users className="size-6 text-cyan-500" />
           </div>
           <div>
-            <h1 className={styles.pageTitle}>Contacts</h1>
-            <p className={styles.pageDescription}>
+            <h1 className="text-2xl font-bold tracking-tight">Contacts</h1>
+            <p className="text-sm text-muted-foreground">
               Manage your leads and customers
             </p>
           </div>
@@ -145,198 +165,182 @@ export default function ContactsPage() {
             onClick={fetchContacts}
             disabled={loading}
           >
-            <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+            <RefreshCw className={`mr-2 size-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
           <Button
             size="sm"
-            onClick={() => setShowAddForm(true)}
-            style={{ background: '#06B6D4' }}
+            onClick={() => setShowAddDialog(true)}
+            className="bg-cyan-600 hover:bg-cyan-700"
           >
-            <Plus size={14} />
+            <Plus className="mr-2 size-4" />
             Add Contact
           </Button>
         </div>
-      </motion.header>
+      </div>
 
       {/* Error Alert */}
       {error && (
-        <motion.div
-          variants={fadeInUp}
-          className="mb-4 p-3 rounded-lg flex items-center gap-2"
-          style={{
-            background: 'rgba(239, 68, 68, 0.1)',
-            border: '1px solid rgba(239, 68, 68, 0.3)',
-            color: '#EF4444',
-          }}
-        >
-          <AlertCircle size={16} />
-          <span className="text-sm">{error}</span>
-          <button onClick={() => setError(null)} className="ml-auto">
-            <X size={14} />
-          </button>
-        </motion.div>
+        <Alert variant="destructive">
+          <AlertCircle className="size-4" />
+          <AlertDescription className="flex items-center justify-between">
+            <span>{error}</span>
+            <button onClick={() => setError(null)} className="ml-4">
+              <X className="size-4" />
+            </button>
+          </AlertDescription>
+        </Alert>
       )}
 
-      {/* Add Contact Modal */}
-      {showAddForm && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          style={{ background: 'rgba(0, 0, 0, 0.5)' }}
-          onClick={() => setShowAddForm(false)}
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-card border border-border rounded-lg p-6 w-full max-w-md"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">Add New Contact</h2>
-              <button
-                onClick={() => setShowAddForm(false)}
-                className="p-1 hover:bg-muted rounded"
-              >
-                <X size={18} />
-              </button>
+      {/* Contacts Table Card */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base">All Contacts</CardTitle>
+          <CardDescription>
+            {contacts.length} contact{contacts.length !== 1 ? 's' : ''} total
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ContactsTable
+            contacts={contacts}
+            loading={loading}
+            onView={handleViewContact}
+            onEdit={handleEditContact}
+            onDelete={handleDeleteContact}
+            onMessage={handleMessageContact}
+          />
+        </CardContent>
+      </Card>
+
+      {/* Add Contact Dialog */}
+      <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add New Contact</DialogTitle>
+            <DialogDescription>
+              Add a new lead or customer to your CRM.
+            </DialogDescription>
+          </DialogHeader>
+
+          <form onSubmit={handleAddContact} className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label htmlFor="firstName">First Name</Label>
+                <Input
+                  id="firstName"
+                  value={newContact.firstName}
+                  onChange={(e) =>
+                    setNewContact({ ...newContact, firstName: e.target.value })
+                  }
+                  placeholder="John"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input
+                  id="lastName"
+                  value={newContact.lastName}
+                  onChange={(e) =>
+                    setNewContact({ ...newContact, lastName: e.target.value })
+                  }
+                  placeholder="Smith"
+                />
+              </div>
             </div>
 
-            <form onSubmit={handleAddContact} className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground mb-1 block">
-                    First Name
-                  </label>
-                  <Input
-                    value={newContact.firstName}
-                    onChange={(e) =>
-                      setNewContact({ ...newContact, firstName: e.target.value })
-                    }
-                    placeholder="John"
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground mb-1 block">
-                    Last Name
-                  </label>
-                  <Input
-                    value={newContact.lastName}
-                    onChange={(e) =>
-                      setNewContact({ ...newContact, lastName: e.target.value })
-                    }
-                    placeholder="Smith"
-                  />
-                </div>
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={newContact.email}
+                onChange={(e) =>
+                  setNewContact({ ...newContact, email: e.target.value })
+                }
+                placeholder="john@example.com"
+              />
+            </div>
 
-              <div>
-                <label className="text-sm font-medium text-muted-foreground mb-1 block">
-                  Email
-                </label>
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone</Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={newContact.phone}
+                onChange={(e) =>
+                  setNewContact({ ...newContact, phone: e.target.value })
+                }
+                placeholder="+1 (555) 123-4567"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label htmlFor="city">City</Label>
                 <Input
-                  type="email"
-                  value={newContact.email}
+                  id="city"
+                  value={newContact.city}
                   onChange={(e) =>
-                    setNewContact({ ...newContact, email: e.target.value })
+                    setNewContact({ ...newContact, city: e.target.value })
                   }
-                  placeholder="john@example.com"
+                  placeholder="Austin"
                 />
               </div>
-
-              <div>
-                <label className="text-sm font-medium text-muted-foreground mb-1 block">
-                  Phone
-                </label>
+              <div className="space-y-2">
+                <Label htmlFor="state">State</Label>
                 <Input
-                  type="tel"
-                  value={newContact.phone}
+                  id="state"
+                  value={newContact.state}
                   onChange={(e) =>
-                    setNewContact({ ...newContact, phone: e.target.value })
+                    setNewContact({ ...newContact, state: e.target.value })
                   }
-                  placeholder="+1 (555) 123-4567"
+                  placeholder="TX"
                 />
               </div>
+            </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground mb-1 block">
-                    City
-                  </label>
-                  <Input
-                    value={newContact.city}
-                    onChange={(e) =>
-                      setNewContact({ ...newContact, city: e.target.value })
-                    }
-                    placeholder="Austin"
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground mb-1 block">
-                    State
-                  </label>
-                  <Input
-                    value={newContact.state}
-                    onChange={(e) =>
-                      setNewContact({ ...newContact, state: e.target.value })
-                    }
-                    placeholder="TX"
-                  />
-                </div>
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="source">Source</Label>
+              <Select
+                value={newContact.source}
+                onValueChange={(value) =>
+                  setNewContact({ ...newContact, source: value })
+                }
+              >
+                <SelectTrigger id="source">
+                  <SelectValue placeholder="Select source" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="manual">Manual Entry</SelectItem>
+                  <SelectItem value="website">Website</SelectItem>
+                  <SelectItem value="referral">Referral</SelectItem>
+                  <SelectItem value="google">Google</SelectItem>
+                  <SelectItem value="facebook">Facebook</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-              <div>
-                <label className="text-sm font-medium text-muted-foreground mb-1 block">
-                  Source
-                </label>
-                <select
-                  value={newContact.source}
-                  onChange={(e) =>
-                    setNewContact({ ...newContact, source: e.target.value })
-                  }
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm"
-                >
-                  <option value="manual">Manual Entry</option>
-                  <option value="website">Website</option>
-                  <option value="referral">Referral</option>
-                  <option value="google">Google</option>
-                  <option value="facebook">Facebook</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              <div className="flex justify-end gap-2 pt-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setShowAddForm(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={isAdding || (!newContact.email && !newContact.phone)}
-                  style={{ background: '#06B6D4' }}
-                >
-                  {isAdding && <Loader2 size={14} className="animate-spin mr-1" />}
-                  Add Contact
-                </Button>
-              </div>
-            </form>
-          </motion.div>
-        </div>
-      )}
-
-      {/* Contacts Table */}
-      <motion.div variants={fadeInUp}>
-        <ContactsTable
-          contacts={contacts}
-          loading={loading}
-          onView={handleViewContact}
-          onEdit={handleEditContact}
-          onDelete={handleDeleteContact}
-          onMessage={handleMessageContact}
-        />
-      </motion.div>
-    </motion.div>
+            <DialogFooter className="pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowAddDialog(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={isAdding || (!newContact.email && !newContact.phone)}
+                className="bg-cyan-600 hover:bg-cyan-700"
+              >
+                {isAdding && <Loader2 className="mr-2 size-4 animate-spin" />}
+                Add Contact
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

@@ -130,3 +130,19 @@ export function DialogBody({ children, className }: { children: React.ReactNode;
     </div>
   );
 }
+
+export function DialogDescription({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <p className={cn('text-sm text-muted-foreground', className)}>
+      {children}
+    </p>
+  );
+}
+
+export function DialogFooter({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 px-6 py-4 border-t', className)}>
+      {children}
+    </div>
+  );
+}

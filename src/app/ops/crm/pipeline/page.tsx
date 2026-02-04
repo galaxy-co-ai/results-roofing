@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { motion } from 'motion/react';
 import {
   Kanban,
   Plus,
@@ -17,13 +16,50 @@ import {
   type Opportunity,
 } from '@/components/features/ops/crm/PipelineBoard';
 import { Button } from '@/components/ui/button';
-import { staggerContainer, fadeInUp } from '@/lib/animation-variants';
-import styles from '../../ops.module.css';
+import {
+  Card,
+  CardContent,
+} from '@/components/ui/card';
+import {
+  Alert,
+  AlertDescription,
+} from '@/components/ui/alert';
 
 interface PipelineStats {
   totalDeals: number;
   totalValue: number;
   averageValue: number;
+}
+
+function StatCard({
+  label,
+  value,
+  icon: Icon,
+  iconColor,
+}: {
+  label: string;
+  value: string | number;
+  icon: React.ElementType;
+  iconColor: string;
+}) {
+  return (
+    <Card>
+      <CardContent className="pt-6">
+        <div className="flex items-start justify-between">
+          <div className="space-y-1">
+            <p className="text-sm text-muted-foreground">{label}</p>
+            <p className="text-2xl font-bold">{value}</p>
+          </div>
+          <div
+            className="rounded-lg p-2"
+            style={{ backgroundColor: `${iconColor}15` }}
+          >
+            <Icon className="size-5" style={{ color: iconColor }} />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
 
 export default function PipelinePage() {
@@ -42,12 +78,10 @@ export default function PipelinePage() {
 
       const data = await response.json();
 
-      // Get stages from the first pipeline (or use defaults)
       const pipeline = data.pipelines?.[0];
       if (pipeline) {
         setStages(pipeline.stages || []);
       } else {
-        // Default stages for demo
         setStages([
           { id: 'stage-1', name: 'New Lead', position: 0 },
           { id: 'stage-2', name: 'Contacted', position: 1 },
@@ -70,7 +104,6 @@ export default function PipelinePage() {
   }, [fetchPipeline]);
 
   const handleMoveOpportunity = async (opportunityId: string, newStageId: string) => {
-    // Optimistic update
     setOpportunities((prev) =>
       prev.map((opp) =>
         opp.id === opportunityId ? { ...opp, pipelineStageId: newStageId } : opp
@@ -85,11 +118,9 @@ export default function PipelinePage() {
       });
 
       if (!response.ok) {
-        // Revert on error
         fetchPipeline();
       }
     } catch {
-      // Revert on error
       fetchPipeline();
     }
   };
@@ -112,7 +143,6 @@ export default function PipelinePage() {
         method: 'DELETE',
       });
     } catch {
-      // Refresh on error
       fetchPipeline();
     }
   };
@@ -121,7 +151,6 @@ export default function PipelinePage() {
     // TODO: Navigate to messaging
   };
 
-  // Calculate stats
   const stats: PipelineStats = {
     totalDeals: opportunities.length,
     totalValue: opportunities.reduce((sum, opp) => sum + (opp.monetaryValue || 0), 0),
@@ -141,19 +170,16 @@ export default function PipelinePage() {
     }).format(value);
 
   return (
-    <motion.div initial="initial" animate="animate" variants={staggerContainer}>
+    <div className="space-y-6">
       {/* Header */}
-      <motion.header variants={fadeInUp} className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <div
-            className="p-2 rounded-lg"
-            style={{ background: 'rgba(34, 197, 94, 0.1)' }}
-          >
-            <Kanban size={24} style={{ color: '#22C55E' }} />
+          <div className="rounded-lg bg-green-500/10 p-2">
+            <Kanban className="size-6 text-green-500" />
           </div>
           <div>
-            <h1 className={styles.pageTitle}>Sales Pipeline</h1>
-            <p className={styles.pageDescription}>
+            <h1 className="text-2xl font-bold tracking-tight">Sales Pipeline</h1>
+            <p className="text-sm text-muted-foreground">
               Track and manage your deals
             </p>
           </div>
@@ -166,105 +192,62 @@ export default function PipelinePage() {
             onClick={fetchPipeline}
             disabled={loading}
           >
-            <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+            <RefreshCw className={`mr-2 size-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <Button size="sm" style={{ background: '#22C55E' }}>
-            <Plus size={14} />
+          <Button size="sm" className="bg-green-600 hover:bg-green-700">
+            <Plus className="mr-2 size-4" />
             Add Deal
           </Button>
         </div>
-      </motion.header>
+      </div>
 
       {/* Stats */}
-      <motion.div variants={fadeInUp} className={styles.statsGrid} style={{ marginBottom: '1.5rem' }}>
-        <div className={styles.statCard}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <div>
-              <p className={styles.statLabel}>Total Deals</p>
-              <p className={styles.statValue}>{stats.totalDeals}</p>
-            </div>
-            <div
-              style={{
-                padding: '0.5rem',
-                borderRadius: '0.5rem',
-                background: 'rgba(34, 197, 94, 0.1)',
-              }}
-            >
-              <Kanban size={20} style={{ color: '#22C55E' }} />
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.statCard}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <div>
-              <p className={styles.statLabel}>Pipeline Value</p>
-              <p className={styles.statValue}>{formatCurrency(stats.totalValue)}</p>
-            </div>
-            <div
-              style={{
-                padding: '0.5rem',
-                borderRadius: '0.5rem',
-                background: 'rgba(6, 182, 212, 0.1)',
-              }}
-            >
-              <DollarSign size={20} style={{ color: '#06B6D4' }} />
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.statCard}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <div>
-              <p className={styles.statLabel}>Average Deal</p>
-              <p className={styles.statValue}>{formatCurrency(stats.averageValue)}</p>
-            </div>
-            <div
-              style={{
-                padding: '0.5rem',
-                borderRadius: '0.5rem',
-                background: 'rgba(139, 92, 246, 0.1)',
-              }}
-            >
-              <TrendingUp size={20} style={{ color: '#8B5CF6' }} />
-            </div>
-          </div>
-        </div>
-      </motion.div>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <StatCard
+          label="Total Deals"
+          value={stats.totalDeals}
+          icon={Kanban}
+          iconColor="#22C55E"
+        />
+        <StatCard
+          label="Pipeline Value"
+          value={formatCurrency(stats.totalValue)}
+          icon={DollarSign}
+          iconColor="#06B6D4"
+        />
+        <StatCard
+          label="Average Deal"
+          value={formatCurrency(stats.averageValue)}
+          icon={TrendingUp}
+          iconColor="#8B5CF6"
+        />
+      </div>
 
       {/* Error Alert */}
       {error && (
-        <motion.div
-          variants={fadeInUp}
-          className="mb-4 p-3 rounded-lg flex items-center gap-2"
-          style={{
-            background: 'rgba(239, 68, 68, 0.1)',
-            border: '1px solid rgba(239, 68, 68, 0.3)',
-            color: '#EF4444',
-          }}
-        >
-          <AlertCircle size={16} />
-          <span className="text-sm">{error}</span>
-          <button onClick={() => setError(null)} className="ml-auto">
-            <X size={14} />
-          </button>
-        </motion.div>
+        <Alert variant="destructive">
+          <AlertCircle className="size-4" />
+          <AlertDescription className="flex items-center justify-between">
+            <span>{error}</span>
+            <button onClick={() => setError(null)} className="ml-4">
+              <X className="size-4" />
+            </button>
+          </AlertDescription>
+        </Alert>
       )}
 
       {/* Pipeline Board */}
-      <motion.div variants={fadeInUp}>
-        <PipelineBoard
-          stages={stages}
-          opportunities={opportunities}
-          onMoveOpportunity={handleMoveOpportunity}
-          onViewOpportunity={handleViewOpportunity}
-          onEditOpportunity={handleEditOpportunity}
-          onDeleteOpportunity={handleDeleteOpportunity}
-          onMessageContact={handleMessageContact}
-          loading={loading}
-        />
-      </motion.div>
-    </motion.div>
+      <PipelineBoard
+        stages={stages}
+        opportunities={opportunities}
+        onMoveOpportunity={handleMoveOpportunity}
+        onViewOpportunity={handleViewOpportunity}
+        onEditOpportunity={handleEditOpportunity}
+        onDeleteOpportunity={handleDeleteOpportunity}
+        onMessageContact={handleMessageContact}
+        loading={loading}
+      />
+    </div>
   );
 }

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { motion } from 'motion/react';
 import {
   Mail,
   RefreshCw,
@@ -18,8 +17,7 @@ import {
   type Message,
 } from '@/components/features/ops/messaging';
 import { Button } from '@/components/ui/button';
-import { staggerContainer, fadeInUp } from '@/lib/animation-variants';
-import styles from '../../ops.module.css';
+import { Badge } from '@/components/ui/badge';
 import messagingStyles from '@/components/features/ops/messaging/messaging.module.css';
 
 interface Contact {
@@ -80,7 +78,6 @@ export default function EmailPage() {
   useEffect(() => {
     if (selectedConversation) {
       fetchMessages(selectedConversation.id);
-      // Mark as read
       fetch(`/api/ops/conversations/${selectedConversation.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -129,7 +126,6 @@ export default function EmailPage() {
   const handleSendEmail = async (data: { body: string; subject?: string }) => {
     if (!selectedConversation || !data.subject) return;
 
-    // Optimistic update
     const newMessage: Message = {
       id: `temp-${Date.now()}`,
       conversationId: selectedConversation.id,
@@ -191,73 +187,58 @@ export default function EmailPage() {
 
   const contact: Contact | undefined = selectedConversation?.contact;
 
-  // Stats
   const totalEmails = conversations.length;
   const unreadCount = conversations.filter((c) => (c.unreadCount ?? 0) > 0).length;
   const starredCount = conversations.filter((c) => c.starred).length;
 
   return (
-    <motion.div initial="initial" animate="animate" variants={staggerContainer}>
+    <div className="space-y-6">
       {/* Header */}
-      <motion.header variants={fadeInUp} className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <div
-            className="p-2 rounded-lg"
-            style={{ background: 'rgba(6, 182, 212, 0.1)' }}
-          >
-            <Mail size={24} style={{ color: '#06B6D4' }} />
+          <div className="rounded-lg bg-cyan-500/10 p-2">
+            <Mail className="size-6 text-cyan-500" />
           </div>
           <div>
-            <h1 className={styles.pageTitle}>Email Inbox</h1>
-            <p className={styles.pageDescription}>
+            <h1 className="text-2xl font-bold tracking-tight">Email Inbox</h1>
+            <p className="text-sm text-muted-foreground">
               Manage email communications
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={fetchConversations}
-            disabled={loadingList}
-          >
-            <RefreshCw size={14} className={loadingList ? 'animate-spin' : ''} />
-            Refresh
-          </Button>
-        </div>
-      </motion.header>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={fetchConversations}
+          disabled={loadingList}
+        >
+          <RefreshCw className={`mr-2 size-4 ${loadingList ? 'animate-spin' : ''}`} />
+          Refresh
+        </Button>
+      </div>
 
       {/* Stats */}
-      <motion.div variants={fadeInUp} className="flex gap-4 mb-6">
-        <div
-          className="flex items-center gap-2 px-4 py-2 rounded-lg"
-          style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
-        >
-          <Inbox size={16} style={{ color: '#06B6D4' }} />
-          <span className="text-sm font-medium">{totalEmails}</span>
-          <span className="text-xs text-muted-foreground">Total</span>
-        </div>
-        <div
-          className="flex items-center gap-2 px-4 py-2 rounded-lg"
-          style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
-        >
-          <Mail size={16} style={{ color: '#8B5CF6' }} />
-          <span className="text-sm font-medium">{unreadCount}</span>
-          <span className="text-xs text-muted-foreground">Unread</span>
-        </div>
-        <div
-          className="flex items-center gap-2 px-4 py-2 rounded-lg"
-          style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
-        >
-          <Star size={16} style={{ color: '#F59E0B' }} />
-          <span className="text-sm font-medium">{starredCount}</span>
-          <span className="text-xs text-muted-foreground">Starred</span>
-        </div>
-      </motion.div>
+      <div className="flex flex-wrap gap-3">
+        <Badge variant="secondary" className="gap-2 px-3 py-1.5 text-sm">
+          <Inbox className="size-4 text-cyan-500" />
+          <span className="font-medium">{totalEmails}</span>
+          <span className="text-muted-foreground">Total</span>
+        </Badge>
+        <Badge variant="secondary" className="gap-2 px-3 py-1.5 text-sm">
+          <Mail className="size-4 text-violet-500" />
+          <span className="font-medium">{unreadCount}</span>
+          <span className="text-muted-foreground">Unread</span>
+        </Badge>
+        <Badge variant="secondary" className="gap-2 px-3 py-1.5 text-sm">
+          <Star className="size-4 text-amber-500" />
+          <span className="font-medium">{starredCount}</span>
+          <span className="text-muted-foreground">Starred</span>
+        </Badge>
+      </div>
 
       {/* Email Interface */}
-      <motion.div variants={fadeInUp} className={messagingStyles.messagingLayout}>
+      <div className={messagingStyles.messagingLayout}>
         {/* Conversation List */}
         <div className={messagingStyles.conversationListPane}>
           <ConversationList
@@ -302,13 +283,13 @@ export default function EmailPage() {
                   {contact?.phone && (
                     <Button variant="ghost" size="sm" asChild>
                       <a href={`tel:${contact.phone}`}>
-                        <Phone size={14} />
+                        <Phone className="size-4" />
                       </a>
                     </Button>
                   )}
                   <Button variant="ghost" size="sm" asChild>
                     <a href={`/ops/crm/contacts/${contact?.id}`}>
-                      <User size={14} />
+                      <User className="size-4" />
                     </a>
                   </Button>
                 </div>
@@ -330,13 +311,13 @@ export default function EmailPage() {
             </>
           ) : (
             <div className={messagingStyles.noConversation}>
-              <Mail size={48} style={{ color: 'var(--muted-foreground)' }} />
+              <Mail className="size-12 text-muted-foreground" />
               <p>Select an email thread</p>
               <span>Choose from the list on the left to view emails</span>
             </div>
           )}
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { Skeleton } from '@/components/ui/Skeleton';
+import { Skeleton } from '@/components/ui/SkeletonLegacy/Skeleton';
 import styles from './Stage3.module.css';
 
 /**

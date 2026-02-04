@@ -60,7 +60,7 @@ export {
   CommandSeparator,
   CommandShortcut,
 } from "./command";
-export { Skeleton } from "./Skeleton/Skeleton";
+export { Skeleton } from "./SkeletonLegacy/Skeleton";
 export { ProgressIndicator } from "./ProgressIndicator/ProgressIndicator";
 export { TrustBar } from "./TrustBar/TrustBar";
 export { SignaturePad } from "./SignaturePad/SignaturePad";
