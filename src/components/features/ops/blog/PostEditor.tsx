@@ -5,7 +5,7 @@ import {
   Save,
   Eye,
   ArrowLeft,
-  Image,
+  Image as ImageIcon,
   Calendar,
   Tag,
   Globe,
@@ -189,7 +189,7 @@ export function PostEditor({
                 🔗
               </button>
               <button type="button" title="Image">
-                <Image size={14} />
+                <ImageIcon size={14} />
               </button>
               <button type="button" title="Quote">
                 &quot;
@@ -243,7 +243,7 @@ You can use Markdown formatting:
 
             <div className={styles.sidebarSection}>
               <h3 className={styles.sectionTitle}>
-                <Image size={14} />
+                <ImageIcon size={14} />
                 Featured Image
               </h3>
               {featuredImage ? (

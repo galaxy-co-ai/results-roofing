@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 import { db, schema, eq } from '@/db/index';
 import { Header } from '@/components/layout';
-import { QuoteWizardProvider, Stage2Container } from '@/components/features/quote';
+import { QuoteWizardProvider, Stage2Container, StageIndicator } from '@/components/features/quote';
 import { TrustBar } from '@/components/ui';
 import styles from './page.module.css';
 
@@ -117,6 +117,7 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
       <Header />
       <main className={styles.main}>
         <QuoteWizardProvider initialData={initialWizardState}>
+          <StageIndicator currentStage={2} quoteId={quoteId} className={styles.stepper} />
           <Stage2Container
             quoteId={quoteId}
             quoteData={{
