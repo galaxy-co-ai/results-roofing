@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next';
-import { ClerkProvider } from '@clerk/nextjs';
 import { Providers } from '@/components/providers/Providers';
 import { ChatProvider, ChatWidget } from '@/components/features/support';
 import { DocumentProvider, DocumentViewer } from '@/components/features/documents';
@@ -7,11 +6,6 @@ import { FAQProvider, FAQModal } from '@/components/features/faq';
 import { FeedbackProvider, FeedbackWidget } from '@/components/features/feedback';
 import { AdminAccessTrigger } from '@/components/features/admin';
 import '@/styles/globals.css';
-
-/**
- * Check if Clerk bypass is enabled for development
- */
-const BYPASS_CLERK = process.env.BYPASS_CLERK === 'true';
 
 export const metadata: Metadata = {
   title: {
@@ -68,12 +62,22 @@ export const viewport: Viewport = {
   themeColor: '#1E6CFF',
 };
 
+/**
+ * Root Layout
+ *
+ * Note: ClerkProvider is NOT included here to avoid loading Clerk JS (~157KB)
+ * on pages that don't need auth (homepage, quote flow).
+ *
+ * Clerk is loaded via route-specific layouts:
+ * - src/app/(auth)/layout.tsx - for /sign-in, /sign-up
+ * - src/app/portal/layout.tsx - for /portal/*
+ */
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const content = (
+  return (
     <html lang="en">
       <body>
         {/* Skip to main content link for accessibility */}
@@ -102,11 +106,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-
-  // Skip ClerkProvider in bypass mode for development
-  if (BYPASS_CLERK) {
-    return content;
-  }
-
-  return <ClerkProvider>{content}</ClerkProvider>;
 }
