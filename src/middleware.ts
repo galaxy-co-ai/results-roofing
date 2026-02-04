@@ -11,6 +11,11 @@ import {
  */
 const BYPASS_AUTH = process.env.NODE_ENV === 'development' && process.env.BYPASS_CLERK === 'true';
 
+// Production safety check - ensure auth bypass is NEVER active in production
+if (process.env.NODE_ENV === 'production' && BYPASS_AUTH) {
+  throw new Error('CRITICAL: Auth bypass cannot be enabled in production');
+}
+
 /**
  * Handle quote version routing for A/B testing
  * Only applies to /quote routes - redirects to /quote-v2 if user is in v2 bucket

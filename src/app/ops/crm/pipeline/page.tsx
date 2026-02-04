@@ -94,14 +94,12 @@ export default function PipelinePage() {
     }
   };
 
-  const handleViewOpportunity = (opportunity: Opportunity) => {
+  const handleViewOpportunity = (_opportunity: Opportunity) => {
     // TODO: Open opportunity detail modal
-    console.log('View opportunity:', opportunity);
   };
 
-  const handleEditOpportunity = (opportunity: Opportunity) => {
+  const handleEditOpportunity = (_opportunity: Opportunity) => {
     // TODO: Open edit modal
-    console.log('Edit opportunity:', opportunity);
   };
 
   const handleDeleteOpportunity = async (opportunityId: string) => {
@@ -119,9 +117,8 @@ export default function PipelinePage() {
     }
   };
 
-  const handleMessageContact = (opportunity: Opportunity) => {
+  const handleMessageContact = (_opportunity: Opportunity) => {
     // TODO: Navigate to messaging
-    console.log('Message contact for opportunity:', opportunity);
   };
 
   // Calculate stats

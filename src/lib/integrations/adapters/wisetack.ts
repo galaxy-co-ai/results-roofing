@@ -1,8 +1,14 @@
 /**
- * Wisetack Financing Adapter
- * STUB - Awaiting client Wisetack merchant account
- * 
- * @see https://wisetack.com/docs
+ * Financing Pre-Qualification Adapter
+ * STUB - Awaiting client credentials
+ *
+ * MIGRATION NOTE (2026-02-03):
+ * Migrating from Wisetack to Enhancify
+ * @see https://www.enhancify.com/contractor-partnership
+ *
+ * Enhancify uses marketplace model with multiple lenders.
+ * Integration is likely via co-branded URL + webhooks (confirm with Enhancify).
+ * Features: Soft pull only, up to $200K, credit scores 550+
  */
 
 import { logger } from '@/lib/utils';

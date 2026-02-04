@@ -64,3 +64,4 @@ export { Skeleton } from "./Skeleton/Skeleton";
 export { ProgressIndicator } from "./ProgressIndicator/ProgressIndicator";
 export { TrustBar } from "./TrustBar/TrustBar";
 export { SignaturePad } from "./SignaturePad/SignaturePad";
+export { AriaLiveProvider, useAriaLive, LoadingStatus } from "./aria-live";

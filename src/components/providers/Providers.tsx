@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState, type ReactNode } from 'react';
 import { AnalyticsProvider } from './AnalyticsProvider';
 import { ToastProvider } from '@/components/ui/Toast';
+import { AriaLiveProvider } from '@/components/ui/aria-live';
 
 /**
  * App-wide providers wrapper
@@ -29,13 +30,15 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ToastProvider>
-        <Suspense fallback={null}>
-          <AnalyticsProvider gtmId={gtmId}>
-            {children}
-          </AnalyticsProvider>
-        </Suspense>
-      </ToastProvider>
+      <AriaLiveProvider>
+        <ToastProvider>
+          <Suspense fallback={null}>
+            <AnalyticsProvider gtmId={gtmId}>
+              {children}
+            </AnalyticsProvider>
+          </Suspense>
+        </ToastProvider>
+      </AriaLiveProvider>
     </QueryClientProvider>
   );
 }

@@ -1,8 +1,15 @@
 /**
- * Roofr Measurement Adapter
- * STUB - Awaiting client Roofr API credentials
- * 
- * @see https://roofr.com/measurements
+ * Roof Measurement Adapter
+ * STUB - Awaiting client credentials
+ *
+ * MIGRATION NOTE (2026-02-03):
+ * Migrating from Roofr to GAF QuickMeasure
+ * @see https://www.gaf.com/en-us/resources/business-services/quickmeasure
+ *
+ * TODO: Confirm GAF QuickMeasure API availability before implementation
+ * - Need to verify API endpoints and authentication method
+ * - Confirm webhook support for measurement completion
+ * - Check turnaround time (Roofr was ~30s, GAF may differ)
  */
 
 import { logger } from '@/lib/utils';

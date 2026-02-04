@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { createHmac } from 'crypto';
 import { db, schema, eq } from '@/db/index';
 import { logger } from '@/lib/utils';
+import { resendAdapter, ghlMessagingAdapter } from '@/lib/integrations/adapters';
 
 const WEBHOOK_SECRET = process.env.DOCUMENSO_WEBHOOK_SECRET || '';
 
@@ -141,6 +142,12 @@ async function handleDocumentSigned(data: DocumensoWebhookPayload['data']) {
     signedAt: data.recipient?.signedAt,
   });
 
+  // Fetch the quote with lead info
+  const quote = await db.query.quotes.findFirst({
+    where: eq(schema.quotes.id, quoteId),
+    with: { lead: true },
+  });
+
   // Update quote status to 'signed'
   await db
     .update(schema.quotes)
@@ -150,8 +157,78 @@ async function handleDocumentSigned(data: DocumensoWebhookPayload['data']) {
     })
     .where(eq(schema.quotes.id, quoteId));
 
-  // TODO: Send confirmation email to customer
-  // TODO: Notify ops team via email/Slack
+  // Send confirmation email to customer
+  const customerEmail = data.recipient?.email || quote?.lead?.email;
+  const customerName = data.recipient?.name ||
+    (quote?.lead?.firstName && quote?.lead?.lastName
+      ? `${quote.lead.firstName} ${quote.lead.lastName}`
+      : 'Valued Customer');
+
+  if (customerEmail) {
+    try {
+      const emailResult = await resendAdapter.sendProjectUpdate(
+        customerEmail,
+        {
+          customerName,
+          message: 'Thank you for signing your roofing contract! Your installation is now confirmed. Our team will be in touch shortly with next steps, including scheduling and payment details.',
+          portalUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'https://results-roofing.vercel.app'}/quote/${quoteId}/deposit`,
+        }
+      );
+
+      if (emailResult.success) {
+        logger.info('Contract signed confirmation email sent', {
+          emailId: emailResult.id,
+          to: customerEmail,
+          quoteId,
+        });
+      }
+    } catch (emailError) {
+      logger.error('Exception sending contract signed email', emailError);
+    }
+  }
+
+  // Send SMS confirmation if phone available
+  const customerPhone = quote?.lead?.phone;
+  if (customerPhone) {
+    try {
+      await ghlMessagingAdapter.sendContractSignedSms(customerPhone);
+      logger.info('Contract signed SMS sent', { to: customerPhone, quoteId });
+    } catch (smsError) {
+      logger.error('Exception sending contract signed SMS', smsError);
+    }
+  }
+
+  // Notify ops team
+  const opsEmail = process.env.OPS_NOTIFICATION_EMAIL;
+  if (opsEmail) {
+    try {
+      await resendAdapter.send({
+        to: opsEmail,
+        subject: `Contract Signed - ${customerName}`,
+        template: 'project_update',
+        data: {
+          customerName: 'Ops Team',
+          message: `A new contract has been signed!\n\nCustomer: ${customerName}\nEmail: ${customerEmail || 'N/A'}\nPhone: ${customerPhone || 'N/A'}\nQuote ID: ${quoteId}\nDocument ID: ${data.document.id}\n\nPlease follow up to schedule payment.`,
+        },
+      });
+    } catch (opsError) {
+      logger.error('Exception notifying ops team', opsError);
+    }
+  }
+
+  // Sync to GHL CRM with signed tag
+  try {
+    await ghlMessagingAdapter.syncCustomerToCRM({
+      email: customerEmail || undefined,
+      phone: customerPhone || undefined,
+      firstName: quote?.lead?.firstName || undefined,
+      lastName: quote?.lead?.lastName || undefined,
+      tags: ['contract-signed', 'results-roofing'],
+      source: 'results-roofing-contract',
+    });
+  } catch (crmError) {
+    logger.error('Exception syncing to GHL CRM', crmError);
+  }
 }
 
 /**
@@ -173,12 +250,18 @@ async function handleDocumentCompleted(data: DocumensoWebhookPayload['data']) {
     completedAt: data.document.completedAt,
   });
 
+  // Fetch the quote with lead info
+  const quote = await db.query.quotes.findFirst({
+    where: eq(schema.quotes.id, quoteId),
+    with: { lead: true },
+  });
+
   // Update contract record with completion
-  const contracts = await db.query.contracts.findFirst({
+  const contract = await db.query.contracts.findFirst({
     where: eq(schema.contracts.quoteId, quoteId),
   });
 
-  if (contracts) {
+  if (contract) {
     await db
       .update(schema.contracts)
       .set({
@@ -189,7 +272,58 @@ async function handleDocumentCompleted(data: DocumensoWebhookPayload['data']) {
       .where(eq(schema.contracts.quoteId, quoteId));
   }
 
-  // TODO: Trigger next step in checkout flow (payment)
-  // TODO: Download signed PDF and store in Vercel Blob
-  // TODO: Sync to JobNimbus CRM
+  // Quote stays in 'signed' status after contract completion
+  // The status will move to 'converted' after payment
+  // Note: At this point the contract flow is complete
+
+  // Send email prompting customer to proceed to payment
+  const customerEmail = quote?.lead?.email;
+  const customerName = quote?.lead?.firstName && quote?.lead?.lastName
+    ? `${quote.lead.firstName} ${quote.lead.lastName}`
+    : 'Valued Customer';
+
+  if (customerEmail) {
+    try {
+      const emailResult = await resendAdapter.sendProjectUpdate(
+        customerEmail,
+        {
+          customerName,
+          message: 'Great news! Your contract is now fully executed. You can proceed to the next step by submitting your deposit payment. Click below to continue.',
+          portalUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'https://results-roofing.vercel.app'}/quote/${quoteId}/deposit`,
+        }
+      );
+
+      if (emailResult.success) {
+        logger.info('Contract complete + payment prompt email sent', {
+          emailId: emailResult.id,
+          to: customerEmail,
+          quoteId,
+        });
+      }
+    } catch (emailError) {
+      logger.error('Exception sending contract complete email', emailError);
+    }
+  }
+
+  // Sync to GHL CRM with completed tag
+  try {
+    await ghlMessagingAdapter.syncCustomerToCRM({
+      email: customerEmail || undefined,
+      phone: quote?.lead?.phone || undefined,
+      firstName: quote?.lead?.firstName || undefined,
+      lastName: quote?.lead?.lastName || undefined,
+      address: quote?.address,
+      city: quote?.city,
+      state: quote?.state,
+      postalCode: quote?.zip,
+      tags: ['contract-complete', 'ready-for-payment', 'results-roofing'],
+      source: 'results-roofing-contract-complete',
+    });
+  } catch (crmError) {
+    logger.error('Exception syncing to GHL CRM', crmError);
+  }
+
+  // Note: Signed PDF download to Vercel Blob would require Documenso API credentials
+  // When credentials are available, implement documensoAdapter.downloadDocument()
+  // and store using @vercel/blob
 }

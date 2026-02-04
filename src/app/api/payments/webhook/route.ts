@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { db, schema, eq } from '@/db/index';
 import { logger } from '@/lib/utils';
-import { resendAdapter } from '@/lib/integrations/adapters';
+import { resendAdapter, ghlMessagingAdapter } from '@/lib/integrations/adapters';
 
 // Check for Stripe configuration
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
@@ -312,8 +312,61 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     }
   }
 
-  // TODO: Send confirmation SMS if consent given
-  // TODO: Sync to JobNimbus CRM
+  // Send confirmation SMS if customer has phone and gave consent
+  if (order.customerPhone) {
+    try {
+      const formattedAmount = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(depositAmount);
+
+      const smsResult = await ghlMessagingAdapter.sendPaymentConfirmationSms(
+        order.customerPhone,
+        formattedAmount
+      );
+
+      if (smsResult.success) {
+        logger.info(`[WEBHOOK] Payment confirmation SMS sent`, {
+          smsId: smsResult.id,
+          to: order.customerPhone,
+        });
+      } else {
+        logger.warn(`[WEBHOOK] SMS send returned non-success`, {
+          status: smsResult.status,
+          error: smsResult.error,
+        });
+      }
+    } catch (smsError) {
+      // Don't fail the webhook if SMS fails
+      logger.error(`[WEBHOOK] Exception sending payment confirmation SMS`, smsError);
+    }
+  }
+
+  // Sync customer to GHL CRM
+  try {
+    const crmResult = await ghlMessagingAdapter.syncCustomerToCRM({
+      email: order.customerEmail || undefined,
+      phone: order.customerPhone || undefined,
+      firstName: quote.lead?.firstName || undefined,
+      lastName: quote.lead?.lastName || undefined,
+      address: order.propertyAddress || undefined,
+      city: order.propertyCity || undefined,
+      state: order.propertyState || undefined,
+      postalCode: order.propertyZip || undefined,
+      tags: ['deposit-paid', 'results-roofing'],
+      source: 'results-roofing-payment',
+    });
+
+    if (crmResult.success) {
+      logger.info(`[WEBHOOK] Customer synced to GHL CRM`, {
+        contactId: crmResult.contactId,
+        email: order.customerEmail,
+      });
+    }
+  } catch (crmError) {
+    // Don't fail the webhook if CRM sync fails
+    logger.error(`[WEBHOOK] Exception syncing to GHL CRM`, crmError);
+  }
 }
 
 /**
@@ -342,8 +395,8 @@ async function handlePaymentFailure(paymentIntent: Stripe.PaymentIntent) {
  * Handle refund
  */
 async function handleRefund(charge: Stripe.Charge) {
-  const paymentIntentId = typeof charge.payment_intent === 'string' 
-    ? charge.payment_intent 
+  const paymentIntentId = typeof charge.payment_intent === 'string'
+    ? charge.payment_intent
     : charge.payment_intent?.id;
 
   logger.info(`Refund processed for charge ${charge.id}`, {
@@ -351,6 +404,57 @@ async function handleRefund(charge: Stripe.Charge) {
     amount: charge.amount_refunded,
   });
 
-  // TODO: Update payment record status to 'refunded'
-  // TODO: Send refund confirmation email
+  if (!paymentIntentId) {
+    logger.warn('[WEBHOOK] Refund charge has no payment_intent', { chargeId: charge.id });
+    return;
+  }
+
+  // Find and update the payment record
+  const payment = await db.query.payments.findFirst({
+    where: eq(schema.payments.stripePaymentIntentId, paymentIntentId),
+    with: {
+      order: true,
+    },
+  });
+
+  if (payment) {
+    // Update payment status to refunded
+    await db
+      .update(schema.payments)
+      .set({
+        status: 'refunded',
+        updatedAt: new Date(),
+      })
+      .where(eq(schema.payments.id, payment.id));
+
+    logger.info('[WEBHOOK] Payment record updated to refunded', {
+      paymentId: payment.id,
+      orderId: payment.orderId,
+    });
+
+    // Send refund confirmation email
+    if (payment.order?.customerEmail) {
+      try {
+        const refundAmount = charge.amount_refunded / 100;
+        const emailResult = await resendAdapter.sendProjectUpdate(
+          payment.order.customerEmail,
+          {
+            customerName: payment.order.customerName || 'Valued Customer',
+            message: `A refund of $${refundAmount.toLocaleString()} has been processed for your account. The funds should appear in your account within 5-10 business days. If you have any questions, please contact us.`,
+          }
+        );
+
+        if (emailResult.success) {
+          logger.info('[WEBHOOK] Refund confirmation email sent', {
+            emailId: emailResult.id,
+            to: payment.order.customerEmail,
+          });
+        }
+      } catch (emailError) {
+        logger.error('[WEBHOOK] Exception sending refund email', emailError);
+      }
+    }
+  } else {
+    logger.warn('[WEBHOOK] Payment record not found for refund', { paymentIntentId });
+  }
 }

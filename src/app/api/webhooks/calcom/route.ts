@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { createHmac } from 'crypto';
 import { db, schema, eq } from '@/db/index';
 import { logger } from '@/lib/utils';
-import { resendAdapter } from '@/lib/integrations/adapters';
+import { resendAdapter, ghlMessagingAdapter } from '@/lib/integrations/adapters';
 
 const WEBHOOK_SECRET = process.env.CALCOM_WEBHOOK_SECRET || '';
 
@@ -220,8 +220,58 @@ async function handleBookingCreated(booking: CalcomBooking) {
     }
   }
 
-  // TODO: Send confirmation SMS if consent given
-  // TODO: Sync to JobNimbus CRM
+  // Send confirmation SMS if customer has phone
+  const customerPhone = quote?.lead?.phone;
+  if (customerPhone) {
+    try {
+      const smsResult = await ghlMessagingAdapter.sendBookingConfirmationSms(
+        customerPhone,
+        new Date(booking.startTime).toLocaleDateString('en-US', {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+        })
+      );
+
+      if (smsResult.success) {
+        logger.info('Booking confirmation SMS sent', {
+          smsId: smsResult.id,
+          to: customerPhone,
+          bookingUid: booking.uid,
+        });
+      }
+    } catch (smsError) {
+      logger.error('Exception sending booking confirmation SMS', smsError);
+    }
+  }
+
+  // Sync to GHL CRM with booking tag
+  if (quote?.lead) {
+    try {
+      const crmResult = await ghlMessagingAdapter.syncCustomerToCRM({
+        email: quote.lead.email || undefined,
+        phone: quote.lead.phone || undefined,
+        firstName: quote.lead.firstName || undefined,
+        lastName: quote.lead.lastName || undefined,
+        address: quote.address,
+        city: quote.city,
+        state: quote.state,
+        postalCode: quote.zip,
+        tags: ['booking-scheduled', 'results-roofing'],
+        source: 'results-roofing-booking',
+      });
+
+      if (crmResult.success) {
+        logger.info('Customer synced to GHL CRM after booking', {
+          contactId: crmResult.contactId,
+          bookingUid: booking.uid,
+        });
+      }
+    } catch (crmError) {
+      logger.error('Exception syncing to GHL CRM', crmError);
+    }
+  }
 }
 
 /**
@@ -286,7 +336,19 @@ async function handleBookingCancelled(booking: CalcomBooking) {
     }
   }
 
-  // TODO: Update JobNimbus
+  // Update GHL CRM with cancellation tag
+  if (quote?.lead) {
+    try {
+      await ghlMessagingAdapter.syncCustomerToCRM({
+        email: quote.lead.email || undefined,
+        phone: quote.lead.phone || undefined,
+        tags: ['booking-cancelled', 'results-roofing'],
+        source: 'results-roofing-cancellation',
+      });
+    } catch (crmError) {
+      logger.error('Exception updating GHL CRM for cancellation', crmError);
+    }
+  }
 }
 
 /**
@@ -367,5 +429,39 @@ async function handleBookingRescheduled(booking: CalcomBooking) {
     }
   }
 
-  // TODO: Update JobNimbus
+  // Send reschedule SMS if customer has phone
+  const customerPhone = quote?.lead?.phone;
+  if (customerPhone) {
+    try {
+      const newDate = new Date(booking.startTime).toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      });
+
+      await ghlMessagingAdapter.sendSmsByPhone(
+        customerPhone,
+        `Your roof installation has been rescheduled to ${newDate}. We'll see you then! - Results Roofing`
+      );
+
+      logger.info('Reschedule SMS sent', { to: customerPhone, newDate });
+    } catch (smsError) {
+      logger.error('Exception sending reschedule SMS', smsError);
+    }
+  }
+
+  // Update GHL CRM with reschedule info
+  if (quote?.lead) {
+    try {
+      await ghlMessagingAdapter.syncCustomerToCRM({
+        email: quote.lead.email || undefined,
+        phone: quote.lead.phone || undefined,
+        tags: ['booking-rescheduled', 'results-roofing'],
+        source: 'results-roofing-reschedule',
+      });
+    } catch (crmError) {
+      logger.error('Exception updating GHL CRM for reschedule', crmError);
+    }
+  }
 }

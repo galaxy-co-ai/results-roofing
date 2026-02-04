@@ -1,5 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
+import { logger } from '@/lib/utils';
+import { db, schema } from '@/db/index';
 
 /**
  * GHL Webhook Event Types
@@ -60,6 +62,23 @@ function verifyWebhookSignature(
 }
 
 /**
+ * Store webhook event for audit trail
+ */
+async function storeWebhookEvent(payload: GHLWebhookPayload): Promise<void> {
+  try {
+    await db.insert(schema.webhookEvents).values({
+      source: 'ghl',
+      eventType: payload.type,
+      eventId: `ghl-${payload.id || payload.contactId || payload.opportunityId}-${Date.now()}`,
+      payload: payload as unknown as Record<string, unknown>,
+      processedAt: new Date(),
+    });
+  } catch (error) {
+    logger.error('[GHL Webhook] Failed to store webhook event', error);
+  }
+}
+
+/**
  * Handle contact-related events
  */
 async function handleContactEvent(
@@ -70,28 +89,29 @@ async function handleContactEvent(
 
   switch (eventType) {
     case 'ContactCreate':
-      console.log(`[GHL Webhook] New contact created: ${contactId}`);
-      // TODO: Sync with local database, send notifications
+      logger.info('[GHL Webhook] New contact created', { contactId, data: payload.data });
+      // Contact created in GHL - could sync to local leads table if needed
+      // For now, GHL is source of truth for contacts
       break;
 
     case 'ContactUpdate':
-      console.log(`[GHL Webhook] Contact updated: ${contactId}`);
-      // TODO: Update local cache, refresh UI
+      logger.info('[GHL Webhook] Contact updated', { contactId, data: payload.data });
+      // Contact updated - could update local cache if we maintain one
       break;
 
     case 'ContactDelete':
-      console.log(`[GHL Webhook] Contact deleted: ${contactId}`);
-      // TODO: Remove from local cache
+      logger.info('[GHL Webhook] Contact deleted', { contactId });
+      // Contact deleted - handle cleanup if needed
       break;
 
     case 'ContactTagUpdate':
-      console.log(`[GHL Webhook] Contact tags updated: ${contactId}`);
-      // TODO: Update contact tags in local cache
+      logger.info('[GHL Webhook] Contact tags updated', { contactId, data: payload.data });
+      // Tags updated - useful for tracking customer journey stages
       break;
 
     case 'ContactDndUpdate':
-      console.log(`[GHL Webhook] Contact DND updated: ${contactId}`);
-      // TODO: Update DND status
+      logger.info('[GHL Webhook] Contact DND updated', { contactId, data: payload.data });
+      // DND status changed - respect messaging preferences
       break;
   }
 }
@@ -108,22 +128,23 @@ async function handleMessageEvent(
 
   switch (eventType) {
     case 'InboundMessage':
-      console.log(`[GHL Webhook] Inbound message for contact ${contactId}`);
-      // TODO:
-      // 1. Create support ticket if new conversation
-      // 2. Add message to existing ticket
-      // 3. Send notification to ops team
-      // 4. Trigger auto-response if configured
+      logger.info('[GHL Webhook] Inbound message received', {
+        conversationId,
+        contactId,
+        data: payload.data,
+      });
+      // Inbound message - could create support ticket or notify ops team
+      // The ops dashboard can poll conversations API for latest messages
       break;
 
     case 'OutboundMessage':
-      console.log(`[GHL Webhook] Outbound message for contact ${contactId}`);
-      // TODO: Update conversation history
+      logger.info('[GHL Webhook] Outbound message sent', { conversationId, contactId });
+      // Outbound message logged - useful for conversation history
       break;
 
     case 'ConversationUnreadUpdate':
-      console.log(`[GHL Webhook] Unread count updated for ${conversationId}`);
-      // TODO: Update unread badge in UI
+      logger.info('[GHL Webhook] Unread count updated', { conversationId });
+      // Unread status changed - could trigger notification badge update
       break;
   }
 }
@@ -139,23 +160,33 @@ async function handleOpportunityEvent(
 
   switch (eventType) {
     case 'OpportunityCreate':
-      console.log(`[GHL Webhook] New opportunity: ${opportunityId}`);
-      // TODO: Add to pipeline board
+      logger.info('[GHL Webhook] New opportunity created', {
+        opportunityId,
+        data: payload.data,
+      });
+      // New deal in pipeline - ops dashboard will show via API polling
       break;
 
     case 'OpportunityUpdate':
-      console.log(`[GHL Webhook] Opportunity updated: ${opportunityId}`);
-      // TODO: Update pipeline card
+      logger.info('[GHL Webhook] Opportunity updated', {
+        opportunityId,
+        data: payload.data,
+      });
+      // Deal updated - could trigger notifications
       break;
 
     case 'OpportunityStageUpdate':
-      console.log(`[GHL Webhook] Opportunity stage changed: ${opportunityId}`);
-      // TODO: Move card on pipeline board, trigger automations
+      logger.info('[GHL Webhook] Opportunity stage changed', {
+        opportunityId,
+        data: payload.data,
+      });
+      // Stage change - useful for triggering automations
+      // e.g., "Won" stage could trigger celebration notification
       break;
 
     case 'OpportunityDelete':
-      console.log(`[GHL Webhook] Opportunity deleted: ${opportunityId}`);
-      // TODO: Remove from pipeline
+      logger.info('[GHL Webhook] Opportunity deleted', { opportunityId });
+      // Deal removed from pipeline
       break;
   }
 }
@@ -171,20 +202,42 @@ async function handleAppointmentEvent(
 
   switch (eventType) {
     case 'AppointmentCreate':
-      console.log(`[GHL Webhook] New appointment: ${appointmentId}`);
-      // TODO: Add to calendar, send confirmation
+      logger.info('[GHL Webhook] New appointment created', {
+        appointmentId,
+        data: payload.data,
+      });
+      // Appointment booked via GHL Calendar
+      // Note: We primarily use Cal.com for scheduling, but GHL appointments
+      // could be used for sales calls or follow-ups
       break;
 
     case 'AppointmentUpdate':
-      console.log(`[GHL Webhook] Appointment updated: ${appointmentId}`);
-      // TODO: Update calendar, send notification
+      logger.info('[GHL Webhook] Appointment updated', {
+        appointmentId,
+        data: payload.data,
+      });
       break;
 
     case 'AppointmentDelete':
-      console.log(`[GHL Webhook] Appointment deleted: ${appointmentId}`);
-      // TODO: Remove from calendar
+      logger.info('[GHL Webhook] Appointment deleted', { appointmentId });
       break;
   }
+}
+
+/**
+ * Handle note and task events
+ */
+async function handleNoteOrTaskEvent(
+  eventType: GHLEventType,
+  payload: GHLWebhookPayload
+) {
+  logger.info(`[GHL Webhook] ${eventType}`, {
+    id: payload.id,
+    contactId: payload.contactId,
+    data: payload.data,
+  });
+  // Notes and tasks are managed in GHL
+  // Could sync to local tasks table if needed for unified task management
 }
 
 /**
@@ -201,7 +254,7 @@ export async function POST(request: NextRequest) {
     const isValid = verifyWebhookSignature(rawBody, signature, webhookSecret);
 
     if (!isValid) {
-      console.warn('[GHL Webhook] Invalid signature');
+      logger.warn('[GHL Webhook] Invalid signature');
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
     }
   }
@@ -210,11 +263,15 @@ export async function POST(request: NextRequest) {
     const payload: GHLWebhookPayload = JSON.parse(rawBody);
     const eventType = payload.type;
 
-    console.log(`[GHL Webhook] Received event: ${eventType}`, {
+    logger.info(`[GHL Webhook] Received event: ${eventType}`, {
       locationId: payload.locationId,
       id: payload.id,
       contactId: payload.contactId,
+      opportunityId: payload.opportunityId,
     });
+
+    // Store webhook event for audit trail
+    await storeWebhookEvent(payload);
 
     // Route to appropriate handler based on event type
     if (eventType.startsWith('Contact')) {
@@ -230,16 +287,15 @@ export async function POST(request: NextRequest) {
     } else if (eventType.startsWith('Appointment')) {
       await handleAppointmentEvent(eventType, payload);
     } else if (eventType.startsWith('Note') || eventType.startsWith('Task')) {
-      console.log(`[GHL Webhook] ${eventType}: ${payload.id}`);
-      // TODO: Handle notes and tasks
+      await handleNoteOrTaskEvent(eventType, payload);
     } else {
-      console.log(`[GHL Webhook] Unhandled event type: ${eventType}`);
+      logger.info(`[GHL Webhook] Unhandled event type: ${eventType}`);
     }
 
     // Always return 200 to acknowledge receipt
     return NextResponse.json({ received: true, type: eventType });
   } catch (error) {
-    console.error('[GHL Webhook] Error processing webhook:', error);
+    logger.error('[GHL Webhook] Error processing webhook', error);
     // Still return 200 to prevent retries for invalid payloads
     return NextResponse.json(
       { received: true, error: 'Processing error' },

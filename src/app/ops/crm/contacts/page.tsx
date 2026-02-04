@@ -107,19 +107,16 @@ export default function ContactsPage() {
     }
   };
 
-  const handleViewContact = (contact: Contact) => {
+  const handleViewContact = (_contact: Contact) => {
     // TODO: Open contact detail modal/drawer
-    console.log('View contact:', contact);
   };
 
-  const handleEditContact = (contact: Contact) => {
+  const handleEditContact = (_contact: Contact) => {
     // TODO: Open edit modal
-    console.log('Edit contact:', contact);
   };
 
-  const handleMessageContact = (contact: Contact) => {
+  const handleMessageContact = (_contact: Contact) => {
     // TODO: Navigate to messaging with contact pre-selected
-    console.log('Message contact:', contact);
   };
 
   return (

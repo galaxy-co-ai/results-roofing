@@ -30,6 +30,7 @@ import {
   Edit2,
   Trash2,
   MessageSquare,
+  Users,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -391,8 +392,27 @@ export function ContactsTable({
                 ))
               ) : (
                 <tr>
-                  <td colSpan={columns.length} className="h-32 text-center text-muted-foreground">
-                    No contacts found
+                  <td colSpan={columns.length} className="py-12">
+                    <div className="flex flex-col items-center justify-center text-center">
+                      <div
+                        style={{
+                          padding: '1rem',
+                          borderRadius: '50%',
+                          background: 'rgba(6, 182, 212, 0.08)',
+                          marginBottom: '1rem',
+                        }}
+                      >
+                        <Users size={32} style={{ color: '#06B6D4', opacity: 0.6 }} />
+                      </div>
+                      <h3 className="text-sm font-medium text-foreground mb-1">
+                        {globalFilter ? 'No contacts match your search' : 'No contacts yet'}
+                      </h3>
+                      <p className="text-xs text-muted-foreground max-w-[240px]">
+                        {globalFilter
+                          ? 'Try adjusting your search terms'
+                          : 'Add your first contact or sync from GoHighLevel to get started'}
+                      </p>
+                    </div>
                   </td>
                 </tr>
               )}

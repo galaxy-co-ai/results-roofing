@@ -75,14 +75,14 @@ function getPhaseStatus(tasks: Task[]): SOWStatus {
 }
 
 // Static blockers - these could also be derived from tasks with certain criteria
-// Last updated: 2026-01-31
+// Last updated: 2026-02-03
 const BLOCKERS: Blocker[] = [
   { item: 'JobNimbus API credentials', owner: 'Client', impact: 'CRM sync blocked' },
-  { item: 'Roofr API credentials', owner: 'Client', impact: 'Live measurements blocked' },
+  { item: 'GAF QuickMeasure credentials', owner: 'Client', impact: 'Roof measurements blocked' },
   { item: 'Documenso account setup', owner: 'Client', impact: 'E-signature blocked' },
   // Cal.com - RESOLVED: Adapter is production-ready
-  { item: 'Wisetack merchant account', owner: 'Client', impact: 'Financing pre-qual blocked' },
-  { item: 'SignalWire account', owner: 'Client', impact: 'SMS notifications blocked' },
+  { item: 'Enhancify merchant account', owner: 'Client', impact: 'Financing pre-qual blocked' },
+  { item: 'GoHighLevel account', owner: 'Client', impact: 'SMS notifications blocked' },
 ];
 
 function getStatusIcon(status: SOWStatus) {

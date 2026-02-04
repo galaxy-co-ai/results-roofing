@@ -3,6 +3,8 @@
  * Replaces console.log with structured logging that respects environment
  */
 
+import * as Sentry from '@sentry/nextjs';
+
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 interface LogContext {
@@ -61,26 +63,33 @@ export const logger = {
 
   /**
    * Error level - always logged
-   * In production, this should integrate with error monitoring (Sentry, etc.)
+   * In production, also sends to Sentry for error monitoring
    */
   error(message: string, error?: Error | unknown, context?: LogContext): void {
     if (isTest) return;
 
     const errorContext = error instanceof Error
-      ? { 
-          errorMessage: error.message, 
+      ? {
+          errorMessage: error.message,
           errorStack: isDevelopment ? error.stack : undefined,
-          ...context 
+          ...context
         }
       : { error, ...context };
 
     // eslint-disable-next-line no-console
     console.error(formatMessage('error', message, errorContext));
 
-    // TODO: In production, send to error monitoring service
-    // if (!isDevelopment) {
-    //   Sentry.captureException(error);
-    // }
+    // Send errors to Sentry in production
+    if (!isDevelopment && error instanceof Error) {
+      Sentry.captureException(error, {
+        extra: { message, ...context },
+      });
+    } else if (!isDevelopment && error) {
+      Sentry.captureMessage(message, {
+        level: 'error',
+        extra: { error, ...context },
+      });
+    }
   },
 };
 

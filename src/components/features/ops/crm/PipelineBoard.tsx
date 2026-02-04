@@ -29,6 +29,8 @@ import {
   MessageSquare,
   Edit2,
   Trash2,
+  Kanban,
+  Plus,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -268,7 +270,15 @@ function Column({
           ))}
 
           {opportunities.length === 0 && (
-            <div className={styles.emptyColumn}>Drop deals here</div>
+            <div className={styles.emptyColumn}>
+              <div style={{ textAlign: 'center' }}>
+                <Plus
+                  size={20}
+                  style={{ color: 'var(--muted-foreground)', opacity: 0.5, marginBottom: '0.5rem' }}
+                />
+                <p style={{ margin: 0, fontSize: '0.75rem' }}>Drop deals here</p>
+              </div>
+            </div>
           )}
         </div>
       </SortableContext>
@@ -374,7 +384,37 @@ export function PipelineBoard({
   if (stages.length === 0) {
     return (
       <div className={styles.empty}>
-        <p>No pipeline configured</p>
+        <div
+          style={{
+            padding: '1.25rem',
+            borderRadius: '50%',
+            background: 'rgba(34, 197, 94, 0.08)',
+            marginBottom: '1.25rem',
+          }}
+        >
+          <Kanban size={40} style={{ color: '#22C55E', opacity: 0.6 }} />
+        </div>
+        <h3
+          style={{
+            fontSize: '1rem',
+            fontWeight: 600,
+            color: 'var(--foreground)',
+            margin: '0 0 0.5rem',
+          }}
+        >
+          No pipeline configured
+        </h3>
+        <p
+          style={{
+            fontSize: '0.875rem',
+            color: 'var(--muted-foreground)',
+            margin: 0,
+            maxWidth: '280px',
+            textAlign: 'center',
+          }}
+        >
+          Connect GoHighLevel to sync your sales pipeline and start tracking deals
+        </p>
       </div>
     );
   }

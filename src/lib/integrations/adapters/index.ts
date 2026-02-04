@@ -2,14 +2,19 @@
  * Integration Adapters
  * Centralized exports for external service adapters
  *
- * Status:
+ * Status (Updated 2026-02-03):
  * ✅ calcom - Adapter complete, webhook handler complete
- * ✅ resend - Email delivery complete with templates
+ * ✅ resend - Email delivery complete (MIGRATING to GHL)
  * ⚠️ documenso - STUB (awaiting client account)
- * ⚠️ wisetack - STUB (awaiting client merchant account)
- * ⚠️ roofr - STUB (awaiting client API credentials)
+ * ⚠️ wisetack - STUB → MIGRATING to Enhancify
+ * ⚠️ roofr - STUB → MIGRATING to GAF QuickMeasure
  * ⚠️ jobnimbus - STUB (awaiting client API access)
- * ⚠️ signalwire - STUB (awaiting client account)
+ * ⚠️ signalwire - STUB → MIGRATING to GoHighLevel (GHL)
+ *
+ * Migration Notes:
+ * - Roofr → GAF QuickMeasure (roof measurements)
+ * - Wisetack → Enhancify (financing pre-qual)
+ * - SignalWire + Resend → GoHighLevel (unified SMS + Email)
  */
 
 // Scheduling
@@ -55,8 +60,16 @@ export {
   type EmailTemplate 
 } from './resend';
 
-// SMS
-export { 
-  signalwireAdapter, 
-  type SendSmsRequest 
+// SMS (legacy - migrating to GHL)
+export {
+  signalwireAdapter,
+  type SendSmsRequest
 } from './signalwire';
+
+// GoHighLevel Unified Messaging (SMS + Email + CRM)
+export {
+  ghlMessagingAdapter,
+  type GHLSendSmsRequest,
+  type GHLSendEmailRequest,
+  type GHLMessageResponse,
+} from './ghl-messaging';
