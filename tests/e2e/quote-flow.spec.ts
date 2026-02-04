@@ -60,12 +60,12 @@ test.describe('Quote Flow', () => {
 
     test('should show Trust Signals', async ({ page }) => {
       await page.goto('/quote/new');
-      
+
       // Check trust signals are present - wait for page to fully load
       await page.waitForLoadState('domcontentloaded');
-      
-      // Trust signals show roofs installed count and no salesperson visit
-      await expect(page.getByText(/roofs installed/i).first()).toBeVisible({ timeout: 10000 });
+
+      // TrustBar shows credentials: Licensed & Insured, GAF Certified, 4.9 Rating
+      await expect(page.getByText(/Licensed & Insured/i).first()).toBeVisible({ timeout: 10000 });
     });
   });
 
@@ -122,10 +122,10 @@ test.describe('Quote Flow', () => {
       const stageIndicator = page.locator('nav[aria-label="Quote wizard progress"]');
       await expect(stageIndicator).toBeVisible({ timeout: 10000 });
       
-      // Check for stage labels
+      // Check for stage labels (actual STAGE_CONFIG labels)
       await expect(page.getByText('Get Your Quote').first()).toBeVisible();
       await expect(page.getByText('Customize').first()).toBeVisible();
-      await expect(page.getByText('Confirm & Pay').first()).toBeVisible();
+      await expect(page.getByText('Schedule').first()).toBeVisible();
     });
 
     test('should have accessible stage indicator', async ({ page }) => {
