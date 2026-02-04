@@ -115,7 +115,7 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
   return (
     <>
       <Header />
-      <main className={styles.main}>
+      <main id="main-content" tabIndex={-1} className={styles.main}>
         <QuoteWizardProvider initialData={initialWizardState}>
           <StageIndicator currentStage={2} quoteId={quoteId} className={styles.stepper} />
           <Stage2Container

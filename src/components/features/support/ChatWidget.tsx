@@ -119,11 +119,13 @@ export function ChatWidget() {
   return (
     <>
       {/* Chat Panel */}
-      <div 
+      <div
         className={`${styles.chatPanel} ${isOpen ? styles.open : ''}`}
         role="dialog"
         aria-label="Support chat"
         aria-hidden={!isOpen}
+        // @ts-expect-error - inert is valid HTML attribute, TS types lag behind
+        inert={!isOpen ? '' : undefined}
       >
         {/* Header */}
         <header className={styles.header}>

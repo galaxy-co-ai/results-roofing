@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <main className={styles.main}>
+      <main id="main-content" tabIndex={-1} className={styles.main}>
       {/* Hero Section */}
       <section id="quote-form" className={styles.hero}>
         <div className={styles.heroContent}>

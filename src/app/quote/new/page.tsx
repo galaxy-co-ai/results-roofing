@@ -14,7 +14,7 @@ export default function NewQuotePage() {
   return (
     <>
       <Header />
-      <main className={styles.main}>
+      <main id="main-content" tabIndex={-1} className={styles.main}>
         <QuoteWizardProvider>
           <StageIndicator currentStage={1} className={styles.stepper} />
           <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
