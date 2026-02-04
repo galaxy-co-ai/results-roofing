@@ -162,8 +162,6 @@ function NavGroup({ section }: { section: NavSection }) {
 }
 
 export function OpsSidebar() {
-  const { state } = useSidebar();
-
   return (
     <Sidebar collapsible="icon">
       {/* Header with Logo */}
