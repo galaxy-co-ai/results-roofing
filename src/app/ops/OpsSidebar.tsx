@@ -15,6 +15,7 @@ import {
   Inbox,
   Search,
   ChevronRight,
+  FolderOpen,
   type LucideIcon,
 } from 'lucide-react';
 import {
@@ -84,6 +85,7 @@ const NAV_SECTIONS: NavSection[] = [
     id: 'other',
     label: 'Other',
     items: [
+      { id: 'documents', label: 'Documents', href: '/ops/documents', icon: FolderOpen },
       { id: 'inbox', label: 'Support Inbox', href: '/ops/support', icon: Inbox },
       { id: 'blog', label: 'Blog Posts', href: '/ops/blog/posts', icon: FileText },
     ],

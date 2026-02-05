@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { db, schema, eq } from '@/db/index';
+import { db, schema, eq, and } from '@/db/index';
 import { logger } from '@/lib/utils';
 
 // Request validation schema
@@ -156,6 +156,28 @@ export async function POST(
         updatedAt: timestamp,
       })
       .where(eq(schema.quotes.id, quoteId));
+
+    // Update document record to signed status
+    try {
+      await db
+        .update(schema.documents)
+        .set({
+          status: 'signed',
+          signedAt: timestamp,
+          signedIp: ip,
+          updatedAt: timestamp,
+        })
+        .where(
+          and(
+            eq(schema.documents.quoteId, quoteId),
+            eq(schema.documents.type, 'deposit_authorization')
+          )
+        );
+      logger.info(`Document marked as signed for quote ${quoteId}`);
+    } catch (docError) {
+      logger.error('Failed to update document status', docError);
+      // Non-critical, continue
+    }
 
     logger.info(`Deposit authorization saved for quote ${quoteId}`, {
       email,
