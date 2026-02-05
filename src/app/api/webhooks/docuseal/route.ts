@@ -3,8 +3,6 @@ import { NextResponse } from 'next/server';
 import { db, schema, eq } from '@/db/index';
 import { logger } from '@/lib/utils';
 
-const WEBHOOK_SECRET = process.env.DOCUSEAL_WEBHOOK_SECRET;
-
 /**
  * DocuSeal Webhook Handler
  *
@@ -17,15 +15,6 @@ const WEBHOOK_SECRET = process.env.DOCUSEAL_WEBHOOK_SECRET;
  */
 export async function POST(request: NextRequest) {
   try {
-    // Verify webhook secret if configured
-    if (WEBHOOK_SECRET) {
-      const providedSecret = request.headers.get('x-docuseal-webhook-secret');
-      if (providedSecret !== WEBHOOK_SECRET) {
-        logger.warn('DocuSeal webhook secret mismatch');
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-      }
-    }
-
     const body = await request.json();
 
     logger.info('DocuSeal webhook received', {
