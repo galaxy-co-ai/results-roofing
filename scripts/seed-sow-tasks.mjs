@@ -59,6 +59,8 @@ const PHASES = [
       { name: 'Funnel event tracking', status: 'done', priority: 'high' },
       { name: 'Conversion tracking', status: 'done', priority: 'high' },
       { name: 'Consent management', status: 'done', priority: 'medium' },
+      { name: 'Connect Google Analytics (GA4)', status: 'todo', priority: 'high', note: 'Need GA4 property ID from client' },
+      { name: 'Connect Google Tag Manager', status: 'todo', priority: 'high', note: 'Need GTM container ID from client' },
     ],
   },
   {
