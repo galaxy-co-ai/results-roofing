@@ -1,16 +1,9 @@
 import { notFound, redirect } from 'next/navigation';
 import { db, schema, eq } from '@/db/index';
 import { Header } from '@/components/layout';
-import { TrustBar, ProgressIndicator } from '@/components/ui';
+import { TrustBar } from '@/components/ui';
 import { ConfirmPageClient } from './ConfirmPageClient';
 import styles from './page.module.css';
-
-const PROGRESS_STEPS = [
-  { id: 'quote', label: 'Get Quote' },
-  { id: 'customize', label: 'Customize' },
-  { id: 'schedule', label: 'Schedule' },
-  { id: 'confirm', label: 'Confirm' },
-];
 
 export const dynamic = 'force-dynamic';
 
@@ -60,10 +53,6 @@ export default async function ConfirmPage({ params }: ConfirmPageProps) {
     <>
       <Header />
       <main className={styles.main}>
-        <div className={styles.progressSection}>
-          <ProgressIndicator steps={PROGRESS_STEPS} currentStep={4} />
-        </div>
-
         <ConfirmPageClient
           quoteId={quoteId}
           quoteSummary={{

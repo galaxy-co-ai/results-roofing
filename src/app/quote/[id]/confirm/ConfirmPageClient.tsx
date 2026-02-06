@@ -11,7 +11,11 @@ import {
   DollarSign,
   ArrowRight,
   Shield,
+  User,
+  Mail,
+  Phone,
 } from 'lucide-react';
+import { QuoteStepper } from '@/components/features/quote';
 import styles from './page.module.css';
 
 export interface QuoteSummary {
@@ -45,8 +49,20 @@ export function ConfirmPageClient({ quoteId, quoteSummary }: ConfirmPageClientPr
       day: 'numeric',
       year: 'numeric',
     });
-    const time = timeSlot === 'morning' ? '8:00 AM - 12:00 PM' : '12:00 PM - 5:00 PM';
+    const time = timeSlot === 'morning' ? '8 AM - 12 PM' : '12 PM - 5 PM';
     return { date: dateFormatted, time };
+  };
+
+  const formatPhoneNumber = (value: string) => {
+    const numbers = value.replace(/\D/g, '');
+    if (numbers.length <= 3) return numbers;
+    if (numbers.length <= 6) return `(${numbers.slice(0, 3)}) ${numbers.slice(3)}`;
+    return `(${numbers.slice(0, 3)}) ${numbers.slice(3, 6)}-${numbers.slice(6, 10)}`;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setPhone(formatted);
   };
 
   const handleConfirmBooking = useCallback(async () => {
@@ -62,14 +78,13 @@ export function ConfirmPageClient({ quoteId, quoteSummary }: ConfirmPageClientPr
     setError(null);
 
     try {
-      // Save booking confirmation to our database
       const response = await fetch(`/api/quotes/${quoteId}/confirm`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fullName: fullName.trim(),
           email: email.trim(),
-          phone: phone.trim() || null,
+          phone: phone.replace(/\D/g, '') || null,
         }),
       });
 
@@ -79,7 +94,6 @@ export function ConfirmPageClient({ quoteId, quoteSummary }: ConfirmPageClientPr
         throw new Error(data.error || 'Failed to confirm booking');
       }
 
-      // Redirect to portal with success message
       router.push(`/portal/dashboard?confirmed=${quoteId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
@@ -96,66 +110,86 @@ export function ConfirmPageClient({ quoteId, quoteSummary }: ConfirmPageClientPr
 
   return (
     <div className={styles.container}>
-      <div className={styles.confirmationCard}>
-        {/* Success Header */}
-        <div className={styles.successHeader}>
-          <div className={styles.successIcon}>
-            <CheckCircle2 size={32} />
+      {/* Header */}
+      <div className={styles.headerSection}>
+        <h1 className={styles.title}>Confirm Your Booking</h1>
+        <QuoteStepper currentStage={4} quoteId={quoteId} />
+      </div>
+
+      {/* Compact Quote Summary Bar */}
+      <div className={styles.quoteSummaryBar}>
+        <div className={styles.quoteSummaryContent}>
+          <div className={styles.quoteSummaryIconWrapper}>
+            <Home aria-hidden="true" />
           </div>
-          <h1 className={styles.title}>You&apos;re Almost There!</h1>
-          <p className={styles.subtitle}>
-            Confirm your details to lock in your installation date
-          </p>
+          <span className={styles.quoteSummaryAddress}>{quoteSummary.address}</span>
+          <span className={styles.quoteSummaryDivider} aria-hidden="true" />
+          <span className={styles.quoteSummaryTier}>
+            <Sparkles className={styles.tierIcon} aria-hidden="true" />
+            {quoteSummary.tierDisplayName}
+          </span>
+          <span className={styles.quoteSummaryDivider} aria-hidden="true" />
+          <span className={styles.quoteSummaryPrice}>
+            ${quoteSummary.totalPrice.toLocaleString()}
+          </span>
         </div>
+      </div>
 
-        {/* Booking Summary Card */}
-        <div className={styles.summaryCard}>
-          <div className={styles.summaryHeader}>
-            <div className={styles.tierBadge}>
-              <Sparkles size={16} />
-              <span>{quoteSummary.tierDisplayName} Package</span>
-            </div>
+      {/* Booking Summary Card */}
+      <div className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionIconSuccess}>
+            <CheckCircle2 />
           </div>
-
-          <div className={styles.summaryGrid}>
-            <div className={styles.summaryItem}>
-              <Home size={18} className={styles.summaryIcon} />
-              <div>
-                <span className={styles.summaryLabel}>Property</span>
-                <span className={styles.summaryValue}>{quoteSummary.address}</span>
-              </div>
-            </div>
-
-            <div className={styles.summaryItem}>
-              <Calendar size={18} className={styles.summaryIcon} />
-              <div>
-                <span className={styles.summaryLabel}>Installation Date</span>
-                <span className={styles.summaryValue}>{date}</span>
-                <span className={styles.summaryMeta}>{time}</span>
-              </div>
-            </div>
-
-            <div className={styles.summaryItem}>
-              <DollarSign size={18} className={styles.summaryIcon} />
-              <div>
-                <span className={styles.summaryLabel}>Project Total</span>
-                <span className={styles.summaryValue}>
-                  ${quoteSummary.totalPrice.toLocaleString()}
-                </span>
-                <span className={styles.summaryMeta}>
-                  ${quoteSummary.depositAmount} deposit due at signing
-                </span>
-              </div>
-            </div>
+          <div>
+            <h2 className={styles.sectionTitle}>Your Installation</h2>
+            <p className={styles.sectionSubtitle}>Review your booking details</p>
           </div>
         </div>
 
-        {/* Contact Form */}
-        <div className={styles.formSection}>
-          <h2 className={styles.formTitle}>Your Contact Information</h2>
+        <div className={styles.bookingSummary}>
+          <div className={styles.bookingRow}>
+            <Calendar className={styles.bookingIcon} aria-hidden="true" />
+            <div className={styles.bookingDetails}>
+              <span className={styles.bookingLabel}>Date & Time</span>
+              <span className={styles.bookingValue}>{date}</span>
+              <span className={styles.bookingMeta}>{time}</span>
+            </div>
+          </div>
+          <div className={styles.bookingRow}>
+            <DollarSign className={styles.bookingIcon} aria-hidden="true" />
+            <div className={styles.bookingDetails}>
+              <span className={styles.bookingLabel}>Project Total</span>
+              <span className={styles.bookingValue}>${quoteSummary.totalPrice.toLocaleString()}</span>
+              <span className={styles.bookingMeta}>${quoteSummary.depositAmount} deposit due at signing</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      {/* Contact Form */}
+      <form className={styles.section} onSubmit={(e) => { e.preventDefault(); handleConfirmBooking(); }}>
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionIcon}>
+            <User />
+          </div>
+          <div>
+            <h2 className={styles.sectionTitle}>Your Information</h2>
+            <p className={styles.sectionSubtitle}>We&apos;ll use this to create your account</p>
+          </div>
+        </div>
+
+        {/* Error display */}
+        {error && (
+          <div className={styles.errorBanner} role="alert">
+            {error}
+          </div>
+        )}
+
+        <div className={styles.formGrid}>
           <div className={styles.inputGroup}>
             <label htmlFor="customer-name" className={styles.inputLabel}>
+              <User className={styles.inputIcon} aria-hidden="true" />
               Full Name <span className={styles.required}>*</span>
             </label>
             <input
@@ -175,6 +209,7 @@ export function ConfirmPageClient({ quoteId, quoteSummary }: ConfirmPageClientPr
 
           <div className={styles.inputGroup}>
             <label htmlFor="customer-email" className={styles.inputLabel}>
+              <Mail className={styles.inputIcon} aria-hidden="true" />
               Email Address <span className={styles.required}>*</span>
             </label>
             <input
@@ -194,6 +229,7 @@ export function ConfirmPageClient({ quoteId, quoteSummary }: ConfirmPageClientPr
 
           <div className={styles.inputGroup}>
             <label htmlFor="customer-phone" className={styles.inputLabel}>
+              <Phone className={styles.inputIcon} aria-hidden="true" />
               Phone Number <span className={styles.optional}>(optional)</span>
             </label>
             <input
@@ -201,49 +237,43 @@ export function ConfirmPageClient({ quoteId, quoteSummary }: ConfirmPageClientPr
               type="tel"
               className={styles.input}
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={handlePhoneChange}
               placeholder="(555) 123-4567"
               disabled={isProcessing}
               autoComplete="tel"
+              maxLength={14}
             />
           </div>
         </div>
 
-        {/* Error Display */}
-        {error && (
-          <div className={styles.error} role="alert">
-            {error}
-          </div>
-        )}
-
-        {/* Confirm Button */}
+        {/* Submit Button */}
         <button
-          type="button"
-          className={`${styles.confirmButton} ${!canProceed ? styles.confirmButtonDisabled : ''}`}
-          onClick={handleConfirmBooking}
+          type="submit"
+          className={styles.submitButton}
           disabled={!canProceed}
         >
           {isProcessing ? (
             <>
-              <Loader2 size={20} className={styles.spinner} />
+              <Loader2 className={styles.spinner} aria-hidden="true" />
               Confirming...
             </>
           ) : (
             <>
+              <CheckCircle2 aria-hidden="true" />
               Confirm My Booking
-              <ArrowRight size={20} />
+              <ArrowRight aria-hidden="true" />
             </>
           )}
         </button>
 
         {/* Trust Message */}
         <div className={styles.trustMessage}>
-          <Shield size={16} />
+          <Shield className={styles.trustIcon} aria-hidden="true" />
           <span>
             No payment required now. You&apos;ll complete your deposit in your customer portal.
           </span>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

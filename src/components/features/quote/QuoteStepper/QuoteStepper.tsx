@@ -8,11 +8,12 @@ import { cn } from '@/lib/utils';
 const { Stepper } = defineStepper(
   { id: 'quote', label: 'Get Quote', description: 'Enter your address' },
   { id: 'customize', label: 'Customize', description: 'Choose your package' },
-  { id: 'schedule', label: 'Schedule', description: 'Pick a date' }
+  { id: 'schedule', label: 'Schedule', description: 'Pick a date' },
+  { id: 'confirm', label: 'Confirm', description: 'Confirm booking' }
 );
 
 interface QuoteStepperProps {
-  currentStage: 1 | 2 | 3;
+  currentStage: 1 | 2 | 3 | 4;
   quoteId?: string;
   className?: string;
 }
@@ -24,7 +25,7 @@ interface QuoteStepperProps {
  */
 export function QuoteStepper({ currentStage, quoteId: _quoteId, className }: QuoteStepperProps) {
   // Map stage number to step ID
-  const stepIds = ['quote', 'customize', 'schedule'] as const;
+  const stepIds = ['quote', 'customize', 'schedule', 'confirm'] as const;
   const currentStepId = stepIds[currentStage - 1];
 
   return (
@@ -41,8 +42,11 @@ export function QuoteStepper({ currentStage, quoteId: _quoteId, className }: Quo
         <Stepper.Step of="customize" icon={currentStage > 2 ? <Check className="h-4 w-4" /> : undefined}>
           <Stepper.Title className="hidden sm:block">Customize</Stepper.Title>
         </Stepper.Step>
-        <Stepper.Step of="schedule">
+        <Stepper.Step of="schedule" icon={currentStage > 3 ? <Check className="h-4 w-4" /> : undefined}>
           <Stepper.Title className="hidden sm:block">Schedule</Stepper.Title>
+        </Stepper.Step>
+        <Stepper.Step of="confirm">
+          <Stepper.Title className="hidden sm:block">Confirm</Stepper.Title>
         </Stepper.Step>
       </Stepper.Navigation>
     </Stepper.Provider>

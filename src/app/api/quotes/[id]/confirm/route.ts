@@ -57,11 +57,10 @@ export async function POST(
 
     const timestamp = new Date();
 
-    // Update the quote with customer info and mark as confirmed
+    // Update the quote timestamp (status remains 'scheduled')
     await db
       .update(schema.quotes)
       .set({
-        status: 'confirmed',
         updatedAt: timestamp,
       })
       .where(eq(schema.quotes.id, quoteId));
