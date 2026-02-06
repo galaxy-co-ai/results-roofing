@@ -54,6 +54,8 @@ export const quotes = pgTable(
     // Scheduling
     scheduledSlotId: text('scheduled_slot_id'),
     scheduledDate: timestamp('scheduled_date', { withTimezone: true }),
+    // User identity (linked when user signs into portal)
+    clerkUserId: text('clerk_user_id'),
     // CRM integration
     jobnimbusJobId: text('jobnimbus_job_id'),
     // Expiration
@@ -65,6 +67,7 @@ export const quotes = pgTable(
   (table) => [
     index('quotes_lead_idx').on(table.leadId),
     index('quotes_status_idx').on(table.status),
+    index('quotes_clerk_user_idx').on(table.clerkUserId),
     index('quotes_created_idx').on(table.createdAt),
     index('quotes_jobnimbus_idx').on(table.jobnimbusJobId),
     index('quotes_expires_idx').on(table.expiresAt),

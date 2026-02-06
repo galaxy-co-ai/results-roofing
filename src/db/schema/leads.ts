@@ -24,6 +24,8 @@ export const leads = pgTable(
     utmCampaign: text('utm_campaign'),
     utmContent: text('utm_content'),
     utmTerm: text('utm_term'),
+    // User identity (linked when user signs into portal)
+    clerkUserId: text('clerk_user_id'),
     // CRM integration
     jobnimbusContactId: text('jobnimbus_contact_id'),
     // Timestamps
@@ -32,6 +34,7 @@ export const leads = pgTable(
   },
   (table) => [
     index('leads_email_idx').on(table.email),
+    index('leads_clerk_user_idx').on(table.clerkUserId),
     index('leads_jobnimbus_idx').on(table.jobnimbusContactId),
     index('leads_created_idx').on(table.createdAt),
   ]

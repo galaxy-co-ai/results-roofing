@@ -19,6 +19,21 @@ interface Order {
   updatedAt: string;
 }
 
+interface PendingQuote {
+  id: string;
+  status: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  selectedTier: string | null;
+  totalPrice: number | null;
+  depositAmount: number | null;
+  scheduledDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface OrderDetails extends Order {
   customerName: string | null;
   customerEmail: string;
@@ -109,7 +124,7 @@ const MOCK_ORDER_DETAILS: OrderDetailsResponse = {
   ],
 };
 
-async function fetchOrders(email: string): Promise<{ orders: Order[] }> {
+async function fetchOrders(email: string): Promise<{ orders: Order[]; pendingQuotes: PendingQuote[] }> {
   // In dev bypass mode, fetch real orders but fall back to mock if none exist
   const res = await fetch(`/api/portal/orders?email=${encodeURIComponent(email)}`);
   if (!res.ok) {
@@ -119,10 +134,13 @@ async function fetchOrders(email: string): Promise<{ orders: Order[] }> {
 
   // If no real orders and dev bypass is enabled, return mock data
   if (DEV_BYPASS_ENABLED && (!data.orders || data.orders.length === 0)) {
-    return { orders: [MOCK_ORDER] };
+    return { orders: [MOCK_ORDER], pendingQuotes: [] };
   }
 
-  return data;
+  return {
+    orders: data.orders || [],
+    pendingQuotes: data.pendingQuotes || [],
+  };
 }
 
 async function fetchOrderDetails(orderId: string): Promise<OrderDetailsResponse> {
@@ -166,4 +184,4 @@ export function useOrderDetails(orderId: string | null) {
   });
 }
 
-export type { Order, OrderDetails, TimelineStep, Payment, Appointment, Contract };
+export type { Order, OrderDetails, TimelineStep, Payment, Appointment, Contract, PendingQuote };

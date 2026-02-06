@@ -34,6 +34,7 @@ export {
   type Payment,
   type Appointment,
   type Contract,
+  type PendingQuote,
 } from './useOrders';
 
 // Analytics hooks

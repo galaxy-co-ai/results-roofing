@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import {
   FileText,
@@ -17,7 +16,8 @@ import {
   Sparkles,
   ArrowRight
 } from 'lucide-react';
-import { useOrders, useOrderDetails, useQuote } from '@/hooks';
+import { useOrders, useOrderDetails } from '@/hooks';
+import type { PendingQuote } from '@/hooks';
 import { FAQBar } from '@/components/features/faq';
 import { Skeleton } from '@/components/ui';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
@@ -215,32 +215,19 @@ function NoOrdersState() {
 /**
  * Pending payment state when user has a confirmed quote but hasn't paid
  */
-function PendingPaymentState({ quoteId, quote }: { quoteId: string; quote: Record<string, unknown> }) {
-  // Handle both nested and flat address structures
-  const address = typeof quote.address === 'object' && quote.address !== null
-    ? (quote.address as { street?: string }).street || ''
-    : (quote.address as string) || '';
-  const city = typeof quote.address === 'object' && quote.address !== null
-    ? (quote.address as { city?: string }).city || ''
-    : (quote.city as string) || '';
-  const state = typeof quote.address === 'object' && quote.address !== null
-    ? (quote.address as { state?: string }).state || ''
-    : (quote.state as string) || '';
-  const selectedTier = quote.selectedTier as string | null;
-  const totalPriceRaw = quote.totalPrice as string | null;
-  const scheduledDate = quote.scheduledDate as string | null;
+function PendingPaymentState({ quote }: { quote: PendingQuote }) {
   const tierDisplayNames: Record<string, string> = {
     good: 'Essential Package',
     better: 'Premium Package',
     best: 'Elite Package',
   };
 
-  const tierName = selectedTier ? tierDisplayNames[selectedTier] || selectedTier : 'Selected Package';
-  const totalPrice = totalPriceRaw ? parseFloat(totalPriceRaw) : 0;
-  const depositAmount = Math.round(totalPrice * 0.1); // 10% deposit
+  const tierName = quote.selectedTier ? tierDisplayNames[quote.selectedTier] || quote.selectedTier : 'Selected Package';
+  const totalPrice = quote.totalPrice || 0;
+  const depositAmount = quote.depositAmount || Math.round(totalPrice * 0.1); // 10% deposit
 
-  const formattedDate = scheduledDate
-    ? new Date(scheduledDate).toLocaleDateString('en-US', {
+  const formattedDate = quote.scheduledDate
+    ? new Date(quote.scheduledDate).toLocaleDateString('en-US', {
         weekday: 'long',
         month: 'long',
         day: 'numeric',
@@ -273,7 +260,7 @@ function PendingPaymentState({ quoteId, quote }: { quoteId: string; quote: Recor
 
         <div className={styles.propertyInfo}>
           <Home size={18} className={styles.propertyIcon} aria-hidden="true" />
-          <span className={styles.propertyAddress}>{address}, {city}, {state}</span>
+          <span className={styles.propertyAddress}>{quote.address}, {quote.city}, {quote.state}</span>
         </div>
 
         <div className={styles.nextMilestone}>
@@ -308,7 +295,7 @@ function PendingPaymentState({ quoteId, quote }: { quoteId: string; quote: Recor
 
         {/* Pay Deposit CTA */}
         <Link
-          href={`/quote/${quoteId}/checkout`}
+          href={`/quote/${quote.id}/checkout`}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -369,24 +356,20 @@ function DevDashboard() {
  */
 function DashboardContent({ userEmail, userLoaded }: { userEmail: string | null; userLoaded: boolean }) {
   const [detailsExpanded, setDetailsExpanded] = useState(false);
-  const searchParams = useSearchParams();
-  const confirmedQuoteId = searchParams.get('confirmed');
 
-  // Fetch user's orders
+  // Fetch user's orders and pending quotes
+  // The API now handles user linking automatically on first visit
   const {
     data: ordersData,
     isLoading: ordersLoading,
     error: ordersError
   } = useOrders(userEmail);
 
-  // Fetch confirmed quote if present in URL (for pending payment state)
-  const {
-    data: confirmedQuote,
-    isLoading: quoteLoading
-  } = useQuote(confirmedQuoteId ?? undefined);
-
   // Get the most recent order (first in the list since it's sorted by createdAt desc)
   const currentOrderId = ordersData?.orders?.[0]?.id ?? null;
+
+  // Get the most recent pending quote (for pending payment state)
+  const pendingQuote = ordersData?.pendingQuotes?.[0] ?? null;
 
   // Fetch order details for the current order
   const {
@@ -396,7 +379,7 @@ function DashboardContent({ userEmail, userLoaded }: { userEmail: string | null;
   } = useOrderDetails(currentOrderId);
 
   // Loading state
-  if (!userLoaded || ordersLoading || (currentOrderId && detailsLoading) || (confirmedQuoteId && quoteLoading)) {
+  if (!userLoaded || ordersLoading || (currentOrderId && detailsLoading)) {
     return <DashboardSkeleton />;
   }
 
@@ -405,21 +388,13 @@ function DashboardContent({ userEmail, userLoaded }: { userEmail: string | null;
     return <DashboardError message="We couldn't load your project details. Please try again." />;
   }
 
-  // Pending payment state - user has confirmed quote but hasn't paid yet
-  // Prioritize showing this when ?confirmed param is present
-  if (confirmedQuoteId && confirmedQuote) {
-    const quoteData = confirmedQuote as unknown as Record<string, unknown>;
-    const quoteStatus = quoteData.status as string | undefined;
-
-    // Show pending payment if quote exists and is in a pre-payment state
-    // Once payment is made, status becomes 'scheduled' or 'completed' and an order is created
-    const pendingStatuses = ['draft', 'pending', 'selected', 'confirmed', 'scheduled'];
-    if (pendingStatuses.includes(quoteStatus || '')) {
-      return <PendingPaymentState quoteId={confirmedQuoteId} quote={quoteData} />;
-    }
+  // Pending payment state - user has a quote that hasn't been paid yet
+  // This now works reliably via user linking, not just URL params
+  if (pendingQuote && !ordersData?.orders?.length) {
+    return <PendingPaymentState quote={pendingQuote} />;
   }
 
-  // No orders state
+  // No orders and no pending quotes
   if (!ordersData?.orders?.length || !orderDetails) {
     return <NoOrdersState />;
   }

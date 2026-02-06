@@ -32,3 +32,10 @@ export {
   updatePaymentStatus,
   getTotalPaidForOrder,
 } from './payments';
+
+// User Linking
+export {
+  linkQuotesToUser,
+  getOrdersByUser,
+  getPendingQuotesByUser,
+} from './user-linking';

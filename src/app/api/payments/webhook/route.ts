@@ -211,6 +211,9 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   const confirmationNumber = generateConfirmationNumber();
 
   // Create the order
+  // Copy clerkUserId from quote or lead if available (set during user linking)
+  const clerkUserId = quote.clerkUserId || quote.lead?.clerkUserId || null;
+
   const [order] = await db
     .insert(schema.orders)
     .values({
@@ -220,9 +223,10 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
       status: 'deposit_paid',
       customerEmail: contract.customerEmail,
       customerPhone: quote.lead?.phone || null,
-      customerName: quote.lead?.firstName && quote.lead?.lastName 
-        ? `${quote.lead.firstName} ${quote.lead.lastName}` 
+      customerName: quote.lead?.firstName && quote.lead?.lastName
+        ? `${quote.lead.firstName} ${quote.lead.lastName}`
         : null,
+      clerkUserId,
       propertyAddress: quote.address,
       propertyCity: quote.city,
       propertyState: quote.state,
