@@ -241,3 +241,315 @@
     animation: none;
   }
 }
+
+/* ========================================
+   INFO CARD (Step 1)
+   ======================================== */
+
+.infoCard {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+  padding: var(--rr-space-5);
+}
+
+.cardHeader {
+  text-align: center;
+  margin-bottom: var(--rr-space-5);
+}
+
+.headerIcon {
+  color: var(--rr-color-blue);
+  margin-bottom: var(--rr-space-2);
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0 0 4px;
+}
+
+.cardSubtitle {
+  font-size: 0.875rem;
+  color: var(--rr-color-text-secondary);
+  margin: 0;
+}
+
+/* Quote Summary */
+.quoteSummary {
+  background: var(--rr-color-gray-50);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  padding: var(--rr-space-4);
+  margin-bottom: var(--rr-space-5);
+}
+
+.summaryHeader {
+  margin-bottom: var(--rr-space-3);
+}
+
+.tierBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #92400E;
+}
+
+.summaryDetails {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-2);
+  margin-bottom: var(--rr-space-3);
+  padding-bottom: var(--rr-space-3);
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-2);
+  font-size: 0.875rem;
+  color: var(--rr-color-text-secondary);
+}
+
+.detailItem svg {
+  color: var(--rr-color-text-tertiary);
+  flex-shrink: 0;
+}
+
+.summaryPricing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rr-space-2);
+}
+
+.pricingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--rr-color-text-secondary);
+}
+
+.totalPrice {
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+}
+
+.depositPrice {
+  font-weight: 700;
+  color: #059669;
+}
+
+/* Form Inputs */
+.inputGroup {
+  margin-bottom: var(--rr-space-4);
+}
+
+.inputLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--rr-color-text-primary);
+  margin-bottom: var(--rr-space-2);
+}
+
+.required {
+  color: #DC2626;
+}
+
+.input {
+  width: 100%;
+  height: 44px;
+  padding: 0 var(--rr-space-3);
+  font-size: 1rem;
+  color: var(--rr-color-text-primary);
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--rr-color-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input:disabled {
+  background: var(--rr-color-gray-50);
+  cursor: not-allowed;
+}
+
+.inputHelp {
+  font-size: 0.75rem;
+  color: var(--rr-color-text-tertiary);
+  margin: var(--rr-space-1) 0 0;
+}
+
+/* Error */
+.error {
+  padding: var(--rr-space-3);
+  background: #FEE2E2;
+  border: 1px solid #FECACA;
+  border-radius: var(--rr-radius-md);
+  color: #DC2626;
+  font-size: 0.875rem;
+  margin-bottom: var(--rr-space-4);
+}
+
+/* Primary Button */
+.primaryButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-2);
+  width: 100%;
+  height: 48px;
+  padding: 0 var(--rr-space-5);
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+  border: none;
+  border-radius: var(--rr-radius-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+}
+
+.primaryButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #16A34A 0%, #15803D 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+}
+
+.primaryButton:disabled,
+.primaryButtonDisabled {
+  background: linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%);
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Later Link */
+.laterLink {
+  display: block;
+  width: 100%;
+  padding: var(--rr-space-3) 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--rr-color-text-secondary);
+  text-align: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+  margin-top: var(--rr-space-2);
+}
+
+.laterLink:hover:not(:disabled) {
+  color: var(--rr-color-blue);
+}
+
+.laterLink:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ========================================
+   SIGNING CARD (Step 2)
+   ======================================== */
+
+.signingCard {
+  width: 100%;
+  background: var(--rr-color-white);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+  overflow: hidden;
+}
+
+.signingHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--rr-space-3);
+  padding: var(--rr-space-4) var(--rr-space-5);
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--rr-space-2) var(--rr-space-3);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--rr-color-text-secondary);
+  background: var(--rr-color-gray-50);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.backButton:hover:not(:disabled) {
+  color: var(--rr-color-text-primary);
+  background: var(--rr-color-gray-100);
+}
+
+.backButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.signingTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0;
+}
+
+/* DocuSeal Container */
+.docusealContainer {
+  min-height: 600px;
+  position: relative;
+}
+
+.docusealContainer iframe {
+  width: 100%;
+  min-height: 600px;
+  border: none;
+}
+
+/* Processing Overlay */
+.processingOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rr-space-3);
+  background: rgba(255, 255, 255, 0.95);
+  z-index: 10;
+}
+
+.processingOverlay p {
+  font-size: 0.9375rem;
+  color: var(--rr-color-text-secondary);
+  margin: 0;
+}
+
+.spinnerLarge {
+  color: var(--rr-color-blue);
+  animation: spin 0.8s linear infinite;
+}

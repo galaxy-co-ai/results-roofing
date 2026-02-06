@@ -75,14 +75,15 @@ function getPhaseStatus(tasks: Task[]): SOWStatus {
 }
 
 // Static blockers - these could also be derived from tasks with certain criteria
-// Last updated: 2026-02-03
+// Last updated: 2026-02-05 (verified by codebase audit)
 const BLOCKERS: Blocker[] = [
-  { item: 'JobNimbus API credentials', owner: 'Client', impact: 'CRM sync blocked' },
-  { item: 'GAF QuickMeasure credentials', owner: 'Client', impact: 'Roof measurements blocked' },
-  { item: 'Documenso account setup', owner: 'Client', impact: 'E-signature blocked' },
-  // Cal.com - RESOLVED: Adapter is production-ready
-  { item: 'Enhancify merchant account', owner: 'Client', impact: 'Financing pre-qual blocked' },
-  { item: 'GoHighLevel account', owner: 'Client', impact: 'SMS notifications blocked' },
+  { item: 'GAF QuickMeasure credentials', owner: 'Client', impact: 'Roof measurements using mock data' },
+  { item: 'Enhancify merchant account', owner: 'Client', impact: 'Financing pre-qual returns mock data' },
+  { item: 'Custom domain DNS', owner: 'Client', impact: 'Using Vercel subdomain' },
+  // RESOLVED 2026-02-05: Documenso - Full adapter with create/sign/download
+  // RESOLVED 2026-02-05: Cal.com - Full adapter with availability/booking/cancel/reschedule
+  // RESOLVED 2026-02-03: JobNimbus - Migrated to GHL wrapper
+  // RESOLVED 2026-02-03: GoHighLevel - Full API client with contacts/conversations/pipelines
 ];
 
 function getStatusIcon(status: SOWStatus) {
