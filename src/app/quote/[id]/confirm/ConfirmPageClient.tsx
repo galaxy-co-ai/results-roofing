@@ -255,12 +255,11 @@ export function ConfirmPageClient({ quoteId, quoteSummary }: ConfirmPageClientPr
           {isProcessing ? (
             <>
               <Loader2 className={styles.spinner} aria-hidden="true" />
-              Confirming...
+              Saving...
             </>
           ) : (
             <>
-              <CheckCircle2 aria-hidden="true" />
-              Confirm My Booking
+              View My Project
               <ArrowRight aria-hidden="true" />
             </>
           )}
