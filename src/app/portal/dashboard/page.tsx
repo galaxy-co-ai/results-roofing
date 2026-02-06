@@ -2,19 +2,22 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
-import { 
-  FileText, 
-  CreditCard, 
-  Calendar, 
+import {
+  FileText,
+  CreditCard,
+  Calendar,
   CheckCircle,
   Clock,
   Home,
   ChevronRight,
   ChevronDown,
-  AlertCircle
+  AlertCircle,
+  Sparkles,
+  ArrowRight
 } from 'lucide-react';
-import { useOrders, useOrderDetails } from '@/hooks';
+import { useOrders, useOrderDetails, useQuote } from '@/hooks';
 import { FAQBar } from '@/components/features/faq';
 import { Skeleton } from '@/components/ui';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
@@ -210,6 +213,141 @@ function NoOrdersState() {
 }
 
 /**
+ * Pending payment state when user has a confirmed quote but hasn't paid
+ */
+function PendingPaymentState({ quoteId, quote }: { quoteId: string; quote: Record<string, unknown> }) {
+  // Handle both nested and flat address structures
+  const address = typeof quote.address === 'object' && quote.address !== null
+    ? (quote.address as { street?: string }).street || ''
+    : (quote.address as string) || '';
+  const city = typeof quote.address === 'object' && quote.address !== null
+    ? (quote.address as { city?: string }).city || ''
+    : (quote.city as string) || '';
+  const state = typeof quote.address === 'object' && quote.address !== null
+    ? (quote.address as { state?: string }).state || ''
+    : (quote.state as string) || '';
+  const selectedTier = quote.selectedTier as string | null;
+  const totalPriceRaw = quote.totalPrice as string | null;
+  const scheduledDate = quote.scheduledDate as string | null;
+  const tierDisplayNames: Record<string, string> = {
+    good: 'Essential Package',
+    better: 'Premium Package',
+    best: 'Elite Package',
+  };
+
+  const tierName = selectedTier ? tierDisplayNames[selectedTier] || selectedTier : 'Selected Package';
+  const totalPrice = totalPriceRaw ? parseFloat(totalPriceRaw) : 0;
+  const depositAmount = Math.round(totalPrice * 0.1); // 10% deposit
+
+  const formattedDate = scheduledDate
+    ? new Date(scheduledDate).toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      })
+    : 'To be scheduled';
+
+  return (
+    <div className={styles.dashboard}>
+      <header className={styles.header}>
+        <div className={styles.headerContent}>
+          <h1 className={styles.title}>Your Project <span className={styles.titleAccent}>Dashboard</span></h1>
+          <p className={styles.subtitle}>
+            Complete your deposit to confirm your installation
+          </p>
+        </div>
+      </header>
+
+      {/* Pending Project Card */}
+      <section className={styles.statusCard} aria-labelledby="pending-heading">
+        <h2 id="pending-heading" className="sr-only">Pending Project</h2>
+
+        <div className={styles.statusHeader}>
+          <div className={styles.statusBadge} style={{ background: '#fef3c7', color: '#92400e' }}>
+            <Clock size={16} aria-hidden="true" />
+            <span>Awaiting Deposit</span>
+          </div>
+          <span className={styles.statusPhase}>Complete payment to confirm</span>
+        </div>
+
+        <div className={styles.propertyInfo}>
+          <Home size={18} className={styles.propertyIcon} aria-hidden="true" />
+          <span className={styles.propertyAddress}>{address}, {city}, {state}</span>
+        </div>
+
+        <div className={styles.nextMilestone}>
+          <Calendar size={18} className={styles.milestoneIcon} aria-hidden="true" />
+          <span className={styles.milestoneText}>
+            <strong>Installation</strong> {formattedDate}
+          </span>
+        </div>
+
+        {/* Project Summary */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '1rem',
+          padding: '1rem',
+          background: 'var(--gray-50)',
+          borderRadius: '0.75rem',
+          marginTop: '1rem'
+        }}>
+          <div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginBottom: '0.25rem' }}>Package</div>
+            <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Sparkles size={16} style={{ color: 'var(--primary-500)' }} />
+              {tierName}
+            </div>
+          </div>
+          <div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginBottom: '0.25rem' }}>Project Total</div>
+            <div style={{ fontWeight: 600 }}>${totalPrice.toLocaleString()}</div>
+          </div>
+        </div>
+
+        {/* Pay Deposit CTA */}
+        <Link
+          href={`/quote/${quoteId}/checkout`}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem',
+            width: '100%',
+            padding: '1rem 1.5rem',
+            marginTop: '1.5rem',
+            background: 'var(--primary-500)',
+            color: 'white',
+            borderRadius: '0.75rem',
+            fontWeight: 600,
+            fontSize: '1rem',
+            textDecoration: 'none',
+            transition: 'background 0.2s'
+          }}
+        >
+          <CreditCard size={20} />
+          Pay ${depositAmount.toLocaleString()} Deposit to Confirm
+          <ArrowRight size={20} />
+        </Link>
+
+        <p style={{
+          textAlign: 'center',
+          fontSize: '0.875rem',
+          color: 'var(--gray-500)',
+          marginTop: '0.75rem'
+        }}>
+          Your installation date is reserved for 48 hours
+        </p>
+      </section>
+
+      {/* FAQ Bar */}
+      <FAQBar />
+    </div>
+  );
+}
+
+/**
  * Dashboard with Clerk authentication
  */
 function ClerkDashboard() {
@@ -231,32 +369,54 @@ function DevDashboard() {
  */
 function DashboardContent({ userEmail, userLoaded }: { userEmail: string | null; userLoaded: boolean }) {
   const [detailsExpanded, setDetailsExpanded] = useState(false);
+  const searchParams = useSearchParams();
+  const confirmedQuoteId = searchParams.get('confirmed');
 
   // Fetch user's orders
-  const { 
-    data: ordersData, 
-    isLoading: ordersLoading, 
-    error: ordersError 
+  const {
+    data: ordersData,
+    isLoading: ordersLoading,
+    error: ordersError
   } = useOrders(userEmail);
+
+  // Fetch confirmed quote if present in URL (for pending payment state)
+  const {
+    data: confirmedQuote,
+    isLoading: quoteLoading
+  } = useQuote(confirmedQuoteId ?? undefined);
 
   // Get the most recent order (first in the list since it's sorted by createdAt desc)
   const currentOrderId = ordersData?.orders?.[0]?.id ?? null;
 
   // Fetch order details for the current order
-  const { 
-    data: orderDetails, 
-    isLoading: detailsLoading, 
-    error: detailsError 
+  const {
+    data: orderDetails,
+    isLoading: detailsLoading,
+    error: detailsError
   } = useOrderDetails(currentOrderId);
 
   // Loading state
-  if (!userLoaded || ordersLoading || (currentOrderId && detailsLoading)) {
+  if (!userLoaded || ordersLoading || (currentOrderId && detailsLoading) || (confirmedQuoteId && quoteLoading)) {
     return <DashboardSkeleton />;
   }
 
   // Error state
   if (ordersError || detailsError) {
     return <DashboardError message="We couldn't load your project details. Please try again." />;
+  }
+
+  // Pending payment state - user has confirmed quote but hasn't paid yet
+  // Prioritize showing this when ?confirmed param is present
+  if (confirmedQuoteId && confirmedQuote) {
+    const quoteData = confirmedQuote as unknown as Record<string, unknown>;
+    const quoteStatus = quoteData.status as string | undefined;
+
+    // Show pending payment if quote exists and is in a pre-payment state
+    // Once payment is made, status becomes 'scheduled' or 'completed' and an order is created
+    const pendingStatuses = ['draft', 'pending', 'selected', 'confirmed', 'scheduled'];
+    if (pendingStatuses.includes(quoteStatus || '')) {
+      return <PendingPaymentState quoteId={confirmedQuoteId} quote={quoteData} />;
+    }
   }
 
   // No orders state

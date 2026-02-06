@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { Send, Minimize2 } from 'lucide-react';
 import { useChat } from './ChatContext';
+import { useOrderDetails, useOrders } from '@/hooks';
+import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import styles from './ChatWidget.module.css';
 
 interface Message {
@@ -11,6 +13,11 @@ interface Message {
   content: string;
   sender: 'user' | 'support';
   timestamp: Date;
+}
+
+interface ChatAPIMessage {
+  role: 'user' | 'assistant';
+  content: string;
 }
 
 const INITIAL_MESSAGES: Message[] = [
@@ -35,11 +42,21 @@ export function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [conversationHistory, setConversationHistory] = useState<ChatAPIMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Check if on admin page
   const isAdminPage = pathname?.startsWith('/admin');
+
+  // Get user email for fetching order context
+  // In dev bypass mode, use mock user. Otherwise, orders hook will handle auth.
+  const userEmail = DEV_BYPASS_ENABLED ? MOCK_USER.primaryEmailAddress.emailAddress : null;
+
+  // Fetch user's orders for context (only in dev mode for now - production would use Clerk session)
+  const { data: ordersData } = useOrders(userEmail);
+  const currentOrderId = ordersData?.orders?.[0]?.id ?? null;
+  const { data: orderDetails } = useOrderDetails(currentOrderId);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -55,21 +72,8 @@ export function ChatWidget() {
     }
   }, [isOpen, isAdminPage]);
 
-  // Handle initial message from context
-  useEffect(() => {
-    if (isAdminPage) return;
-    if (isOpen && initialMessage && messages.length === 1) {
-      handleSendMessage(initialMessage);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- Only trigger on chat open/initial message, not on every messages change
-  }, [isOpen, initialMessage, isAdminPage]);
-
-  // Don't render on admin pages
-  if (isAdminPage) {
-    return null;
-  }
-
-  const handleSendMessage = async (content: string) => {
+  // Define handleSendMessage before the useEffect that uses it
+  const handleSendMessage = useCallback(async (content: string) => {
     if (!content.trim()) return;
 
     const userMessage: Message = {
@@ -83,26 +87,94 @@ export function ChatWidget() {
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate support response (replace with actual chat integration)
-    setTimeout(() => {
-      const responses: Record<string, string> = {
-        'Question about my quote': "I'd be happy to help with your quote! You can view your full quote details in your dashboard. Is there something specific you'd like me to clarify?",
-        'Scheduling help': "Need to reschedule or have questions about your appointment? I can help! What would you like to do?",
-        'Payment questions': "I can help with payment questions! You can view your payment history and make payments from the Payments section. What specifically would you like to know?",
-        'Talk to a human': "Absolutely! A team member will join this chat shortly. Our average response time is under 2 minutes during business hours (Mon-Fri 8am-6pm).",
+    // Add to conversation history for API
+    const newHistory: ChatAPIMessage[] = [
+      ...conversationHistory,
+      { role: 'user' as const, content: content.trim() },
+    ];
+    setConversationHistory(newHistory);
+
+    try {
+      // Build page context with order data if available
+      const pageContext: {
+        path: string;
+        orderData?: {
+          status: string;
+          totalPrice: number;
+          amountPaid: number;
+          balanceDue: number;
+          scheduledDate: string | null;
+          propertyAddress: string;
+        };
+      } = {
+        path: pathname || '/',
       };
+
+      if (orderDetails?.order) {
+        const order = orderDetails.order;
+        pageContext.orderData = {
+          status: order.status,
+          totalPrice: order.totalPrice,
+          amountPaid: order.totalPaid,
+          balanceDue: order.balance,
+          scheduledDate: order.scheduledStartDate || null,
+          propertyAddress: `${order.propertyAddress}, ${order.propertyCity}, ${order.propertyState}`,
+        };
+      }
+
+      // Call the AI support API
+      const response = await fetch('/api/support/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: newHistory,
+          pageContext,
+        }),
+      });
+
+      const data = await response.json();
+
+      // Add assistant response to history
+      setConversationHistory(prev => [
+        ...prev,
+        { role: 'assistant' as const, content: data.message },
+      ]);
 
       const supportMessage: Message = {
         id: `support-${Date.now()}`,
-        content: responses[content] || "Thanks for reaching out! A team member will respond shortly. In the meantime, is there anything else I can help you with?",
+        content: data.message,
         sender: 'support',
         timestamp: new Date(),
       };
 
       setMessages(prev => [...prev, supportMessage]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      const errorMessage: Message = {
+        id: `support-${Date.now()}`,
+        content: "I'm having trouble connecting. Would you like me to have a team member reach out to you?",
+        sender: 'support',
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1000 + Math.random() * 500);
-  };
+    }
+  }, [conversationHistory, pathname, orderDetails]);
+
+  // Handle initial message from context (must be after handleSendMessage declaration)
+  useEffect(() => {
+    if (isAdminPage) return;
+    if (isOpen && initialMessage && messages.length === 1) {
+      handleSendMessage(initialMessage);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- Only trigger on chat open/initial message
+  }, [isOpen, initialMessage, isAdminPage]);
+
+  // Don't render on admin pages
+  if (isAdminPage) {
+    return null;
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
