@@ -32,13 +32,13 @@ export type MeasurementEvent =
   | { type: 'RETRY' };
 
 /**
- * Measurement data from Roofr or manual entry
+ * Measurement data from satellite or manual entry
  */
 export interface MeasurementData {
   sqftTotal: number;
   pitchPrimary: number;
   complexity: 'simple' | 'moderate' | 'complex';
-  source: 'roofr' | 'manual';
+  source: 'satellite' | 'manual';
 }
 
 /**

@@ -96,8 +96,8 @@ export interface MeasurementParams extends BaseEventParams {
   quoteId: string;
   /** Duration of measurement in milliseconds */
   durationMs?: number;
-  /** Source: 'roofr' or 'manual' */
-  source?: 'roofr' | 'manual';
+  /** Source: 'satellite' or 'manual' */
+  source?: 'satellite' | 'manual';
 }
 
 /**

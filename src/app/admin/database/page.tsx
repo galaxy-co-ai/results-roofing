@@ -83,15 +83,15 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
     description: 'Scheduled installations and inspections',
     icon: Calendar,
     category: 'core',
-    emptyMessage: 'Awaiting Cal.com integration',
+    emptyMessage: 'No appointments scheduled yet',
   },
   measurements: {
     name: 'measurements',
     displayName: 'Measurements',
-    description: 'Roof measurement data from Roofr or manual entry',
+    description: 'Roof measurement data from manual entry',
     icon: Table2,
     category: 'core',
-    emptyMessage: 'Awaiting Roofr API credentials',
+    emptyMessage: 'No measurements recorded yet',
   },
   pricing_tiers: {
     name: 'pricing_tiers',

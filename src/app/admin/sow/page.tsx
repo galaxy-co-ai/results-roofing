@@ -77,11 +77,11 @@ function getPhaseStatus(tasks: Task[]): SOWStatus {
 // Static blockers - these could also be derived from tasks with certain criteria
 // Last updated: 2026-02-05 (verified by codebase audit)
 const BLOCKERS: Blocker[] = [
-  { item: 'GAF QuickMeasure credentials', owner: 'Client', impact: 'Roof measurements using mock data' },
   { item: 'Enhancify merchant account', owner: 'Client', impact: 'Financing pre-qual returns mock data' },
   { item: 'Custom domain DNS', owner: 'Client', impact: 'Using Vercel subdomain' },
   // RESOLVED 2026-02-05: Documenso - Full adapter with create/sign/download
-  // RESOLVED 2026-02-05: Cal.com - Full adapter with availability/booking/cancel/reschedule
+  // REMOVED 2026-02-05: Cal.com - Not using external scheduling
+  // REMOVED 2026-02-05: Roofr/GAF QuickMeasure - Not using satellite measurements
   // RESOLVED 2026-02-03: JobNimbus - Migrated to GHL wrapper
   // RESOLVED 2026-02-03: GoHighLevel - Full API client with contacts/conversations/pipelines
 ];

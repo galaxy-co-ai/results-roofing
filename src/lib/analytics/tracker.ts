@@ -156,7 +156,7 @@ export const funnelTracker = {
     trackEvent('measurement_requested', params);
   },
 
-  measurementCompleted(params: { quoteId: string; durationMs?: number; source?: 'roofr' | 'manual' }) {
+  measurementCompleted(params: { quoteId: string; durationMs?: number; source?: 'satellite' | 'manual' }) {
     trackEvent('measurement_completed', params);
   },
 

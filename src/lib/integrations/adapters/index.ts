@@ -2,62 +2,45 @@
  * Integration Adapters
  * Centralized exports for external service adapters
  *
- * Status (Updated 2026-02-03):
- * ✅ calcom - Adapter complete, webhook handler complete
+ * Status (Updated 2026-02-05):
  * ✅ resend - Email delivery complete (MIGRATING to GHL)
+ * ✅ ghl-messaging - Unified SMS + Email + CRM
  * ⚠️ documenso - STUB (awaiting client account)
  * ⚠️ wisetack - STUB → MIGRATING to Enhancify
- * ⚠️ roofr - STUB → MIGRATING to GAF QuickMeasure
  * ⚠️ jobnimbus - STUB (awaiting client API access)
  * ⚠️ signalwire - STUB → MIGRATING to GoHighLevel (GHL)
  *
- * Migration Notes:
- * - Roofr → GAF QuickMeasure (roof measurements)
- * - Wisetack → Enhancify (financing pre-qual)
- * - SignalWire + Resend → GoHighLevel (unified SMS + Email)
+ * Removed:
+ * - Roofr (not using satellite measurements)
+ * - Cal.com (not using external scheduling)
  */
 
-// Scheduling
-export { 
-  calcomAdapter, 
-  type TimeSlot, 
-  type BookingRequest, 
-  type BookingResponse 
-} from './calcom';
-
 // E-Signature
-export { 
-  documensoAdapter, 
-  type CreateDocumentRequest, 
-  type DocumentResponse 
+export {
+  documensoAdapter,
+  type CreateDocumentRequest,
+  type DocumentResponse
 } from './documenso';
 
 // Financing
-export { 
-  wisetackAdapter, 
-  type PrequalRequest, 
-  type PrequalResponse 
+export {
+  wisetackAdapter,
+  type PrequalRequest,
+  type PrequalResponse
 } from './wisetack';
 
-// Measurement
-export { 
-  roofrAdapter, 
-  type MeasurementRequest, 
-  type MeasurementReport 
-} from './roofr';
-
 // CRM
-export { 
-  jobnimbusAdapter, 
-  type CreateContactRequest, 
-  type CreateJobRequest 
+export {
+  jobnimbusAdapter,
+  type CreateContactRequest,
+  type CreateJobRequest
 } from './jobnimbus';
 
 // Email
-export { 
-  resendAdapter, 
-  type SendEmailRequest, 
-  type EmailTemplate 
+export {
+  resendAdapter,
+  type SendEmailRequest,
+  type EmailTemplate
 } from './resend';
 
 // SMS (legacy - migrating to GHL)

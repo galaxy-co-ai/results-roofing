@@ -27,21 +27,10 @@ const serverEnvSchema = z.object({
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
 
-  // Measurement (Roofr)
-  ROOFR_API_KEY: z.string().optional(),
-  ROOFR_WEBHOOK_SECRET: z.string().optional(),
-  ROOFR_API_URL: z.string().url().optional(),
-
   // E-Signature (Documenso)
   DOCUMENSO_API_KEY: z.string().optional(),
   DOCUMENSO_API_URL: z.string().url().optional(),
   DOCUMENSO_WEBHOOK_SECRET: z.string().optional(),
-
-  // Booking (Cal.com)
-  CALCOM_API_KEY: z.string().optional(),
-  CALCOM_EVENT_TYPE_ID: z.string().optional(),
-  CALCOM_WEBHOOK_SECRET: z.string().optional(),
-  CALCOM_API_URL: z.string().url().optional(),
 
   // Financing (Wisetack)
   WISETACK_API_KEY: z.string().optional(),
@@ -76,7 +65,6 @@ const serverEnvSchema = z.object({
   // Development flags
   SKIP_EMAIL_SENDING: z.coerce.boolean().optional(),
   SKIP_SMS_SENDING: z.coerce.boolean().optional(),
-  MOCK_ROOFR_API: z.coerce.boolean().optional(),
   MOCK_WISETACK_API: z.coerce.boolean().optional(),
 });
 
