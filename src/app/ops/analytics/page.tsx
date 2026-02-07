@@ -49,7 +49,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { OpsPageHeader, OpsStatCard } from '@/components/ui/ops';
+import { OpsPageHeader } from '@/components/ui/ops';
 import { cn } from '@/lib/utils';
 
 // Seeded random for consistent demo data

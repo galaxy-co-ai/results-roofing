@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { auth } from '@clerk/nextjs/server';
-import { db, schema, eq } from '@/db/index';
-import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
+import { DEV_BYPASS_ENABLED } from '@/lib/auth/dev-bypass';
 
 const anthropic = new Anthropic();
 
@@ -76,17 +75,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get user email for fetching their data
-    let userEmail: string | null = null;
-
-    if (DEV_BYPASS_ENABLED) {
-      userEmail = MOCK_USER.primaryEmailAddress.emailAddress;
-    } else {
-      const { userId } = await auth();
-      if (userId) {
-        // In production, we'd look up the user's email from Clerk
-        // For now, we'll use what's passed in context or skip
-      }
+    // Verify user is authenticated (auth check only, email lookup not yet implemented)
+    if (!DEV_BYPASS_ENABLED) {
+      await auth();
     }
 
     // Build context about the user's current situation
