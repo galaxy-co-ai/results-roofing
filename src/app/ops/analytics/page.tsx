@@ -26,6 +26,7 @@ import {
   Download,
   RefreshCw,
   Settings,
+  BarChart3,
 } from 'lucide-react';
 import type { DateRange } from 'react-day-picker';
 
@@ -48,6 +49,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { OpsPageHeader, OpsStatCard } from '@/components/ui/ops';
 import { cn } from '@/lib/utils';
 
 // Seeded random for consistent demo data
@@ -95,10 +97,10 @@ const hourlyData = Array.from({ length: 24 }, (_, i) => {
 
 // Lead source data
 const leadSourceData = [
-  { name: 'Google Ads', value: 42, fill: 'hsl(var(--primary))' },
-  { name: 'Referrals', value: 28, fill: 'hsl(217 91% 60%)' },
-  { name: 'Website', value: 18, fill: 'hsl(142 76% 36%)' },
-  { name: 'Other', value: 12, fill: 'hsl(215 16% 47%)' },
+  { name: 'Google Ads', value: 42, fill: 'var(--ops-accent-crm)' },
+  { name: 'Referrals', value: 28, fill: 'var(--ops-accent-messaging)' },
+  { name: 'Website', value: 18, fill: 'var(--ops-accent-pipeline)' },
+  { name: 'Other', value: 12, fill: 'var(--admin-gray-500)' },
 ];
 
 // Chart configs
@@ -119,10 +121,10 @@ const hourlyConfig = {
 } satisfies ChartConfig;
 
 const sourceConfig = {
-  'Google Ads': { label: 'Google Ads', color: 'hsl(var(--primary))' },
-  Referrals: { label: 'Referrals', color: 'hsl(217 91% 60%)' },
-  Website: { label: 'Website', color: 'hsl(142 76% 36%)' },
-  Other: { label: 'Other', color: 'hsl(215 16% 47%)' },
+  'Google Ads': { label: 'Google Ads', color: 'var(--ops-accent-crm)' },
+  Referrals: { label: 'Referrals', color: 'var(--ops-accent-messaging)' },
+  Website: { label: 'Website', color: 'var(--ops-accent-pipeline)' },
+  Other: { label: 'Other', color: 'var(--admin-gray-500)' },
 } satisfies ChartConfig;
 
 export default function AnalyticsPage() {
@@ -166,21 +168,20 @@ export default function AnalyticsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Business Analytics</h1>
-          <p className="text-muted-foreground">
-            {daysDiff} day{daysDiff !== 1 ? 's' : ''} selected
-            {dateRange?.from && ` · ${format(dateRange.from, 'MMM d')} - ${format(dateRange.to || dateRange.from, 'MMM d, yyyy')}`}
-          </p>
-        </div>
+        <OpsPageHeader
+          title="Business Analytics"
+          description={`${daysDiff} day${daysDiff !== 1 ? 's' : ''} selected${dateRange?.from ? ` · ${format(dateRange.from, 'MMM d')} - ${format(dateRange.to || dateRange.from, 'MMM d, yyyy')}` : ''}`}
+          icon={BarChart3}
+          accent="analytics"
+        />
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center rounded-lg border">
+          <div className="flex items-center rounded-lg border border-[var(--admin-border-default)]">
             <Button variant="ghost" size="icon" className="rounded-r-none" onClick={() => navigateRange('prev')}>
               <ChevronLeft className="size-4" />
             </Button>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="ghost" className="rounded-none border-x px-3">
+                <Button variant="ghost" className="rounded-none border-x border-[var(--admin-border-default)] px-3">
                   <CalendarIcon className="mr-2 size-4" />
                   {dateRange?.from ? format(dateRange.from, 'MMM d') : 'Start'} - {dateRange?.to ? format(dateRange.to, 'MMM d') : 'End'}
                 </Button>
@@ -222,12 +223,20 @@ export default function AnalyticsPage() {
           { label: 'Leads', value: stats.totalLeads.toLocaleString(), change: 5.7 },
           { label: 'Profit Margin', value: `${stats.profitMargin}%`, change: 2.1 },
         ].map((stat) => (
-          <Card key={stat.label}>
+          <Card
+            key={stat.label}
+            className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] hover:-translate-y-0.5 hover:shadow-[var(--admin-shadow-md)]"
+          >
             <CardContent className="pt-6">
-              <p className="text-sm text-muted-foreground">{stat.label}</p>
+              <p className="text-sm text-[var(--admin-text-secondary)]">{stat.label}</p>
               <div className="flex items-baseline justify-between">
-                <p className="text-2xl font-bold">{stat.value}</p>
-                <span className={cn('flex items-center text-sm', stat.change >= 0 ? 'text-green-600' : 'text-red-600')}>
+                <p className="text-2xl font-bold tabular-nums">{stat.value}</p>
+                <span className={cn(
+                  'flex items-center text-sm tabular-nums',
+                  stat.change >= 0
+                    ? 'text-[var(--admin-trend-positive)]'
+                    : 'text-[var(--admin-trend-negative)]'
+                )}>
                   {stat.change >= 0 ? <TrendingUp className="mr-1 size-3" /> : <TrendingDown className="mr-1 size-3" />}
                   {stat.change >= 0 ? '+' : ''}{stat.change}%
                 </span>
@@ -329,7 +338,7 @@ export default function AnalyticsPage() {
                     <div className="size-3 rounded-sm" style={{ backgroundColor: item.fill }} />
                     <span className="text-sm">{item.name}</span>
                   </div>
-                  <span className="text-sm font-medium">{item.value}%</span>
+                  <span className="text-sm font-medium tabular-nums">{item.value}%</span>
                 </div>
               ))}
             </div>

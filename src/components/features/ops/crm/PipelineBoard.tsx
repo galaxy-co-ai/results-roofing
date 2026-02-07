@@ -98,18 +98,18 @@ function formatDate(dateString?: string): string {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-// Stage colors
+// Stage colors - mapped to semantic tokens
 const STAGE_COLORS: Record<string, string> = {
-  'New Lead': '#3B82F6',
-  'Contacted': '#8B5CF6',
-  'Quote Sent': '#F59E0B',
-  'Negotiation': '#EC4899',
-  'Won': '#22C55E',
-  'Lost': '#EF4444',
+  'New Lead': 'var(--ops-accent-crm)',
+  'Contacted': 'var(--ops-accent-messaging)',
+  'Quote Sent': 'var(--ops-accent-analytics)',
+  'Negotiation': '#EC4899', // Pink - no semantic equivalent yet
+  'Won': 'var(--ops-accent-pipeline)',
+  'Lost': 'var(--ops-accent-support)',
 };
 
 function getStageColor(stageName: string): string {
-  return STAGE_COLORS[stageName] || '#06B6D4';
+  return STAGE_COLORS[stageName] || 'var(--ops-accent-documents)';
 }
 
 // Opportunity Card Component
@@ -185,7 +185,7 @@ function OpportunityCard({
               <Edit2 className="h-4 w-4 mr-2" />
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={onDelete} className="text-red-600">
+            <DropdownMenuItem onClick={onDelete} className="text-[var(--admin-status-error)]">
               <Trash2 className="h-4 w-4 mr-2" />
               Delete
             </DropdownMenuItem>
@@ -385,34 +385,15 @@ export function PipelineBoard({
     return (
       <div className={styles.empty}>
         <div
-          style={{
-            padding: '1.25rem',
-            borderRadius: '50%',
-            background: 'rgba(34, 197, 94, 0.08)',
-            marginBottom: '1.25rem',
-          }}
+          className="p-5 rounded-full mb-5"
+          style={{ background: 'var(--ops-accent-pipeline-muted)' }}
         >
-          <Kanban size={40} style={{ color: '#22C55E', opacity: 0.6 }} />
+          <Kanban size={40} style={{ color: 'var(--ops-accent-pipeline)', opacity: 0.6 }} />
         </div>
-        <h3
-          style={{
-            fontSize: '1rem',
-            fontWeight: 600,
-            color: 'var(--foreground)',
-            margin: '0 0 0.5rem',
-          }}
-        >
+        <h3 className="text-base font-semibold text-[var(--admin-text-primary)] mb-2" style={{ textWrap: 'balance' }}>
           No pipeline configured
         </h3>
-        <p
-          style={{
-            fontSize: '0.875rem',
-            color: 'var(--muted-foreground)',
-            margin: 0,
-            maxWidth: '280px',
-            textAlign: 'center',
-          }}
-        >
+        <p className="text-sm text-[var(--admin-text-secondary)] max-w-[280px] text-center" style={{ textWrap: 'balance' }}>
           Connect GoHighLevel to sync your sales pipeline and start tracking deals
         </p>
       </div>

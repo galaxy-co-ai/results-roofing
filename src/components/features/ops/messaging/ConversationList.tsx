@@ -263,7 +263,7 @@ export function ConversationList({
                             e.stopPropagation();
                             onDelete(conversation.id);
                           }}
-                          className="text-red-500"
+                          className="text-[var(--admin-status-error)]"
                         >
                           <Trash2 size={14} /> Delete
                         </DropdownMenuItem>

@@ -1,19 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import {
   Users,
   MessageSquare,
   DollarSign,
   TrendingUp,
-  TrendingDown,
   Clock,
   Zap,
   Settings,
-  ArrowRight,
   Inbox,
-  type LucideIcon,
 } from 'lucide-react';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,7 +21,12 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { cn } from '@/lib/utils';
+import {
+  OpsStatCard,
+  OpsActionCard,
+  OpsEmptyState,
+  OpsOnboardingStep,
+} from '@/components/ui/ops';
 
 interface HealthStatus {
   ghl?: {
@@ -60,86 +61,6 @@ const pipelineConfig = {
   value: { label: 'Deals', color: 'hsl(var(--primary))' },
 } satisfies ChartConfig;
 
-interface StatCardProps {
-  label: string;
-  value: string;
-  change?: number;
-  icon: LucideIcon;
-  iconColor: string;
-  loading?: boolean;
-}
-
-function StatCard({ label, value, change, icon: Icon, iconColor, loading }: StatCardProps) {
-  return (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="flex items-start justify-between">
-          <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">{label}</p>
-            {loading ? (
-              <div className="h-8 w-24 animate-pulse rounded bg-muted" />
-            ) : (
-              <p className="text-2xl font-bold">{value}</p>
-            )}
-          </div>
-          <div
-            className="rounded-lg p-2"
-            style={{ backgroundColor: `${iconColor}15` }}
-          >
-            <Icon className="size-5" style={{ color: iconColor }} />
-          </div>
-        </div>
-        {change !== undefined && !loading && (
-          <div className="mt-3 flex items-center gap-1">
-            {change >= 0 ? (
-              <TrendingUp className="size-4 text-green-600" />
-            ) : (
-              <TrendingDown className="size-4 text-red-600" />
-            )}
-            <span className={cn('text-sm font-medium', change >= 0 ? 'text-green-600' : 'text-red-600')}>
-              {change >= 0 ? '+' : ''}{change}%
-            </span>
-            <span className="text-sm text-muted-foreground">vs last month</span>
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  );
-}
-
-function QuickActionCard({
-  href,
-  icon: Icon,
-  iconColor,
-  title,
-  description,
-}: {
-  href: string;
-  icon: LucideIcon;
-  iconColor: string;
-  title: string;
-  description: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className="flex items-center gap-3 rounded-lg border p-3 transition-colors hover:bg-muted/50"
-    >
-      <div
-        className="rounded-lg p-2"
-        style={{ backgroundColor: `${iconColor}15` }}
-      >
-        <Icon className="size-4" style={{ color: iconColor }} />
-      </div>
-      <div className="flex-1 space-y-0.5">
-        <p className="text-sm font-medium">{title}</p>
-        <p className="text-xs text-muted-foreground">{description}</p>
-      </div>
-      <ArrowRight className="size-4 text-muted-foreground" />
-    </Link>
-  );
-}
-
 export default function OpsDashboard() {
   const [loading, setLoading] = useState(true);
   const [ghlConnected, setGhlConnected] = useState<boolean | null>(null);
@@ -171,8 +92,13 @@ export default function OpsDashboard() {
       {/* Header with Tabs */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Operations Dashboard</h1>
-          <p className="text-muted-foreground">
+          <h1
+            className="font-bold tracking-tight text-[var(--admin-text-primary)]"
+            style={{ fontSize: 'var(--admin-text-display)', textWrap: 'balance' }}
+          >
+            Operations Dashboard
+          </h1>
+          <p className="text-[var(--admin-text-secondary)]" style={{ textWrap: 'balance' }}>
             {ghlConnected
               ? 'Overview of CRM, messaging, and sales pipeline performance'
               : 'Connect GoHighLevel to sync your CRM data'}
@@ -189,20 +115,26 @@ export default function OpsDashboard() {
 
       {/* Connection Status Banner */}
       {!loading && ghlConnected === false && (
-        <Card className="border-cyan-200 bg-gradient-to-r from-cyan-50 to-violet-50">
+        <Card className="border-[var(--ops-accent-documents)] bg-[var(--ops-accent-documents-muted)]">
           <CardContent className="flex items-center justify-between gap-4 py-4">
             <div className="flex items-center gap-3">
-              <div className="rounded-lg bg-cyan-100 p-2">
-                <Zap className="size-5 text-cyan-600" />
+              <div className="rounded-lg bg-[color-mix(in_srgb,var(--ops-accent-documents)_20%,transparent)] p-2">
+                <Zap className="size-5 text-[var(--ops-accent-documents)]" />
               </div>
               <div>
-                <p className="font-medium">Connect GoHighLevel to get started</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="font-medium text-[var(--admin-text-primary)]">
+                  Connect GoHighLevel to get started
+                </p>
+                <p className="text-sm text-[var(--admin-text-secondary)]">
                   Sync contacts, manage messaging, and track your pipeline
                 </p>
               </div>
             </div>
-            <Button size="sm" onClick={handleConnectGHL} className="bg-cyan-600 hover:bg-cyan-700">
+            <Button
+              size="sm"
+              onClick={handleConnectGHL}
+              className="bg-[var(--ops-accent-documents)] hover:bg-[color-mix(in_srgb,var(--ops-accent-documents)_90%,black)] transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
+            >
               <Settings className="mr-2 size-4" />
               Configure
             </Button>
@@ -212,36 +144,36 @@ export default function OpsDashboard() {
 
       {/* Stats Grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard
+        <OpsStatCard
           label="Total Contacts"
           value={ghlConnected ? '1,234' : '--'}
           change={ghlConnected ? 12.5 : undefined}
           icon={Users}
-          iconColor="#06B6D4"
+          accent="documents"
           loading={loading}
         />
-        <StatCard
+        <OpsStatCard
           label="Conversations"
           value={ghlConnected ? '89' : '--'}
           change={ghlConnected ? 8.2 : undefined}
           icon={MessageSquare}
-          iconColor="#8B5CF6"
+          accent="messaging"
           loading={loading}
         />
-        <StatCard
+        <OpsStatCard
           label="Pipeline Value"
           value={ghlConnected ? '$142,500' : '--'}
           change={ghlConnected ? 18.3 : undefined}
           icon={DollarSign}
-          iconColor="#22C55E"
+          accent="pipeline"
           loading={loading}
         />
-        <StatCard
+        <OpsStatCard
           label="Avg Response Time"
           value={ghlConnected ? '2.4h' : '--'}
           change={ghlConnected ? -15.2 : undefined}
           icon={Clock}
-          iconColor="#F59E0B"
+          accent="analytics"
           loading={loading}
         />
       </div>
@@ -273,10 +205,11 @@ export default function OpsDashboard() {
                 </AreaChart>
               </ChartContainer>
             ) : (
-              <div className="flex h-64 flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed">
-                <Inbox className="size-8 text-muted-foreground/50" />
-                <p className="text-sm text-muted-foreground">Connect GHL to see activity data</p>
-              </div>
+              <OpsEmptyState
+                icon={Inbox}
+                title="Connect GHL to see activity data"
+                className="h-64"
+              />
             )}
           </CardContent>
         </Card>
@@ -299,10 +232,11 @@ export default function OpsDashboard() {
                 </BarChart>
               </ChartContainer>
             ) : (
-              <div className="flex h-64 flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed">
-                <DollarSign className="size-8 text-muted-foreground/50" />
-                <p className="text-sm text-muted-foreground">Connect GHL to see pipeline</p>
-              </div>
+              <OpsEmptyState
+                icon={DollarSign}
+                title="Connect GHL to see pipeline"
+                className="h-64"
+              />
             )}
           </CardContent>
         </Card>
@@ -315,31 +249,31 @@ export default function OpsDashboard() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <QuickActionCard
+            <OpsActionCard
               href="/ops/crm/contacts"
               icon={Users}
-              iconColor="#06B6D4"
+              accent="documents"
               title="Manage Contacts"
               description="View and organize your leads"
             />
-            <QuickActionCard
+            <OpsActionCard
               href="/ops/messaging/sms"
               icon={MessageSquare}
-              iconColor="#8B5CF6"
+              accent="messaging"
               title="SMS Center"
               description="Send messages to contacts"
             />
-            <QuickActionCard
+            <OpsActionCard
               href="/ops/crm/pipeline"
               icon={DollarSign}
-              iconColor="#22C55E"
+              accent="pipeline"
               title="Sales Pipeline"
               description="Track deals and opportunities"
             />
-            <QuickActionCard
+            <OpsActionCard
               href="/ops/analytics"
               icon={TrendingUp}
-              iconColor="#F59E0B"
+              accent="analytics"
               title="Analytics"
               description="Performance insights"
             />
@@ -355,43 +289,24 @@ export default function OpsDashboard() {
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 sm:grid-cols-3">
-              {[
-                {
-                  step: 1,
-                  title: 'Configure GoHighLevel',
-                  description: 'Add your API key and Location ID in settings',
-                  color: '#06B6D4',
-                },
-                {
-                  step: 2,
-                  title: 'Sync Contacts',
-                  description: 'Import your existing contacts and leads',
-                  color: '#8B5CF6',
-                },
-                {
-                  step: 3,
-                  title: 'Set Up Messaging',
-                  description: 'Configure SMS and email templates',
-                  color: '#22C55E',
-                },
-              ].map((item) => (
-                <div
-                  key={item.step}
-                  className="flex gap-3 rounded-lg p-4"
-                  style={{ backgroundColor: `${item.color}08`, border: `1px solid ${item.color}20` }}
-                >
-                  <div
-                    className="flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold"
-                    style={{ backgroundColor: `${item.color}15`, color: item.color }}
-                  >
-                    {item.step}
-                  </div>
-                  <div>
-                    <p className="font-medium">{item.title}</p>
-                    <p className="text-sm text-muted-foreground">{item.description}</p>
-                  </div>
-                </div>
-              ))}
+              <OpsOnboardingStep
+                step={1}
+                title="Configure GoHighLevel"
+                description="Add your API key and Location ID in settings"
+                accent="documents"
+              />
+              <OpsOnboardingStep
+                step={2}
+                title="Sync Contacts"
+                description="Import your existing contacts and leads"
+                accent="messaging"
+              />
+              <OpsOnboardingStep
+                step={3}
+                title="Set Up Messaging"
+                description="Configure SMS and email templates"
+                accent="pipeline"
+              />
             </div>
           </CardContent>
         </Card>

@@ -112,14 +112,14 @@ export function ContactsTable({
         id: 'name',
         header: ({ column }) => (
           <button
-            className="inline-flex items-center gap-1 hover:text-foreground transition-colors text-xs font-medium"
+            className="inline-flex items-center gap-1 hover:text-foreground transition-colors duration-[var(--admin-duration-hover)] text-xs font-medium"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             <span>Name</span>
             {column.getIsSorted() === 'asc' ? (
-              <ArrowUp className="h-3.5 w-3.5 text-cyan-500" />
+              <ArrowUp className="h-3.5 w-3.5" style={{ color: 'var(--ops-accent-documents)' }} />
             ) : column.getIsSorted() === 'desc' ? (
-              <ArrowDown className="h-3.5 w-3.5 text-cyan-500" />
+              <ArrowDown className="h-3.5 w-3.5" style={{ color: 'var(--ops-accent-documents)' }} />
             ) : (
               <ArrowUpDown className="h-3 w-3 opacity-30" />
             )}
@@ -132,12 +132,15 @@ export function ContactsTable({
 
           return (
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center text-white text-xs font-medium">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-medium"
+                style={{ background: 'linear-gradient(to bottom right, var(--ops-accent-documents), color-mix(in srgb, var(--ops-accent-documents) 80%, black))' }}
+              >
                 {initials}
               </div>
               <div>
                 <button
-                  className="font-medium text-foreground hover:text-cyan-600 transition-colors text-left"
+                  className="font-medium text-foreground hover:text-[var(--ops-accent-documents)] transition-colors duration-[var(--admin-duration-hover)] text-left"
                   onClick={() => onView?.(contact)}
                 >
                   {name}
@@ -168,7 +171,7 @@ export function ContactsTable({
           return (
             <a
               href={`mailto:${email}`}
-              className="text-foreground hover:text-cyan-600 transition-colors"
+              className="text-foreground hover:text-[var(--ops-accent-documents)] transition-colors duration-[var(--admin-duration-hover)]"
             >
               {email}
             </a>
@@ -191,7 +194,7 @@ export function ContactsTable({
           return (
             <a
               href={`tel:${phone}`}
-              className="text-foreground hover:text-cyan-600 transition-colors font-mono text-sm"
+              className="text-foreground hover:text-[var(--ops-accent-documents)] transition-colors duration-[var(--admin-duration-hover)] font-mono text-sm tabular-nums"
             >
               {phone}
             </a>
@@ -236,7 +239,12 @@ export function ContactsTable({
               {tags.slice(0, 3).map((tag) => (
                 <span
                   key={tag}
-                  className="px-2 py-0.5 text-xs rounded-full bg-cyan-500/10 text-cyan-600 border border-cyan-500/20"
+                  className="px-2 py-0.5 text-xs rounded-full"
+                  style={{
+                    background: 'color-mix(in srgb, var(--ops-accent-documents) 10%, transparent)',
+                    color: 'var(--ops-accent-documents)',
+                    border: '1px solid color-mix(in srgb, var(--ops-accent-documents) 20%, transparent)',
+                  }}
                 >
                   {tag}
                 </span>
@@ -259,9 +267,9 @@ export function ContactsTable({
           >
             <span>Added</span>
             {column.getIsSorted() === 'asc' ? (
-              <ArrowUp className="h-3.5 w-3.5 text-cyan-500" />
+              <ArrowUp className="h-3.5 w-3.5" style={{ color: 'var(--ops-accent-documents)' }} />
             ) : column.getIsSorted() === 'desc' ? (
-              <ArrowDown className="h-3.5 w-3.5 text-cyan-500" />
+              <ArrowDown className="h-3.5 w-3.5" style={{ color: 'var(--ops-accent-documents)' }} />
             ) : (
               <ArrowUpDown className="h-3 w-3 opacity-30" />
             )}
@@ -301,7 +309,7 @@ export function ContactsTable({
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => onDelete?.(contact.id)}
-                  className="text-red-600 focus:text-red-600"
+                  className="text-[var(--admin-status-error)] focus:text-[var(--admin-status-error)]"
                 >
                   <Trash2 className="h-4 w-4 mr-2" />
                   Delete
@@ -395,19 +403,15 @@ export function ContactsTable({
                   <td colSpan={columns.length} className="py-12">
                     <div className="flex flex-col items-center justify-center text-center">
                       <div
-                        style={{
-                          padding: '1rem',
-                          borderRadius: '50%',
-                          background: 'rgba(6, 182, 212, 0.08)',
-                          marginBottom: '1rem',
-                        }}
+                        className="p-4 rounded-full mb-4"
+                        style={{ background: 'var(--ops-accent-documents-muted)' }}
                       >
-                        <Users size={32} style={{ color: '#06B6D4', opacity: 0.6 }} />
+                        <Users size={32} style={{ color: 'var(--ops-accent-documents)', opacity: 0.6 }} />
                       </div>
-                      <h3 className="text-sm font-medium text-foreground mb-1">
+                      <h3 className="text-sm font-medium text-foreground mb-1" style={{ textWrap: 'balance' }}>
                         {globalFilter ? 'No contacts match your search' : 'No contacts yet'}
                       </h3>
-                      <p className="text-xs text-muted-foreground max-w-[240px]">
+                      <p className="text-xs text-muted-foreground max-w-[240px]" style={{ textWrap: 'balance' }}>
                         {globalFilter
                           ? 'Try adjusting your search terms'
                           : 'Add your first contact or sync from GoHighLevel to get started'}

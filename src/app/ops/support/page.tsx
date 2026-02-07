@@ -18,8 +18,8 @@ import {
   type TicketMessage,
 } from '@/components/features/ops/support';
 import { Button } from '@/components/ui/button';
+import { OpsPageHeader } from '@/components/ui/ops';
 import { staggerContainer, fadeInUp } from '@/lib/animation-variants';
-import styles from '../ops.module.css';
 import supportStyles from '@/components/features/ops/support/support.module.css';
 
 export default function SupportPage() {
@@ -172,21 +172,13 @@ export default function SupportPage() {
   return (
     <motion.div initial="initial" animate="animate" variants={staggerContainer}>
       {/* Header */}
-      <motion.header variants={fadeInUp} className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <div
-            className="p-2 rounded-lg"
-            style={{ background: 'rgba(239, 68, 68, 0.1)' }}
-          >
-            <Inbox size={24} style={{ color: '#EF4444' }} />
-          </div>
-          <div>
-            <h1 className={styles.pageTitle}>Support Inbox</h1>
-            <p className={styles.pageDescription}>
-              Manage customer support tickets
-            </p>
-          </div>
-        </div>
+      <motion.header variants={fadeInUp} className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
+        <OpsPageHeader
+          title="Support Inbox"
+          description="Manage customer support tickets"
+          icon={Inbox}
+          accent="support"
+        />
 
         <div className="flex items-center gap-2">
           <Button
@@ -194,11 +186,15 @@ export default function SupportPage() {
             size="sm"
             onClick={fetchTickets}
             disabled={loadingList}
+            className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
           >
             <RefreshCw size={14} className={loadingList ? 'animate-spin' : ''} />
             Refresh
           </Button>
-          <Button size="sm" style={{ background: '#EF4444' }}>
+          <Button
+            size="sm"
+            className="bg-[var(--ops-accent-support)] hover:bg-[color-mix(in_srgb,var(--ops-accent-support)_90%,black)] transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
+          >
             <Plus size={14} />
             New Ticket
           </Button>
@@ -206,29 +202,20 @@ export default function SupportPage() {
       </motion.header>
 
       {/* Stats */}
-      <motion.div variants={fadeInUp} className="flex gap-4 mb-6">
-        <div
-          className="flex items-center gap-2 px-4 py-2 rounded-lg"
-          style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
-        >
-          <AlertCircle size={16} style={{ color: '#EF4444' }} />
-          <span className="text-sm font-medium">{openCount}</span>
+      <motion.div variants={fadeInUp} className="flex flex-wrap gap-4 mb-6">
+        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--admin-bg-card)] border border-[var(--admin-border)]">
+          <AlertCircle size={16} style={{ color: 'var(--ops-accent-support)' }} />
+          <span className="text-sm font-medium tabular-nums">{openCount}</span>
           <span className="text-xs text-muted-foreground">Open</span>
         </div>
-        <div
-          className="flex items-center gap-2 px-4 py-2 rounded-lg"
-          style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
-        >
-          <Clock size={16} style={{ color: '#F59E0B' }} />
-          <span className="text-sm font-medium">{pendingCount}</span>
+        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--admin-bg-card)] border border-[var(--admin-border)]">
+          <Clock size={16} style={{ color: 'var(--ops-accent-analytics)' }} />
+          <span className="text-sm font-medium tabular-nums">{pendingCount}</span>
           <span className="text-xs text-muted-foreground">Pending</span>
         </div>
-        <div
-          className="flex items-center gap-2 px-4 py-2 rounded-lg"
-          style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
-        >
-          <CheckCircle2 size={16} style={{ color: '#22C55E' }} />
-          <span className="text-sm font-medium">{resolvedTodayCount}</span>
+        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--admin-bg-card)] border border-[var(--admin-border)]">
+          <CheckCircle2 size={16} style={{ color: 'var(--ops-accent-pipeline)' }} />
+          <span className="text-sm font-medium tabular-nums">{resolvedTodayCount}</span>
           <span className="text-xs text-muted-foreground">Resolved Today</span>
         </div>
       </motion.div>

@@ -24,42 +24,12 @@ import {
   Alert,
   AlertDescription,
 } from '@/components/ui/alert';
+import { OpsPageHeader, OpsStatCard } from '@/components/ui/ops';
 
 interface PipelineStats {
   totalDeals: number;
   totalValue: number;
   averageValue: number;
-}
-
-function StatCard({
-  label,
-  value,
-  icon: Icon,
-  iconColor,
-}: {
-  label: string;
-  value: string | number;
-  icon: React.ElementType;
-  iconColor: string;
-}) {
-  return (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="flex items-start justify-between">
-          <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">{label}</p>
-            <p className="text-2xl font-bold">{value}</p>
-          </div>
-          <div
-            className="rounded-lg p-2"
-            style={{ backgroundColor: `${iconColor}15` }}
-          >
-            <Icon className="size-5" style={{ color: iconColor }} />
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
 }
 
 export default function PipelinePage() {
@@ -173,17 +143,12 @@ export default function PipelinePage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <div className="rounded-lg bg-green-500/10 p-2">
-            <Kanban className="size-6 text-green-500" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Sales Pipeline</h1>
-            <p className="text-sm text-muted-foreground">
-              Track and manage your deals
-            </p>
-          </div>
-        </div>
+        <OpsPageHeader
+          title="Sales Pipeline"
+          description="Track and manage your deals"
+          icon={Kanban}
+          accent="pipeline"
+        />
 
         <div className="flex items-center gap-2">
           <Button
@@ -191,11 +156,15 @@ export default function PipelinePage() {
             size="sm"
             onClick={fetchPipeline}
             disabled={loading}
+            className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
           >
             <RefreshCw className={`mr-2 size-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <Button size="sm" className="bg-green-600 hover:bg-green-700">
+          <Button
+            size="sm"
+            className="bg-[var(--ops-accent-pipeline)] hover:bg-[color-mix(in_srgb,var(--ops-accent-pipeline)_90%,black)] transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
+          >
             <Plus className="mr-2 size-4" />
             Add Deal
           </Button>
@@ -204,23 +173,23 @@ export default function PipelinePage() {
 
       {/* Stats */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <StatCard
+        <OpsStatCard
           label="Total Deals"
-          value={stats.totalDeals}
+          value={stats.totalDeals.toString()}
           icon={Kanban}
-          iconColor="#22C55E"
+          accent="pipeline"
         />
-        <StatCard
+        <OpsStatCard
           label="Pipeline Value"
           value={formatCurrency(stats.totalValue)}
           icon={DollarSign}
-          iconColor="#06B6D4"
+          accent="documents"
         />
-        <StatCard
+        <OpsStatCard
           label="Average Deal"
           value={formatCurrency(stats.averageValue)}
           icon={TrendingUp}
-          iconColor="#8B5CF6"
+          accent="messaging"
         />
       </div>
 
@@ -230,7 +199,10 @@ export default function PipelinePage() {
           <AlertCircle className="size-4" />
           <AlertDescription className="flex items-center justify-between">
             <span>{error}</span>
-            <button onClick={() => setError(null)} className="ml-4">
+            <button
+              onClick={() => setError(null)}
+              className="ml-4 transition-colors hover:text-[var(--admin-text-primary)]"
+            >
               <X className="size-4" />
             </button>
           </AlertDescription>

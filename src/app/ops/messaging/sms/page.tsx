@@ -16,6 +16,7 @@ import {
   type Message,
 } from '@/components/features/ops/messaging';
 import { Button } from '@/components/ui/button';
+import { OpsPageHeader } from '@/components/ui/ops';
 import messagingStyles from '@/components/features/ops/messaging/messaging.module.css';
 
 interface Contact {
@@ -176,23 +177,19 @@ export default function SMSPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <div className="rounded-lg bg-violet-500/10 p-2">
-            <MessageSquare className="size-6 text-violet-500" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">SMS Conversations</h1>
-            <p className="text-sm text-muted-foreground">
-              Manage text message conversations
-            </p>
-          </div>
-        </div>
+        <OpsPageHeader
+          title="SMS Conversations"
+          description="Manage text message conversations"
+          icon={MessageSquare}
+          accent="messaging"
+        />
 
         <Button
           variant="outline"
           size="sm"
           onClick={fetchConversations}
           disabled={loadingList}
+          className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
         >
           <RefreshCw className={`mr-2 size-4 ${loadingList ? 'animate-spin' : ''}`} />
           Refresh

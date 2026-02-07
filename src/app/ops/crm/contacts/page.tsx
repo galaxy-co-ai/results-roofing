@@ -39,6 +39,7 @@ import {
   Alert,
   AlertDescription,
 } from '@/components/ui/alert';
+import { OpsPageHeader } from '@/components/ui/ops';
 
 export default function ContactsPage() {
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -146,17 +147,12 @@ export default function ContactsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <div className="rounded-lg bg-cyan-500/10 p-2">
-            <Users className="size-6 text-cyan-500" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Contacts</h1>
-            <p className="text-sm text-muted-foreground">
-              Manage your leads and customers
-            </p>
-          </div>
-        </div>
+        <OpsPageHeader
+          title="Contacts"
+          description="Manage your leads and customers"
+          icon={Users}
+          accent="documents"
+        />
 
         <div className="flex items-center gap-2">
           <Button
@@ -164,6 +160,7 @@ export default function ContactsPage() {
             size="sm"
             onClick={fetchContacts}
             disabled={loading}
+            className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
           >
             <RefreshCw className={`mr-2 size-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
@@ -171,7 +168,7 @@ export default function ContactsPage() {
           <Button
             size="sm"
             onClick={() => setShowAddDialog(true)}
-            className="bg-cyan-600 hover:bg-cyan-700"
+            className="bg-[var(--ops-accent-documents)] hover:bg-[color-mix(in_srgb,var(--ops-accent-documents)_90%,black)] transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
           >
             <Plus className="mr-2 size-4" />
             Add Contact
@@ -185,7 +182,10 @@ export default function ContactsPage() {
           <AlertCircle className="size-4" />
           <AlertDescription className="flex items-center justify-between">
             <span>{error}</span>
-            <button onClick={() => setError(null)} className="ml-4">
+            <button
+              onClick={() => setError(null)}
+              className="ml-4 transition-colors hover:text-[var(--admin-text-primary)]"
+            >
               <X className="size-4" />
             </button>
           </AlertDescription>
@@ -326,13 +326,14 @@ export default function ContactsPage() {
                 type="button"
                 variant="outline"
                 onClick={() => setShowAddDialog(false)}
+                className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={isAdding || (!newContact.email && !newContact.phone)}
-                className="bg-cyan-600 hover:bg-cyan-700"
+                className="bg-[var(--ops-accent-documents)] hover:bg-[color-mix(in_srgb,var(--ops-accent-documents)_90%,black)] transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
               >
                 {isAdding && <Loader2 className="mr-2 size-4 animate-spin" />}
                 Add Contact

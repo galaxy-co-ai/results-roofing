@@ -37,6 +37,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { OpsPageHeader } from '@/components/ui/ops';
 
 interface Document {
   id: string;
@@ -61,10 +62,10 @@ interface FolderStats {
 }
 
 const FOLDER_CONFIG: Record<string, { label: string; icon: React.ReactNode }> = {
-  deposits: { label: 'Deposits', icon: <FileSignature className="size-5 text-emerald-500" /> },
-  contracts: { label: 'Contracts', icon: <FileSignature className="size-5 text-blue-500" /> },
-  invoices: { label: 'Invoices', icon: <FileSignature className="size-5 text-amber-500" /> },
-  general: { label: 'General', icon: <FolderOpen className="size-5 text-gray-500" /> },
+  deposits: { label: 'Deposits', icon: <FileSignature className="size-5" style={{ color: 'var(--ops-accent-pipeline)' }} /> },
+  contracts: { label: 'Contracts', icon: <FileSignature className="size-5" style={{ color: 'var(--ops-accent-crm)' }} /> },
+  invoices: { label: 'Invoices', icon: <FileSignature className="size-5" style={{ color: 'var(--ops-accent-analytics)' }} /> },
+  general: { label: 'General', icon: <FolderOpen className="size-5 text-muted-foreground" /> },
 };
 
 const STATUS_CONFIG: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline'; icon: React.ReactNode }> = {
@@ -137,23 +138,19 @@ export default function DocumentsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <div className="rounded-lg bg-violet-500/10 p-2">
-            <FolderOpen className="size-6 text-violet-500" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Documents</h1>
-            <p className="text-sm text-muted-foreground">
-              Manage signed documents and authorizations
-            </p>
-          </div>
-        </div>
+        <OpsPageHeader
+          title="Documents"
+          description="Manage signed documents and authorizations"
+          icon={FolderOpen}
+          accent="documents"
+        />
 
         <Button
           variant="outline"
           size="sm"
           onClick={() => fetchDocuments(selectedFolder)}
           disabled={loading}
+          className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
         >
           <RefreshCw className={`mr-2 size-4 ${loading ? 'animate-spin' : ''}`} />
           Refresh
@@ -197,7 +194,7 @@ export default function DocumentsPage() {
             return (
               <Card
                 key={stat.folder}
-                className="cursor-pointer transition-all hover:shadow-md hover:border-violet-200"
+                className="cursor-pointer transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] hover:shadow-md hover:-translate-y-0.5"
                 onClick={() => handleFolderClick(stat.folder)}
               >
                 <CardContent className="p-4">

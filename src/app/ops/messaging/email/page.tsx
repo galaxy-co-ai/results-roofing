@@ -18,6 +18,7 @@ import {
 } from '@/components/features/ops/messaging';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { OpsPageHeader } from '@/components/ui/ops';
 import messagingStyles from '@/components/features/ops/messaging/messaging.module.css';
 
 interface Contact {
@@ -195,23 +196,19 @@ export default function EmailPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <div className="rounded-lg bg-cyan-500/10 p-2">
-            <Mail className="size-6 text-cyan-500" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Email Inbox</h1>
-            <p className="text-sm text-muted-foreground">
-              Manage email communications
-            </p>
-          </div>
-        </div>
+        <OpsPageHeader
+          title="Email Inbox"
+          description="Manage email communications"
+          icon={Mail}
+          accent="documents"
+        />
 
         <Button
           variant="outline"
           size="sm"
           onClick={fetchConversations}
           disabled={loadingList}
+          className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
         >
           <RefreshCw className={`mr-2 size-4 ${loadingList ? 'animate-spin' : ''}`} />
           Refresh
@@ -221,18 +218,18 @@ export default function EmailPage() {
       {/* Stats */}
       <div className="flex flex-wrap gap-3">
         <Badge variant="secondary" className="gap-2 px-3 py-1.5 text-sm">
-          <Inbox className="size-4 text-cyan-500" />
-          <span className="font-medium">{totalEmails}</span>
+          <Inbox className="size-4" style={{ color: 'var(--ops-accent-documents)' }} />
+          <span className="font-medium tabular-nums">{totalEmails}</span>
           <span className="text-muted-foreground">Total</span>
         </Badge>
         <Badge variant="secondary" className="gap-2 px-3 py-1.5 text-sm">
-          <Mail className="size-4 text-violet-500" />
-          <span className="font-medium">{unreadCount}</span>
+          <Mail className="size-4" style={{ color: 'var(--ops-accent-messaging)' }} />
+          <span className="font-medium tabular-nums">{unreadCount}</span>
           <span className="text-muted-foreground">Unread</span>
         </Badge>
         <Badge variant="secondary" className="gap-2 px-3 py-1.5 text-sm">
-          <Star className="size-4 text-amber-500" />
-          <span className="font-medium">{starredCount}</span>
+          <Star className="size-4" style={{ color: 'var(--ops-accent-analytics)' }} />
+          <span className="font-medium tabular-nums">{starredCount}</span>
           <span className="text-muted-foreground">Starred</span>
         </Badge>
       </div>

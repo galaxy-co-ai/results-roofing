@@ -199,4 +199,47 @@
   --admin-z-modal: 50;
   --admin-z-popover: 60;
   --admin-z-toast: 70;
+
+  /* ========================================
+     OPS CATEGORY ACCENTS
+     Semantic colors for ops dashboard modules.
+     ======================================== */
+  --ops-accent-crm: var(--admin-status-info);        /* #3B82F6 - contacts */
+  --ops-accent-crm-muted: var(--admin-status-info-muted);
+  --ops-accent-messaging: #8B5CF6;                    /* Violet - SMS/email */
+  --ops-accent-messaging-muted: #EDE9FE;
+  --ops-accent-pipeline: var(--admin-status-success); /* #22C55E - sales */
+  --ops-accent-pipeline-muted: var(--admin-status-success-muted);
+  --ops-accent-analytics: var(--admin-status-warning);/* #F59E0B - metrics */
+  --ops-accent-analytics-muted: var(--admin-status-warning-muted);
+  --ops-accent-support: var(--admin-status-error);    /* #EF4444 - tickets */
+  --ops-accent-support-muted: var(--admin-status-error-muted);
+  --ops-accent-documents: #06B6D4;                    /* Cyan - docs */
+  --ops-accent-documents-muted: #CFFAFE;
+
+  /* ========================================
+     MOTION CONSTANTS
+     Per Engineering Constitution.
+     ======================================== */
+  --admin-duration-hover: 150ms;
+  --admin-duration-modal: 300ms;
+  --admin-duration-exit: 210ms;  /* 30% faster than enter */
+  --admin-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --admin-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --admin-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --admin-scale-press: 0.98;
+
+  /* ========================================
+     FLUID TYPOGRAPHY
+     Responsive headings.
+     ======================================== */
+  --admin-text-display: clamp(1.5rem, 3vw, 1.75rem);
+  --admin-text-page-title: clamp(1.125rem, 2.5vw, 1.25rem);
+
+  /* ========================================
+     TREND INDICATORS
+     Status-based trend colors.
+     ======================================== */
+  --admin-trend-positive: var(--admin-status-success);
+  --admin-trend-negative: var(--admin-status-error);
 }

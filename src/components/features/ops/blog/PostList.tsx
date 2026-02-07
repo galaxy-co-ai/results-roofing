@@ -187,7 +187,7 @@ export function PostList({
                 style={{
                   backgroundImage: post.featuredImage
                     ? `url(${post.featuredImage})`
-                    : 'linear-gradient(135deg, #06B6D4 0%, #0891B2 100%)',
+                    : 'linear-gradient(135deg, var(--ops-accent-documents) 0%, color-mix(in srgb, var(--ops-accent-documents) 80%, black) 100%)',
                 }}
               >
                 {getStatusBadge(post.status)}
@@ -225,7 +225,7 @@ export function PostList({
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={() => onDelete(post.id)}
-                      className="text-red-500"
+                      className="text-[var(--admin-status-error)]"
                     >
                       <Trash2 size={14} /> Delete
                     </DropdownMenuItem>

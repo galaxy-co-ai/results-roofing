@@ -290,7 +290,7 @@ export function SupportInbox({
                       {onDelete && (
                         <DropdownMenuItem
                           onClick={() => onDelete(ticket.id)}
-                          className="text-red-500"
+                          className="text-[var(--admin-status-error)]"
                         >
                           <Trash2 size={14} /> Delete
                         </DropdownMenuItem>
