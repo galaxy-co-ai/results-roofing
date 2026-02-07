@@ -47,11 +47,10 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get('q') || undefined;
     const limit = parseInt(searchParams.get('limit') || '20', 10);
-    const skip = parseInt(searchParams.get('skip') || '0', 10);
 
     const result = query
-      ? await searchContacts(query, { limit, skip })
-      : await listContacts({ limit, skip });
+      ? await searchContacts(query, { limit })
+      : await listContacts({ limit });
 
     return NextResponse.json(result);
   } catch (error) {

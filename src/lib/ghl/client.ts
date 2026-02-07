@@ -123,9 +123,9 @@ export function createGHLClient(config: GHLClientConfig) {
       throw new GHLClientError(errorMessage, response.status);
     }
 
-    // Parse response
+    // Parse response and wrap in expected structure
     const data = await response.json();
-    return data as GHLResponse<T>;
+    return { data } as GHLResponse<T>;
   }
 
   return {

@@ -71,7 +71,6 @@ export interface UpdateContactInput extends Partial<CreateContactInput> {
 export interface ContactSearchParams {
   query?: string;
   limit?: number;
-  skip?: number;
   startAfter?: string;
   startAfterId?: string;
 }
@@ -96,7 +95,6 @@ export async function listContacts(params: ContactSearchParams = {}): Promise<Co
     locationId,
     query: params.query,
     limit: params.limit ?? 20,
-    skip: params.skip,
     startAfter: params.startAfter,
     startAfterId: params.startAfterId,
   });

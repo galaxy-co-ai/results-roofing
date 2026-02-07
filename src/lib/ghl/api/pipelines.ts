@@ -146,7 +146,7 @@ export async function listOpportunities(
   const locationId = client.getLocationId();
 
   const response = await client.get<OpportunitiesListResponse>('/opportunities/search', {
-    locationId,
+    location_id: locationId,
     pipelineId: params.pipelineId,
     pipelineStageId: params.pipelineStageId,
     status: params.status,
