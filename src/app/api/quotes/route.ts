@@ -2,6 +2,8 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { db, schema, eq } from '@/db/index';
 import { estimateRoofSqft, calculatePriceRanges } from '@/lib/pricing';
+import { estimateSqftFromSatellite } from '@/lib/pricing/estimate-sqft';
+import { calculateQuotePricing } from '@/lib/pricing/calculate-quote';
 import { logger } from '@/lib/utils';
 
 const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ', 'OK'];
@@ -199,6 +201,82 @@ export async function POST(request: NextRequest) {
         expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       })
       .returning();
+
+    // Fire-and-forget: attempt satellite measurement in background
+    // This upgrades the regional estimate with real satellite data
+    if (lat && lng) {
+      estimateSqftFromSatellite(Number(lat), Number(lng))
+        .then(async (satelliteEstimate) => {
+          if (!satelliteEstimate?.satelliteData) return;
+
+          const m = satelliteEstimate.satelliteData;
+
+          // Save measurement record
+          await db.insert(schema.measurements).values({
+            quoteId: quote.id,
+            sqftTotal: m.sqftTotal.toString(),
+            sqftSteep: m.sqftSteep.toString(),
+            sqftFlat: m.sqftFlat.toString(),
+            pitchPrimary: m.pitchPrimary.toString(),
+            pitchMin: m.pitchMin.toString(),
+            pitchMax: m.pitchMax.toString(),
+            facetCount: m.facetCount,
+            complexity: m.complexity,
+            confidence: m.confidence,
+            imageryQuality: m.imageryQuality,
+            imageryDate: m.imageryDate,
+            vendor: 'google_solar',
+            status: 'complete',
+            rawResponse: m.rawResponse,
+            completedAt: new Date(),
+          });
+
+          // Recalculate pricing with satellite data
+          const updatedPricing = calculateQuotePricing(
+            m.sqftTotal,
+            pricingTiers,
+            {
+              complexity: m.complexity,
+              pitchRatio: m.pitchPrimary,
+              sqftSource: 'measured',
+            }
+          );
+
+          // Update quote with satellite measurements + recalculated pricing
+          await db
+            .update(schema.quotes)
+            .set({
+              sqftTotal: m.sqftTotal.toString(),
+              pitchPrimary: m.pitchPrimary.toString(),
+              complexity: m.complexity,
+              status: 'measured',
+              pricingData: {
+                estimated: false,
+                sqftTotal: m.sqftTotal,
+                sqftSource: 'satellite',
+                confidence: satelliteEstimate.confidence,
+                vendor: 'google_solar',
+                tiers: updatedPricing.tiers,
+                complexityMultiplier: updatedPricing.complexityMultiplier,
+                pitchMultiplier: updatedPricing.pitchMultiplier,
+              },
+              updatedAt: new Date(),
+            })
+            .where(eq(schema.quotes.id, quote.id));
+
+          logger.info('[QuoteCreate] Satellite measurement saved in background', {
+            quoteId: quote.id,
+            sqftTotal: m.sqftTotal,
+            confidence: satelliteEstimate.confidence,
+          });
+        })
+        .catch((err) => {
+          logger.warn('[QuoteCreate] Background satellite measurement failed', {
+            quoteId: quote.id,
+            error: err instanceof Error ? err.message : 'Unknown error',
+          });
+        });
+    }
 
     return NextResponse.json({
       id: quote.id,

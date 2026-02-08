@@ -1,67 +1,153 @@
 /**
- * Preliminary roof sq ft estimation
+ * Smart Sqft Estimation
  *
- * For MVP, we use regional averages since we don't have property data API yet.
- * This gives customers an instant ballpark before Roofr provides exact measurements.
+ * Two-tier approach:
+ * 1. Try Google Solar API for real satellite measurements (confidence: high/medium)
+ * 2. Fall back to regional averages if satellite data unavailable (confidence: low)
  *
- * Future enhancements:
- * - Integrate with ATTOM Data, CoreLogic, or county assessor APIs
- * - Use Roofr instant estimate if available
- * - Allow user self-reporting as fallback
+ * The satellite lookup runs async so it doesn't block the initial quote creation.
+ * Regional averages are returned immediately, then upgraded when satellite data arrives.
  */
 
-interface EstimateResult {
-  sqftEstimate: number;
+import { fetchSolarMeasurement, type SolarMeasurementResult } from '@/lib/integrations/adapters/google-solar';
+
+// ============================================================
+// Types
+// ============================================================
+
+export interface SqftEstimate {
+  sqftTotal: number;
   sqftMin: number;
   sqftMax: number;
-  confidence: 'low' | 'medium' | 'high';
-  source: 'regional_average' | 'property_data' | 'user_input';
+  pitchPrimary: number;
+  complexity: 'simple' | 'moderate' | 'complex';
+  confidence: 'high' | 'medium' | 'low';
+  source: 'satellite' | 'regional_average';
+  vendor: 'google_solar' | 'regional';
+  /** Full satellite measurement data if available */
+  satelliteData?: SolarMeasurementResult;
 }
 
-// Regional average home sizes by state (roof sq ft, not floor sq ft)
-// Roof sq ft is typically 1.1-1.4x floor sq ft depending on pitch
-// Using conservative multiplier of 1.2 for initial estimates
-const REGIONAL_AVERAGES: Record<string, { avgSqft: number; minSqft: number; maxSqft: number }> = {
-  // Texas - large homes, especially in affluent areas
-  TX: { avgSqft: 2800, minSqft: 1800, maxSqft: 4500 },
-  // Georgia - Atlanta metro has larger homes
-  GA: { avgSqft: 2600, minSqft: 1600, maxSqft: 4200 },
-  // North Carolina - Wilmington area
-  NC: { avgSqft: 2400, minSqft: 1500, maxSqft: 3800 },
-  // Arizona - Phoenix metro
-  AZ: { avgSqft: 2500, minSqft: 1600, maxSqft: 4000 },
-  // Oklahoma - OKC and Tulsa metros
-  OK: { avgSqft: 2400, minSqft: 1500, maxSqft: 3800 },
+// ============================================================
+// Regional Averages (kept as fallback)
+// ============================================================
+
+const REGIONAL_AVERAGES: Record<string, { avg: number; min: number; max: number }> = {
+  TX: { avg: 2800, min: 1800, max: 4500 },
+  GA: { avg: 2600, min: 1600, max: 4200 },
+  NC: { avg: 2400, min: 1500, max: 4000 },
+  AZ: { avg: 2500, min: 1500, max: 4200 },
+  OK: { avg: 2600, min: 1600, max: 4200 },
 };
 
-// Default for unknown states
-const DEFAULT_AVERAGE = { avgSqft: 2500, minSqft: 1500, maxSqft: 4000 };
+const DEFAULT_REGIONAL = { avg: 2500, min: 1500, max: 4200 };
 
-/**
- * Estimate roof square footage based on location
- *
- * @param state - Two-letter state code
- * @param zip - ZIP code (for future refinement)
- * @returns Estimated sq ft with confidence interval
- */
-export function estimateRoofSqft(state: string, _zip?: string): EstimateResult {
-  const stateUpper = state.toUpperCase();
-  const regional = REGIONAL_AVERAGES[stateUpper] || DEFAULT_AVERAGE;
+// ============================================================
+// Regional Fallback (fast, used for initial quote display)
+// ============================================================
 
-  // TODO: In the future, use ZIP code for more granular estimates
-  // Affluent ZIPs tend to have larger homes
+export function estimateSqftFromRegion(state: string): SqftEstimate {
+  const regional = REGIONAL_AVERAGES[state.toUpperCase()] ?? DEFAULT_REGIONAL;
 
   return {
-    sqftEstimate: regional.avgSqft,
-    sqftMin: regional.minSqft,
-    sqftMax: regional.maxSqft,
-    confidence: 'low', // Regional averages have low confidence
+    sqftTotal: regional.avg,
+    sqftMin: regional.min,
+    sqftMax: regional.max,
+    pitchPrimary: 6, // Assume standard 6/12 pitch
+    complexity: 'moderate', // Default assumption
+    confidence: 'low',
     source: 'regional_average',
+    vendor: 'regional',
   };
 }
 
 /**
- * Calculate price range for a tier given sq ft estimate
+ * Backward-compatible alias for estimateSqftFromRegion.
+ * Maps the old return shape so existing consumers don't break.
+ */
+export function estimateRoofSqft(state: string, _zip?: string) {
+  const est = estimateSqftFromRegion(state);
+  return {
+    sqftEstimate: est.sqftTotal,
+    sqftMin: est.sqftMin,
+    sqftMax: est.sqftMax,
+    confidence: est.confidence,
+    source: est.source,
+  };
+}
+
+// ============================================================
+// Satellite Measurement (accurate, used to upgrade the estimate)
+// ============================================================
+
+/**
+ * Attempt to get real roof measurements from Google Solar API.
+ * Returns null if the building isn't found or the API fails.
+ *
+ * Designed to be called AFTER the initial quote is created
+ * with regional averages, so the user sees immediate pricing that
+ * gets upgraded to satellite-accurate pricing within seconds.
+ */
+export async function estimateSqftFromSatellite(
+  lat: number,
+  lng: number
+): Promise<SqftEstimate | null> {
+  const apiKey = process.env.GOOGLE_SOLAR_API_KEY;
+
+  if (!apiKey) {
+    console.warn('[estimateSqft] GOOGLE_SOLAR_API_KEY not set, using regional fallback');
+    return null;
+  }
+
+  const result = await fetchSolarMeasurement(lat, lng, apiKey);
+
+  if (!result.success) {
+    console.warn(`[estimateSqft] Satellite lookup failed: ${result.error.message}`);
+    return null;
+  }
+
+  const m = result.data;
+
+  return {
+    sqftTotal: m.sqftTotal,
+    sqftMin: Math.round(m.sqftTotal * 0.95), // 5% margin
+    sqftMax: Math.round(m.sqftTotal * 1.05),
+    pitchPrimary: m.pitchPrimary,
+    complexity: m.complexity,
+    confidence: m.confidence,
+    source: 'satellite',
+    vendor: 'google_solar',
+    satelliteData: m,
+  };
+}
+
+// ============================================================
+// Combined Smart Estimation
+// ============================================================
+
+/**
+ * Smart estimation: tries satellite first, falls back to regional averages.
+ *
+ * For synchronous usage (if you want to wait for satellite):
+ *   const estimate = await estimateSqftSmart(lat, lng, state, { waitForSatellite: true });
+ */
+export async function estimateSqftSmart(
+  lat: number,
+  lng: number,
+  state: string,
+  options: { waitForSatellite?: boolean } = {}
+): Promise<SqftEstimate> {
+  if (options.waitForSatellite) {
+    const satellite = await estimateSqftFromSatellite(lat, lng);
+    if (satellite) return satellite;
+  }
+
+  return estimateSqftFromRegion(state);
+}
+
+/**
+ * Calculate price range for a tier given sq ft estimate.
+ * Kept for backward compatibility with tests.
  */
 export function calculatePriceRange(
   sqftMin: number,

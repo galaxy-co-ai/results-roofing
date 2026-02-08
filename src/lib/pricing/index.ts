@@ -1,7 +1,12 @@
 export {
   estimateRoofSqft,
+  estimateSqftFromRegion,
+  estimateSqftFromSatellite,
+  estimateSqftSmart,
   calculatePriceRange,
 } from './estimate-sqft';
+
+export type { SqftEstimate } from './estimate-sqft';
 
 export {
   calculateDeposit,

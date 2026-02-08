@@ -1,8 +1,8 @@
-import { pgTable, uuid, text, decimal, timestamp, index, jsonb, integer, uniqueIndex } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, decimal, timestamp, index, jsonb, integer, uniqueIndex, varchar } from 'drizzle-orm/pg-core';
 import { quotes } from './quotes';
 
 /**
- * Measurements table - roof measurement data from Roofr
+ * Measurements table - roof measurement data from satellite or manual entry
  * Contains detailed roof specifications
  */
 export const measurements = pgTable(
@@ -12,7 +12,7 @@ export const measurements = pgTable(
     quoteId: uuid('quote_id')
       .references(() => quotes.id)
       .notNull(),
-    vendor: text('vendor').default('roofr').notNull(),
+    vendor: text('vendor').default('roofr').notNull(), // roofr, manual, google_solar, instant_roofer
     vendorJobId: text('vendor_job_id'),
     status: text('status').default('pending').notNull(), // pending, processing, complete, failed
     // Area measurements
@@ -31,6 +31,11 @@ export const measurements = pgTable(
     hipLengthFt: decimal('hip_length_ft', { precision: 10, scale: 2 }),
     // Calculated complexity
     complexity: text('complexity'), // simple, moderate, complex
+    // Confidence & quality tracking
+    confidence: varchar('confidence', { length: 10 }).default('low'), // high, medium, low
+    // Google Solar specific
+    imageryQuality: varchar('imagery_quality', { length: 10 }), // HIGH, MEDIUM, BASE
+    imageryDate: varchar('imagery_date', { length: 10 }), // YYYY-MM-DD
     // Raw vendor response
     rawResponse: jsonb('raw_response'),
     errorMessage: text('error_message'),
@@ -42,6 +47,7 @@ export const measurements = pgTable(
     uniqueIndex('measurements_quote_idx').on(table.quoteId),
     index('measurements_vendor_job_idx').on(table.vendorJobId),
     index('measurements_status_idx').on(table.status),
+    index('measurements_vendor_idx').on(table.vendor),
   ]
 );
 

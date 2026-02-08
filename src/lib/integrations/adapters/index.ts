@@ -2,7 +2,8 @@
  * Integration Adapters
  * Centralized exports for external service adapters
  *
- * Status (Updated 2026-02-05):
+ * Status (Updated 2026-02-08):
+ * ✅ google-solar - Satellite roof measurements via Google Solar API
  * ✅ resend - Email delivery complete (MIGRATING to GHL)
  * ✅ ghl-messaging - Unified SMS + Email + CRM
  * ⚠️ documenso - STUB (awaiting client account)
@@ -11,7 +12,7 @@
  * ⚠️ signalwire - STUB → MIGRATING to GoHighLevel (GHL)
  *
  * Removed:
- * - Roofr (not using satellite measurements)
+ * - Roofr (replaced by Google Solar API)
  * - Cal.com (not using external scheduling)
  */
 
@@ -56,3 +57,11 @@ export {
   type GHLSendEmailRequest,
   type GHLMessageResponse,
 } from './ghl-messaging';
+
+// Satellite Roof Measurements (Google Solar API)
+export {
+  fetchSolarMeasurement,
+  type SolarMeasurementResult,
+  type SolarMeasurementError,
+  type SolarMeasurementOutcome,
+} from './google-solar';

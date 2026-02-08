@@ -29,6 +29,13 @@
       "when": 1769594400000,
       "tag": "0003_enhance_feedback",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1770565649611,
+      "tag": "0004_chief_tempest",
+      "breakpoints": true
     }
   ]
 }
