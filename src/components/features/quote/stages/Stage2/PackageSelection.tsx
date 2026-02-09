@@ -54,9 +54,6 @@ export function PackageSelection({
   isLoading = false,
   quoteId,
 }: PackageSelectionProps) {
-  // Fixed deposit amount of $500 regardless of package
-  const fixedDeposit = 500;
-
   return (
     <div className={styles.subStep}>
       {/* Unified Header Section */}
@@ -111,13 +108,6 @@ export function PackageSelection({
                   </li>
                 ))}
               </ul>
-
-              <div className={styles.depositInfo}>
-                <span className={styles.depositLabel}>Deposit:</span>
-                <span className={styles.depositAmount}>
-                  {formatPrice(fixedDeposit)}
-                </span>
-              </div>
 
               <button
                 type="button"

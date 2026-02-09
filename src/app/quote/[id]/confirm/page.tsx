@@ -42,7 +42,6 @@ export default async function ConfirmPage({ params }: ConfirmPageProps) {
   }
 
   const totalPrice = quote.totalPrice ? parseFloat(quote.totalPrice) : 0;
-  const depositAmount = 500;
   const address = `${quote.address}, ${quote.city}, ${quote.state} ${quote.zip}`;
   const tierDisplayName = TIER_DISPLAY_NAMES[quote.selectedTier!] || quote.selectedTier!;
   const timeSlot: 'morning' | 'afternoon' = quote.scheduledSlotId!.includes('morning')
@@ -62,7 +61,6 @@ export default async function ConfirmPage({ params }: ConfirmPageProps) {
             installDate: quote.scheduledDate!.toISOString(),
             timeSlot,
             totalPrice,
-            depositAmount,
           }}
         />
         <TrustBar variant="light" />

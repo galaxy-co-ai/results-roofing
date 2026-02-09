@@ -196,7 +196,7 @@ export function ContractSection({
             <li>Work will be completed in accordance with local building codes.</li>
             <li>Contractor will obtain all necessary permits.</li>
             <li>Customer agrees to provide access to the property.</li>
-            <li>Payment terms: 10% deposit due at signing, balance due upon completion.</li>
+            <li>Payment terms: Full balance due upon completion of work.</li>
             <li>Warranty: Coverage as specified in selected package.</li>
             <li>Cancellation: 3-day cooling off period from signing date.</li>
           </ol>

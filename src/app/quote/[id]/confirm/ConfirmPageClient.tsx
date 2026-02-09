@@ -25,7 +25,6 @@ export interface QuoteSummary {
   installDate: string;
   timeSlot: 'morning' | 'afternoon';
   totalPrice: number;
-  depositAmount: number;
 }
 
 interface ConfirmPageClientProps {
@@ -161,7 +160,7 @@ export function ConfirmPageClient({ quoteId, quoteSummary }: ConfirmPageClientPr
             <div className={styles.bookingDetails}>
               <span className={styles.bookingLabel}>Project Total</span>
               <span className={styles.bookingValue}>${quoteSummary.totalPrice.toLocaleString()}</span>
-              <span className={styles.bookingMeta}>${quoteSummary.depositAmount} deposit due at signing</span>
+              <span className={styles.bookingMeta}>Full balance due upon completion</span>
             </div>
           </div>
         </div>
