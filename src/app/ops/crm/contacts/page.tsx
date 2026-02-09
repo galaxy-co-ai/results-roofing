@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import {
-  Users,
   Plus,
   RefreshCw,
   AlertCircle,
@@ -147,12 +146,7 @@ export default function ContactsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <OpsPageHeader
-          title="Contacts"
-          description="Manage your leads and customers"
-          icon={Users}
-          accent="documents"
-        />
+        <OpsPageHeader title="Contacts" />
 
         <div className="flex items-center gap-2">
           <Button

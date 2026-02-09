@@ -173,12 +173,7 @@ export default function SupportPage() {
     <motion.div initial="initial" animate="animate" variants={staggerContainer}>
       {/* Header */}
       <motion.header variants={fadeInUp} className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
-        <OpsPageHeader
-          title="Support Inbox"
-          description="Manage customer support tickets"
-          icon={Inbox}
-          accent="support"
-        />
+        <OpsPageHeader title="Support Inbox" />
 
         <div className="flex items-center gap-2">
           <Button
@@ -252,7 +247,7 @@ export default function SupportPage() {
             />
           ) : (
             <div className={supportStyles.noTicketSelected}>
-              <Inbox size={48} />
+              <Inbox size={32} />
               <p>Select a ticket</p>
               <span>Choose a ticket from the list to view details</span>
             </div>

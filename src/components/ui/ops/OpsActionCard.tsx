@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { type LucideIcon, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { type OpsAccent } from './OpsStatCard';
+import { type OpsAccent } from './index';
 
 interface OpsActionCardProps {
   href: string;

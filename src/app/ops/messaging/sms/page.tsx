@@ -177,12 +177,7 @@ export default function SMSPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <OpsPageHeader
-          title="SMS Conversations"
-          description="Manage text message conversations"
-          icon={MessageSquare}
-          accent="messaging"
-        />
+        <OpsPageHeader title="SMS Conversations" />
 
         <Button
           variant="outline"

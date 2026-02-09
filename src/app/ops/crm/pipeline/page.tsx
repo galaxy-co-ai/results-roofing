@@ -2,13 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import {
-  Kanban,
   Plus,
   RefreshCw,
   AlertCircle,
   X,
-  DollarSign,
-  TrendingUp,
 } from 'lucide-react';
 import {
   PipelineBoard,
@@ -139,12 +136,7 @@ export default function PipelinePage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <OpsPageHeader
-          title="Sales Pipeline"
-          description="Track and manage your deals"
-          icon={Kanban}
-          accent="pipeline"
-        />
+        <OpsPageHeader title="Sales Pipeline" />
 
         <div className="flex items-center gap-2">
           <Button
@@ -172,20 +164,14 @@ export default function PipelinePage() {
         <OpsStatCard
           label="Total Deals"
           value={stats.totalDeals.toString()}
-          icon={Kanban}
-          accent="pipeline"
         />
         <OpsStatCard
           label="Pipeline Value"
           value={formatCurrency(stats.totalValue)}
-          icon={DollarSign}
-          accent="documents"
         />
         <OpsStatCard
           label="Average Deal"
           value={formatCurrency(stats.averageValue)}
-          icon={TrendingUp}
-          accent="messaging"
         />
       </div>
 

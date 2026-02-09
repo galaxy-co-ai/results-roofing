@@ -196,12 +196,7 @@ export default function EmailPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <OpsPageHeader
-          title="Email Inbox"
-          description="Manage email communications"
-          icon={Mail}
-          accent="documents"
-        />
+        <OpsPageHeader title="Email Inbox" />
 
         <Button
           variant="outline"

@@ -22,30 +22,18 @@ export function OpsEmptyState({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-[var(--admin-border-default)] p-8',
+        'flex flex-col items-center justify-center py-12',
         className
       )}
     >
-      <div className="rounded-lg bg-[var(--admin-bg-muted)] p-3">
-        <Icon className="size-6 text-[var(--admin-text-tertiary)]" />
-      </div>
-      <div className="text-center">
-        <p
-          className="font-medium text-[var(--admin-text-primary)]"
-          style={{ textWrap: 'balance' }}
-        >
-          {title}
+      <Icon className="h-10 w-10 text-muted-foreground/50" />
+      <p className="mt-3 text-sm font-medium text-foreground">{title}</p>
+      {description && (
+        <p className="mt-1 max-w-[240px] text-center text-xs text-muted-foreground">
+          {description}
         </p>
-        {description && (
-          <p
-            className="mt-1 text-sm text-[var(--admin-text-secondary)]"
-            style={{ textWrap: 'balance' }}
-          >
-            {description}
-          </p>
-        )}
-      </div>
-      {action && <div className="mt-2">{action}</div>}
+      )}
+      {action && <div className="mt-4">{action}</div>}
     </div>
   );
 }

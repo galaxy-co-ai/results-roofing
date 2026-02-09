@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { type OpsAccent } from './OpsStatCard';
+import { type OpsAccent } from './index';
 
 interface OpsOnboardingStepProps {
   step: number;

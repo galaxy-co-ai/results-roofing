@@ -138,12 +138,7 @@ export default function DocumentsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <OpsPageHeader
-          title="Documents"
-          description="Manage signed documents and authorizations"
-          icon={FolderOpen}
-          accent="documents"
-        />
+        <OpsPageHeader title="Documents" />
 
         <Button
           variant="outline"
@@ -194,7 +189,7 @@ export default function DocumentsPage() {
             return (
               <Card
                 key={stat.folder}
-                className="cursor-pointer transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] hover:shadow-md hover:-translate-y-0.5"
+                className="cursor-pointer rounded-lg border border-border hover:bg-accent/50 transition-colors duration-150"
                 onClick={() => handleFolderClick(stat.folder)}
               >
                 <CardContent className="p-4">
@@ -203,8 +198,8 @@ export default function DocumentsPage() {
                       {config.icon}
                     </div>
                     <div>
-                      <p className="font-medium">{config.label}</p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm font-medium">{config.label}</p>
+                      <p className="text-xs text-muted-foreground">
                         {stat.count} document{stat.count !== 1 ? 's' : ''}
                       </p>
                     </div>
@@ -217,7 +212,7 @@ export default function DocumentsPage() {
           {folderStats.length === 0 && !loading && (
             <Card className="col-span-full">
               <CardContent className="p-8 text-center">
-                <FolderOpen className="size-12 text-muted-foreground mx-auto mb-4" />
+                <FolderOpen className="size-10 text-muted-foreground/50 mx-auto mb-4" />
                 <p className="text-muted-foreground">No documents yet</p>
                 <p className="text-sm text-muted-foreground mt-1">
                   Documents will appear here when customers sign deposit authorizations
@@ -247,7 +242,7 @@ export default function DocumentsPage() {
               </div>
             ) : documents.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
-                <FileSignature className="size-12 mx-auto mb-4 opacity-50" />
+                <FileSignature className="size-10 mx-auto mb-4 opacity-50" />
                 <p>No documents in this folder yet</p>
               </div>
             ) : (

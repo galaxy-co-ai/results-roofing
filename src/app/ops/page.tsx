@@ -90,20 +90,10 @@ export default function OpsDashboard() {
   return (
     <div className="space-y-6">
       {/* Header with Tabs */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1
-            className="font-bold tracking-tight text-[var(--admin-text-primary)]"
-            style={{ fontSize: 'var(--admin-text-display)', textWrap: 'balance' }}
-          >
-            Operations Dashboard
-          </h1>
-          <p className="text-[var(--admin-text-secondary)]" style={{ textWrap: 'balance' }}>
-            {ghlConnected
-              ? 'Overview of CRM, messaging, and sales pipeline performance'
-              : 'Connect GoHighLevel to sync your CRM data'}
-          </p>
-        </div>
+      <div className="flex items-center justify-between">
+        <h1 className="text-lg font-semibold text-foreground">
+          Operations Dashboard
+        </h1>
         <Tabs defaultValue="overview" className="w-auto">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -115,26 +105,20 @@ export default function OpsDashboard() {
 
       {/* Connection Status Banner */}
       {!loading && ghlConnected === false && (
-        <Card className="border-[var(--ops-accent-documents)] bg-[var(--ops-accent-documents-muted)]">
+        <Card className="rounded-lg border border-border">
           <CardContent className="flex items-center justify-between gap-4 py-4">
             <div className="flex items-center gap-3">
-              <div className="rounded-lg bg-[color-mix(in_srgb,var(--ops-accent-documents)_20%,transparent)] p-2">
-                <Zap className="size-5 text-[var(--ops-accent-documents)]" />
-              </div>
+              <Zap className="size-5 text-muted-foreground" />
               <div>
-                <p className="font-medium text-[var(--admin-text-primary)]">
+                <p className="text-sm font-medium text-foreground">
                   Connect GoHighLevel to get started
                 </p>
-                <p className="text-sm text-[var(--admin-text-secondary)]">
+                <p className="text-xs text-muted-foreground">
                   Sync contacts, manage messaging, and track your pipeline
                 </p>
               </div>
             </div>
-            <Button
-              size="sm"
-              onClick={handleConnectGHL}
-              className="bg-[var(--ops-accent-documents)] hover:bg-[color-mix(in_srgb,var(--ops-accent-documents)_90%,black)] transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
-            >
+            <Button size="sm" onClick={handleConnectGHL}>
               <Settings className="mr-2 size-4" />
               Configure
             </Button>
@@ -148,32 +132,24 @@ export default function OpsDashboard() {
           label="Total Contacts"
           value={ghlConnected ? '1,234' : '--'}
           change={ghlConnected ? 12.5 : undefined}
-          icon={Users}
-          accent="documents"
           loading={loading}
         />
         <OpsStatCard
           label="Conversations"
           value={ghlConnected ? '89' : '--'}
           change={ghlConnected ? 8.2 : undefined}
-          icon={MessageSquare}
-          accent="messaging"
           loading={loading}
         />
         <OpsStatCard
           label="Pipeline Value"
           value={ghlConnected ? '$142,500' : '--'}
           change={ghlConnected ? 18.3 : undefined}
-          icon={DollarSign}
-          accent="pipeline"
           loading={loading}
         />
         <OpsStatCard
           label="Avg Response Time"
           value={ghlConnected ? '2.4h' : '--'}
           change={ghlConnected ? -15.2 : undefined}
-          icon={Clock}
-          accent="analytics"
           loading={loading}
         />
       </div>
@@ -181,7 +157,7 @@ export default function OpsDashboard() {
       {/* Charts and Content Grid */}
       <div className="grid gap-4 lg:grid-cols-3">
         {/* Activity Chart */}
-        <Card className="lg:col-span-2">
+        <Card className="rounded-lg lg:col-span-2">
           <CardHeader>
             <CardTitle className="text-base">Lead & Job Activity</CardTitle>
             <CardDescription>Monthly leads and completed jobs</CardDescription>
@@ -215,7 +191,7 @@ export default function OpsDashboard() {
         </Card>
 
         {/* Pipeline Chart */}
-        <Card>
+        <Card className="rounded-lg">
           <CardHeader>
             <CardTitle className="text-base">Sales Pipeline</CardTitle>
             <CardDescription>Deals by stage</CardDescription>
@@ -243,7 +219,7 @@ export default function OpsDashboard() {
       </div>
 
       {/* Quick Actions */}
-      <Card>
+      <Card className="rounded-lg">
         <CardHeader>
           <CardTitle className="text-base">Quick Actions</CardTitle>
         </CardHeader>
@@ -283,7 +259,7 @@ export default function OpsDashboard() {
 
       {/* Getting Started Section */}
       {!loading && ghlConnected === false && (
-        <Card>
+        <Card className="rounded-lg">
           <CardHeader>
             <CardTitle className="text-base">Getting Started</CardTitle>
           </CardHeader>

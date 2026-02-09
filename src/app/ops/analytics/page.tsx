@@ -18,15 +18,12 @@ import {
 } from 'recharts';
 import {
   CalendarIcon,
-  TrendingUp,
-  TrendingDown,
   ChevronLeft,
   ChevronRight,
   MoreHorizontal,
   Download,
   RefreshCw,
   Settings,
-  BarChart3,
 } from 'lucide-react';
 import type { DateRange } from 'react-day-picker';
 
@@ -168,12 +165,7 @@ export default function AnalyticsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <OpsPageHeader
-          title="Business Analytics"
-          description={`${daysDiff} day${daysDiff !== 1 ? 's' : ''} selected${dateRange?.from ? ` · ${format(dateRange.from, 'MMM d')} - ${format(dateRange.to || dateRange.from, 'MMM d, yyyy')}` : ''}`}
-          icon={BarChart3}
-          accent="analytics"
-        />
+        <OpsPageHeader title="Business Analytics" />
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center rounded-lg border border-[var(--admin-border-default)]">
             <Button variant="ghost" size="icon" className="rounded-r-none" onClick={() => navigateRange('prev')}>
@@ -223,21 +215,17 @@ export default function AnalyticsPage() {
           { label: 'Leads', value: stats.totalLeads.toLocaleString(), change: 5.7 },
           { label: 'Profit Margin', value: `${stats.profitMargin}%`, change: 2.1 },
         ].map((stat) => (
-          <Card
-            key={stat.label}
-            className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] hover:-translate-y-0.5 hover:shadow-[var(--admin-shadow-md)]"
-          >
-            <CardContent className="pt-6">
-              <p className="text-sm text-[var(--admin-text-secondary)]">{stat.label}</p>
-              <div className="flex items-baseline justify-between">
-                <p className="text-2xl font-bold tabular-nums">{stat.value}</p>
+          <Card key={stat.label} className="rounded-lg border border-border">
+            <CardContent className="p-4">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{stat.label}</p>
+              <div className="mt-1 flex items-baseline justify-between">
+                <p className="text-2xl font-bold tabular-nums text-foreground">{stat.value}</p>
                 <span className={cn(
-                  'flex items-center text-sm tabular-nums',
+                  'text-xs font-medium tabular-nums',
                   stat.change >= 0
-                    ? 'text-[var(--admin-trend-positive)]'
-                    : 'text-[var(--admin-trend-negative)]'
+                    ? 'text-emerald-600 dark:text-emerald-400'
+                    : 'text-red-600 dark:text-red-400'
                 )}>
-                  {stat.change >= 0 ? <TrendingUp className="mr-1 size-3" /> : <TrendingDown className="mr-1 size-3" />}
                   {stat.change >= 0 ? '+' : ''}{stat.change}%
                 </span>
               </div>
