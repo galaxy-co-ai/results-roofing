@@ -24,15 +24,15 @@
   top: 14px;
   left: 32px;
   right: 32px;
-  height: 2px;
+  height: 1px;
   background-color: var(--rr-color-gray-200);
   z-index: 0;
 }
 
 .trackFill {
   height: 100%;
-  background-color: var(--rr-color-success);
-  transition: width var(--rr-duration-slow) var(--rr-ease-out);
+  background-color: var(--rr-color-blue);
+  transition: width 0.3s ease-out;
 }
 
 /* ========================================
@@ -73,9 +73,11 @@
 }
 
 .stageLink:focus-visible {
-  outline: 2px solid var(--rr-color-blue);
-  outline-offset: 2px;
-  border-radius: var(--rr-radius-md);
+  box-shadow:
+    0 0 0 2px var(--rr-color-bg-primary, #fff),
+    0 0 0 4px var(--rr-color-blue);
+  border-radius: 8px;
+  outline: none;
 }
 
 /* ========================================
@@ -88,21 +90,21 @@
   justify-content: center;
   width: 28px;
   height: 28px;
-  border-radius: var(--rr-radius-full);
-  font-size: 0.75rem;
-  font-weight: var(--rr-font-weight-semibold);
-  transition: 
-    background-color var(--rr-duration-normal) var(--rr-ease-in-out),
-    border-color var(--rr-duration-normal) var(--rr-ease-in-out),
-    color var(--rr-duration-normal) var(--rr-ease-in-out),
-    transform var(--rr-duration-normal) var(--rr-ease-out),
-    box-shadow var(--rr-duration-normal) var(--rr-ease-out);
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    background-color 0.15s ease-out,
+    border-color 0.15s ease-out,
+    color 0.15s ease-out,
+    transform 0.15s ease-out,
+    box-shadow 0.15s ease-out;
 }
 
 /* Pending state */
 .stage_pending .stageIndicator {
   background-color: var(--rr-color-white);
-  border: 2px solid var(--rr-color-gray-200);
+  border: 1px solid var(--rr-color-gray-200);
   color: var(--rr-color-text-tertiary);
 }
 
@@ -111,20 +113,21 @@
   background-color: var(--rr-color-blue);
   border: 2px solid var(--rr-color-blue);
   color: var(--rr-color-white);
-  box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 /* Completed state */
 .stage_completed .stageIndicator {
-  background-color: var(--rr-color-success);
-  border: 2px solid var(--rr-color-success);
+  background-color: var(--rr-color-blue);
+  border: 2px solid var(--rr-color-blue);
   color: var(--rr-color-white);
 }
 
 /* Clickable hover */
-.stage_clickable:hover .stageIndicator {
-  transform: translateY(-2px);
-  box-shadow: var(--rr-shadow-charcoal-medium);
+@media (hover: hover) {
+  .stage_clickable:hover .stageIndicator {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+  }
 }
 
 /* ========================================
@@ -136,10 +139,10 @@
 }
 
 .stageLabel {
-  font-size: 0.6875rem;
-  font-weight: var(--rr-font-weight-medium);
+  font-size: 12px;
+  font-weight: 500;
   white-space: nowrap;
-  transition: color var(--rr-duration-normal) var(--rr-ease-in-out);
+  transition: color 0.15s ease-out;
 }
 
 .stage_pending .stageLabel {
@@ -151,7 +154,7 @@
 }
 
 .stage_completed .stageLabel {
-  color: var(--rr-color-success);
+  color: var(--rr-color-text-secondary);
 }
 
 /* ========================================
@@ -159,27 +162,16 @@
    ======================================== */
 
 .connector {
-  display: none; /* Hidden by default, shown on larger screens */
+  display: none; /* Hidden — track handles the visual */
 }
 
 /* ========================================
-   RESPONSIVE STYLES
+   REDUCED MOTION
    ======================================== */
 
-@media (min-width: 640px) {
-  .stageIndicator {
-    width: 32px;
-    height: 32px;
-    font-size: 0.8125rem;
-  }
-
-  .stageLabel {
-    font-size: 0.75rem;
-  }
-
-  .track {
-    top: 16px;
-    left: 48px;
-    right: 48px;
+@media (prefers-reduced-motion: reduce) {
+  .stageIndicator,
+  .trackFill {
+    transition: none;
   }
 }

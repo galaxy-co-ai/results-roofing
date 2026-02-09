@@ -20,21 +20,21 @@ export function TrustBar({ variant = 'light', className = '' }: TrustBarProps) {
     >
       <div className={styles.container}>
         <div className={styles.item}>
-          <Shield size={18} className={styles.icon} aria-hidden="true" />
+          <Shield size={16} className={styles.icon} aria-hidden="true" />
           <span className={styles.text}>Licensed & Insured</span>
         </div>
 
         <div className={styles.divider} aria-hidden="true" />
 
         <div className={styles.item}>
-          <Award size={18} className={styles.icon} aria-hidden="true" />
+          <Award size={16} className={styles.icon} aria-hidden="true" />
           <span className={styles.text}>GAF Certified Contractor</span>
         </div>
 
         <div className={styles.divider} aria-hidden="true" />
 
         <div className={styles.item}>
-          <Star size={18} className={styles.icon} aria-hidden="true" />
+          <Star size={16} className={styles.icon} aria-hidden="true" />
           <span className={styles.text}>4.9 Rating</span>
           <span className={styles.subtext}>(200+ reviews)</span>
         </div>

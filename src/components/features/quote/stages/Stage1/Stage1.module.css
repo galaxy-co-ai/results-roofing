@@ -1,6 +1,6 @@
 /* =================================================
    STAGE 1 STYLES
-   Get Your Quote: Address → Property Confirm → Price Preview
+   Get Your Quote: Address → Property Confirm
    ================================================= */
 
 /* ========================================
@@ -44,18 +44,7 @@
    ======================================== */
 
 .subStep {
-  animation: fadeSlideIn var(--rr-duration-normal) var(--rr-ease-out) forwards;
-}
-
-@keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  /* Animation handled by Framer Motion AnimatePresence now */
 }
 
 /* ========================================
@@ -82,11 +71,13 @@
 }
 
 .title {
-  font-size: var(--rr-font-size-2xl);
-  font-weight: var(--rr-font-weight-semibold);
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 700;
   color: var(--rr-color-text-primary);
   margin-bottom: var(--rr-space-2);
   line-height: var(--rr-line-height-tight);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 .subtitle {
@@ -107,8 +98,8 @@
 
 .label {
   display: block;
-  font-size: var(--rr-font-size-sm);
-  font-weight: var(--rr-font-weight-medium);
+  font-size: 13px;
+  font-weight: 500;
   color: var(--rr-color-text-primary);
   margin-bottom: var(--rr-space-2);
 }
@@ -121,12 +112,12 @@
   text-align: center;
   padding: var(--rr-space-4);
   background-color: var(--rr-color-gray-50);
-  border-radius: var(--rr-radius-md);
+  border-radius: 12px;
 }
 
 .serviceAreaTitle {
   font-size: var(--rr-font-size-sm);
-  font-weight: var(--rr-font-weight-medium);
+  font-weight: 500;
   color: var(--rr-color-text-primary);
   margin-bottom: var(--rr-space-1);
 }
@@ -147,14 +138,12 @@
 
 .imageWrapper {
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  aspect-ratio: 4/3;
-  border-radius: var(--rr-radius-lg);
+  aspect-ratio: 3/2;
+  border-radius: 12px;
   overflow: hidden;
   background-color: var(--rr-color-gray-100);
   border: 1px solid var(--rr-color-border-default);
-  box-shadow: var(--rr-shadow-charcoal-subtle);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
 .satelliteImage {
@@ -178,7 +167,7 @@
 .addressDisplay {
   text-align: center;
   font-size: var(--rr-font-size-base);
-  font-weight: var(--rr-font-weight-medium);
+  font-weight: 500;
   color: var(--rr-color-text-primary);
   margin-bottom: var(--rr-space-6);
 }
@@ -202,7 +191,7 @@
 
 .helpText {
   text-align: center;
-  font-size: var(--rr-font-size-sm);
+  font-size: 12px;
   color: var(--rr-color-text-tertiary);
   margin-top: var(--rr-space-4);
 }
@@ -217,14 +206,14 @@
   justify-content: center;
   gap: var(--rr-space-2);
   width: 100%;
-  height: var(--rr-button-height-lg);
+  height: 48px;
   padding: 0 var(--rr-space-6);
   font-size: var(--rr-font-size-base);
-  font-weight: var(--rr-font-weight-medium);
+  font-weight: 500;
   color: var(--rr-color-white);
   background-color: var(--rr-color-blue);
   border: none;
-  border-radius: var(--rr-radius-md);
+  border-radius: 10px;
   cursor: pointer;
   box-shadow: var(--rr-shadow-charcoal-subtle);
   transition:
@@ -233,61 +222,70 @@
     background-color 0.15s ease-out;
 }
 
-.primaryButton:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: var(--rr-shadow-charcoal-medium);
-  background-color: var(--rr-color-blue-light);
+@media (hover: hover) {
+  .primaryButton:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: var(--rr-shadow-charcoal-medium);
+    background-color: var(--rr-color-blue-light);
+  }
 }
 
 .primaryButton:active:not(:disabled) {
-  transform: translateY(0.5px);
+  transform: scale(0.97);
   box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
 .primaryButton:focus-visible {
-  outline: 2px solid var(--rr-color-blue);
-  outline-offset: 2px;
+  box-shadow:
+    0 0 0 2px var(--rr-color-bg-primary),
+    0 0 0 4px var(--rr-color-blue);
 }
 
 .primaryButton:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
+/* Secondary: ghost/text style per spec — no border */
 .secondaryButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--rr-space-2);
   width: 100%;
-  height: var(--rr-button-height-lg);
-  padding: 0 var(--rr-space-6);
-  font-size: var(--rr-font-size-base);
-  font-weight: var(--rr-font-weight-medium);
-  color: var(--rr-color-text-secondary);
+  height: 44px;
+  padding: 0 var(--rr-space-4);
+  font-size: var(--rr-font-size-sm);
+  font-weight: 500;
+  color: var(--rr-color-text-tertiary);
   background-color: transparent;
-  border: 1px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-md);
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
   transition:
-    background-color 0.15s ease-out,
-    border-color 0.15s ease-out,
-    color 0.15s ease-out;
+    color 0.15s ease-out,
+    background-color 0.15s ease-out;
 }
 
-.secondaryButton:hover:not(:disabled) {
-  background-color: var(--rr-color-surface-hover);
-  border-color: var(--rr-color-border-strong);
-  color: var(--rr-color-text-primary);
+@media (hover: hover) {
+  .secondaryButton:hover:not(:disabled) {
+    color: var(--rr-color-text-primary);
+    background-color: var(--rr-color-surface-hover);
+  }
+}
+
+.secondaryButton:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .secondaryButton:focus-visible {
-  outline: 2px solid var(--rr-color-blue);
-  outline-offset: 2px;
+  box-shadow:
+    0 0 0 2px var(--rr-color-bg-primary),
+    0 0 0 4px var(--rr-color-blue);
 }
 
 .secondaryButton:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
@@ -297,32 +295,37 @@
   gap: var(--rr-space-2);
   padding: var(--rr-space-2) var(--rr-space-3);
   font-size: var(--rr-font-size-sm);
-  font-weight: var(--rr-font-weight-medium);
+  font-weight: 500;
   color: var(--rr-color-text-secondary);
   background: none;
   border: none;
   cursor: pointer;
   border-radius: var(--rr-radius-md);
-  transition: color 0.15s ease-out, background-color 0.15s ease-out;
+  transition:
+    color 0.15s ease-out,
+    background-color 0.15s ease-out;
 }
 
-.textButton:hover:not(:disabled) {
-  color: var(--rr-color-blue);
-  background-color: var(--rr-color-surface-hover);
+@media (hover: hover) {
+  .textButton:hover:not(:disabled) {
+    color: var(--rr-color-blue);
+    background-color: var(--rr-color-surface-hover);
+  }
 }
 
 .textButton:focus-visible {
-  outline: 2px solid var(--rr-color-blue);
-  outline-offset: 2px;
+  box-shadow:
+    0 0 0 2px var(--rr-color-bg-primary),
+    0 0 0 4px var(--rr-color-blue);
 }
 
 .textButton:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 /* ========================================
-   PRICE PREVIEW
+   PRICE PREVIEW (kept for backward compat)
    ======================================== */
 
 .tiersContainer {
@@ -347,9 +350,11 @@
     border-color 0.15s ease-out;
 }
 
-.tierCard:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--rr-shadow-charcoal-medium);
+@media (hover: hover) {
+  .tierCard:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--rr-shadow-charcoal-medium);
+  }
 }
 
 /* Tier color accents */
@@ -371,7 +376,7 @@
 
 .tierName {
   font-size: var(--rr-font-size-base);
-  font-weight: var(--rr-font-weight-semibold);
+  font-weight: 600;
   color: var(--rr-color-text-primary);
   margin-bottom: var(--rr-space-1);
 }
@@ -390,8 +395,9 @@
 
 .priceRange {
   font-size: var(--rr-font-size-lg);
-  font-weight: var(--rr-font-weight-semibold);
+  font-weight: 600;
   color: var(--rr-color-text-primary);
+  font-variant-numeric: tabular-nums;
   margin: 0;
   white-space: nowrap;
 }
@@ -436,14 +442,6 @@
     padding: var(--rr-space-8) var(--rr-space-page-gutter-lg);
   }
 
-  .title {
-    font-size: var(--rr-font-size-3xl);
-  }
-
-  .subtitle {
-    font-size: var(--rr-font-size-lg);
-  }
-
   .actions {
     flex-direction: row;
     justify-content: center;
@@ -473,10 +471,6 @@
    ======================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .subStep {
-    animation: none;
-  }
-
   .spinner {
     animation: none;
   }

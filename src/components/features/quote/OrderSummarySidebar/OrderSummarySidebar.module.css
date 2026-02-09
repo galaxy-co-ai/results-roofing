@@ -4,10 +4,10 @@
    ================================================= */
 
 .container {
-  padding: var(--rr-space-5);
+  padding: 28px;
   background-color: var(--rr-color-white);
   border: 1px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-lg);
+  border-radius: 16px;
   box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
@@ -108,8 +108,9 @@
 
 .priceValue {
   font-size: var(--rr-font-size-sm);
-  font-weight: var(--rr-font-weight-medium);
+  font-weight: 500;
   color: var(--rr-color-text-primary);
+  font-variant-numeric: tabular-nums;
 }
 
 .priceValue_muted {
@@ -119,8 +120,9 @@
 
 .priceTotal {
   font-size: var(--rr-font-size-xl);
-  font-weight: var(--rr-font-weight-bold);
+  font-weight: 700;
   color: var(--rr-color-text-primary);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ========================================

@@ -2,11 +2,13 @@
 
 import { useCallback, useState, useRef, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { AnimatePresence, motion } from 'motion/react';
 import { useQuoteWizard } from '../../QuoteWizardProvider';
 import { AddressEntry } from './AddressEntry';
 import { PropertyConfirm } from './PropertyConfirm';
 import { OutOfAreaCapture } from '@/components/features/address';
 import type { ParsedAddress } from '@/components/features/address';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import styles from './Stage1.module.css';
 
 interface Stage1ContainerProps {
@@ -40,6 +42,7 @@ export function Stage1Container({ initialAddress = '' }: Stage1ContainerProps) {
   const { state, setAddress, confirmProperty, setQuoteId, goToSubStep, setLoading, setError } = useQuoteWizard();
   const [outOfAreaState, setOutOfAreaState] = useState<string | null>(null);
   const [hasCheckedPrefill, setHasCheckedPrefill] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Refs for focus management
   const contentRef = useRef<HTMLDivElement>(null);
@@ -201,7 +204,20 @@ export function Stage1Container({ initialAddress = '' }: Stage1ContainerProps) {
         tabIndex={-1}
         aria-label={getSubStepLabel(state.currentSubStep)}
       >
-        {renderSubStep()}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={outOfAreaState ? 'out-of-area' : state.currentSubStep}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0, 0, 0.2, 1] }}
+            onAnimationComplete={() => {
+              contentRef.current?.focus();
+            }}
+          >
+            {renderSubStep()}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

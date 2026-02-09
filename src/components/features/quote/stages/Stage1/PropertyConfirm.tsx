@@ -2,9 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
+import { motion } from 'motion/react';
 import { CheckCircle, Loader2, MapPin, ArrowLeft, Satellite } from 'lucide-react';
 import type { ParsedAddress } from '@/components/features/address';
 import { useSatelliteMeasurement } from '@/hooks/useSatelliteMeasurement';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import styles from './Stage1.module.css';
 
 interface PropertyConfirmProps {
@@ -38,6 +40,7 @@ export function PropertyConfirm({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const {
     fetchMeasurement,
@@ -106,7 +109,12 @@ export function PropertyConfirm({
       </div>
 
       {/* Satellite Image */}
-      <div className={styles.imageContainer}>
+      <motion.div
+        className={styles.imageContainer}
+        initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0, 0, 0.2, 1] }}
+      >
         <div className={styles.imageWrapper}>
           {satelliteUrl && !imageError ? (
             <>
@@ -136,7 +144,7 @@ export function PropertyConfirm({
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
 
       {/* Address Display */}
       <p className={styles.addressDisplay}>{address.formattedAddress}</p>
@@ -152,10 +160,10 @@ export function PropertyConfirm({
             gap: '8px',
             padding: '12px 16px',
             borderRadius: '8px',
-            backgroundColor: 'var(--color-blue-50, #eff6ff)',
-            border: '1px solid var(--color-blue-200, #bfdbfe)',
+            backgroundColor: 'var(--rr-color-info-light, #eff6ff)',
+            border: '1px solid var(--rr-color-info, #3b82f6)',
             fontSize: '14px',
-            color: 'var(--color-blue-700, #1d4ed8)',
+            color: 'var(--rr-color-info, #3b82f6)',
             marginTop: '8px',
           }}
         >
@@ -175,16 +183,16 @@ export function PropertyConfirm({
             gap: '4px',
             padding: '12px 16px',
             borderRadius: '8px',
-            backgroundColor: 'var(--color-green-50, #f0fdf4)',
-            border: '1px solid var(--color-green-200, #bbf7d0)',
+            backgroundColor: 'var(--rr-color-success-light, #f0fdf4)',
+            border: '1px solid var(--rr-color-success, #22c55e)',
             fontSize: '14px',
             marginTop: '8px',
           }}
         >
-          <span style={{ fontWeight: 500, color: 'var(--color-green-800, #166534)' }}>
+          <span style={{ fontWeight: 500, color: 'var(--rr-color-success, #166534)' }}>
             Satellite Verified
           </span>
-          <span style={{ color: 'var(--color-green-700, #15803d)' }}>
+          <span style={{ color: 'var(--rr-color-success, #15803d)' }}>
             {measurement.sqftTotal.toLocaleString()} sqft &middot;{' '}
             {measurement.pitchPrimary}/12 pitch &middot;{' '}
             {measurement.facetCount} roof planes
@@ -199,10 +207,10 @@ export function PropertyConfirm({
           style={{
             padding: '12px 16px',
             borderRadius: '8px',
-            backgroundColor: 'var(--color-amber-50, #fffbeb)',
-            border: '1px solid var(--color-amber-200, #fde68a)',
+            backgroundColor: 'var(--rr-color-warning-light, #fffbeb)',
+            border: '1px solid var(--rr-color-warning, #f59e0b)',
             fontSize: '14px',
-            color: 'var(--color-amber-800, #92400e)',
+            color: 'var(--rr-color-warning, #92400e)',
             marginTop: '8px',
           }}
         >

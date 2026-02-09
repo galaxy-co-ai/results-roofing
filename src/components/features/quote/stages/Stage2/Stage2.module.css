@@ -1,6 +1,6 @@
 /* =================================================
    STAGE 2 STYLES
-   Customize: Package → Schedule → Financing
+   Customize: Package → Schedule
    ================================================= */
 
 /* ========================================
@@ -39,18 +39,7 @@
    ======================================== */
 
 .subStep {
-  animation: fadeSlideIn var(--rr-duration-normal) var(--rr-ease-out) forwards;
-}
-
-@keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  /* Animation handled by Framer Motion AnimatePresence */
 }
 
 /* ========================================
@@ -70,11 +59,13 @@
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: clamp(24px, 3vw, 32px);
   font-weight: 700;
   color: var(--rr-color-text-primary);
   margin: 0 0 var(--rr-space-2);
-  line-height: 1.2;
+  line-height: var(--rr-line-height-tight);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 .addressLine {
@@ -83,7 +74,7 @@
   justify-content: center;
   gap: 6px;
   margin: 0;
-  font-size: 0.8125rem;
+  font-size: 13px;
   color: var(--rr-color-text-secondary);
 }
 
@@ -105,25 +96,6 @@
 }
 
 /* ========================================
-   URGENCY BANNER
-   ======================================== */
-
-.urgencyBanner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--rr-space-2);
-  padding: var(--rr-space-2) var(--rr-space-4);
-  margin-bottom: var(--rr-space-4);
-  background-color: var(--rr-color-warning-light);
-  border-radius: var(--rr-radius-md);
-  color: var(--rr-color-warning);
-  font-size: var(--rr-font-size-sm);
-  font-weight: var(--rr-font-weight-medium);
-}
-
-
-/* ========================================
    TIERS GRID
    ======================================== */
 
@@ -141,25 +113,42 @@
 .tierCard {
   display: flex;
   flex-direction: column;
-  padding: var(--rr-space-5);
+  padding: 28px;
   background-color: var(--rr-color-white);
-  border: 2px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-lg);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
   box-shadow: var(--rr-shadow-charcoal-subtle);
   position: relative;
   transition:
     transform 0.15s ease-out,
-    box-shadow 0.15s ease-out,
-    border-color 0.15s ease-out;
+    box-shadow 0.15s ease-out;
 }
 
-.tierCard:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--rr-shadow-charcoal-medium);
+@media (hover: hover) {
+  .tierCard:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--rr-shadow-charcoal-medium);
+  }
 }
 
+.tierCard:active {
+  transform: scale(0.99);
+}
+
+/* Preferred / Popular card — elevated treatment */
 .tierCard_popular {
-  border-color: var(--rr-color-blue);
+  border: 2px solid var(--rr-color-blue);
+  background-color: rgba(59, 130, 246, 0.03);
+}
+
+@media (min-width: 768px) {
+  .tierCard_popular {
+    transform: scale(1.02);
+  }
+
+  .tierCard_popular:hover {
+    transform: scale(1.02) translateY(-2px);
+  }
 }
 
 .tierCard_selected {
@@ -179,8 +168,8 @@
   background-color: var(--rr-color-blue);
   color: var(--rr-color-white);
   font-size: var(--rr-font-size-xs);
-  font-weight: var(--rr-font-weight-semibold);
-  border-radius: var(--rr-radius-full);
+  font-weight: 600;
+  border-radius: 100px;
   white-space: nowrap;
 }
 
@@ -197,13 +186,6 @@
   margin: 0;
 }
 
-.tierDescription {
-  font-size: 0.8125rem;
-  color: var(--rr-color-text-tertiary);
-  line-height: 1.5;
-  margin: var(--rr-space-1) 0 0;
-}
-
 /* ========================================
    PRICE SECTION
    ======================================== */
@@ -214,80 +196,19 @@
 }
 
 .totalPrice {
-  font-size: 2rem;
+  font-size: clamp(28px, 3.5vw, 36px);
   font-weight: 700;
   color: var(--rr-color-text-primary);
   letter-spacing: -0.02em;
   line-height: 1.1;
+  font-variant-numeric: tabular-nums;
 }
 
 .pricePerSqft {
-  font-size: 0.75rem;
+  font-size: 12px;
   color: var(--rr-color-text-tertiary);
-  margin-top: 2px;
-}
-
-/* ========================================
-   EXPAND TOGGLE
-   ======================================== */
-
-.expandToggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: var(--rr-space-2) var(--rr-space-3);
-  margin-bottom: var(--rr-space-2);
-  background-color: transparent;
-  border: none;
-  border-radius: var(--rr-radius-sm);
-  font-size: var(--rr-font-size-xs);
-  font-weight: var(--rr-font-weight-medium);
-  color: var(--rr-color-text-tertiary);
-  cursor: pointer;
-  transition: 
-    background-color 0.15s ease-out,
-    color 0.15s ease-out;
-}
-
-.expandToggle:hover {
-  background-color: var(--rr-color-gray-50);
-  color: var(--rr-color-text-secondary);
-}
-
-.expandToggle:focus-visible {
-  outline: 2px solid var(--rr-color-blue);
-  outline-offset: 2px;
-}
-
-.expandIcon {
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.expandIcon_open {
-  transform: rotate(180deg);
-}
-
-/* ========================================
-   FEATURES COLLAPSIBLE
-   ======================================== */
-
-.featuresCollapsible {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  transition: 
-    grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.25s ease-out;
-}
-
-.featuresCollapsible_open {
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-
-.featuresCollapsible > .featuresList {
-  overflow: hidden;
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ========================================
@@ -303,9 +224,9 @@
 .feature {
   display: flex;
   align-items: flex-start;
-  gap: var(--rr-space-2);
+  gap: 8px;
   padding: var(--rr-space-1) 0;
-  font-size: var(--rr-font-size-sm);
+  font-size: 14px;
   color: var(--rr-color-text-secondary);
 }
 
@@ -323,8 +244,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--rr-space-2) 0;
-  margin-bottom: var(--rr-space-3);
+  padding: var(--rr-space-3) 0;
+  margin: 0 auto var(--rr-space-3);
+  width: 80%;
   border-top: 1px solid var(--rr-color-border-default);
   font-size: var(--rr-font-size-xs);
 }
@@ -335,7 +257,8 @@
 
 .depositAmount {
   color: var(--rr-color-text-primary);
-  font-weight: var(--rr-font-weight-semibold);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ========================================
@@ -348,10 +271,10 @@
   justify-content: center;
   gap: var(--rr-space-2);
   width: 100%;
-  height: 40px;
+  height: 44px;
   font-size: var(--rr-font-size-sm);
-  font-weight: var(--rr-font-weight-medium);
-  border-radius: var(--rr-radius-md);
+  font-weight: 500;
+  border-radius: 10px;
   cursor: pointer;
   transition:
     transform 0.15s ease-out,
@@ -363,14 +286,27 @@
   border: 1px solid var(--rr-color-border-default);
 }
 
-.selectButton:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: var(--rr-shadow-charcoal-medium);
-  background-color: var(--rr-color-blue);
-  color: var(--rr-color-white);
-  border-color: var(--rr-color-blue);
+@media (hover: hover) {
+  .selectButton:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: var(--rr-shadow-charcoal-medium);
+    background-color: var(--rr-color-blue);
+    color: var(--rr-color-white);
+    border-color: var(--rr-color-blue);
+  }
 }
 
+.selectButton:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.selectButton:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--rr-color-bg-primary, #fff),
+    0 0 0 4px var(--rr-color-blue);
+}
+
+/* Primary button (on Popular card): filled */
 .selectButton_primary {
   background-color: var(--rr-color-blue);
   color: var(--rr-color-white);
@@ -378,19 +314,16 @@
   box-shadow: var(--rr-shadow-charcoal-subtle);
 }
 
-.selectButton_primary:hover:not(:disabled) {
-  background-color: var(--rr-color-blue-light);
-  border-color: var(--rr-color-blue-light);
+@media (hover: hover) {
+  .selectButton_primary:hover:not(:disabled) {
+    background-color: var(--rr-color-blue-light);
+    border-color: var(--rr-color-blue-light);
+  }
 }
 
 .selectButton:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
-}
-
-.selectButton:focus-visible {
-  outline: 2px solid var(--rr-color-blue);
-  outline-offset: 2px;
 }
 
 /* ========================================
@@ -401,7 +334,7 @@
   text-align: center;
   padding: var(--rr-space-4);
   background-color: var(--rr-color-gray-50);
-  border-radius: var(--rr-radius-md);
+  border-radius: 12px;
 }
 
 .helpText {
@@ -449,34 +382,39 @@
   align-items: center;
   justify-content: center;
   gap: var(--rr-space-2);
-  height: var(--rr-button-height-lg);
+  height: 44px;
   padding: 0 var(--rr-space-5);
-  font-size: var(--rr-font-size-base);
-  font-weight: var(--rr-font-weight-medium);
-  color: var(--rr-color-text-secondary);
+  font-size: var(--rr-font-size-sm);
+  font-weight: 500;
+  color: var(--rr-color-text-tertiary);
   background-color: transparent;
-  border: 1px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-md);
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
   transition:
-    background-color 0.15s ease-out,
-    border-color 0.15s ease-out,
-    color 0.15s ease-out;
+    color 0.15s ease-out,
+    background-color 0.15s ease-out;
 }
 
-.backButton:hover:not(:disabled) {
-  background-color: var(--rr-color-surface-hover);
-  border-color: var(--rr-color-border-strong);
-  color: var(--rr-color-text-primary);
+@media (hover: hover) {
+  .backButton:hover:not(:disabled) {
+    color: var(--rr-color-text-primary);
+    background-color: var(--rr-color-surface-hover);
+  }
+}
+
+.backButton:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .backButton:focus-visible {
-  outline: 2px solid var(--rr-color-blue);
-  outline-offset: 2px;
+  box-shadow:
+    0 0 0 2px var(--rr-color-bg-primary, #fff),
+    0 0 0 4px var(--rr-color-blue);
 }
 
 .backButton:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
@@ -485,14 +423,14 @@
   align-items: center;
   justify-content: center;
   gap: var(--rr-space-2);
-  height: var(--rr-button-height-lg);
+  height: 48px;
   padding: 0 var(--rr-space-6);
   font-size: var(--rr-font-size-base);
-  font-weight: var(--rr-font-weight-medium);
+  font-weight: 500;
   color: var(--rr-color-white);
   background-color: var(--rr-color-blue);
   border: none;
-  border-radius: var(--rr-radius-md);
+  border-radius: 10px;
   cursor: pointer;
   box-shadow: var(--rr-shadow-charcoal-subtle);
   transition:
@@ -501,23 +439,26 @@
     background-color 0.15s ease-out;
 }
 
-.continueButton:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: var(--rr-shadow-charcoal-medium);
-  background-color: var(--rr-color-blue-light);
+@media (hover: hover) {
+  .continueButton:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: var(--rr-shadow-charcoal-medium);
+    background-color: var(--rr-color-blue-light);
+  }
 }
 
 .continueButton:active:not(:disabled) {
-  transform: translateY(0.5px);
+  transform: scale(0.97);
 }
 
 .continueButton:focus-visible {
-  outline: 2px solid var(--rr-color-blue);
-  outline-offset: 2px;
+  box-shadow:
+    0 0 0 2px var(--rr-color-bg-primary, #fff),
+    0 0 0 4px var(--rr-color-blue);
 }
 
 .continueButton:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
@@ -547,10 +488,6 @@
     padding: var(--rr-space-8) var(--rr-space-page-gutter-lg);
   }
 
-  .title {
-    font-size: var(--rr-font-size-3xl);
-  }
-
   .actionsRow {
     flex-direction: row;
     justify-content: center;
@@ -568,10 +505,6 @@
    ======================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .subStep {
-    animation: none;
-  }
-
   .spinner {
     animation: none;
   }
@@ -598,7 +531,7 @@
 .packageCardSkeleton {
   background-color: var(--rr-color-surface-default);
   border: 1px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-lg);
+  border-radius: 16px;
   overflow: hidden;
 }
 
@@ -611,7 +544,7 @@
 
 .calendarSkeleton {
   margin-bottom: var(--rr-space-4);
-  border-radius: var(--rr-radius-lg);
+  border-radius: 16px;
   overflow: hidden;
 }
 
@@ -629,6 +562,6 @@
 }
 
 .financingCardSkeleton {
-  border-radius: var(--rr-radius-lg);
+  border-radius: 16px;
   overflow: hidden;
 }

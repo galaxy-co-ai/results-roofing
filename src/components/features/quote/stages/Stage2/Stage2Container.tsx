@@ -1,10 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useRef } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import { useQuoteWizard } from '../../QuoteWizardProvider';
 import { PackageSelection } from './PackageSelection';
 import { ScheduleSelection } from './ScheduleSelection';
 // Financing selection skipped - users handle financing in dashboard after deposit
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import styles from './Stage2.module.css';
 
 interface Stage2ContainerProps {
@@ -51,6 +53,7 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
     setLoading,
     setError,
   } = useQuoteWizard();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Refs for focus management
   const contentRef = useRef<HTMLDivElement>(null);
@@ -195,7 +198,20 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         tabIndex={-1}
         aria-label={getSubStepLabel(state.currentSubStep)}
       >
-        {renderSubStep()}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={state.currentSubStep}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0, 0, 0.2, 1] }}
+            onAnimationComplete={() => {
+              contentRef.current?.focus();
+            }}
+          >
+            {renderSubStep()}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

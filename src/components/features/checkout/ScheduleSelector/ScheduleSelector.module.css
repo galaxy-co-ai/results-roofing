@@ -6,8 +6,8 @@
 .container {
   background-color: var(--rr-color-white);
   border: 1px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-xl);
-  padding: var(--rr-space-5);
+  border-radius: 16px;
+  padding: 24px;
 }
 
 .container_compact {
@@ -38,7 +38,7 @@
 }
 
 .container_compact .weekday {
-  font-size: 0.65rem;
+  font-size: 11px;
   padding: var(--rr-space-1) 0;
 }
 
@@ -48,7 +48,7 @@
 
 .container_compact .legend {
   margin-top: var(--rr-space-2);
-  font-size: 0.65rem;
+  font-size: 11px;
 }
 
 .container_compact .legendDot_available,
@@ -71,7 +71,7 @@
 }
 
 .container_compact .timeSlotRange {
-  font-size: 0.65rem;
+  font-size: 11px;
 }
 
 /* ========================================
@@ -86,12 +86,12 @@
 }
 
 .headerIcon {
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
 }
 
 .headerTitle {
   font-size: var(--rr-font-size-lg);
-  font-weight: var(--rr-font-weight-semibold);
+  font-weight: 600;
   color: var(--rr-color-text-primary);
   margin: 0;
 }
@@ -118,15 +118,23 @@
   width: 36px;
   height: 36px;
   border: none;
-  border-radius: var(--rr-radius-lg);
-  background-color: var(--rr-color-bg-secondary);
+  border-radius: 10px;
+  background-color: var(--rr-color-gray-50);
   color: var(--rr-color-text-secondary);
   cursor: pointer;
-  transition: var(--rr-transition-colors);
+  transition: background-color 0.15s ease-out;
 }
 
-.navButton:hover:not(:disabled) {
-  background-color: var(--rr-color-sand);
+@media (hover: hover) {
+  .navButton:hover:not(:disabled) {
+    background-color: var(--rr-color-surface-hover);
+  }
+}
+
+.navButton:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--rr-color-bg-primary, #fff),
+    0 0 0 4px var(--rr-color-blue);
 }
 
 .navButton:disabled {
@@ -136,7 +144,7 @@
 
 .monthLabel {
   font-size: var(--rr-font-size-base);
-  font-weight: var(--rr-font-weight-semibold);
+  font-weight: 600;
   color: var(--rr-color-text-primary);
 }
 
@@ -154,7 +162,7 @@
 .weekday {
   text-align: center;
   font-size: var(--rr-font-size-xs);
-  font-weight: var(--rr-font-weight-medium);
+  font-weight: 500;
   color: var(--rr-color-text-tertiary);
   padding: var(--rr-space-2) 0;
 }
@@ -176,7 +184,7 @@
 
 .loadingSpinner {
   animation: spin 1s linear infinite;
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
 }
 
 @keyframes spin {
@@ -209,11 +217,11 @@
   align-items: center;
   justify-content: center;
   border: none;
-  border-radius: var(--rr-radius-lg);
+  border-radius: 10px;
   font-size: var(--rr-font-size-sm);
-  font-weight: var(--rr-font-weight-medium);
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.15s ease-out;
 }
 
 .day_available {
@@ -221,8 +229,10 @@
   color: var(--rr-color-text-primary);
 }
 
-.day_available:hover {
-  background-color: var(--rr-color-success-light, rgba(34, 197, 94, 0.2));
+@media (hover: hover) {
+  .day_available:hover {
+    background-color: var(--rr-color-success-light, rgba(34, 197, 94, 0.2));
+  }
 }
 
 .day_unavailable {
@@ -233,8 +243,9 @@
 }
 
 .day_selected {
-  background-color: var(--rr-color-sandstone) !important;
-  color: var(--rr-color-charcoal) !important;
+  background-color: var(--rr-color-blue) !important;
+  color: var(--rr-color-white) !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
 /* ========================================
@@ -254,13 +265,13 @@
 .legendItem {
   display: flex;
   align-items: center;
-  gap: var(--rr-space-1-5);
+  gap: 6px;
 }
 
 .legendDot_available {
   width: 12px;
   height: 12px;
-  border-radius: var(--rr-radius-sm);
+  border-radius: 4px;
   background-color: var(--rr-color-success-light, rgba(34, 197, 94, 0.15));
   border: 1px solid var(--rr-color-success-light, rgba(34, 197, 94, 0.3));
 }
@@ -268,8 +279,8 @@
 .legendDot_unavailable {
   width: 12px;
   height: 12px;
-  border-radius: var(--rr-radius-sm);
-  background-color: var(--rr-color-bg-secondary);
+  border-radius: 4px;
+  background-color: var(--rr-color-gray-100);
 }
 
 /* ========================================
@@ -293,7 +304,7 @@
 
 .timeSlotLabel {
   font-size: var(--rr-font-size-sm);
-  font-weight: var(--rr-font-weight-medium);
+  font-weight: 500;
   color: var(--rr-color-text-primary);
   margin: 0 0 var(--rr-space-3) 0;
 }
@@ -309,16 +320,24 @@
   flex-direction: column;
   align-items: center;
   gap: var(--rr-space-2);
-  padding: var(--rr-space-4);
+  padding: 20px;
   border: 2px solid var(--rr-color-border-default);
-  border-radius: var(--rr-radius-xl);
+  border-radius: 12px;
   background-color: var(--rr-color-white);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.15s ease-out;
 }
 
-.timeSlotButton:hover:not(:disabled) {
-  border-color: var(--rr-color-sandstone-light, rgba(214, 201, 181, 0.5));
+@media (hover: hover) {
+  .timeSlotButton:hover:not(:disabled):not(.timeSlotButton_selected) {
+    background-color: var(--rr-color-gray-50);
+  }
+}
+
+.timeSlotButton:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--rr-color-bg-primary, #fff),
+    0 0 0 4px var(--rr-color-blue);
 }
 
 .timeSlotButton:disabled {
@@ -327,8 +346,8 @@
 }
 
 .timeSlotButton_selected {
-  border-color: var(--rr-color-sandstone);
-  background-color: var(--rr-color-sandstone-light, rgba(214, 201, 181, 0.1));
+  border-color: var(--rr-color-blue);
+  background-color: rgba(59, 130, 246, 0.05);
 }
 
 .timeIconMorning {
@@ -340,16 +359,32 @@
 }
 
 .timeIconSelected {
-  color: var(--rr-color-sandstone);
+  color: var(--rr-color-blue);
 }
 
 .timeSlotName {
   font-size: var(--rr-font-size-base);
-  font-weight: var(--rr-font-weight-semibold);
+  font-weight: 600;
   color: var(--rr-color-text-primary);
 }
 
 .timeSlotRange {
   font-size: var(--rr-font-size-xs);
   color: var(--rr-color-text-secondary);
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .loadingSpinner {
+    animation: none;
+  }
+
+  .day,
+  .navButton,
+  .timeSlotButton {
+    transition: none;
+  }
 }
