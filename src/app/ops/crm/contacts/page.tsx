@@ -20,13 +20,13 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
 import {
   Select,
   SelectContent,
@@ -162,7 +162,7 @@ export default function ContactsPage() {
           <Button
             size="sm"
             onClick={() => setShowAddDialog(true)}
-            className="bg-[var(--ops-accent-documents)] hover:bg-[color-mix(in_srgb,var(--ops-accent-documents)_90%,black)] transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
+            className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
           >
             <Plus className="mr-2 size-4" />
             Add Contact
@@ -206,116 +206,118 @@ export default function ContactsPage() {
         </CardContent>
       </Card>
 
-      {/* Add Contact Dialog */}
-      <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Add New Contact</DialogTitle>
-            <DialogDescription>
+      {/* Add Contact Sheet */}
+      <Sheet open={showAddDialog} onOpenChange={setShowAddDialog}>
+        <SheetContent side="right" className="w-full sm:max-w-md flex flex-col">
+          <SheetHeader className="border-b pb-4">
+            <SheetTitle>Add New Contact</SheetTitle>
+            <SheetDescription>
               Add a new lead or customer to your CRM.
-            </DialogDescription>
-          </DialogHeader>
+            </SheetDescription>
+          </SheetHeader>
 
-          <form onSubmit={handleAddContact} className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
+          <form onSubmit={handleAddContact} className="flex flex-1 flex-col overflow-hidden">
+            <div className="flex-1 overflow-y-auto space-y-4 py-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">First Name</Label>
+                  <Input
+                    id="firstName"
+                    value={newContact.firstName}
+                    onChange={(e) =>
+                      setNewContact({ ...newContact, firstName: e.target.value })
+                    }
+                    placeholder="John"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last Name</Label>
+                  <Input
+                    id="lastName"
+                    value={newContact.lastName}
+                    onChange={(e) =>
+                      setNewContact({ ...newContact, lastName: e.target.value })
+                    }
+                    placeholder="Smith"
+                  />
+                </div>
+              </div>
+
               <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
-                  id="firstName"
-                  value={newContact.firstName}
+                  id="email"
+                  type="email"
+                  value={newContact.email}
                   onChange={(e) =>
-                    setNewContact({ ...newContact, firstName: e.target.value })
+                    setNewContact({ ...newContact, email: e.target.value })
                   }
-                  placeholder="John"
+                  placeholder="john@example.com"
                 />
               </div>
+
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
+                <Label htmlFor="phone">Phone</Label>
                 <Input
-                  id="lastName"
-                  value={newContact.lastName}
+                  id="phone"
+                  type="tel"
+                  value={newContact.phone}
                   onChange={(e) =>
-                    setNewContact({ ...newContact, lastName: e.target.value })
+                    setNewContact({ ...newContact, phone: e.target.value })
                   }
-                  placeholder="Smith"
+                  placeholder="+1 (555) 123-4567"
                 />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label htmlFor="city">City</Label>
+                  <Input
+                    id="city"
+                    value={newContact.city}
+                    onChange={(e) =>
+                      setNewContact({ ...newContact, city: e.target.value })
+                    }
+                    placeholder="Austin"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="state">State</Label>
+                  <Input
+                    id="state"
+                    value={newContact.state}
+                    onChange={(e) =>
+                      setNewContact({ ...newContact, state: e.target.value })
+                    }
+                    placeholder="TX"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="source">Source</Label>
+                <Select
+                  value={newContact.source}
+                  onValueChange={(value) =>
+                    setNewContact({ ...newContact, source: value })
+                  }
+                >
+                  <SelectTrigger id="source">
+                    <SelectValue placeholder="Select source" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="manual">Manual Entry</SelectItem>
+                    <SelectItem value="website">Website</SelectItem>
+                    <SelectItem value="referral">Referral</SelectItem>
+                    <SelectItem value="google">Google</SelectItem>
+                    <SelectItem value="facebook">Facebook</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={newContact.email}
-                onChange={(e) =>
-                  setNewContact({ ...newContact, email: e.target.value })
-                }
-                placeholder="john@example.com"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
-              <Input
-                id="phone"
-                type="tel"
-                value={newContact.phone}
-                onChange={(e) =>
-                  setNewContact({ ...newContact, phone: e.target.value })
-                }
-                placeholder="+1 (555) 123-4567"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-2">
-                <Label htmlFor="city">City</Label>
-                <Input
-                  id="city"
-                  value={newContact.city}
-                  onChange={(e) =>
-                    setNewContact({ ...newContact, city: e.target.value })
-                  }
-                  placeholder="Austin"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="state">State</Label>
-                <Input
-                  id="state"
-                  value={newContact.state}
-                  onChange={(e) =>
-                    setNewContact({ ...newContact, state: e.target.value })
-                  }
-                  placeholder="TX"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="source">Source</Label>
-              <Select
-                value={newContact.source}
-                onValueChange={(value) =>
-                  setNewContact({ ...newContact, source: value })
-                }
-              >
-                <SelectTrigger id="source">
-                  <SelectValue placeholder="Select source" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="manual">Manual Entry</SelectItem>
-                  <SelectItem value="website">Website</SelectItem>
-                  <SelectItem value="referral">Referral</SelectItem>
-                  <SelectItem value="google">Google</SelectItem>
-                  <SelectItem value="facebook">Facebook</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <DialogFooter className="pt-4">
+            <SheetFooter className="border-t pt-4">
               <Button
                 type="button"
                 variant="outline"
@@ -327,15 +329,15 @@ export default function ContactsPage() {
               <Button
                 type="submit"
                 disabled={isAdding || (!newContact.email && !newContact.phone)}
-                className="bg-[var(--ops-accent-documents)] hover:bg-[color-mix(in_srgb,var(--ops-accent-documents)_90%,black)] transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
+                className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
               >
                 {isAdding && <Loader2 className="mr-2 size-4 animate-spin" />}
                 Add Contact
               </Button>
-            </DialogFooter>
+            </SheetFooter>
           </form>
-        </DialogContent>
-      </Dialog>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
