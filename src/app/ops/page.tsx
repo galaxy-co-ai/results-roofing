@@ -6,7 +6,6 @@ import {
   MessageSquare,
   DollarSign,
   TrendingUp,
-  Clock,
   Zap,
   Settings,
   Inbox,
