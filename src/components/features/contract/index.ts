@@ -4,3 +4,4 @@
  */
 
 export { SignatureCapture } from './SignatureCapture';
+export { ContractFloatingCard } from './ContractFloatingCard';

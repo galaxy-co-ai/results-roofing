@@ -102,12 +102,20 @@ function PaymentsContent({ userEmail, userLoaded }: { userEmail: string | null; 
 
   const PAYMENT_OPTIONS = [
     {
+      id: 'pay-deposit',
+      title: 'Pay Deposit',
+      amount: null,
+      description: 'Secure your installation date',
+      icon: CalendarClock,
+      primary: true,
+    },
+    {
       id: 'pay-balance',
       title: 'Pay Balance in Full',
       amount: order.balance,
       description: 'Pay the remaining balance now',
       icon: DollarSign,
-      primary: true,
+      primary: false,
     },
     {
       id: 'financing',
@@ -209,16 +217,6 @@ function PaymentsContent({ userEmail, userLoaded }: { userEmail: string | null; 
             ))}
           </div>
 
-          <div className={styles.scheduledPayment}>
-            <CalendarClock size={18} className={styles.scheduledIcon} />
-            <div className={styles.scheduledContent}>
-              <span className={styles.scheduledTitle}>Set Up Auto-Pay</span>
-              <span className={styles.scheduledDescription}>
-                Schedule automatic payment upon project completion
-              </span>
-            </div>
-            <ArrowRight size={16} className={styles.scheduledArrow} />
-          </div>
         </section>
 
         {/* Payment History */}

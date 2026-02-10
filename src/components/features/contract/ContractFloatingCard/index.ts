@@ -1,0 +1,1 @@
+export { ContractFloatingCard } from './ContractFloatingCard';

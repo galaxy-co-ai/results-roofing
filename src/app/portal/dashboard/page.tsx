@@ -1,23 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useUser } from '@clerk/nextjs';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   FileText,
   CreditCard,
   Calendar,
   CheckCircle,
+  Circle,
   Clock,
   Home,
   ChevronRight,
-  ChevronDown,
   AlertCircle,
   Sparkles,
   ArrowRight
 } from 'lucide-react';
 import { useOrders, useOrderDetails } from '@/hooks';
 import type { PendingQuote } from '@/hooks';
+import { ContractFloatingCard } from '@/components/features/contract';
 import { FAQBar } from '@/components/features/faq';
 import { Skeleton } from '@/components/ui';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
@@ -355,7 +357,13 @@ function DevDashboard() {
  * Main dashboard content
  */
 function DashboardContent({ userEmail, userLoaded }: { userEmail: string | null; userLoaded: boolean }) {
-  const [detailsExpanded, setDetailsExpanded] = useState(false);
+  const [contractOpen, setContractOpen] = useState(false);
+  const queryClient = useQueryClient();
+
+  const handleContractSigned = useCallback(() => {
+    // Refetch order details to update checklist state
+    queryClient.invalidateQueries({ queryKey: ['order'] });
+  }, [queryClient]);
 
   // Fetch user's orders and pending quotes
   // The API now handles user linking automatically on first visit
@@ -399,13 +407,18 @@ function DashboardContent({ userEmail, userLoaded }: { userEmail: string | null;
     return <NoOrdersState />;
   }
 
-  const { order, timeline } = orderDetails;
+  const { order, timeline, contracts, payments, appointments } = orderDetails;
 
   // Build full address
   const fullAddress = `${order.propertyAddress}, ${order.propertyCity}, ${order.propertyState}`;
 
   // Get next milestone from timeline
   const nextMilestone = timeline.find(step => step.status === 'current' || step.status === 'upcoming');
+
+  // Checklist state derived from order data
+  const contractSigned = contracts?.some(c => c.status === 'signed') ?? false;
+  const walkthroughScheduled = (appointments?.length ?? 0) > 0;
+  const depositPaid = payments?.some(p => p.type === 'deposit' && p.status === 'succeeded') ?? false;
 
   return (
     <div className={styles.dashboard}>
@@ -422,84 +435,63 @@ function DashboardContent({ userEmail, userLoaded }: { userEmail: string | null;
       {/* Project Status Card */}
       <section className={styles.statusCard} aria-labelledby="status-heading">
         <h2 id="status-heading" className="sr-only">Project Status</h2>
-        
-        <div className={styles.statusHeader}>
-          <div className={styles.statusBadge}>
-            <Calendar size={16} aria-hidden="true" />
-            <span>{getStatusDisplayName(order.status)}</span>
-          </div>
-          <span className={styles.statusPhase}>{getCurrentPhase(order.status)}</span>
-        </div>
 
         <div className={styles.propertyInfo}>
           <Home size={18} className={styles.propertyIcon} aria-hidden="true" />
           <span className={styles.propertyAddress}>{fullAddress}</span>
         </div>
 
-        {nextMilestone && (
-          <div className={styles.nextMilestone}>
-            <Calendar size={18} className={styles.milestoneIcon} aria-hidden="true" />
-            <span className={styles.milestoneText}>
-              <strong>{nextMilestone.label}</strong>
-              {order.scheduledStartDate 
-                ? ` scheduled for ${formatDate(order.scheduledStartDate)}`
-                : ' - date to be scheduled'
+        {/* Project Checklist */}
+        <ol className={styles.checklist} aria-label="Project checklist">
+          <li
+            className={`${styles.checklistItem} ${!contractSigned ? styles.checklistClickable : ''}`}
+            onClick={!contractSigned ? () => setContractOpen(true) : undefined}
+            role={!contractSigned ? 'button' : undefined}
+            tabIndex={!contractSigned ? 0 : undefined}
+            onKeyDown={!contractSigned ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setContractOpen(true); } } : undefined}
+          >
+            <div className={styles.checklistIcon}>
+              {contractSigned
+                ? <CheckCircle size={20} className={styles.checklistCompleted} aria-hidden="true" />
+                : <Circle size={20} className={styles.checklistPending} aria-hidden="true" />
               }
-            </span>
-          </div>
-        )}
-
-        {/* Expandable Project Details */}
-        <button 
-          className={styles.detailsToggle}
-          onClick={() => setDetailsExpanded(!detailsExpanded)}
-          aria-expanded={detailsExpanded}
-          aria-controls="project-details"
-        >
-          <span>Project Details</span>
-          <ChevronDown 
-            size={18} 
-            className={`${styles.detailsChevron} ${detailsExpanded ? styles.detailsChevronOpen : ''}`}
-            aria-hidden="true"
-          />
-        </button>
-
-        <div 
-          id="project-details"
-          className={`${styles.projectDetails} ${detailsExpanded ? styles.projectDetailsOpen : ''}`}
-        >
-          <div className={styles.detailsGrid}>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Package</span>
-              <span className={styles.detailValue}>{getTierDisplayName(order.selectedTier)}</span>
             </div>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Confirmation</span>
-              <span className={styles.detailValue}>{order.confirmationNumber}</span>
-            </div>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Scheduled Date</span>
-              <span className={styles.detailValue}>
-                {order.scheduledStartDate ? formatDate(order.scheduledStartDate) : 'To be scheduled'}
+            <div className={styles.checklistContent}>
+              <span className={contractSigned ? styles.checklistLabelDone : styles.checklistLabel}>
+                Complete project contract
               </span>
             </div>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Project Total</span>
-              <span className={styles.detailValue}>{formatCurrency(order.totalPrice)}</span>
+            {!contractSigned && (
+              <ChevronRight size={16} className={styles.checklistArrow} aria-hidden="true" />
+            )}
+          </li>
+          <li className={styles.checklistItem}>
+            <div className={styles.checklistIcon}>
+              {walkthroughScheduled
+                ? <CheckCircle size={20} className={styles.checklistCompleted} aria-hidden="true" />
+                : <Circle size={20} className={styles.checklistPending} aria-hidden="true" />
+              }
             </div>
-          </div>
-          
-          <div className={styles.paymentSummary}>
-            <div className={styles.paymentRow}>
-              <span>Total Paid</span>
-              <span className={styles.paymentPaid}>{formatCurrency(order.totalPaid)}</span>
+            <div className={styles.checklistContent}>
+              <span className={walkthroughScheduled ? styles.checklistLabelDone : styles.checklistLabel}>
+                Schedule project walkthrough
+              </span>
             </div>
-            <div className={styles.paymentRow}>
-              <span>Balance Due</span>
-              <span className={styles.paymentDue}>{formatCurrency(order.balance)}</span>
+          </li>
+          <li className={styles.checklistItem}>
+            <div className={styles.checklistIcon}>
+              {depositPaid
+                ? <CheckCircle size={20} className={styles.checklistCompleted} aria-hidden="true" />
+                : <Circle size={20} className={styles.checklistPending} aria-hidden="true" />
+              }
             </div>
-          </div>
-        </div>
+            <div className={styles.checklistContent}>
+              <span className={depositPaid ? styles.checklistLabelDone : styles.checklistLabel}>
+                Pay deposit &amp; confirm schedule
+              </span>
+            </div>
+          </li>
+        </ol>
       </section>
 
       {/* Two Column Layout */}
@@ -560,6 +552,15 @@ function DashboardContent({ userEmail, userLoaded }: { userEmail: string | null;
 
       {/* FAQ Bar */}
       <FAQBar />
+
+      {/* Contract Floating Card */}
+      <ContractFloatingCard
+        isOpen={contractOpen}
+        onClose={() => setContractOpen(false)}
+        onSigned={handleContractSigned}
+        order={order}
+        contract={contracts?.[0] ?? null}
+      />
     </div>
   );
 }
