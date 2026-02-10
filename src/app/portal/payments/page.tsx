@@ -7,7 +7,6 @@ import {
   Clock,
   DollarSign,
   Download,
-  ArrowRight,
   Wallet,
   CalendarClock,
   AlertCircle,

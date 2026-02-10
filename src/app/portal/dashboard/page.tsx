@@ -52,15 +52,6 @@ const QUICK_ACTIONS = [
   },
 ];
 
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
-
 function formatDate(dateString: string | Date | null): string {
   if (!dateString) return 'TBD';
   const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
@@ -82,40 +73,6 @@ function getStatusIcon(status: 'completed' | 'current' | 'upcoming') {
   }
 }
 
-function getStatusDisplayName(status: string): string {
-  const statusMap: Record<string, string> = {
-    pending: 'Pending',
-    deposit_paid: 'Deposit Paid',
-    scheduled: 'Scheduled',
-    in_progress: 'In Progress',
-    completed: 'Completed',
-    cancelled: 'Cancelled',
-    refunded: 'Refunded',
-  };
-  return statusMap[status] || status;
-}
-
-function getTierDisplayName(tier: string): string {
-  const tierMap: Record<string, string> = {
-    good: 'Essential Package',
-    better: 'Premium Package',
-    best: 'Elite Package',
-  };
-  return tierMap[tier] || tier;
-}
-
-function getCurrentPhase(status: string): string {
-  const phaseMap: Record<string, string> = {
-    pending: 'Awaiting Deposit',
-    deposit_paid: 'Materials Ordered',
-    scheduled: 'Installation Scheduled',
-    in_progress: 'Installation In Progress',
-    completed: 'Project Complete',
-    cancelled: 'Cancelled',
-    refunded: 'Refunded',
-  };
-  return phaseMap[status] || 'Unknown';
-}
 
 /**
  * Loading skeleton for the dashboard
@@ -411,9 +368,6 @@ function DashboardContent({ userEmail, userLoaded }: { userEmail: string | null;
 
   // Build full address
   const fullAddress = `${order.propertyAddress}, ${order.propertyCity}, ${order.propertyState}`;
-
-  // Get next milestone from timeline
-  const nextMilestone = timeline.find(step => step.status === 'current' || step.status === 'upcoming');
 
   // Checklist state derived from order data
   const contractSigned = contracts?.some(c => c.status === 'signed') ?? false;
