@@ -11,6 +11,7 @@ interface ContractFloatingCardProps {
   onSigned: () => void;
   order: {
     id: string;
+    quoteId: string | null;
     propertyAddress: string;
     propertyCity: string;
     propertyState: string;
@@ -70,7 +71,8 @@ export function ContractFloatingCard({
   }, [isOpen, onClose]);
 
   const handleSignatureSubmit = useCallback(async (signature: string, email: string) => {
-    const res = await fetch(`/api/quotes/${order.id}/deposit-auth`, {
+    const quoteId = order.quoteId || order.id;
+    const res = await fetch(`/api/quotes/${quoteId}/deposit-auth`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -35,6 +35,7 @@ interface PendingQuote {
 }
 
 interface OrderDetails extends Order {
+  quoteId: string | null;
   customerName: string | null;
   customerEmail: string;
   customerPhone: string | null;
@@ -101,6 +102,7 @@ const MOCK_ORDER: Order = {
 const MOCK_ORDER_DETAILS: OrderDetailsResponse = {
   order: {
     ...MOCK_ORDER,
+    quoteId: 'dev-quote-123',
     customerName: 'Dev User',
     customerEmail: 'dev@example.com',
     customerPhone: '(555) 123-4567',
