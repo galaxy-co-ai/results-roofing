@@ -372,7 +372,9 @@ function DashboardContent({ userEmail, userLoaded }: { userEmail: string | null;
   // Checklist state derived from order data
   const contractSigned = contracts?.some(c => c.status === 'signed') ?? false;
   const walkthroughScheduled = (appointments?.length ?? 0) > 0;
-  const depositPaid = payments?.some(p => p.type === 'deposit' && p.status === 'succeeded') ?? false;
+  const hasDepositPayment = payments?.some(p => p.type === 'deposit' && p.status === 'succeeded') ?? false;
+  // Step 3 requires all prior steps complete
+  const depositPaid = contractSigned && walkthroughScheduled && hasDepositPayment;
 
   return (
     <div className={styles.dashboard}>
