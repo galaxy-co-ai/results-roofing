@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { db, schema, eq, and } from '@/db/index';
 import { logger } from '@/lib/utils';
+import { resendAdapter } from '@/lib/integrations/adapters';
 
 // Request validation schema
 const depositAuthSchema = z.object({
@@ -58,14 +59,6 @@ export async function POST(
       return NextResponse.json({ error: 'Quote not found' }, { status: 404 });
     }
 
-    // Verify quote is in scheduled status (scheduling completed)
-    if (!quote.scheduledDate || !quote.scheduledSlotId) {
-      return NextResponse.json(
-        { error: 'Quote must be scheduled before authorizing deposit' },
-        { status: 400 }
-      );
-    }
-
     // Get client info for audit trail
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
                request.headers.get('x-real-ip') ||
@@ -79,12 +72,12 @@ export async function POST(
     });
 
     if (existingContract) {
-      // Update existing contract with deposit authorization and email
+      // Update existing contract with signed status
       await db
         .update(schema.contracts)
         .set({
           customerEmail: email,
-          status: 'pending', // Pending payment
+          status: 'signed',
           signedAt: timestamp,
           signatureIp: ip,
           signatureUserAgent: userAgent,
@@ -94,12 +87,12 @@ export async function POST(
 
       logger.info(`Updated contract ${existingContract.id} with deposit authorization for quote ${quoteId}`);
     } else {
-      // Create new contract record with deposit authorization
+      // Create new contract record as signed
       const [newContract] = await db
         .insert(schema.contracts)
         .values({
           quoteId,
-          status: 'pending', // Pending payment
+          status: 'signed',
           customerEmail: email,
           signedAt: timestamp,
           signatureIp: ip,
@@ -186,6 +179,25 @@ export async function POST(
       timestamp: timestamp.toISOString(),
       termsVersion,
     });
+
+    // Send contract signed confirmation email
+    try {
+      const address = [quote.address, quote.city, quote.state].filter(Boolean).join(', ');
+      await resendAdapter.send({
+        to: email,
+        subject: 'Contract Signed - Results Roofing',
+        template: 'project_update',
+        data: {
+          customerName: fullName || email,
+          message: `Your project contract for <strong>${address}</strong> has been signed successfully. You can view your contract and project details anytime in your customer portal.`,
+          portalUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'https://app.resultsroofing.com'}/portal/documents`,
+        },
+      });
+      logger.info(`Contract confirmation email sent to ${email} for quote ${quoteId}`);
+    } catch (emailError) {
+      // Non-critical — don't fail the signing if email fails
+      logger.error('Failed to send contract confirmation email', emailError);
+    }
 
     return NextResponse.json({
       success: true,

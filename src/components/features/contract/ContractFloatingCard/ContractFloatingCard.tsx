@@ -78,6 +78,7 @@ export function ContractFloatingCard({
       body: JSON.stringify({
         signature,
         email,
+        fullName: signature,
         agreedToTerms: true,
         termsVersion: '1.0',
       }),
