@@ -61,7 +61,7 @@ export default function BlogPage() {
               <TableHead>Author</TableHead>
               <TableHead>Published</TableHead>
               <TableHead className="text-right"><div className="flex items-center justify-end gap-1">Views <ArrowUpDown className="h-3 w-3" /></div></TableHead>
-              <TableHead className="w-10"></TableHead>
+              <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
           <TableBody>

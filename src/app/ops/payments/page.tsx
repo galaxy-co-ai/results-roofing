@@ -80,8 +80,6 @@ export default function PaymentsPage() {
   const approvedPayments = payments.filter(p => p.payStatus === 'approved');
   const totalReceived = approvedPayments.reduce((s, p) => s + p.amount, 0);
   const failedTotal = payments.filter(p => p.payStatus === 'failed').reduce((s, p) => s + p.amount, 0);
-  const refundedTotal = payments.filter(p => p.payStatus === 'refunded').reduce((s, p) => s + p.amount, 0);
-
   function handleDelete(p: Payment) {
     setPayments(prev => prev.filter(pay => pay.id !== p.id));
     setViewPayment(null);
@@ -184,7 +182,7 @@ export default function PaymentsPage() {
               <TableHead>Method</TableHead>
               <TableHead>Payment Status</TableHead>
               <TableHead>Funding</TableHead>
-              <TableHead className="w-10"></TableHead>
+              <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
           <TableBody>

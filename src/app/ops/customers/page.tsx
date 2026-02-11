@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Plus, Search, MoreHorizontal, ArrowUpDown, Pencil, Trash2, Eye, X } from 'lucide-react';
+import { Plus, Search, MoreHorizontal, ArrowUpDown, Pencil, Trash2, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -51,7 +51,7 @@ const STATUSES = ['all', 'active', 'lead', 'past'];
 const SOURCES = ['all', 'Website', 'Referral', 'Google Ads', 'Door Knock', 'Facebook'];
 
 export default function CustomersPage() {
-  const { info, success, error } = useToast();
+  const { success, error } = useToast();
   const [customers, setCustomers] = useState<Customer[]>(INITIAL_CUSTOMERS);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -243,7 +243,7 @@ export default function CustomersPage() {
               <TableHead>Last Activity</TableHead>
               <TableHead>Source</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead className="w-10"></TableHead>
+              <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
           <TableBody>

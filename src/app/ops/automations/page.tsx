@@ -157,7 +157,7 @@ export default function AutomationsPage() {
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Runs</TableHead>
               <TableHead>Last Triggered</TableHead>
-              <TableHead className="w-10"></TableHead>
+              <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
           <TableBody>

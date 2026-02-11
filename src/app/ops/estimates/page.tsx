@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Plus, Search, MoreHorizontal, ArrowUpDown, Eye, Pencil, Trash2, X, Send, Copy } from 'lucide-react';
+import { Plus, Search, MoreHorizontal, ArrowUpDown, Eye, Trash2, Send, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -51,7 +51,7 @@ const STATUS_STYLES: Record<string, string> = {
 const STATUSES = ['all', 'draft', 'sent', 'viewed', 'signed', 'rejected', 'expired'];
 
 export default function EstimatesPage() {
-  const { success, info } = useToast();
+  const { success } = useToast();
   const [estimates, setEstimates] = useState(INITIAL_ESTIMATES);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -197,7 +197,7 @@ export default function EstimatesPage() {
               <TableHead>Created</TableHead>
               <TableHead>Sent</TableHead>
               <TableHead>Signed</TableHead>
-              <TableHead className="w-10"></TableHead>
+              <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
           <TableBody>

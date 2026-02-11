@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { Plus, Search, LayoutGrid, List, MoreHorizontal, GripVertical } from 'lucide-react';
+import { useState } from 'react';
+import { Plus, Search, LayoutGrid, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {

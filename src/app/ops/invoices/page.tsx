@@ -49,7 +49,7 @@ const STATUS_STYLES: Record<string, string> = {
 const STATUSES = ['all', 'draft', 'sent', 'paid', 'partial', 'overdue'];
 
 export default function InvoicesPage() {
-  const { success, info } = useToast();
+  const { success } = useToast();
   const [invoices, setInvoices] = useState(INITIAL_INVOICES);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -211,7 +211,7 @@ export default function InvoicesPage() {
               <TableHead>Status</TableHead>
               <TableHead>Due Date</TableHead>
               <TableHead>Method</TableHead>
-              <TableHead className="w-10"></TableHead>
+              <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
           <TableBody>

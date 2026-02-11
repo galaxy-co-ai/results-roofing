@@ -1,6 +1,6 @@
 'use client';
 
-import { Download, TrendingUp, TrendingDown, ArrowRight } from 'lucide-react';
+import { Download, TrendingUp, TrendingDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -90,7 +90,7 @@ export default function ReportsPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {PIPELINE_STAGES.map((stage, i) => (
+                {PIPELINE_STAGES.map((stage, _i) => (
                   <div key={stage.name} className="flex items-center gap-3">
                     <span className="text-xs text-muted-foreground w-28 text-right">{stage.name}</span>
                     <div className="flex-1 flex items-center gap-2">

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Plus, Search, MoreHorizontal, Eye, Pencil, Trash2, Mail, Phone } from 'lucide-react';
+import { Plus, Search, MoreHorizontal, Eye, Pencil, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -199,7 +199,7 @@ export default function TeamPage() {
               <TableHead className="text-center">Active Jobs</TableHead>
               <TableHead className="text-right">Revenue</TableHead>
               <TableHead>Last Active</TableHead>
-              <TableHead className="w-10"></TableHead>
+              <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
           <TableBody>

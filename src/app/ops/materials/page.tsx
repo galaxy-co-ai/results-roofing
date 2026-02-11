@@ -192,7 +192,7 @@ export default function MaterialsPage() {
               <TableHead>Status</TableHead>
               <TableHead>Ordered</TableHead>
               <TableHead>Delivery</TableHead>
-              <TableHead className="w-10"></TableHead>
+              <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
           <TableBody>

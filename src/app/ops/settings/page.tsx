@@ -1,11 +1,10 @@
 'use client';
 
-import { Save, Building2, GitBranch, FileText, Link2, Bell, CreditCard, Users, Database } from 'lucide-react';
+import { Save, Building2, GitBranch, Link2, Bell, Database } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/components/ui/Toast';
 
 const INTEGRATIONS = [

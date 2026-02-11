@@ -80,7 +80,7 @@ const INITIAL_MESSAGES: Record<string, Message[]> = {
 type ChannelFilter = 'all' | 'unread' | 'email' | 'sms';
 
 export default function InboxPage() {
-  const { info, success } = useToast();
+  const { info } = useToast();
   const [conversations, setConversations] = useState(INITIAL_CONVERSATIONS);
   const [messages, setMessages] = useState<Record<string, Message[]>>(INITIAL_MESSAGES);
   const [selectedId, setSelectedId] = useState('1');

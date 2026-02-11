@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, ChevronLeft, ChevronRight, X, Clock, MapPin } from 'lucide-react';
+import { Plus, ChevronLeft, ChevronRight, Clock, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -63,7 +63,6 @@ export default function CalendarPage() {
   const [currentYear, setCurrentYear] = useState(now.getFullYear());
   const [events, setEvents] = useState<Record<number, CalEvent[]>>(INITIAL_EVENTS);
   const [showNewDialog, setShowNewDialog] = useState(false);
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [viewEvent, setViewEvent] = useState<{ day: number; event: CalEvent } | null>(null);
 
   // Form state
