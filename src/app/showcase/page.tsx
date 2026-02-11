@@ -334,9 +334,7 @@ export default function ShowcasePage() {
             <CarouselContent className="-ml-4">
               {data.carouselItems.map((item, i) => (
                 <CarouselItem key={item.label} className="pl-4 basis-[85%] md:basis-1/3">
-                  <Card className={`overflow-hidden transition-all duration-200 ${
-                    i === carouselIdx ? 'ring-2 ring-blue-600 ring-offset-2' : 'hover:shadow-md'
-                  }`}>
+                  <Card className="overflow-hidden transition-all duration-200 hover:shadow-md">
                     <CardContent className="p-0">
                       <div className="relative aspect-[16/10] bg-gray-100">
                         <Image
