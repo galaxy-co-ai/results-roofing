@@ -313,13 +313,13 @@ export default function ShowcasePage() {
             <button
               onClick={() => scrollCarousel('left')}
               disabled={carouselIdx === 0}
-              className="shrink-0 w-11 h-11 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-500 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="hidden md:flex shrink-0 w-11 h-11 rounded-full bg-white border border-gray-200 shadow-sm items-center justify-center text-gray-500 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
-            <div ref={trackRef} className="flex-1 flex gap-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth">
+            <div ref={trackRef} className="flex-1 flex gap-4 md:gap-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth px-1">
               {data.carouselItems.map((item, i) => (
-                <div key={item.label} className="shrink-0 w-[calc(33.333%-14px)] snap-center space-y-3">
+                <div key={item.label} className="shrink-0 w-[85%] md:w-[calc(33.333%-14px)] snap-center space-y-3">
                   <div className={`rounded-xl border border-gray-200 bg-white overflow-hidden aspect-[16/10] transition-all ${
                     i === carouselIdx ? 'ring-2 ring-blue-600 ring-offset-2' : ''
                   }`}>
@@ -337,7 +337,7 @@ export default function ShowcasePage() {
             <button
               onClick={() => scrollCarousel('right')}
               disabled={carouselIdx === data.carouselItems.length - 1}
-              className="shrink-0 w-11 h-11 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-500 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="hidden md:flex shrink-0 w-11 h-11 rounded-full bg-white border border-gray-200 shadow-sm items-center justify-center text-gray-500 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
