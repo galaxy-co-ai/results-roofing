@@ -1,12 +1,18 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Briefcase, FileText, Users, Inbox, Zap, BarChart3,
   Satellite, DollarSign, CreditCard, LayoutDashboard, Bell, FileCheck,
-  ChevronLeft, ChevronRight, ArrowRight, Play,
+  ArrowRight, Play,
 } from 'lucide-react';
+import {
+  Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious,
+  type CarouselApi,
+} from '@/components/ui/carousel';
+import { Card, CardContent } from '@/components/ui/card';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -123,20 +129,28 @@ const HOMEOWNERS_DATA: ViewData = {
 
 export default function ShowcasePage() {
   const [view, setView] = useState<View>('homeowners');
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [carouselIdx, setCarouselIdx] = useState(0);
-  const trackRef = useRef<HTMLDivElement>(null);
 
   const data = view === 'team' ? TEAM_DATA : HOMEOWNERS_DATA;
 
-  // Reset carousel on view change
-  useEffect(() => { setCarouselIdx(0); }, [view]);
+  // Track active slide
+  const onSelect = useCallback(() => {
+    if (!carouselApi) return;
+    setCarouselIdx(carouselApi.selectedScrollSnap());
+  }, [carouselApi]);
 
-  function scrollCarousel(dir: 'left' | 'right') {
-    const max = data.carouselItems.length - 1;
-    const next = dir === 'left' ? Math.max(0, carouselIdx - 1) : Math.min(max, carouselIdx + 1);
-    setCarouselIdx(next);
-    trackRef.current?.children[next]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  }
+  useEffect(() => {
+    if (!carouselApi) return;
+    onSelect();
+    carouselApi.on('select', onSelect);
+    return () => { carouselApi.off('select', onSelect); };
+  }, [carouselApi, onSelect]);
+
+  // Reset carousel on view change
+  useEffect(() => {
+    if (carouselApi) carouselApi.scrollTo(0);
+  }, [view, carouselApi]);
 
   return (
     <div className="min-h-screen bg-white" style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}>
@@ -234,11 +248,14 @@ export default function ShowcasePage() {
             </div>
           </div>
           {/* Screen content */}
-          <div className="bg-gray-100 aspect-[16/9] overflow-hidden">
-            <img
+          <div className="relative bg-gray-100 aspect-[16/9] overflow-hidden">
+            <Image
               src={view === 'team' ? '/showcase/dashboard.png' : '/showcase/packages.png'}
               alt={view === 'team' ? 'Ops Dashboard' : 'Quote Flow'}
-              className="w-full h-full object-cover object-top"
+              fill
+              className="object-cover object-top"
+              sizes="(max-width: 768px) 100vw, 1100px"
+              priority
             />
           </div>
         </div>
@@ -309,49 +326,45 @@ export default function ShowcasePage() {
           </div>
 
           {/* Carousel */}
-          <div className="flex items-center gap-6">
-            <button
-              onClick={() => scrollCarousel('left')}
-              disabled={carouselIdx === 0}
-              className="hidden md:flex shrink-0 w-11 h-11 rounded-full bg-white border border-gray-200 shadow-sm items-center justify-center text-gray-500 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <div ref={trackRef} className="flex-1 flex gap-4 md:gap-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth px-1">
+          <Carousel
+            setApi={setCarouselApi}
+            opts={{ align: 'start', loop: true }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-4">
               {data.carouselItems.map((item, i) => (
-                <div key={item.label} className="shrink-0 w-[85%] md:w-[calc(33.333%-14px)] snap-center space-y-3">
-                  <div className={`rounded-xl border border-gray-200 bg-white overflow-hidden aspect-[16/10] transition-all ${
-                    i === carouselIdx ? 'ring-2 ring-blue-600 ring-offset-2' : ''
+                <CarouselItem key={item.label} className="pl-4 basis-[85%] md:basis-1/3">
+                  <Card className={`overflow-hidden transition-all duration-200 ${
+                    i === carouselIdx ? 'ring-2 ring-blue-600 ring-offset-2' : 'hover:shadow-md'
                   }`}>
-                    <img
-                      src={item.image}
-                      alt={item.label}
-                      className="w-full h-full object-cover object-top"
-                      loading="lazy"
-                    />
-                  </div>
-                  <p className="text-sm font-semibold text-gray-700 text-center">{item.label}</p>
-                </div>
+                    <CardContent className="p-0">
+                      <div className="relative aspect-[16/10] bg-gray-100">
+                        <Image
+                          src={item.image}
+                          alt={item.label}
+                          fill
+                          className="object-cover object-top"
+                          sizes="(max-width: 768px) 85vw, 33vw"
+                        />
+                      </div>
+                      <div className="px-4 py-3">
+                        <p className="text-sm font-semibold text-gray-700 text-center">{item.label}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
               ))}
-            </div>
-            <button
-              onClick={() => scrollCarousel('right')}
-              disabled={carouselIdx === data.carouselItems.length - 1}
-              className="hidden md:flex shrink-0 w-11 h-11 rounded-full bg-white border border-gray-200 shadow-sm items-center justify-center text-gray-500 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-          </div>
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex -left-12" />
+            <CarouselNext className="hidden md:flex -right-12" />
+          </Carousel>
 
           {/* Dots */}
           <div className="flex items-center justify-center gap-2">
             {data.carouselItems.map((_item, i) => (
               <button
                 key={i}
-                onClick={() => {
-                  setCarouselIdx(i);
-                  trackRef.current?.children[i]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                }}
+                onClick={() => carouselApi?.scrollTo(i)}
                 className={`rounded-full transition-all ${
                   i === carouselIdx ? 'w-2.5 h-2.5 bg-blue-600' : 'w-2 h-2 bg-gray-300'
                 }`}
@@ -401,11 +414,6 @@ export default function ShowcasePage() {
         </span>
       </footer>
 
-      {/* Hide scrollbar utility */}
-      <style jsx global>{`
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-      `}</style>
     </div>
   );
 }
