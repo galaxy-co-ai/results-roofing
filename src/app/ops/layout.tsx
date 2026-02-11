@@ -1,8 +1,28 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import { Sora, Inter, JetBrains_Mono } from 'next/font/google';
 import { OpsLayoutClient } from './OpsLayoutClient';
 import { OpsLogin } from './OpsLogin';
-import '@/styles/globals.css';
+import '@/styles/ops-tokens.css';
+import '@/styles/ops-shadcn-bridge.css';
+
+const sora = Sora({
+  subsets: ['latin'],
+  variable: '--font-sora',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -33,5 +53,7 @@ export default async function OpsLayout({ children }: { children: React.ReactNod
     return <OpsLogin />;
   }
 
-  return <OpsLayoutClient>{children}</OpsLayoutClient>;
+  const fontClasses = `${sora.variable} ${inter.variable} ${jetbrainsMono.variable}`;
+
+  return <OpsLayoutClient fontClasses={fontClasses}>{children}</OpsLayoutClient>;
 }

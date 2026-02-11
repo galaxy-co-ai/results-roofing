@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Sora, Inter, JetBrains_Mono } from 'next/font/google';
 import { Providers } from '@/components/providers/Providers';
 import { ChatProvider, ChatWidget } from '@/components/features/support';
 import { DocumentProvider, DocumentViewer } from '@/components/features/documents';
@@ -6,6 +7,24 @@ import { FAQProvider, FAQModal } from '@/components/features/faq';
 import { FeedbackProvider, FeedbackWidget } from '@/components/features/feedback';
 import { AdminAccessTrigger } from '@/components/features/admin';
 import '@/styles/globals.css';
+
+const sora = Sora({
+  subsets: ['latin'],
+  variable: '--font-sora',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -79,7 +98,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable} font-[family-name:var(--font-inter)]`}>
         {/* Skip to main content link for accessibility */}
         <a
           href="#main-content"

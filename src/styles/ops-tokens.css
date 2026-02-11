@@ -1,0 +1,243 @@
+/* =================================================
+   OPS DASHBOARD - Design Tokens
+   Scoped to [data-layout="ops"]
+
+   Palette: Blue (#1E6CFF) + Gray + White
+   Fonts: Sora (display) + Inter (body) + JetBrains Mono
+   Philosophy: Strict, minimal, intentional.
+   ================================================= */
+
+[data-layout="ops"] {
+  /* ========================================
+     COLOR PRIMITIVES - Blue Scale
+     ======================================== */
+  --ops-blue-50: #F0F6FF;
+  --ops-blue-100: #E0EDFF;
+  --ops-blue-200: #B8D4FF;
+  --ops-blue-300: #8ABBFF;
+  --ops-blue-400: #5CA2FF;
+  --ops-blue-500: #1E6CFF;
+  --ops-blue-600: #1554CC;
+  --ops-blue-700: #0F3F99;
+  --ops-blue-800: #0A2B66;
+  --ops-blue-900: #051733;
+
+  /* ========================================
+     COLOR PRIMITIVES - Gray Scale
+     ======================================== */
+  --ops-gray-25: #FAFBFD;
+  --ops-gray-50: #F7F9FC;
+  --ops-gray-100: #F2F4F8;
+  --ops-gray-150: #EEF1F6;
+  --ops-gray-200: #E8EDF5;
+  --ops-gray-300: #D5DAE3;
+  --ops-gray-400: #9BA8BD;
+  --ops-gray-500: #6B7A94;
+  --ops-gray-600: #4A5568;
+  --ops-gray-700: #374151;
+  --ops-gray-800: #1E2329;
+  --ops-gray-900: #0F1115;
+  --ops-gray-950: #0A0C0E;
+
+  /* ========================================
+     SEMANTIC COLORS - Backgrounds
+     ======================================== */
+  --ops-bg-page: var(--ops-gray-50);
+  --ops-bg-surface: #FFFFFF;
+  --ops-bg-raised: #FFFFFF;
+  --ops-bg-inset: var(--ops-gray-100);
+  --ops-bg-sidebar: #FFFFFF;
+  --ops-bg-hover: var(--ops-gray-150);
+  --ops-bg-active: #EBF2FF;
+  --ops-bg-overlay: rgba(15, 17, 21, 0.5);
+
+  /* ========================================
+     SEMANTIC COLORS - Text
+     ======================================== */
+  --ops-text-primary: var(--ops-gray-800);
+  --ops-text-secondary: var(--ops-gray-500);
+  --ops-text-tertiary: var(--ops-gray-400);
+  --ops-text-disabled: var(--ops-gray-300);
+  --ops-text-inverse: #FFFFFF;
+  --ops-text-link: var(--ops-blue-500);
+
+  /* ========================================
+     SEMANTIC COLORS - Borders
+     ======================================== */
+  --ops-border-default: var(--ops-gray-300);
+  --ops-border-subtle: var(--ops-gray-200);
+  --ops-border-strong: var(--ops-gray-400);
+  --ops-border-focus: var(--ops-blue-500);
+
+  /* ========================================
+     SEMANTIC COLORS - Accent
+     ======================================== */
+  --ops-accent-default: var(--ops-blue-500);
+  --ops-accent-hover: var(--ops-blue-600);
+  --ops-accent-active: var(--ops-blue-700);
+  --ops-accent-subtle: var(--ops-blue-50);
+  --ops-accent-muted: var(--ops-blue-100);
+
+  /* ========================================
+     STATUS COLORS
+     Each status: bg, text, border, dot
+     ======================================== */
+
+  /* Success */
+  --ops-status-success-bg: #DCFCE7;
+  --ops-status-success-text: #166534;
+  --ops-status-success-border: #86EFAC;
+  --ops-status-success-dot: #22C55E;
+
+  /* Warning */
+  --ops-status-warning-bg: #FEF3C7;
+  --ops-status-warning-text: #92400E;
+  --ops-status-warning-border: #FCD34D;
+  --ops-status-warning-dot: #F59E0B;
+
+  /* Error */
+  --ops-status-error-bg: #FEE2E2;
+  --ops-status-error-text: #991B1B;
+  --ops-status-error-border: #FCA5A5;
+  --ops-status-error-dot: #EF4444;
+
+  /* Info */
+  --ops-status-info-bg: #DBEAFE;
+  --ops-status-info-text: #1E40AF;
+  --ops-status-info-border: #93C5FD;
+  --ops-status-info-dot: #3B82F6;
+
+  /* Neutral */
+  --ops-status-neutral-bg: var(--ops-gray-100);
+  --ops-status-neutral-text: var(--ops-gray-600);
+  --ops-status-neutral-border: var(--ops-gray-300);
+  --ops-status-neutral-dot: var(--ops-gray-400);
+
+  /* ========================================
+     TYPOGRAPHY - Font Families
+     Resolved from next/font CSS variables
+     ======================================== */
+  --ops-font-display: var(--font-sora, 'Sora'), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ops-font-body: var(--font-inter, 'Inter'), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ops-font-mono: var(--font-jetbrains, 'JetBrains Mono'), 'SF Mono', 'Fira Code', ui-monospace, monospace;
+
+  /* ========================================
+     SPACING SCALE
+     4px base. Strict adherence.
+     ======================================== */
+  --ops-space-0: 0;
+  --ops-space-0-5: 2px;
+  --ops-space-1: 4px;
+  --ops-space-1-5: 6px;
+  --ops-space-2: 8px;
+  --ops-space-2-5: 10px;
+  --ops-space-3: 12px;
+  --ops-space-4: 16px;
+  --ops-space-5: 20px;
+  --ops-space-6: 24px;
+  --ops-space-8: 32px;
+  --ops-space-10: 40px;
+  --ops-space-12: 48px;
+  --ops-space-14: 56px;
+  --ops-space-16: 64px;
+  --ops-space-20: 80px;
+
+  /* Semantic Spacing */
+  --ops-space-page-x: var(--ops-space-6);
+  --ops-space-page-y: var(--ops-space-6);
+  --ops-space-section-gap: var(--ops-space-8);
+  --ops-space-card-padding: var(--ops-space-5);
+  --ops-space-card-gap: var(--ops-space-4);
+  --ops-space-table-cell: var(--ops-space-3);
+  --ops-space-sidebar: var(--ops-space-2);
+  --ops-space-input: var(--ops-space-3);
+  --ops-space-form-gap: var(--ops-space-5);
+
+  /* ========================================
+     BORDER RADIUS
+     ======================================== */
+  --ops-radius-none: 0;
+  --ops-radius-sm: 4px;
+  --ops-radius-md: 6px;
+  --ops-radius-lg: 8px;
+  --ops-radius-xl: 12px;
+  --ops-radius-2xl: 16px;
+  --ops-radius-full: 9999px;
+
+  /* ========================================
+     SHADOWS
+     Minimal. Charcoal-based.
+     ======================================== */
+  --ops-shadow-none: none;
+  --ops-shadow-xs: 0 1px 2px rgba(30, 35, 41, 0.03);
+  --ops-shadow-sm: 0 1px 2px rgba(30, 35, 41, 0.04);
+  --ops-shadow-md:
+    0 2px 4px rgba(30, 35, 41, 0.06),
+    0 1px 2px rgba(30, 35, 41, 0.04);
+  --ops-shadow-lg:
+    0 4px 8px rgba(30, 35, 41, 0.08),
+    0 2px 4px rgba(30, 35, 41, 0.04);
+  --ops-shadow-xl:
+    0 8px 16px rgba(30, 35, 41, 0.1),
+    0 4px 8px rgba(30, 35, 41, 0.06);
+  --ops-shadow-ring-focus:
+    0 0 0 2px #FFFFFF,
+    0 0 0 4px var(--ops-blue-500);
+
+  /* ========================================
+     MOTION - Durations
+     ======================================== */
+  --ops-duration-instant: 0ms;
+  --ops-duration-fast: 100ms;
+  --ops-duration-normal: 150ms;
+  --ops-duration-smooth: 250ms;
+  --ops-duration-slow: 350ms;
+
+  /* ========================================
+     MOTION - Easings
+     ======================================== */
+  --ops-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ops-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ops-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ops-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ========================================
+     MOTION - Composed Transitions
+     ======================================== */
+  --ops-transition-colors:
+    color var(--ops-duration-normal) var(--ops-ease-out),
+    background-color var(--ops-duration-normal) var(--ops-ease-out),
+    border-color var(--ops-duration-normal) var(--ops-ease-out);
+  --ops-transition-transform:
+    transform var(--ops-duration-normal) var(--ops-ease-out);
+  --ops-transition-shadow:
+    box-shadow var(--ops-duration-normal) var(--ops-ease-out);
+  --ops-transition-opacity:
+    opacity var(--ops-duration-normal) var(--ops-ease-out);
+
+  /* ========================================
+     Z-INDEX SCALE
+     ======================================== */
+  --ops-z-base: 0;
+  --ops-z-raised: 1;
+  --ops-z-sticky: 10;
+  --ops-z-dropdown: 20;
+  --ops-z-sidebar: 25;
+  --ops-z-modal: 30;
+  --ops-z-drawer: 35;
+  --ops-z-toast: 40;
+  --ops-z-command: 50;
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  [data-layout="ops"] {
+    --ops-duration-instant: 0ms;
+    --ops-duration-fast: 0ms;
+    --ops-duration-normal: 0ms;
+    --ops-duration-smooth: 0ms;
+    --ops-duration-slow: 0ms;
+  }
+}

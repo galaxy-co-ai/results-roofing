@@ -1,0 +1,71 @@
+/* =================================================
+   OPS DASHBOARD - Shadcn Bridge
+   Maps --ops-* tokens to shadcn HSL variables.
+   Scoped to [data-layout="ops"] so only ops pages
+   are affected. Zero component duplication.
+   ================================================= */
+
+[data-layout="ops"] {
+  /* Page background: #F7F9FC */
+  --background: 220 33% 98%;
+  --foreground: 216 14% 14%;
+
+  /* Cards: white */
+  --card: 0 0% 100%;
+  --card-foreground: 216 14% 14%;
+
+  /* Popovers: white */
+  --popover: 0 0% 100%;
+  --popover-foreground: 216 14% 14%;
+
+  /* Primary: brand blue #1E6CFF */
+  --primary: 217 100% 56%;
+  --primary-foreground: 0 0% 100%;
+
+  /* Secondary */
+  --secondary: 220 23% 95%;
+  --secondary-foreground: 215 16% 47%;
+
+  /* Muted */
+  --muted: 220 23% 95%;
+  --muted-foreground: 215 16% 47%;
+
+  /* Accent */
+  --accent: 220 23% 95%;
+  --accent-foreground: 216 14% 14%;
+
+  /* Destructive */
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* Border: #D5DAE3 */
+  --border: 218 20% 86%;
+  --input: 218 20% 86%;
+  --ring: 217 100% 56%;
+
+  /* Sidebar: white bg, hover = #EEF1F6 */
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 216 14% 14%;
+  --sidebar-primary: 217 100% 56%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 218 31% 95%;
+  --sidebar-accent-foreground: 216 14% 14%;
+  --sidebar-border: 218 20% 86%;
+  --sidebar-ring: 217 100% 56%;
+}
+
+/* ========================================
+   SIDEBAR ACTIVE STATE OVERRIDE
+   Shadcn uses --sidebar-accent for both hover
+   and active. We set it to hover (#EEF1F6) above,
+   then override active to blue tint (#EBF2FF).
+   ======================================== */
+[data-layout="ops"] [data-sidebar="menu-button"][data-active="true"] {
+  background-color: #EBF2FF;
+  color: #1E6CFF;
+}
+
+[data-layout="ops"] [data-sidebar="menu-button"][data-active="true"]:hover {
+  background-color: #E0EDFF;
+  color: #1554CC;
+}

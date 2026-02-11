@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { Header } from '@/components/layout';
+import { Header, Footer } from '@/components/layout';
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
@@ -11,14 +10,14 @@ export default function TermsPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen bg-white" id="main-content">
         {/* Hero */}
-        <section className="py-12 px-6 bg-slate-50 border-b border-slate-200">
+        <section className="py-16 px-6 bg-gradient-to-b from-slate-50 to-white">
           <div className="max-w-3xl mx-auto">
-            <h1 className="text-3xl font-semibold text-slate-900 mb-2">
+            <h1 className="font-[family-name:var(--font-sora)] text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-3">
               Terms of Service
             </h1>
-            <p className="text-slate-600">
+            <p className="text-slate-500">
               Last updated: February 3, 2026
             </p>
           </div>
@@ -26,7 +25,7 @@ export default function TermsPage() {
 
         {/* Content */}
         <section className="py-12 px-6">
-          <div className="max-w-3xl mx-auto prose prose-slate">
+          <div className="max-w-3xl mx-auto prose prose-slate prose-headings:font-[family-name:var(--font-sora)] prose-headings:tracking-tight">
             <h2>Agreement to Terms</h2>
             <p>
               By accessing or using the Results Roofing website and services, you agree
@@ -164,22 +163,8 @@ export default function TermsPage() {
             </p>
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className="py-8 px-6 border-t border-slate-200">
-          <div className="max-w-3xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <span className="text-sm text-slate-500">
-              &copy; {new Date().getFullYear()} Results Roofing. All rights reserved.
-            </span>
-            <nav className="flex gap-6 text-sm text-slate-500">
-              <Link href="/about" className="hover:text-slate-700">About</Link>
-              <Link href="/services" className="hover:text-slate-700">Services</Link>
-              <Link href="/contact" className="hover:text-slate-700">Contact</Link>
-              <Link href="/privacy" className="hover:text-slate-700">Privacy</Link>
-            </nav>
-          </div>
-        </footer>
       </main>
+      <Footer minimal />
     </>
   );
 }

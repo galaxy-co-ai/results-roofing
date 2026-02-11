@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Header } from '@/components/layout';
-import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Header, Footer } from '@/components/layout';
+import { Phone, Mail, MapPin, Clock, ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Contact Us',
@@ -37,14 +37,14 @@ export default function ContactPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen bg-white" id="main-content">
         {/* Hero */}
-        <section className="py-16 px-6 bg-gradient-to-b from-slate-50 to-white">
+        <section className="py-20 px-6 bg-gradient-to-b from-slate-50 to-white">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-semibold text-slate-900 mb-4">
+            <h1 className="font-[family-name:var(--font-sora)] text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-5">
               Get in <span className="text-blue-600">Touch</span>
             </h1>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
               Have questions about your quote or our services?
               We&apos;re here to help.
             </p>
@@ -59,15 +59,15 @@ export default function ContactPage() {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="p-6 rounded-xl border border-slate-200 hover:border-blue-300 hover:shadow-lg transition-all group"
+                  className="p-7 rounded-xl border border-slate-200 hover:border-blue-300 hover:shadow-lg transition-all group"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-500 transition-colors">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-600 transition-colors">
                       <item.icon className="w-5 h-5 text-blue-600 group-hover:text-white transition-colors" />
                     </div>
                     <div>
                       <span className="text-sm text-slate-500">{item.label}</span>
-                      <p className="font-semibold text-slate-900 text-lg">{item.value}</p>
+                      <p className="font-[family-name:var(--font-sora)] font-semibold text-slate-900 text-lg">{item.value}</p>
                       <p className="text-sm text-slate-500 mt-1">{item.description}</p>
                     </div>
                   </div>
@@ -76,37 +76,37 @@ export default function ContactPage() {
             </div>
 
             {/* Hours */}
-            <div className="bg-slate-50 rounded-xl p-6 mb-12">
-              <div className="flex items-center gap-2 mb-4">
+            <div className="bg-slate-50 rounded-xl p-7 mb-12">
+              <div className="flex items-center gap-2.5 mb-5">
                 <Clock className="w-5 h-5 text-blue-600" />
-                <h2 className="font-semibold text-slate-900">Business Hours</h2>
+                <h2 className="font-[family-name:var(--font-sora)] font-semibold text-slate-900">Business Hours</h2>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-sm">
                 <div>
                   <span className="text-slate-500">Monday - Friday</span>
-                  <p className="text-slate-900">8:00 AM - 6:00 PM</p>
+                  <p className="font-medium text-slate-900 mt-0.5">8:00 AM - 6:00 PM</p>
                 </div>
                 <div>
                   <span className="text-slate-500">Saturday</span>
-                  <p className="text-slate-900">9:00 AM - 2:00 PM</p>
+                  <p className="font-medium text-slate-900 mt-0.5">9:00 AM - 2:00 PM</p>
                 </div>
                 <div>
                   <span className="text-slate-500">Sunday</span>
-                  <p className="text-slate-900">Closed</p>
+                  <p className="font-medium text-slate-900 mt-0.5">Closed</p>
                 </div>
               </div>
             </div>
 
             {/* Service Areas */}
             <div>
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2.5 mb-5">
                 <MapPin className="w-5 h-5 text-blue-600" />
-                <h2 className="font-semibold text-slate-900">Service Areas</h2>
+                <h2 className="font-[family-name:var(--font-sora)] font-semibold text-slate-900">Service Areas</h2>
               </div>
-              <p className="text-slate-600 mb-4">
+              <p className="text-slate-600 mb-5">
                 We proudly serve homeowners across five states:
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 {serviceAreas.map((area) => (
                   <span
                     key={area.abbr}
@@ -120,40 +120,27 @@ export default function ContactPage() {
           </div>
         </section>
 
-        {/* Quick Quote CTA */}
-        <section className="py-16 px-6 bg-blue-600">
+        {/* CTA */}
+        <section className="py-20 px-6 bg-blue-600">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-2xl font-semibold text-white mb-4">
-              Skip the Wait - Get an Instant Quote
+            <h2 className="font-[family-name:var(--font-sora)] text-2xl font-bold text-white tracking-tight mb-4">
+              Skip the Wait — Get an Instant Quote
             </h2>
-            <p className="text-blue-100 mb-6">
+            <p className="text-blue-100 mb-8 max-w-lg mx-auto">
               No phone call required. Just enter your address and get satellite-measured
               pricing in minutes.
             </p>
             <Link
               href="/"
-              className="inline-flex items-center justify-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors shadow-sm"
             >
               Get My Quote
+              <ArrowRight size={16} />
             </Link>
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className="py-8 px-6 border-t border-slate-200">
-          <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <span className="text-sm text-slate-500">
-              &copy; {new Date().getFullYear()} Results Roofing. All rights reserved.
-            </span>
-            <nav className="flex gap-6 text-sm text-slate-500">
-              <Link href="/about" className="hover:text-slate-700">About</Link>
-              <Link href="/services" className="hover:text-slate-700">Services</Link>
-              <Link href="/privacy" className="hover:text-slate-700">Privacy</Link>
-              <Link href="/terms" className="hover:text-slate-700">Terms</Link>
-            </nav>
-          </div>
-        </footer>
       </main>
+      <Footer />
     </>
   );
 }
