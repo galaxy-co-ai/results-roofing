@@ -1,6 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   CreditCard,
   CheckCircle,
@@ -14,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useOrders, useOrderDetails } from '@/hooks';
 import { Skeleton } from '@/components/ui';
+import { PaymentDrawer, type PaymentType } from '@/components/features/checkout/PaymentDrawer';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import styles from './page.module.css';
 
@@ -78,9 +81,25 @@ function DevPayments() {
 }
 
 function PaymentsContent({ userEmail, userLoaded }: { userEmail: string | null; userLoaded: boolean }) {
+  const queryClient = useQueryClient();
   const { data: ordersData, isLoading: ordersLoading, error: ordersError } = useOrders(userEmail);
   const currentOrderId = ordersData?.orders?.[0]?.id ?? null;
   const { data: orderDetails, isLoading: detailsLoading, error: detailsError } = useOrderDetails(currentOrderId);
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedPaymentType, setSelectedPaymentType] = useState<PaymentType>('deposit');
+  const [selectedAmount, setSelectedAmount] = useState(0);
+
+  function handlePaymentClick(type: PaymentType, amount: number) {
+    setSelectedPaymentType(type);
+    setSelectedAmount(amount);
+    setDrawerOpen(true);
+  }
+
+  function handlePaymentSuccess() {
+    queryClient.invalidateQueries({ queryKey: ['orders'] });
+    queryClient.invalidateQueries({ queryKey: ['order', currentOrderId] });
+  }
 
   if (!userLoaded || ordersLoading || (currentOrderId && detailsLoading)) {
     return <PaymentsSkeleton />;
@@ -200,6 +219,13 @@ function PaymentsContent({ userEmail, userLoaded }: { userEmail: string | null; 
               <button
                 key={option.id}
                 className={`${styles.optionButton} ${option.primary ? styles.optionPrimary : ''}`}
+                onClick={() => {
+                  if (option.id === 'pay-deposit') {
+                    handlePaymentClick('deposit', order.depositAmount);
+                  } else if (option.id === 'pay-balance') {
+                    handlePaymentClick('balance', order.balance);
+                  }
+                }}
               >
                 <div className={styles.optionIcon}>
                   <option.icon size={22} />
@@ -277,6 +303,18 @@ function PaymentsContent({ userEmail, userLoaded }: { userEmail: string | null; 
           </p>
         </div>
       </div>
+
+      {/* Payment Drawer */}
+      {order.quoteId && (
+        <PaymentDrawer
+          open={drawerOpen}
+          onOpenChange={setDrawerOpen}
+          quoteId={order.quoteId}
+          paymentType={selectedPaymentType}
+          amount={selectedAmount}
+          onPaymentSuccess={handlePaymentSuccess}
+        />
+      )}
     </div>
   );
 }

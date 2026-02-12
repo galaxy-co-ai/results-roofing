@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { quoteId, fixedAmount } = body;
+    const { quoteId, fixedAmount, paymentType } = body;
 
     if (!quoteId) {
       return NextResponse.json({ error: 'Quote ID is required' }, { status: 400 });
@@ -78,11 +78,11 @@ export async function POST(request: NextRequest) {
         },
         metadata: {
           quote_id: quoteId,
-          payment_type: 'deposit',
+          payment_type: paymentType || 'deposit',
           address: `${quote.address}, ${quote.city}, ${quote.state} ${quote.zip}`,
           selected_tier: quote.selectedTier || 'unknown',
         },
-        description: `Results Roofing - Deposit for ${quote.address}`,
+        description: `Results Roofing - ${paymentType === 'balance' ? 'Balance payment' : 'Deposit'} for ${quote.address}`,
       },
       {
         idempotencyKey,
