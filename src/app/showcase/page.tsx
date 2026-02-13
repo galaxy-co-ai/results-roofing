@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -76,14 +75,14 @@ export default function ShowcasePage() {
 
         {/* Brand */}
         <div className="flex items-center gap-2.5 px-5 py-4">
-          <Link href="/" className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
               <span className="text-sm font-bold text-white" style={{ fontFamily: 'var(--font-sora), system-ui, sans-serif' }}>R</span>
             </div>
             <span className="text-lg font-bold text-gray-900" style={{ fontFamily: 'var(--font-sora), system-ui, sans-serif' }}>
               Results Roofing
             </span>
-          </Link>
+          </div>
         </div>
 
         {/* View toggle */}
