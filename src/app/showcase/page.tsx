@@ -332,7 +332,7 @@ export default function ShowcasePage() {
             className="w-full"
           >
             <CarouselContent className="-ml-4">
-              {data.carouselItems.map((item, i) => (
+              {data.carouselItems.map((item) => (
                 <CarouselItem key={item.label} className="pl-4 basis-[85%] md:basis-1/3">
                   <Card className="overflow-hidden transition-all duration-200 hover:shadow-md">
                     <CardContent className="p-0">
