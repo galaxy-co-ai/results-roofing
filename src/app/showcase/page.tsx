@@ -11,11 +11,15 @@ type View = 'homeowners' | 'team';
 
 const SCREENS: Record<View, { label: string; image: string }[]> = {
   homeowners: [
-    { label: 'Get a Quote', image: '/showcase/get-a-quote.png' },
-    { label: 'Satellite Analysis', image: '/showcase/satellite.png' },
-    { label: 'Packages', image: '/showcase/packages.png' },
-    { label: 'Schedule', image: '/showcase/schedule.png' },
-    { label: 'Portal Payments', image: '/showcase/portal-payments.png' },
+    { label: 'Landing Page', image: '/showcase/ho-landing.png' },
+    { label: 'Property Confirm', image: '/showcase/ho-property.png' },
+    { label: 'Choose Package', image: '/showcase/ho-packages.png' },
+    { label: 'Schedule Install', image: '/showcase/ho-schedule.png' },
+    { label: 'Confirm Booking', image: '/showcase/ho-confirm.png' },
+    { label: 'Portal Dashboard', image: '/showcase/ho-portal-dashboard.png' },
+    { label: 'Documents', image: '/showcase/ho-portal-documents.png' },
+    { label: 'Payments', image: '/showcase/ho-portal-payments.png' },
+    { label: 'Schedule View', image: '/showcase/ho-portal-schedule.png' },
   ],
   team: [
     { label: 'Ops Dashboard', image: '/showcase/dashboard.png' },
@@ -156,14 +160,14 @@ export default function ShowcasePage() {
           </div>
 
           {/* Screenshot area */}
-          <div className="relative aspect-[16/9] bg-gray-200">
+          <div className="relative aspect-[4/3] bg-white">
             {screens.map((screen, i) => (
               <Image
                 key={screen.image}
                 src={screen.image}
                 alt={screen.label}
                 fill
-                className={`object-cover object-top transition-opacity duration-300 ${
+                className={`object-contain object-top transition-opacity duration-300 ${
                   i === activeIndex ? 'opacity-100' : 'opacity-0'
                 }`}
                 sizes="(max-width: 768px) 100vw, 960px"
