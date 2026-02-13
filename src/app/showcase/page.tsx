@@ -22,11 +22,13 @@ const SCREENS: Record<View, { label: string; image: string }[]> = {
     { label: 'Schedule View', image: '/showcase/ho-portal-schedule.png' },
   ],
   team: [
-    { label: 'Ops Dashboard', image: '/showcase/dashboard.png' },
-    { label: 'Jobs Kanban', image: '/showcase/jobs-kanban.png' },
-    { label: 'Estimates', image: '/showcase/estimates.png' },
-    { label: 'Invoices', image: '/showcase/invoices.png' },
-    { label: 'Customers', image: '/showcase/customers.png' },
+    { label: 'Dashboard', image: '/showcase/ops-dashboard.png' },
+    { label: 'Customers', image: '/showcase/ops-customers.png' },
+    { label: 'Calendar', image: '/showcase/ops-calendar.png' },
+    { label: 'Estimates', image: '/showcase/ops-estimates.png' },
+    { label: 'Invoices', image: '/showcase/ops-invoices.png' },
+    { label: 'Materials', image: '/showcase/ops-materials.png' },
+    { label: 'Reports', image: '/showcase/ops-reports.png' },
   ],
 };
 
@@ -126,15 +128,6 @@ export default function ShowcasePage() {
           ))}
         </nav>
 
-        {/* Spacer + CTA — desktop only */}
-        <div className="mt-auto hidden border-t border-gray-200 px-5 py-5 md:block">
-          <Link
-            href={view === 'team' ? '/ops' : '/quote'}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
-          >
-            {view === 'team' ? 'Request a Demo' : 'Get a Quote'}
-          </Link>
-        </div>
       </aside>
 
       {/* ── Main Viewer ── */}
@@ -159,8 +152,8 @@ export default function ShowcasePage() {
             </div>
           </div>
 
-          {/* Screenshot area */}
-          <div className="relative aspect-[4/3] bg-white">
+          {/* Screenshot area — wider for team ops, taller for homeowner flow */}
+          <div className={`relative bg-white ${view === 'team' ? 'aspect-[8/5]' : 'aspect-[4/3]'}`}>
             {screens.map((screen, i) => (
               <Image
                 key={screen.image}
