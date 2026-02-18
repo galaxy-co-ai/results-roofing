@@ -158,6 +158,19 @@ export function SignatureCapture({
         </p>
       </div>
 
+      {/* ESIGN Act consent disclosure */}
+      <div className={styles.esignDisclosure}>
+        <p className={styles.esignTitle}>Electronic Signature Consent</p>
+        <p className={styles.esignText}>
+          By checking the box below and signing, you consent to use electronic
+          signatures pursuant to the federal ESIGN Act (15 U.S.C. &sect; 7001 et seq.)
+          and applicable state law. You agree that your electronic signature carries
+          the same legal effect as a handwritten signature. You may withdraw this
+          consent at any time by contacting us, but withdrawal will not affect the
+          validity of signatures already provided.
+        </p>
+      </div>
+
       {/* Terms agreement */}
       <label className={styles.termsLabel}>
         <input
@@ -169,11 +182,11 @@ export function SignatureCapture({
         />
         <span className={styles.termsText}>
           I have read and agree to the{' '}
-          <a href="#terms" className={styles.termsLink}>
+          <a href="/terms" className={styles.termsLink}>
             Terms of Service
           </a>{' '}
           and{' '}
-          <a href="#privacy" className={styles.termsLink}>
+          <a href="/privacy" className={styles.termsLink}>
             Privacy Policy
           </a>
           . I understand that this electronic signature is legally binding.

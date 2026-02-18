@@ -75,6 +75,26 @@ function ScheduleError() {
   );
 }
 
+function SchedulePendingState() {
+  return (
+    <div className={styles.schedulePage}>
+      <header className={styles.header}>
+        <div className={styles.headerContent}>
+          <h1 className={styles.title}>Your <span className={styles.titleAccent}>Schedule</span></h1>
+          <p className={styles.subtitle}>
+            Your installation schedule will appear here after your deposit is confirmed
+          </p>
+        </div>
+      </header>
+      <div className={styles.errorState} role="status" style={{ borderColor: 'var(--gray-200)' }}>
+        <Calendar size={48} style={{ color: 'var(--gray-400)' }} />
+        <h2 style={{ color: 'var(--gray-700)' }}>No Schedule Yet</h2>
+        <p>Once your deposit is confirmed, your full installation timeline and preparation details will appear here.</p>
+      </div>
+    </div>
+  );
+}
+
 function ClerkSchedule() {
   const { user, isLoaded } = useUser();
   const userEmail = user?.primaryEmailAddress?.emailAddress ?? null;
@@ -95,8 +115,12 @@ function ScheduleContent({ userEmail, userLoaded }: { userEmail: string | null; 
     return <ScheduleSkeleton />;
   }
 
-  if (ordersError || detailsError || !orderDetails) {
+  if (ordersError || detailsError) {
     return <ScheduleError />;
+  }
+
+  if (!currentOrderId || !orderDetails) {
+    return <SchedulePendingState />;
   }
 
   const { order } = orderDetails;

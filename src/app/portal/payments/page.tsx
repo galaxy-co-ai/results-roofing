@@ -69,6 +69,28 @@ function PaymentsError() {
   );
 }
 
+function PaymentsPendingState() {
+  return (
+    <div className={styles.paymentsPage}>
+      <header className={styles.header}>
+        <div className={styles.headerContent}>
+          <h1 className={styles.title}><span className={styles.titleAccent}>Payments</span></h1>
+          <p className={styles.subtitle}>
+            Your payment history will appear here after your deposit is confirmed
+          </p>
+        </div>
+      </header>
+      <div className={styles.emptyHistory} style={{ padding: '3rem 1.5rem' }}>
+        <CreditCard size={32} className={styles.emptyIcon} />
+        <p className={styles.emptyText}>No payments yet</p>
+        <p style={{ fontSize: '0.875rem', color: 'var(--gray-500)', marginTop: '0.5rem' }}>
+          Complete your deposit from the dashboard to get started.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function ClerkPayments() {
   const { user, isLoaded } = useUser();
   const userEmail = user?.primaryEmailAddress?.emailAddress ?? null;
@@ -105,8 +127,12 @@ function PaymentsContent({ userEmail, userLoaded }: { userEmail: string | null; 
     return <PaymentsSkeleton />;
   }
 
-  if (ordersError || detailsError || !orderDetails) {
+  if (ordersError || detailsError) {
     return <PaymentsError />;
+  }
+
+  if (!currentOrderId || !orderDetails) {
+    return <PaymentsPendingState />;
   }
 
   const { order, payments } = orderDetails;

@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useQuoteWizard } from '../../QuoteWizardProvider';
 import { PackageSelection } from './PackageSelection';
 import { ScheduleSelection } from './ScheduleSelection';
+import { ReassuranceModal } from '../../ReassuranceModal';
 // Financing selection skipped - users handle financing in dashboard after deposit
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import styles from './Stage2.module.css';
@@ -44,6 +45,13 @@ function getSubStepLabel(subStep: string): string {
  * 1. PackageSelection - Choose Good/Better/Best
  * 2. ScheduleSelection - Pick installation date → redirects to deposit page
  */
+// Map tier keys to display names
+const TIER_DISPLAY_NAMES: Record<string, string> = {
+  good: 'Essential',
+  better: 'Preferred',
+  best: 'Signature',
+};
+
 export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
   const {
     state,
@@ -54,6 +62,10 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
     setError,
   } = useQuoteWizard();
   const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Reassurance modal state
+  const [showReassurance, setShowReassurance] = useState(false);
+  const [pendingTier, setPendingTier] = useState<'good' | 'better' | 'best' | null>(null);
 
   // Refs for focus management
   const contentRef = useRef<HTMLDivElement>(null);
@@ -96,15 +108,23 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         }
 
         selectTier(tier);
-        goToSubStep('schedule');
+        // Show reassurance modal before navigating to schedule
+        setPendingTier(tier);
+        setShowReassurance(true);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Something went wrong');
       } finally {
         setLoading(false);
       }
     },
-    [quoteId, selectTier, goToSubStep, setLoading, setError]
+    [quoteId, selectTier, setLoading, setError]
   );
+
+  const handleReassuranceContinue = useCallback(() => {
+    setShowReassurance(false);
+    setPendingTier(null);
+    goToSubStep('schedule');
+  }, [goToSubStep]);
 
   const handleScheduleSelect = useCallback(
     async (date: Date, timeSlot: 'morning' | 'afternoon') => {
@@ -151,7 +171,6 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
             selectedTier={state.selectedTier}
             onSelect={handleTierSelect}
             isLoading={state.isLoading}
-            quoteId={quoteId}
           />
         );
 
@@ -176,6 +195,11 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         return null;
     }
   };
+
+  // Get tier info for the reassurance modal
+  const pendingTierData = pendingTier
+    ? quoteData.tiers.find(t => t.tier.toLowerCase() === pendingTier)
+    : null;
 
   return (
     <div className={styles.container}>
@@ -213,6 +237,15 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* Reassurance modal — shown after package selection */}
+      <ReassuranceModal
+        open={showReassurance}
+        onOpenChange={setShowReassurance}
+        tierDisplayName={pendingTier ? (TIER_DISPLAY_NAMES[pendingTier] || pendingTierData?.displayName || '') : ''}
+        totalPrice={pendingTierData?.totalPrice || 0}
+        onContinue={handleReassuranceContinue}
+      />
     </div>
   );
 }

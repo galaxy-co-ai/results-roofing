@@ -15,7 +15,7 @@ import {
   Mail,
   Phone,
 } from 'lucide-react';
-import { QuoteStepper } from '@/components/features/quote';
+import { StageIndicator } from '@/components/features/quote';
 import styles from './page.module.css';
 
 export interface QuoteSummary {
@@ -111,8 +111,8 @@ export function ConfirmPageClient({ quoteId, quoteSummary }: ConfirmPageClientPr
     <div className={styles.container}>
       {/* Header */}
       <div className={styles.headerSection}>
-        <h1 className={styles.title}>Confirm Your Booking</h1>
-        <QuoteStepper currentStage={4} quoteId={quoteId} />
+        <h1 className={styles.title}>Review Your Project Details</h1>
+        <StageIndicator currentStage={3} quoteId={quoteId} />
       </div>
 
       {/* Compact Quote Summary Bar */}
@@ -142,7 +142,7 @@ export function ConfirmPageClient({ quoteId, quoteSummary }: ConfirmPageClientPr
           </div>
           <div>
             <h2 className={styles.sectionTitle}>Your Installation</h2>
-            <p className={styles.sectionSubtitle}>Review your booking details</p>
+            <p className={styles.sectionSubtitle}>Review your project details</p>
           </div>
         </div>
 
@@ -174,7 +174,7 @@ export function ConfirmPageClient({ quoteId, quoteSummary }: ConfirmPageClientPr
           </div>
           <div>
             <h2 className={styles.sectionTitle}>Your Information</h2>
-            <p className={styles.sectionSubtitle}>We&apos;ll use this to create your account</p>
+            <p className={styles.sectionSubtitle}>We&apos;ll use this to set up your project portal</p>
           </div>
         </div>
 

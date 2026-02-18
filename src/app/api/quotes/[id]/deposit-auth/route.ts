@@ -38,8 +38,7 @@ export async function POST(
       );
     }
 
-    const { email, termsVersion, fullName } = validation.data;
-    // signature and agreedToTerms are validated by schema but stored implicitly via contract record
+    const { signature, email, termsVersion, fullName } = validation.data;
 
     // Parse full name into first and last name
     let firstName: string | null = null;
@@ -78,6 +77,7 @@ export async function POST(
         .set({
           customerEmail: email,
           status: 'signed',
+          signatureText: signature,
           signedAt: timestamp,
           signatureIp: ip,
           signatureUserAgent: userAgent,
@@ -94,6 +94,7 @@ export async function POST(
           quoteId,
           status: 'signed',
           customerEmail: email,
+          signatureText: signature,
           signedAt: timestamp,
           signatureIp: ip,
           signatureUserAgent: userAgent,

@@ -8,8 +8,8 @@ import styles from './page.module.css';
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Confirm Your Booking | Results Roofing',
-  description: 'Confirm your installation details and create your account.',
+  title: 'Review Your Project Details | Results Roofing',
+  description: 'Review your project details and create your account.',
 };
 
 interface ConfirmPageProps {

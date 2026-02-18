@@ -17,6 +17,7 @@ export const contracts = pgTable(
     status: text('status').default('draft').notNull(), // draft, pending, sent, viewed, signed, expired, declined
     customerEmail: text('customer_email').notNull(),
     // Signature tracking
+    signatureText: text('signature_text'),
     sentAt: timestamp('sent_at', { withTimezone: true }),
     viewedAt: timestamp('viewed_at', { withTimezone: true }),
     signedAt: timestamp('signed_at', { withTimezone: true }),

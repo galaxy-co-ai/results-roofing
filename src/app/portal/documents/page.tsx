@@ -69,6 +69,27 @@ function DocumentsError() {
   );
 }
 
+function DocumentsPendingState() {
+  return (
+    <div className={styles.documentsPage}>
+      <header className={styles.header}>
+        <div className={styles.headerContent}>
+          <h1 className={styles.title}>Your <span className={styles.titleAccent}>Documents</span></h1>
+          <p className={styles.subtitle}>
+            Your documents will appear here after your deposit is confirmed
+          </p>
+        </div>
+      </header>
+      <div className={styles.emptyState}>
+        <div className={styles.emptyStateIcon}>
+          <FileText size={28} />
+        </div>
+        <p>Once your deposit is processed, your contract, warranty, and project documents will be available here.</p>
+      </div>
+    </div>
+  );
+}
+
 function ClerkDocuments() {
   const { user, isLoaded } = useUser();
   const userEmail = user?.primaryEmailAddress?.emailAddress ?? null;
@@ -98,8 +119,12 @@ function DocumentsContent({ userEmail, userLoaded }: { userEmail: string | null;
     return <DocumentsSkeleton />;
   }
 
-  if (ordersError || detailsError || !orderDetails) {
+  if (ordersError || detailsError) {
     return <DocumentsError />;
+  }
+
+  if (!currentOrderId || !orderDetails) {
+    return <DocumentsPendingState />;
   }
 
   const { order, contracts, payments } = orderDetails;

@@ -152,6 +152,32 @@
 }
 
 /* ========================================
+   ESIGN DISCLOSURE
+   ======================================== */
+
+.esignDisclosure {
+  padding: var(--rr-space-4);
+  background-color: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: var(--rr-radius-lg);
+  margin-bottom: var(--rr-space-5);
+}
+
+.esignTitle {
+  font-size: var(--rr-font-size-sm);
+  font-weight: var(--rr-font-weight-semibold);
+  color: var(--rr-color-text-primary);
+  margin: 0 0 var(--rr-space-2) 0;
+}
+
+.esignText {
+  font-size: var(--rr-font-size-xs);
+  color: var(--rr-color-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ========================================
    TERMS AGREEMENT
    ======================================== */
 

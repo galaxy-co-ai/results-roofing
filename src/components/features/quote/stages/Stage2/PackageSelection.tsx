@@ -1,7 +1,6 @@
 'use client';
 
 import { Check, Star, Loader2 } from 'lucide-react';
-import { QuoteStepper } from '../../QuoteStepper';
 import styles from './Stage2.module.css';
 
 interface TierData {
@@ -20,7 +19,6 @@ interface PackageSelectionProps {
   selectedTier: 'good' | 'better' | 'best' | null;
   onSelect: (tier: 'good' | 'better' | 'best') => void;
   isLoading?: boolean;
-  quoteId: string;
 }
 
 // Map tier keys to new display names
@@ -52,14 +50,12 @@ export function PackageSelection({
   selectedTier,
   onSelect,
   isLoading = false,
-  quoteId,
 }: PackageSelectionProps) {
   return (
     <div className={styles.subStep}>
       {/* Unified Header Section */}
       <div className={styles.headerSection}>
         <h1 className={styles.title}>Choose Your Package</h1>
-        <QuoteStepper currentStage={2} quoteId={quoteId} />
         <p className={styles.addressLine}>
           <span className={styles.addressLabel}>Quote for</span>
           <span className={styles.addressValue}>{address}</span>

@@ -49,7 +49,7 @@ export async function POST(
       );
     }
 
-    const { email, signedAt } = result.data;
+    const { signature, email, signedAt } = result.data;
 
     // Use email from request (provided during signature)
     const customerEmail = email;
@@ -68,6 +68,7 @@ export async function POST(
         .set({
           customerEmail,
           status: 'signed',
+          signatureText: signature,
           signedAt: signedAtDate,
           updatedAt: new Date(),
         })
@@ -78,6 +79,7 @@ export async function POST(
         quoteId,
         customerEmail,
         status: 'signed',
+        signatureText: signature,
         signedAt: signedAtDate,
       });
     }

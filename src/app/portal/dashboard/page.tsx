@@ -20,6 +20,7 @@ import {
 import { useOrders, useOrderDetails } from '@/hooks';
 import type { PendingQuote } from '@/hooks';
 import { ContractFloatingCard } from '@/components/features/contract';
+import { PaymentDrawer } from '@/components/features/checkout/PaymentDrawer';
 import { FAQBar } from '@/components/features/faq';
 import { Skeleton } from '@/components/ui';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
@@ -172,18 +173,23 @@ function NoOrdersState() {
 }
 
 /**
- * Pending payment state when user has a confirmed quote but hasn't paid
+ * Onboarding walkthrough — 3-step guided flow for new users with pending quotes
+ * Steps: Sign Contract → Pay Deposit → Apply for Financing (optional)
  */
 function PendingPaymentState({ quote }: { quote: PendingQuote }) {
+  const [contractOpen, setContractOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [contractSigned, setContractSigned] = useState(false);
+
   const tierDisplayNames: Record<string, string> = {
     good: 'Essential Package',
-    better: 'Premium Package',
-    best: 'Elite Package',
+    better: 'Preferred Package',
+    best: 'Signature Package',
   };
 
   const tierName = quote.selectedTier ? tierDisplayNames[quote.selectedTier] || quote.selectedTier : 'Selected Package';
   const totalPrice = quote.totalPrice || 0;
-  const depositAmount = quote.depositAmount || Math.round(totalPrice * 0.1); // 10% deposit
+  const depositAmount = quote.depositAmount || Math.round(totalPrice * 0.1);
 
   const formattedDate = quote.scheduledDate
     ? new Date(quote.scheduledDate).toLocaleDateString('en-US', {
@@ -194,101 +200,224 @@ function PendingPaymentState({ quote }: { quote: PendingQuote }) {
       })
     : 'To be scheduled';
 
+  // Determine current step
+  const currentStep = contractSigned ? 2 : 1;
+
+  const steps = [
+    {
+      number: 1,
+      title: 'Sign Your Contract',
+      description: 'Sign agreement to secure your date and time',
+      ctaLabel: 'Sign Contract',
+      ctaAction: () => setContractOpen(true),
+      icon: FileText,
+    },
+    {
+      number: 2,
+      title: 'Submit Your Deposit',
+      description: `Pay $${depositAmount.toLocaleString()} deposit to confirm your installation`,
+      ctaLabel: `Pay $${depositAmount.toLocaleString()} Deposit`,
+      ctaAction: () => setDrawerOpen(true),
+      icon: CreditCard,
+    },
+    {
+      number: 3,
+      title: 'Submit Financing (Optional)',
+      description: 'Get approved in 60 seconds with Wisetack',
+      ctaLabel: 'Apply Now',
+      ctaAction: () => { /* Wisetack link — stub for now */ },
+      icon: Sparkles,
+    },
+  ];
+
   return (
     <div className={styles.dashboard}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
           <h1 className={styles.title}>Your Project <span className={styles.titleAccent}>Dashboard</span></h1>
           <p className={styles.subtitle}>
-            Complete your deposit to confirm your installation
+            Complete these steps to confirm your installation
           </p>
         </div>
       </header>
 
-      {/* Pending Project Card */}
+      {/* Project Summary Card */}
       <section className={styles.statusCard} aria-labelledby="pending-heading">
         <h2 id="pending-heading" className="sr-only">Pending Project</h2>
-
-        <div className={styles.statusHeader}>
-          <div className={styles.statusBadge} style={{ background: '#fef3c7', color: '#92400e' }}>
-            <Clock size={16} aria-hidden="true" />
-            <span>Awaiting Deposit</span>
-          </div>
-          <span className={styles.statusPhase}>Complete payment to confirm</span>
-        </div>
 
         <div className={styles.propertyInfo}>
           <Home size={18} className={styles.propertyIcon} aria-hidden="true" />
           <span className={styles.propertyAddress}>{quote.address}, {quote.city}, {quote.state}</span>
         </div>
 
-        <div className={styles.nextMilestone}>
-          <Calendar size={18} className={styles.milestoneIcon} aria-hidden="true" />
-          <span className={styles.milestoneText}>
-            <strong>Installation</strong> {formattedDate}
-          </span>
-        </div>
-
-        {/* Project Summary */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
+          gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '1rem',
           padding: '1rem',
           background: 'var(--gray-50)',
           borderRadius: '0.75rem',
-          marginTop: '1rem'
+          marginTop: '0.75rem'
         }}>
           <div>
             <div style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginBottom: '0.25rem' }}>Package</div>
-            <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Sparkles size={16} style={{ color: 'var(--primary-500)' }} />
+            <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.9375rem' }}>
+              <Sparkles size={14} style={{ color: 'var(--primary-500)' }} />
               {tierName}
             </div>
           </div>
           <div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginBottom: '0.25rem' }}>Project Total</div>
-            <div style={{ fontWeight: 600 }}>${totalPrice.toLocaleString()}</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginBottom: '0.25rem' }}>Total</div>
+            <div style={{ fontWeight: 600, fontSize: '0.9375rem' }}>${totalPrice.toLocaleString()}</div>
+          </div>
+          <div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginBottom: '0.25rem' }}>Installation</div>
+            <div style={{ fontWeight: 600, fontSize: '0.9375rem' }}>{formattedDate}</div>
           </div>
         </div>
-
-        {/* Pay Deposit CTA */}
-        <Link
-          href={`/quote/${quote.id}/checkout`}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '0.5rem',
-            width: '100%',
-            padding: '1rem 1.5rem',
-            marginTop: '1.5rem',
-            background: 'var(--primary-500)',
-            color: 'white',
-            borderRadius: '0.75rem',
-            fontWeight: 600,
-            fontSize: '1rem',
-            textDecoration: 'none',
-            transition: 'background 0.2s'
-          }}
-        >
-          <CreditCard size={20} />
-          Pay ${depositAmount.toLocaleString()} Deposit to Confirm
-          <ArrowRight size={20} />
-        </Link>
-
-        <p style={{
-          textAlign: 'center',
-          fontSize: '0.875rem',
-          color: 'var(--gray-500)',
-          marginTop: '0.75rem'
-        }}>
-          Your installation date is reserved for 48 hours
-        </p>
       </section>
+
+      {/* Onboarding Steps */}
+      <section style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {steps.map((step) => {
+          const isCompleted = step.number < currentStep;
+          const isCurrent = step.number === currentStep;
+          const isUpcoming = step.number > currentStep;
+
+          return (
+            <div
+              key={step.number}
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '1rem',
+                padding: '1.25rem',
+                background: 'white',
+                borderRadius: '0.75rem',
+                border: isCurrent ? '2px solid var(--primary-500)' : '1px solid var(--gray-200)',
+                opacity: isUpcoming ? 0.6 : 1,
+                transition: 'border-color 200ms, opacity 200ms',
+              }}
+            >
+              {/* Step indicator */}
+              <div style={{
+                flexShrink: 0,
+                width: '2.5rem',
+                height: '2.5rem',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: isCompleted
+                  ? 'var(--green-500, #22c55e)'
+                  : isCurrent
+                    ? 'var(--primary-500)'
+                    : 'var(--gray-200)',
+                color: isCompleted || isCurrent ? 'white' : 'var(--gray-500)',
+                fontWeight: 600,
+                fontSize: '0.875rem',
+              }}>
+                {isCompleted ? (
+                  <CheckCircle size={20} />
+                ) : (
+                  step.number
+                )}
+              </div>
+
+              {/* Step content */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <h3 style={{
+                  margin: 0,
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  color: isUpcoming ? 'var(--gray-500)' : 'var(--gray-900)',
+                }}>
+                  {step.title}
+                </h3>
+                <p style={{
+                  margin: '0.25rem 0 0',
+                  fontSize: '0.875rem',
+                  color: 'var(--gray-500)',
+                }}>
+                  {step.description}
+                </p>
+
+                {/* CTA button — only for current step */}
+                {isCurrent && (
+                  <button
+                    type="button"
+                    onClick={step.ctaAction}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      marginTop: '0.75rem',
+                      padding: '0.625rem 1.25rem',
+                      background: 'var(--primary-500)',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '0.5rem',
+                      fontWeight: 600,
+                      fontSize: '0.875rem',
+                      cursor: 'pointer',
+                      transition: 'background 150ms',
+                    }}
+                  >
+                    <step.icon size={16} />
+                    {step.ctaLabel}
+                    <ArrowRight size={16} />
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </section>
+
+      <p style={{
+        textAlign: 'center',
+        fontSize: '0.875rem',
+        color: 'var(--gray-500)',
+        marginTop: '0.5rem'
+      }}>
+        Your installation date is reserved for 48 hours
+      </p>
 
       {/* FAQ Bar */}
       <FAQBar />
+
+      {/* Contract Floating Card */}
+      <ContractFloatingCard
+        isOpen={contractOpen}
+        onClose={() => setContractOpen(false)}
+        onSigned={() => {
+          setContractSigned(true);
+          setContractOpen(false);
+        }}
+        order={{
+          id: quote.id,
+          quoteId: quote.id,
+          propertyAddress: quote.address,
+          propertyCity: quote.city,
+          propertyState: quote.state,
+          selectedTier: quote.selectedTier || 'good',
+          totalPrice: totalPrice,
+        }}
+        contract={null}
+      />
+
+      {/* Payment Drawer */}
+      <PaymentDrawer
+        open={drawerOpen}
+        onOpenChange={setDrawerOpen}
+        quoteId={quote.id}
+        paymentType="deposit"
+        amount={depositAmount}
+        onPaymentSuccess={() => {
+          setDrawerOpen(false);
+          window.location.reload();
+        }}
+      />
     </div>
   );
 }
