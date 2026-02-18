@@ -1,23 +1,34 @@
+/* =================================================
+   REASSURANCE MODAL STYLES
+   Shown after package selection to reassure the user
+   ================================================= */
+
 .titleIcon {
   display: inline-flex;
-  color: var(--primary-500);
+  color: var(--rr-color-success);
   margin-right: 0.5rem;
   vertical-align: middle;
 }
 
+/* ========================================
+   PACKAGE CONFIRMATION
+   ======================================== */
+
 .packageConfirm {
-  background: var(--gray-50);
-  border-radius: 0.75rem;
-  padding: 1rem;
+  background: var(--rr-color-bg-tertiary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
   margin-bottom: 1.5rem;
 }
 
 .packageLabel {
   display: block;
-  font-size: 0.75rem;
-  color: var(--gray-500);
+  font-size: 0.6875rem;
+  color: var(--rr-color-text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+  font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
@@ -30,14 +41,18 @@
 .packageName {
   font-weight: 600;
   font-size: 1.125rem;
-  color: var(--gray-900);
+  color: var(--rr-color-text-primary);
 }
 
 .packagePrice {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1.125rem;
-  color: var(--primary-600);
+  color: var(--rr-color-text-primary);
 }
+
+/* ========================================
+   NEXT STEPS
+   ======================================== */
 
 .nextSteps {
   margin-bottom: 1.5rem;
@@ -46,8 +61,8 @@
 .nextStepsTitle {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--gray-700);
-  margin-bottom: 0.75rem;
+  color: var(--rr-color-text-primary);
+  margin: 0 0 0.75rem;
 }
 
 .stepsList {
@@ -64,26 +79,35 @@
   align-items: flex-start;
   gap: 0.75rem;
   font-size: 0.9375rem;
-  color: var(--gray-700);
+  color: var(--rr-color-text-secondary);
   line-height: 1.4;
 }
 
 .stepIcon {
   flex-shrink: 0;
-  color: var(--primary-500);
+  color: var(--rr-color-blue);
   margin-top: 0.125rem;
 }
 
+/* ========================================
+   REASSURANCE NOTE
+   ======================================== */
+
 .reassurance {
   font-size: 0.875rem;
-  color: var(--gray-500);
+  color: var(--rr-color-success);
   text-align: center;
   font-style: italic;
-  padding: 0.75rem;
-  background: var(--green-50, #f0fdf4);
-  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--rr-color-success-light);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 8px;
   margin: 0;
 }
+
+/* ========================================
+   CONTINUE BUTTON
+   ======================================== */
 
 .continueButton {
   display: flex;
@@ -92,16 +116,28 @@
   gap: 0.5rem;
   width: 100%;
   padding: 0.875rem 1.5rem;
-  background: var(--primary-500);
-  color: white;
+  background: var(--rr-color-blue);
+  color: var(--rr-color-white);
   border: none;
-  border-radius: 0.75rem;
+  border-radius: 10px;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 150ms ease;
+  transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
 }
 
 .continueButton:hover {
-  background: var(--primary-600);
+  background: var(--rr-color-blue-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgba(74, 126, 194, 0.35);
+}
+
+.continueButton:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.continueButton:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
 }

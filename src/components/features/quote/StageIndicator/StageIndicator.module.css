@@ -5,14 +5,16 @@
 
 .container {
   width: 100%;
-  background-color: transparent;
-  padding: var(--rr-space-2) 0;
+  background-color: var(--rr-color-white);
+  padding: var(--rr-space-4) 0 var(--rr-space-3);
+  border-bottom: 1px solid var(--rr-color-border-default);
 }
 
 .wrapper {
-  max-width: 480px;
+  max-width: 520px;
   margin: 0 auto;
   position: relative;
+  padding: 0 var(--rr-space-4);
 }
 
 /* ========================================
@@ -21,10 +23,10 @@
 
 .track {
   position: absolute;
-  top: 14px;
-  left: 32px;
-  right: 32px;
-  height: 1px;
+  top: 18px;
+  left: 56px;
+  right: 56px;
+  height: 2px;
   background-color: var(--rr-color-gray-200);
   z-index: 0;
 }
@@ -66,7 +68,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   text-decoration: none;
   color: inherit;
   padding: 2px;
@@ -88,10 +90,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   border-radius: 9999px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   transition:
     background-color 0.15s ease-out,
@@ -104,7 +106,7 @@
 /* Pending state */
 .stage_pending .stageIndicator {
   background-color: var(--rr-color-white);
-  border: 1px solid var(--rr-color-gray-200);
+  border: 2px solid var(--rr-color-gray-200);
   color: var(--rr-color-text-tertiary);
 }
 
@@ -113,6 +115,7 @@
   background-color: var(--rr-color-blue);
   border: 2px solid var(--rr-color-blue);
   color: var(--rr-color-white);
+  box-shadow: 0 0 0 4px rgba(74, 126, 194, 0.15);
 }
 
 /* Completed state */
@@ -139,7 +142,7 @@
 }
 
 .stageLabel {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   white-space: nowrap;
   transition: color 0.15s ease-out;
@@ -151,6 +154,7 @@
 
 .stage_current .stageLabel {
   color: var(--rr-color-text-primary);
+  font-weight: 600;
 }
 
 .stage_completed .stageLabel {

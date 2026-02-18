@@ -125,7 +125,7 @@ export function DialogTitle({ children, className }: DialogTitleProps) {
 
 export function DialogBody({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={cn('flex-1 overflow-auto', className)}>
+    <div className={cn('flex-1 overflow-auto px-6 py-4', className)}>
       {children}
     </div>
   );

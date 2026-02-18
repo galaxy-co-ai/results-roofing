@@ -615,6 +615,129 @@
 }
 
 /* ========================================
+   ONBOARDING STEPS (Pending Payment State)
+   ======================================== */
+
+.onboardingSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.onboardingCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--rr-color-white);
+  border-radius: 12px;
+  border: 1px solid var(--rr-color-border-default);
+  box-shadow: var(--rr-shadow-charcoal-subtle);
+  transition: border-color 200ms ease, opacity 200ms ease, box-shadow 200ms ease;
+}
+
+.onboardingCardCurrent {
+  border: 2px solid var(--rr-color-blue);
+  box-shadow:
+    var(--rr-shadow-charcoal-subtle),
+    0 0 0 3px rgba(74, 126, 194, 0.08);
+}
+
+.onboardingCardUpcoming {
+  opacity: 0.55;
+}
+
+/* Step circle indicator */
+.stepCircle {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--rr-color-gray-200);
+  color: var(--rr-color-text-tertiary);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.stepCircleCompleted {
+  background: var(--rr-color-success);
+  color: var(--rr-color-white);
+}
+
+.stepCircleCurrent {
+  background: var(--rr-color-blue);
+  color: var(--rr-color-white);
+  box-shadow: 0 0 0 4px rgba(74, 126, 194, 0.15);
+}
+
+/* Step content */
+.stepBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.stepTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+}
+
+.stepTitleUpcoming {
+  color: var(--rr-color-text-tertiary);
+}
+
+.stepDescription {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: var(--rr-color-text-tertiary);
+}
+
+/* CTA button */
+.stepCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.625rem 1.25rem;
+  background: var(--rr-color-blue);
+  color: var(--rr-color-white);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+
+.stepCta:hover {
+  background: var(--rr-color-blue-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgba(74, 126, 194, 0.35);
+}
+
+.stepCta:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.stepCta:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: 2px;
+}
+
+/* Reservation note */
+.reservationNote {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--rr-color-text-tertiary);
+  margin-top: 0.5rem;
+}
+
+/* ========================================
    RESPONSIVE
    ======================================== */
 
@@ -643,5 +766,9 @@
 
   .detailsGrid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .onboardingCard {
+    padding: 1rem;
   }
 }

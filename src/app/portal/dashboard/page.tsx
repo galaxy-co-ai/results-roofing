@@ -250,35 +250,27 @@ function PendingPaymentState({ quote }: { quote: PendingQuote }) {
           <span className={styles.propertyAddress}>{quote.address}, {quote.city}, {quote.state}</span>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '1rem',
-          padding: '1rem',
-          background: 'var(--gray-50)',
-          borderRadius: '0.75rem',
-          marginTop: '0.75rem'
-        }}>
-          <div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginBottom: '0.25rem' }}>Package</div>
-            <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.9375rem' }}>
-              <Sparkles size={14} style={{ color: 'var(--primary-500)' }} />
+        <div className={styles.detailsGrid}>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Package</span>
+            <span className={styles.detailValue}>
+              <Sparkles size={14} className={styles.propertyIcon} aria-hidden="true" />{' '}
               {tierName}
-            </div>
+            </span>
           </div>
-          <div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginBottom: '0.25rem' }}>Total</div>
-            <div style={{ fontWeight: 600, fontSize: '0.9375rem' }}>${totalPrice.toLocaleString()}</div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Total</span>
+            <span className={styles.detailValue}>${totalPrice.toLocaleString()}</span>
           </div>
-          <div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginBottom: '0.25rem' }}>Installation</div>
-            <div style={{ fontWeight: 600, fontSize: '0.9375rem' }}>{formattedDate}</div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Installation</span>
+            <span className={styles.detailValue}>{formattedDate}</span>
           </div>
         </div>
       </section>
 
       {/* Onboarding Steps */}
-      <section style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <section className={styles.onboardingSteps}>
         {steps.map((step) => {
           const isCompleted = step.number < currentStep;
           const isCurrent = step.number === currentStep;
@@ -287,36 +279,10 @@ function PendingPaymentState({ quote }: { quote: PendingQuote }) {
           return (
             <div
               key={step.number}
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '1rem',
-                padding: '1.25rem',
-                background: 'white',
-                borderRadius: '0.75rem',
-                border: isCurrent ? '2px solid var(--primary-500)' : '1px solid var(--gray-200)',
-                opacity: isUpcoming ? 0.6 : 1,
-                transition: 'border-color 200ms, opacity 200ms',
-              }}
+              className={`${styles.onboardingCard} ${isCurrent ? styles.onboardingCardCurrent : ''} ${isUpcoming ? styles.onboardingCardUpcoming : ''}`}
             >
               {/* Step indicator */}
-              <div style={{
-                flexShrink: 0,
-                width: '2.5rem',
-                height: '2.5rem',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: isCompleted
-                  ? 'var(--green-500, #22c55e)'
-                  : isCurrent
-                    ? 'var(--primary-500)'
-                    : 'var(--gray-200)',
-                color: isCompleted || isCurrent ? 'white' : 'var(--gray-500)',
-                fontWeight: 600,
-                fontSize: '0.875rem',
-              }}>
+              <div className={`${styles.stepCircle} ${isCompleted ? styles.stepCircleCompleted : ''} ${isCurrent ? styles.stepCircleCurrent : ''}`}>
                 {isCompleted ? (
                   <CheckCircle size={20} />
                 ) : (
@@ -325,20 +291,11 @@ function PendingPaymentState({ quote }: { quote: PendingQuote }) {
               </div>
 
               {/* Step content */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <h3 style={{
-                  margin: 0,
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  color: isUpcoming ? 'var(--gray-500)' : 'var(--gray-900)',
-                }}>
+              <div className={styles.stepBody}>
+                <h3 className={`${styles.stepTitle} ${isUpcoming ? styles.stepTitleUpcoming : ''}`}>
                   {step.title}
                 </h3>
-                <p style={{
-                  margin: '0.25rem 0 0',
-                  fontSize: '0.875rem',
-                  color: 'var(--gray-500)',
-                }}>
+                <p className={styles.stepDescription}>
                   {step.description}
                 </p>
 
@@ -347,21 +304,7 @@ function PendingPaymentState({ quote }: { quote: PendingQuote }) {
                   <button
                     type="button"
                     onClick={step.ctaAction}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      marginTop: '0.75rem',
-                      padding: '0.625rem 1.25rem',
-                      background: 'var(--primary-500)',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '0.5rem',
-                      fontWeight: 600,
-                      fontSize: '0.875rem',
-                      cursor: 'pointer',
-                      transition: 'background 150ms',
-                    }}
+                    className={styles.stepCta}
                   >
                     <step.icon size={16} />
                     {step.ctaLabel}
@@ -374,12 +317,7 @@ function PendingPaymentState({ quote }: { quote: PendingQuote }) {
         })}
       </section>
 
-      <p style={{
-        textAlign: 'center',
-        fontSize: '0.875rem',
-        color: 'var(--gray-500)',
-        marginTop: '0.5rem'
-      }}>
+      <p className={styles.reservationNote}>
         Your installation date is reserved for 48 hours
       </p>
 
