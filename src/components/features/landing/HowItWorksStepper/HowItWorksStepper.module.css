@@ -158,12 +158,19 @@
 @media (min-width: 768px) {
   .connector {
     position: absolute;
-    top: 1.75rem;
-    left: calc(50% + 2rem);
-    right: calc(-50% + 2rem);
+    top: calc(1.75rem - 1.5px);
+    left: calc(50% + 1.75rem);
+    right: calc(-50% + 1.75rem);
     width: auto;
+    height: 3px;
     min-width: 0;
     margin: 0;
+    background: linear-gradient(
+      90deg,
+      hsl(var(--primary) / 0.3) 0%,
+      hsl(var(--primary) / 0.5) 50%,
+      hsl(var(--primary) / 0.3) 100%
+    );
   }
 
   .stepWrapper {
