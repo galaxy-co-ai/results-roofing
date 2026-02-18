@@ -1,0 +1,58 @@
+/* =================================================
+   SCROLL REVEAL - Entrance animations
+   IntersectionObserver-driven, CSS-only transitions
+   ================================================= */
+
+/* Base state: hidden before intersection */
+.root {
+  will-change: opacity, transform;
+}
+
+/* ---- fadeUp ---- */
+.fadeUp {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.6s var(--rr-ease-out, cubic-bezier(0, 0, 0.2, 1)),
+    transform 0.6s var(--rr-ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+.fadeUp.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- fadeIn ---- */
+.fadeIn {
+  opacity: 0;
+  transition: opacity 0.6s var(--rr-ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+.fadeIn.visible {
+  opacity: 1;
+}
+
+/* ---- scaleIn ---- */
+.scaleIn {
+  opacity: 0;
+  transform: scale(0.95);
+  transition:
+    opacity 0.6s var(--rr-ease-out, cubic-bezier(0, 0, 0.2, 1)),
+    transform 0.6s var(--rr-ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+.scaleIn.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Reduced motion: start visible, no animation */
+@media (prefers-reduced-motion: reduce) {
+  .fadeUp,
+  .fadeIn,
+  .scaleIn {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

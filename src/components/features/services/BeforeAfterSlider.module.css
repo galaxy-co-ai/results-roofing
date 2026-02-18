@@ -1,0 +1,142 @@
+/* =================================================
+   BEFORE/AFTER SLIDER - CSS-only image comparison
+   Uses input[type=range] for accessible interaction
+   ================================================= */
+
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 10;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #1e293b;
+  cursor: col-resize;
+}
+
+/* Image panels */
+.beforePanel,
+.afterPanel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.beforePanel {
+  z-index: 1;
+}
+
+.afterPanel {
+  z-index: 0;
+}
+
+.beforePanel img,
+.afterPanel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Placeholder styling when no real images */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.placeholderBefore {
+  background: linear-gradient(135deg, #334155, #475569);
+  color: #94a3b8;
+}
+
+.placeholderAfter {
+  background: linear-gradient(135deg, #1e3a5f, #2563eb);
+  color: #93c5fd;
+}
+
+/* Divider line */
+.divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #ffffff;
+  z-index: 3;
+  pointer-events: none;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Divider handle */
+.handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.handleArrows {
+  display: flex;
+  gap: 2px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Range input overlay */
+.rangeInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: col-resize;
+  z-index: 5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Labels */
+.label {
+  position: absolute;
+  bottom: 12px;
+  z-index: 2;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.labelBefore {
+  left: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+}
+
+.labelAfter {
+  right: 12px;
+  background: rgba(37, 99, 235, 0.7);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+}

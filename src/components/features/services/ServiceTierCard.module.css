@@ -1,0 +1,229 @@
+/* =================================================
+   SERVICE TIER CARD - Progressive visual escalation
+   Good (clean) → Better (confident) → Best (commanding)
+   ================================================= */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  padding: 32px 28px;
+  transition:
+    box-shadow 0.3s var(--rr-ease-in-out, ease),
+    transform 0.3s var(--rr-ease-in-out, ease),
+    border-color 0.3s var(--rr-ease-in-out, ease);
+}
+
+/* ---- Good: Clean baseline ---- */
+.good {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-top: 2px solid #94a3b8;
+}
+
+.good:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+}
+
+/* ---- Better: Confident (recommended) ---- */
+.better {
+  background: #ffffff;
+  border: 2px solid #2563eb;
+  border-top: 3px solid #2563eb;
+}
+
+@media (min-width: 768px) {
+  .better {
+    transform: scale(1.02);
+  }
+}
+
+.better:hover {
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.1);
+}
+
+/* Glassmorphism badge */
+.badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 20px;
+  white-space: nowrap;
+  background: rgba(37, 99, 235, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  color: #2563eb;
+}
+
+/* ---- Best: Commanding (dark inverted) ---- */
+.best {
+  background: linear-gradient(to bottom, #0f172a, #1e293b);
+  border: 2px solid rgba(245, 158, 11, 0.6);
+  color: #ffffff;
+}
+
+.best:hover {
+  box-shadow: 0 8px 32px rgba(245, 158, 11, 0.15);
+}
+
+/* Shimmer effect on Best card border */
+.best::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 18px;
+  padding: 2px;
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.6) 0%,
+    rgba(245, 158, 11, 0.15) 40%,
+    rgba(245, 158, 11, 0.6) 60%,
+    rgba(245, 158, 11, 0.15) 100%
+  );
+  background-size: 300% 300%;
+  animation: shimmer 8s ease-in-out infinite;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes shimmer {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* ---- CTA buttons ---- */
+.ctaGood {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  color: #475569;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+  text-decoration: none;
+}
+
+.ctaGood:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+}
+
+.ctaGood:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.ctaBetter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+  text-decoration: none;
+}
+
+.ctaBetter:hover {
+  background: #1d4ed8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.ctaBetter:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.ctaBest {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  background: #f59e0b;
+  color: #0f172a;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+  text-decoration: none;
+}
+
+.ctaBest:hover {
+  background: #d97706;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.ctaBest:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+/* Features list */
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Reduced motion: disable shimmer */
+@media (prefers-reduced-motion: reduce) {
+  .best::before {
+    animation: none;
+  }
+}
