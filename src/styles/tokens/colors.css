@@ -1,6 +1,6 @@
 /* =================================================
    RESULTS ROOFING - COLOR TOKENS
-   Brand: Blue (#1E6CFF) + Charcoal (#1E2329)
+   Brand: Blue (#2563EB) + Charcoal (#1E2329)
    ================================================= */
 
 :root {
@@ -10,9 +10,9 @@
      ======================================== */
 
   /* Brand Colors */
-  --rr-color-blue: #4A7EC2;            /* Primary brand - CTAs, accents (matte) */
-  --rr-color-blue-light: #6B9AD4;      /* Hover states, highlights */
-  --rr-color-blue-dark: #3A6499;       /* Active states, shadows */
+  --rr-color-blue: #2563EB;            /* Primary brand - CTAs, accents (Tailwind blue-600) */
+  --rr-color-blue-light: #3B82F6;      /* Hover states, highlights (blue-500) */
+  --rr-color-blue-dark: #1D4ED8;       /* Active states, shadows (blue-700) */
   --rr-color-charcoal: #1E2329;        /* Primary text, strong contrast */
   --rr-color-charcoal-light: #2A3038;  /* Secondary dark */
   --rr-color-charcoal-dark: #14181D;   /* Deepest dark */
@@ -89,7 +89,7 @@
 
   /* Focus Ring */
   --rr-color-focus-ring: var(--rr-color-blue);
-  --rr-color-focus-ring-alpha: rgba(74, 126, 194, 0.15);
+  --rr-color-focus-ring-alpha: rgba(37, 99, 235, 0.15);
   --rr-color-focus-ring-error: rgba(239, 68, 68, 0.15);
 
   /* Overlay */

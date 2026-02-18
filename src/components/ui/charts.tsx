@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils';
 // Color System - Brand aligned with gradients
 // ============================================
 const COLORS = {
-  blue: { solid: '#1E6CFF', light: '#60A5FA', gradient: ['#1E6CFF', '#60A5FA'] },
+  blue: { solid: '#2563EB', light: '#60A5FA', gradient: ['#2563EB', '#60A5FA'] },
   emerald: { solid: '#10B981', light: '#34D399', gradient: ['#10B981', '#6EE7B7'] },
   amber: { solid: '#F59E0B', light: '#FBBF24', gradient: ['#F59E0B', '#FCD34D'] },
   rose: { solid: '#EF4444', light: '#F87171', gradient: ['#EF4444', '#FCA5A5'] },

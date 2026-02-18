@@ -138,7 +138,7 @@
 /* Preferred / Popular card — elevated treatment */
 .tierCard_popular {
   border: 2px solid var(--rr-color-blue);
-  background-color: rgba(59, 130, 246, 0.03);
+  background-color: rgba(37, 99, 235, 0.03);
 }
 
 @media (min-width: 768px) {

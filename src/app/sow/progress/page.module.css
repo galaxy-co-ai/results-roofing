@@ -62,7 +62,7 @@
 .retryBtn {
   margin-top: 8px;
   padding: 8px 16px;
-  background: #1e40af;
+  background: #1D4ED8;
   color: white;
   border: none;
   border-radius: 8px;
@@ -73,7 +73,7 @@
 }
 
 .retryBtn:hover {
-  background: #1e3a8a;
+  background: #1E40AF;
 }
 
 /* ========================================
@@ -128,8 +128,8 @@
 
 .refreshBtn:hover {
   background: #f8fafc;
-  color: #1e40af;
-  border-color: #1e40af;
+  color: #1D4ED8;
+  border-color: #1D4ED8;
 }
 
 /* ========================================
@@ -195,7 +195,7 @@
 }
 
 .statIconComplete { color: #10B981; }
-.statIconProgress { color: #1e40af; }
+.statIconProgress { color: #1D4ED8; }
 .statIconPending { color: #f59e0b; }
 .statIconBlocked { color: #dc2626; }
 
@@ -275,7 +275,7 @@
 
 .phaseProgressFill {
   height: 100%;
-  background: #1e40af;
+  background: #1D4ED8;
   border-radius: 3px;
   transition: width 0.3s ease;
 }
@@ -304,7 +304,7 @@
 
 .badge_in_progress {
   background: #dbeafe;
-  color: #1e40af;
+  color: #1D4ED8;
 }
 
 .badge_pending {
@@ -343,7 +343,7 @@
 }
 
 .task_complete .taskIcon { color: #10B981; }
-.task_in_progress .taskIcon { color: #1e40af; }
+.task_in_progress .taskIcon { color: #1D4ED8; }
 .task_pending .taskIcon { color: #f59e0b; }
 .task_blocked .taskIcon { color: #dc2626; }
 
@@ -391,5 +391,5 @@
 }
 
 .brandLink:hover {
-  color: #1e40af;
+  color: #1D4ED8;
 }

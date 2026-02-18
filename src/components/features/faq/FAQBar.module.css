@@ -14,15 +14,15 @@
 }
 
 .faqBar:hover {
-  border-color: rgba(59, 130, 246, 0.4);
+  border-color: rgba(37, 99, 235, 0.4);
   box-shadow:
-    0 4px 12px -2px rgba(30, 64, 175, 0.12),
-    0 0 0 3px rgba(59, 130, 246, 0.08);
+    0 4px 12px -2px rgba(37, 99, 235, 0.12),
+    0 0 0 3px rgba(37, 99, 235, 0.08);
   transform: translateY(-2px);
 }
 
 .faqBar:focus-visible {
-  outline: 2px solid rgba(59, 130, 246, 0.6);
+  outline: 2px solid rgba(37, 99, 235, 0.6);
   outline-offset: 2px;
 }
 
@@ -30,13 +30,13 @@
   width: 48px;
   height: 48px;
   min-width: 48px;
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #1D4ED8 100%);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.25);
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.25);
 }
 
 .content {

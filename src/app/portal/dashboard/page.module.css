@@ -26,7 +26,7 @@
 
 /* Gradient accent for "Dashboard" - subtle brand tie-in */
 .titleAccent {
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -53,10 +53,10 @@
 }
 
 .statusCard:hover {
-  border-color: rgba(59, 130, 246, 0.2);
+  border-color: rgba(37, 99, 235, 0.2);
   box-shadow:
     var(--rr-shadow-charcoal-subtle),
-    0 0 0 3px rgba(59, 130, 246, 0.04);
+    0 0 0 3px rgba(37, 99, 235, 0.04);
 }
 
 .statusHeader {
@@ -110,11 +110,11 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  background: rgba(59, 130, 246, 0.04);
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: rgba(37, 99, 235, 0.04);
+  border: 1px solid rgba(37, 99, 235, 0.3);
   border-radius: 10px;
   margin-bottom: 1rem;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.06);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.06);
 }
 
 .milestoneIcon {
@@ -294,7 +294,7 @@
 
 .checklistClickable:hover {
   background: var(--rr-color-bg-tertiary);
-  border-color: rgba(59, 130, 246, 0.3);
+  border-color: rgba(37, 99, 235, 0.3);
 }
 
 .checklistClickable:focus-visible {
@@ -339,10 +339,10 @@
 }
 
 .timelineCard:hover {
-  border-color: rgba(59, 130, 246, 0.15);
+  border-color: rgba(37, 99, 235, 0.15);
   box-shadow:
     var(--rr-shadow-charcoal-subtle),
-    0 0 0 3px rgba(59, 130, 246, 0.03);
+    0 0 0 3px rgba(37, 99, 235, 0.03);
 }
 
 .timeline {
@@ -370,7 +370,7 @@
 
 .statusCurrent {
   color: var(--rr-color-blue);
-  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.4));
+  filter: drop-shadow(0 0 6px rgba(37, 99, 235, 0.4));
 }
 
 .statusPending {
@@ -442,10 +442,10 @@
 }
 
 .actionsCard:hover {
-  border-color: rgba(59, 130, 246, 0.15);
+  border-color: rgba(37, 99, 235, 0.15);
   box-shadow:
     var(--rr-shadow-charcoal-subtle),
-    0 0 0 3px rgba(59, 130, 246, 0.03);
+    0 0 0 3px rgba(37, 99, 235, 0.03);
 }
 
 .actionsList {
@@ -468,10 +468,10 @@
 
 .actionItem:hover {
   background: var(--rr-color-white);
-  border-color: rgba(59, 130, 246, 0.4);
+  border-color: rgba(37, 99, 235, 0.4);
   box-shadow:
-    0 4px 12px -2px rgba(30, 64, 175, 0.12),
-    0 0 0 3px rgba(59, 130, 246, 0.08);
+    0 4px 12px -2px rgba(37, 99, 235, 0.12),
+    0 0 0 3px rgba(37, 99, 235, 0.08);
   transform: translateY(-1px);
 }
 
@@ -492,8 +492,8 @@
 
 .actionItem:hover .actionIcon {
   box-shadow:
-    0 4px 8px -2px rgba(59, 130, 246, 0.3),
-    0 0 0 3px rgba(59, 130, 246, 0.1);
+    0 4px 8px -2px rgba(37, 99, 235, 0.3),
+    0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .actionContent {
@@ -587,12 +587,12 @@
 .retryLink:hover,
 .ctaButton:hover {
   transform: translateY(-1px);
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   border-color: transparent;
   color: var(--rr-color-white);
   box-shadow:
-    0 4px 12px -2px rgba(30, 64, 175, 0.35),
-    0 0 0 3px rgba(59, 130, 246, 0.12);
+    0 4px 12px -2px rgba(37, 99, 235, 0.35),
+    0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 .retryLink:focus-visible,
@@ -640,7 +640,7 @@
   border: 2px solid var(--rr-color-blue);
   box-shadow:
     var(--rr-shadow-charcoal-subtle),
-    0 0 0 3px rgba(74, 126, 194, 0.08);
+    0 0 0 3px rgba(37, 99, 235, 0.08);
 }
 
 .onboardingCardUpcoming {
@@ -670,7 +670,7 @@
 .stepCircleCurrent {
   background: var(--rr-color-blue);
   color: var(--rr-color-white);
-  box-shadow: 0 0 0 4px rgba(74, 126, 194, 0.15);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
 }
 
 /* Step content */
@@ -718,7 +718,7 @@
 .stepCta:hover {
   background: var(--rr-color-blue-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px -2px rgba(74, 126, 194, 0.35);
+  box-shadow: 0 4px 12px -2px rgba(37, 99, 235, 0.35);
 }
 
 .stepCta:active {

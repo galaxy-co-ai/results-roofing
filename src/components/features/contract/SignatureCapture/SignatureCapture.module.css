@@ -45,8 +45,8 @@
 
 .nameHint {
   padding: var(--rr-space-3);
-  background-color: var(--rr-color-info-light, rgba(59, 130, 246, 0.1));
-  border: 1px solid var(--rr-color-info-light, rgba(59, 130, 246, 0.2));
+  background-color: var(--rr-color-info-light, rgba(37, 99, 235, 0.1));
+  border: 1px solid var(--rr-color-info-light, rgba(37, 99, 235, 0.2));
   border-radius: var(--rr-radius-lg);
   font-size: var(--rr-font-size-sm);
   color: var(--rr-color-info, #3b82f6);

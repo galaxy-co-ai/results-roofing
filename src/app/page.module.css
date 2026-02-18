@@ -24,7 +24,7 @@
   min-height: auto;
   position: relative;
   background-color: #ffffff;
-  background-image: radial-gradient(circle, rgba(59, 130, 246, 0.15) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(37, 99, 235, 0.15) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
@@ -46,11 +46,11 @@
 }
 
 .highlight {
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 50%, #1e3a8a 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #1D4ED8 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.4));
+  filter: drop-shadow(0 0 20px rgba(37, 99, 235, 0.4));
 }
 
 .subtitle {
@@ -218,11 +218,11 @@
 }
 
 .tickerControl:hover {
-  color: #1e40af;
-  border-color: rgba(59, 130, 246, 0.4);
+  color: #1D4ED8;
+  border-color: rgba(37, 99, 235, 0.4);
   box-shadow:
-    0 2px 4px -1px rgba(30, 64, 175, 0.15),
-    0 0 0 3px rgba(59, 130, 246, 0.08);
+    0 2px 4px -1px rgba(37, 99, 235, 0.15),
+    0 0 0 3px rgba(37, 99, 235, 0.08);
 }
 
 .tickerControl:active {
@@ -334,7 +334,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #1e40af;
+  color: #1D4ED8;
   font-weight: 600;
   font-size: 12px;
 }
@@ -437,7 +437,7 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: #1e40af;
+  background: #1D4ED8;
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;
@@ -490,10 +490,10 @@
 }
 
 .valuePropCard:hover {
-  border-color: rgba(59, 130, 246, 0.3);
+  border-color: rgba(37, 99, 235, 0.3);
   box-shadow:
-    0 4px 12px -2px rgba(30, 64, 175, 0.1),
-    0 0 0 3px rgba(59, 130, 246, 0.06);
+    0 4px 12px -2px rgba(37, 99, 235, 0.1),
+    0 0 0 3px rgba(37, 99, 235, 0.06);
 }
 
 .valuePropIcon {
@@ -504,18 +504,18 @@
   height: 44px;
   border-radius: 10px;
   background: #ffffff;
-  color: #1e40af;
+  color: #1D4ED8;
   flex-shrink: 0;
   box-shadow:
-    0 2px 8px -2px rgba(59, 130, 246, 0.4),
-    0 0 0 1px rgba(59, 130, 246, 0.1);
+    0 2px 8px -2px rgba(37, 99, 235, 0.4),
+    0 0 0 1px rgba(37, 99, 235, 0.1);
   transition: all 0.2s ease;
 }
 
 .valuePropCard:hover .valuePropIcon {
   box-shadow:
-    0 4px 12px -2px rgba(59, 130, 246, 0.5),
-    0 0 0 1px rgba(59, 130, 246, 0.15);
+    0 4px 12px -2px rgba(37, 99, 235, 0.5),
+    0 0 0 1px rgba(37, 99, 235, 0.15);
 }
 
 .valuePropIcon svg {

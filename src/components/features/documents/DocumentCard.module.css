@@ -15,10 +15,10 @@
 }
 
 .card:hover {
-  border-color: rgba(59, 130, 246, 0.4);
+  border-color: rgba(37, 99, 235, 0.4);
   box-shadow:
-    0 4px 12px -2px rgba(30, 64, 175, 0.12),
-    0 0 0 3px rgba(59, 130, 246, 0.08);
+    0 4px 12px -2px rgba(37, 99, 235, 0.12),
+    0 0 0 3px rgba(37, 99, 235, 0.08);
   transform: translateY(-2px);
 }
 
@@ -43,8 +43,8 @@
 
 .card:hover .iconWrapper {
   box-shadow:
-    0 4px 8px -2px rgba(59, 130, 246, 0.3),
-    0 0 0 3px rgba(59, 130, 246, 0.1);
+    0 4px 8px -2px rgba(37, 99, 235, 0.3),
+    0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .icon {
@@ -89,7 +89,7 @@
 }
 
 .status.active {
-  background: rgba(74, 126, 194, 0.12);
+  background: rgba(37, 99, 235, 0.12);
   color: var(--rr-color-blue);
 }
 
@@ -164,12 +164,12 @@
 }
 
 .downloadButton:hover {
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #1D4ED8 100%);
   border-color: transparent;
   color: var(--rr-color-white);
   box-shadow:
-    0 4px 8px -2px rgba(59, 130, 246, 0.35),
-    0 0 0 3px rgba(59, 130, 246, 0.12);
+    0 4px 8px -2px rgba(37, 99, 235, 0.35),
+    0 0 0 3px rgba(37, 99, 235, 0.12);
   transform: translateY(-1px);
 }
 

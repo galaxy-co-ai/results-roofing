@@ -53,12 +53,12 @@
 }
 
 .toggleButton:hover {
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   border-color: transparent;
   color: var(--rr-color-white);
   box-shadow:
-    0 4px 8px -2px rgba(59, 130, 246, 0.4),
-    0 0 0 3px rgba(59, 130, 246, 0.15);
+    0 4px 8px -2px rgba(37, 99, 235, 0.4),
+    0 0 0 3px rgba(37, 99, 235, 0.15);
   transform: translateY(-50%) scale(1.1);
 }
 
@@ -121,8 +121,8 @@
 
 .logo:hover .logoIcon {
   box-shadow:
-    0 4px 8px -2px rgba(59, 130, 246, 0.25),
-    0 0 0 3px rgba(59, 130, 246, 0.08);
+    0 4px 8px -2px rgba(37, 99, 235, 0.25),
+    0 0 0 3px rgba(37, 99, 235, 0.08);
   transform: scale(1.02);
 }
 
@@ -201,10 +201,10 @@
 
 /* Active state */
 .navLinkActive {
-  background: rgba(59, 130, 246, 0.08);
+  background: rgba(37, 99, 235, 0.08);
   color: var(--rr-color-blue);
   font-weight: 500;
-  box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.1);
 }
 
 .navLinkActive::before {
@@ -224,7 +224,7 @@
 }
 
 .collapsed .navLinkActive {
-  background: rgba(45, 98, 168, 0.12);
+  background: rgba(37, 99, 235, 0.12);
 }
 
 .navIcon {
@@ -299,7 +299,7 @@
 .collapsedAvatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, rgba(45, 98, 168, 0.1) 0%, rgba(45, 98, 168, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
   border: 1px solid var(--rr-color-border-default);
   border-radius: 10px;
   display: flex;

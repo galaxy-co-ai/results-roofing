@@ -12,7 +12,7 @@ export default function HomePage() {
           id="quote-form"
           className="flex flex-col items-center justify-center text-center px-6 py-8 md:py-14 relative bg-white"
           style={{
-            backgroundImage: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 1px, transparent 1px)',
+            backgroundImage: 'radial-gradient(circle, rgba(37, 99, 235, 0.15) 1px, transparent 1px)',
             backgroundSize: '24px 24px',
           }}
         >

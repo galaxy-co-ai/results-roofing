@@ -150,7 +150,7 @@
 }
 
 .table th {
-  background: rgba(45, 98, 168, 0.06);
+  background: rgba(37, 99, 235, 0.06);
   font-weight: 600;
   color: var(--rr-color-charcoal);
   text-transform: uppercase;
@@ -164,7 +164,7 @@
 
 .tableTotal {
   font-weight: 600;
-  background: rgba(45, 98, 168, 0.06);
+  background: rgba(37, 99, 235, 0.06);
 }
 
 .tableTotal td {
@@ -173,7 +173,7 @@
 
 /* Highlight Box */
 .highlightBox {
-  background: rgba(45, 98, 168, 0.06);
+  background: rgba(37, 99, 235, 0.06);
   border-left: 4px solid var(--rr-color-blue);
   padding: 16px 20px;
   margin: 20px 0;
@@ -292,7 +292,7 @@
 }
 
 .certificateInner {
-  border: 1px solid rgba(45, 98, 168, 0.2);
+  border: 1px solid rgba(37, 99, 235, 0.2);
   padding: 40px;
 }
 
@@ -326,7 +326,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(45, 98, 168, 0.06);
+  background: rgba(37, 99, 235, 0.06);
 }
 
 .sealInner {

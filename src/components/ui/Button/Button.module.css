@@ -15,7 +15,7 @@
 }
 
 .button:focus-visible {
-  outline: 2px solid var(--rr-color-blue, #4A7EC2);
+  outline: 2px solid var(--rr-color-blue, #2563EB);
   outline-offset: 2px;
 }
 
@@ -49,15 +49,15 @@
 /* Variants */
 .primary {
   background-color: var(--rr-color-white, #ffffff);
-  color: var(--rr-color-blue, #4A7EC2);
+  color: var(--rr-color-blue, #2563EB);
   border-color: var(--rr-color-border-default, #E5E7EB);
 }
 
 .primary:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: var(--rr-shadow-charcoal-medium);
-  background-color: var(--rr-color-blue, #4A7EC2);
-  border-color: var(--rr-color-blue, #4A7EC2);
+  background-color: var(--rr-color-blue, #2563EB);
+  border-color: var(--rr-color-blue, #2563EB);
   color: var(--rr-color-white, #ffffff);
 }
 
@@ -75,8 +75,8 @@
 .secondary:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: var(--rr-shadow-charcoal-medium);
-  background-color: var(--rr-color-blue, #4A7EC2);
-  border-color: var(--rr-color-blue, #4A7EC2);
+  background-color: var(--rr-color-blue, #2563EB);
+  border-color: var(--rr-color-blue, #2563EB);
   color: var(--rr-color-white, #ffffff);
 }
 
@@ -94,7 +94,7 @@
 
 .ghost:hover:not(:disabled) {
   background-color: var(--rr-color-surface-secondary, #faf8f5);
-  color: var(--rr-color-blue, #4A7EC2);
+  color: var(--rr-color-blue, #2563EB);
 }
 
 .ghost:active:not(:disabled) {

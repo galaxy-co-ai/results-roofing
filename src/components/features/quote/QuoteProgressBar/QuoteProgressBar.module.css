@@ -169,7 +169,7 @@
 }
 
 .stepLink:focus .stepIndicator {
-  box-shadow: 0 0 0 3px var(--rr-color-focus-ring, rgba(74, 126, 194, 0.3));
+  box-shadow: 0 0 0 3px var(--rr-color-focus-ring, rgba(37, 99, 235, 0.3));
 }
 
 .step_clickable:hover .stepIndicator {

@@ -12,7 +12,7 @@
 
 /* ========================================
    SHADCN/UI CSS VARIABLES
-   Results Roofing Brand: Blue (#1E6CFF) + Charcoal (#1E2329)
+   Results Roofing Brand: Blue (#2563EB) + Charcoal (#1E2329)
    ======================================== */
 
 @layer base {
@@ -25,8 +25,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 216 14% 14%;
     
-    /* Primary: Brand Blue #1E6CFF */
-    --primary: 217 100% 56%;         /* #1E6CFF */
+    /* Primary: Brand Blue #2563EB (Tailwind blue-600) */
+    --primary: 221.2 83.2% 53.3%;    /* #2563EB */
     --primary-foreground: 0 0% 100%;
     
     /* Secondary: Light gray */
@@ -38,8 +38,8 @@
     --muted-foreground: 215 16% 47%; /* #6B7A94 */
     
     /* Accent: Brand blue tint */
-    --accent: 217 100% 96%;          /* #EFF6FF - blue tint */
-    --accent-foreground: 217 100% 56%; /* #1E6CFF */
+    --accent: 221.2 100% 96%;        /* #EFF6FF - blue tint */
+    --accent-foreground: 221.2 83.2% 53.3%; /* #2563EB */
     
     /* Status */
     --destructive: 0 84% 60%;        /* #EF4444 */
@@ -48,7 +48,7 @@
     /* Borders */
     --border: 220 20% 91%;           /* #E8EDF5 */
     --input: 220 20% 91%;
-    --ring: 217 100% 56%;            /* #1E6CFF */
+    --ring: 221.2 83.2% 53.3%;       /* #2563EB */
     --radius: 0.375rem;
 
     /* Typography - System font stack (Stripe-style) */
@@ -56,9 +56,9 @@
     --font-mono: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", monospace;
     
     /* Brand colors as CSS variables for direct use */
-    --brand-blue: #1E6CFF;
-    --brand-blue-light: #4D8CFF;
-    --brand-blue-dark: #1554CC;
+    --brand-blue: #2563EB;
+    --brand-blue-light: #3B82F6;
+    --brand-blue-dark: #1D4ED8;
     --brand-charcoal: #1E2329;
     --brand-charcoal-light: #2A3038;
     --sidebar-background: 0 0% 98%;
@@ -81,7 +81,7 @@
     --popover-foreground: 220 33% 98%;
     
     /* Primary: Brand Blue */
-    --primary: 217 100% 56%;         /* #1E6CFF */
+    --primary: 221.2 83.2% 53.3%;    /* #2563EB */
     --primary-foreground: 0 0% 100%;
     
     /* Secondary: Dark charcoal */
@@ -93,8 +93,8 @@
     --muted-foreground: 215 16% 55%;
     
     /* Accent */
-    --accent: 217 100% 15%;          /* Dark blue tint */
-    --accent-foreground: 217 100% 70%;
+    --accent: 221.2 100% 15%;        /* Dark blue tint */
+    --accent-foreground: 221.2 83.2% 70%;
     
     /* Status */
     --destructive: 0 62% 45%;
@@ -103,7 +103,7 @@
     /* Borders */
     --border: 216 18% 18%;           /* #2A3038 */
     --input: 216 18% 18%;
-    --ring: 217 100% 56%;
+    --ring: 221.2 83.2% 53.3%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;

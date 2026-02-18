@@ -19,7 +19,7 @@
   min-height: 100vh;
   transition: margin-left 0.2s ease;
   /* Subtle dot grid - visual continuity with landing page */
-  background-image: radial-gradient(circle, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(37, 99, 235, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 
