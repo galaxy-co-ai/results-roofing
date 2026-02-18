@@ -17,7 +17,7 @@ export default function HomePage() {
           }}
         >
           <div className="w-full flex flex-col items-center">
-            <h1 className="font-[family-name:var(--font-sora)] text-[30px] sm:text-[36px] md:text-[42px] lg:text-[48px] font-semibold leading-[1.1] tracking-tight text-slate-900 mb-6 whitespace-nowrap">
+            <h1 className="font-[family-name:var(--font-sora)] text-[30px] sm:text-[36px] md:text-[42px] lg:text-[48px] font-semibold leading-[1.1] tracking-tight text-slate-900 mb-6">
               Your Roof Quote{' '}
               <span className="bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(59,130,246,0.4)]">
                 In Minutes

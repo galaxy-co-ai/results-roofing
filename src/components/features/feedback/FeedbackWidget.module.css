@@ -55,6 +55,12 @@
   transform: translateX(100%);
 }
 
+@media (max-width: 767px) {
+  .edgeTab {
+    display: none;
+  }
+}
+
 .tabLabel {
   /* Rotate text to be vertical */
   writing-mode: vertical-rl;

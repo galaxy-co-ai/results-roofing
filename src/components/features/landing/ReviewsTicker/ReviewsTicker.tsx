@@ -81,6 +81,25 @@ export function ReviewsTicker() {
     setIsDragging(false);
   }, []);
 
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (!containerRef.current) return;
+    setIsPaused(true);
+    setIsDragging(true);
+    dragStartX.current = e.touches[0].clientX;
+    scrollStartX.current = containerRef.current.scrollLeft;
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isDragging || !containerRef.current) return;
+    const deltaX = e.touches[0].clientX - dragStartX.current;
+    containerRef.current.scrollLeft = scrollStartX.current - deltaX;
+  }, [isDragging]);
+
+  const handleTouchEnd = useCallback(() => {
+    setIsDragging(false);
+    setIsPaused(false);
+  }, []);
+
   const handleMouseEnter = useCallback(() => {
     setIsPaused(true);
   }, []);
@@ -100,6 +119,9 @@ export function ReviewsTicker() {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         <div
           ref={trackRef}

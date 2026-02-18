@@ -154,6 +154,11 @@
 }
 
 @media (min-width: 768px) {
+  .reviewsTicker::before,
+  .reviewsTicker::after {
+    width: 120px;
+  }
+
   .reviewCard {
     min-width: 320px;
     max-width: 340px;
