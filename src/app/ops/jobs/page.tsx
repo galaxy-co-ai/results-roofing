@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, DialogBody,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/Toast';
 
@@ -306,7 +306,7 @@ export default function JobsPage() {
             <DialogTitle>New Job</DialogTitle>
             <DialogDescription>Add a new job to the pipeline</DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 py-2">
+          <DialogBody className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="job-address">Address *</Label>
               <Input id="job-address" value={formAddress} onChange={e => setFormAddress(e.target.value)} placeholder="123 Main St" />
@@ -327,7 +327,7 @@ export default function JobsPage() {
                 {ASSIGNEES.map(a => <option key={a} value={a}>{a}</option>)}
               </select>
             </div>
-          </div>
+          </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowNewDialog(false)}>Cancel</Button>
             <Button onClick={handleCreate}>Create Job</Button>
@@ -343,7 +343,7 @@ export default function JobsPage() {
             <DialogDescription>{viewJob?.job.address}, {viewJob?.job.city}</DialogDescription>
           </DialogHeader>
           {viewJob && (
-            <div className="space-y-4 py-2">
+            <DialogBody className="space-y-4">
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Stage</p>
@@ -398,7 +398,7 @@ export default function JobsPage() {
                   ))}
                 </div>
               </div>
-            </div>
+            </DialogBody>
           )}
           <DialogFooter>
             <Button

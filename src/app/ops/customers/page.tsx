@@ -14,7 +14,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, DialogBody,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/Toast';
 
@@ -302,7 +302,7 @@ export default function CustomersPage() {
             <DialogTitle>New Customer</DialogTitle>
             <DialogDescription>Add a new customer to your CRM</DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 py-2">
+          <DialogBody className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Name *</Label>
               <Input id="name" value={formName} onChange={e => setFormName(e.target.value)} placeholder="Full name" />
@@ -331,7 +331,7 @@ export default function CustomersPage() {
                 </select>
               </div>
             </div>
-          </div>
+          </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowNewDialog(false)}>Cancel</Button>
             <Button onClick={handleCreate}>Create Customer</Button>
@@ -346,7 +346,7 @@ export default function CustomersPage() {
             <DialogTitle>Edit Customer</DialogTitle>
             <DialogDescription>Update customer information</DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 py-2">
+          <DialogBody className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="edit-name">Name *</Label>
               <Input id="edit-name" value={formName} onChange={e => setFormName(e.target.value)} />
@@ -375,7 +375,7 @@ export default function CustomersPage() {
                 </select>
               </div>
             </div>
-          </div>
+          </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditCustomer(null)}>Cancel</Button>
             <Button onClick={handleUpdate}>Save Changes</Button>
@@ -391,7 +391,7 @@ export default function CustomersPage() {
             <DialogDescription>Customer details</DialogDescription>
           </DialogHeader>
           {viewCustomer && (
-            <div className="space-y-4 py-2">
+            <DialogBody className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Email</p>
@@ -428,7 +428,7 @@ export default function CustomersPage() {
                   <p className="text-sm font-medium mt-0.5">{viewCustomer.lastActivity}</p>
                 </div>
               </div>
-            </div>
+            </DialogBody>
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => { setViewCustomer(null); if (viewCustomer) openEdit(viewCustomer); }}>Edit</Button>

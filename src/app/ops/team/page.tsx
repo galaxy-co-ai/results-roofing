@@ -14,7 +14,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/Toast';
 
@@ -257,7 +257,7 @@ export default function TeamPage() {
       <Dialog open={showInviteDialog} onOpenChange={setShowInviteDialog}>
         <DialogContent>
           <DialogHeader><DialogTitle>Invite Team Member</DialogTitle></DialogHeader>
-          <div className="space-y-4 py-2">
+          <DialogBody className="space-y-4">
             <div className="space-y-2">
               <Label>Full Name</Label>
               <Input value={formName} onChange={e => setFormName(e.target.value)} placeholder="John Smith" />
@@ -283,7 +283,7 @@ export default function TeamPage() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-          </div>
+          </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowInviteDialog(false)}>Cancel</Button>
             <Button onClick={handleInvite} disabled={!formName.trim() || !formEmail.trim()}>Send Invite</Button>
@@ -295,7 +295,7 @@ export default function TeamPage() {
       <Dialog open={!!editMember} onOpenChange={() => setEditMember(null)}>
         <DialogContent>
           <DialogHeader><DialogTitle>Edit Team Member</DialogTitle></DialogHeader>
-          <div className="space-y-4 py-2">
+          <DialogBody className="space-y-4">
             <div className="space-y-2">
               <Label>Full Name</Label>
               <Input value={formName} onChange={e => setFormName(e.target.value)} />
@@ -321,7 +321,7 @@ export default function TeamPage() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-          </div>
+          </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditMember(null)}>Cancel</Button>
             <Button onClick={handleEdit} disabled={!formName.trim() || !formEmail.trim()}>Save Changes</Button>
@@ -334,8 +334,8 @@ export default function TeamPage() {
         <DialogContent>
           <DialogHeader><DialogTitle>Team Member Profile</DialogTitle></DialogHeader>
           {viewMember && (
-            <div className="space-y-4 py-2">
-              <div className="flex items-center gap-3">
+            <DialogBody className="space-y-4">
+              <div className="flex items-center gap-4">
                 <Avatar className="h-12 w-12">
                   <AvatarFallback className="bg-primary/10 text-primary font-semibold">{viewMember.avatar}</AvatarFallback>
                 </Avatar>
@@ -344,14 +344,14 @@ export default function TeamPage() {
                   <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${ROLE_STYLES[viewMember.role]}`}>{viewMember.role}</span>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div><p className="text-xs text-muted-foreground">Email</p><p className="font-medium text-sm">{viewMember.email}</p></div>
                 <div><p className="text-xs text-muted-foreground">Phone</p><p className="font-medium text-sm tabular-nums">{viewMember.phone}</p></div>
                 <div><p className="text-xs text-muted-foreground">Active Jobs</p><p className="font-medium text-sm tabular-nums">{viewMember.activeJobs}</p></div>
                 <div><p className="text-xs text-muted-foreground">Revenue</p><p className="font-medium text-sm tabular-nums">{viewMember.revenue}</p></div>
                 <div><p className="text-xs text-muted-foreground">Last Active</p><p className="font-medium text-sm">{viewMember.lastActive}</p></div>
               </div>
-            </div>
+            </DialogBody>
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => { if (viewMember) openEdit(viewMember); setViewMember(null); }}>

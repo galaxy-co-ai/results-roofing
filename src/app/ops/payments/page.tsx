@@ -12,7 +12,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/Toast';
 
@@ -240,8 +240,8 @@ export default function PaymentsPage() {
         <DialogContent>
           <DialogHeader><DialogTitle>Payment Details</DialogTitle></DialogHeader>
           {viewPayment && (
-            <div className="space-y-3 py-2">
-              <div className="grid grid-cols-2 gap-3">
+            <DialogBody className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div><p className="text-xs text-muted-foreground">Customer</p><p className="font-medium">{viewPayment.customer}</p></div>
                 <div><p className="text-xs text-muted-foreground">Invoice</p><p className="font-medium text-primary">{viewPayment.invoice}</p></div>
                 <div><p className="text-xs text-muted-foreground">Amount</p><p className="font-medium tabular-nums">${viewPayment.amount.toLocaleString()}</p></div>
@@ -250,7 +250,7 @@ export default function PaymentsPage() {
                 <div><p className="text-xs text-muted-foreground">Payment Status</p><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${PAY_STATUS_STYLES[viewPayment.payStatus]}`}>{viewPayment.payStatus.charAt(0).toUpperCase() + viewPayment.payStatus.slice(1)}</span></div>
                 <div><p className="text-xs text-muted-foreground">Funding</p><p className="font-medium">{viewPayment.fundStatus}</p></div>
               </div>
-            </div>
+            </DialogBody>
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setViewPayment(null)}>Close</Button>

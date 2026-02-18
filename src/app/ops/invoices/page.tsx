@@ -13,7 +13,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/Toast';
 
@@ -274,7 +274,7 @@ export default function InvoicesPage() {
       <Dialog open={showNewDialog} onOpenChange={setShowNewDialog}>
         <DialogContent>
           <DialogHeader><DialogTitle>New Invoice</DialogTitle></DialogHeader>
-          <div className="space-y-4 py-2">
+          <DialogBody className="space-y-4">
             <div className="space-y-2">
               <Label>Customer Name</Label>
               <Input value={formCustomer} onChange={e => setFormCustomer(e.target.value)} placeholder="John Davis" />
@@ -291,7 +291,7 @@ export default function InvoicesPage() {
               <Label>Due Date</Label>
               <Input value={formDue} onChange={e => setFormDue(e.target.value)} placeholder="Feb 28, 2026" />
             </div>
-          </div>
+          </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowNewDialog(false)}>Cancel</Button>
             <Button onClick={handleCreate} disabled={!formCustomer.trim() || !formAmount.trim()}>Create Invoice</Button>
@@ -304,8 +304,8 @@ export default function InvoicesPage() {
         <DialogContent>
           <DialogHeader><DialogTitle>Invoice {viewInvoice?.id}</DialogTitle></DialogHeader>
           {viewInvoice && (
-            <div className="space-y-3 py-2">
-              <div className="grid grid-cols-2 gap-3">
+            <DialogBody className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div><p className="text-xs text-muted-foreground">Customer</p><p className="font-medium">{viewInvoice.customer}</p></div>
                 <div><p className="text-xs text-muted-foreground">Job</p><p className="font-medium">{viewInvoice.job}</p></div>
                 <div><p className="text-xs text-muted-foreground">Amount</p><p className="font-medium tabular-nums">${viewInvoice.amount.toLocaleString()}</p></div>
@@ -316,7 +316,7 @@ export default function InvoicesPage() {
                   <div><p className="text-xs text-muted-foreground">Amount Paid</p><p className="font-medium tabular-nums text-green-600">${viewInvoice.paid.toLocaleString()}</p></div>
                 )}
               </div>
-            </div>
+            </DialogBody>
           )}
           <DialogFooter>
             {viewInvoice?.status === 'draft' && (

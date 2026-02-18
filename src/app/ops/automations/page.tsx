@@ -13,7 +13,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/Toast';
 
@@ -215,7 +215,7 @@ export default function AutomationsPage() {
       <Dialog open={showNewDialog} onOpenChange={setShowNewDialog}>
         <DialogContent>
           <DialogHeader><DialogTitle>New Automation</DialogTitle></DialogHeader>
-          <div className="space-y-4 py-2">
+          <DialogBody className="space-y-4">
             <div className="space-y-2">
               <Label>Name</Label>
               <Input value={formName} onChange={e => setFormName(e.target.value)} placeholder="Follow-up Email" />
@@ -228,7 +228,7 @@ export default function AutomationsPage() {
               <Label>Action(s)</Label>
               <Input value={formActions} onChange={e => setFormActions(e.target.value)} placeholder="Send follow-up email" />
             </div>
-          </div>
+          </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowNewDialog(false)}>Cancel</Button>
             <Button onClick={handleCreate} disabled={!formName.trim() || !formTrigger.trim() || !formActions.trim()}>Create Automation</Button>
@@ -241,8 +241,8 @@ export default function AutomationsPage() {
         <DialogContent>
           <DialogHeader><DialogTitle>{viewAutomation?.name}</DialogTitle></DialogHeader>
           {viewAutomation && (
-            <div className="space-y-3 py-2">
-              <div className="grid grid-cols-2 gap-3">
+            <DialogBody className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div><p className="text-xs text-muted-foreground">Status</p>
                   <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium border ${
                     viewAutomation.status === 'active' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-muted text-muted-foreground'
@@ -256,7 +256,7 @@ export default function AutomationsPage() {
                 <div className="col-span-2"><p className="text-xs text-muted-foreground">Action(s)</p><p className="font-medium">{viewAutomation.actions}</p></div>
                 <div><p className="text-xs text-muted-foreground">Last Triggered</p><p className="font-medium">{viewAutomation.lastTriggered}</p></div>
               </div>
-            </div>
+            </DialogBody>
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => { handleToggle(viewAutomation!); setViewAutomation(null); }}>

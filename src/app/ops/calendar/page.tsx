@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, DialogBody,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/Toast';
 
@@ -303,7 +303,7 @@ export default function CalendarPage() {
             <DialogTitle>New Event</DialogTitle>
             <DialogDescription>Add an event to the calendar</DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 py-2">
+          <DialogBody className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="event-title">Title *</Label>
               <Input id="event-title" value={formTitle} onChange={e => setFormTitle(e.target.value)} placeholder="e.g. Roof Inspection" />
@@ -341,7 +341,7 @@ export default function CalendarPage() {
                 <Input id="event-address" value={formAddress} onChange={e => setFormAddress(e.target.value)} placeholder="123 Main St" />
               </div>
             </div>
-          </div>
+          </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowNewDialog(false)}>Cancel</Button>
             <Button onClick={handleCreate}>Create Event</Button>
@@ -357,7 +357,7 @@ export default function CalendarPage() {
             <DialogDescription>Event details</DialogDescription>
           </DialogHeader>
           {viewEvent && (
-            <div className="space-y-3 py-2">
+            <DialogBody className="space-y-4">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm">{new Date(currentYear, currentMonth, viewEvent.day).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} at {viewEvent.event.time}</span>
@@ -373,7 +373,7 @@ export default function CalendarPage() {
                   {viewEvent.event.type.charAt(0).toUpperCase() + viewEvent.event.type.slice(1)}
                 </div>
               </div>
-            </div>
+            </DialogBody>
           )}
           <DialogFooter>
             <Button
