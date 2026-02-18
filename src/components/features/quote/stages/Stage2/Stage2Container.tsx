@@ -168,6 +168,7 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
             tiers={quoteData.tiers}
             sqft={quoteData.sqft}
             address={quoteData.address}
+            quoteId={quoteId}
             selectedTier={state.selectedTier}
             onSelect={handleTierSelect}
             isLoading={state.isLoading}
@@ -182,6 +183,7 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         return (
           <ScheduleSelection
             address={quoteData.address}
+            quoteId={quoteId}
             selectedDate={state.scheduledDate}
             selectedTimeSlot={state.timeSlot}
             onScheduleSelect={handleScheduleSelect}

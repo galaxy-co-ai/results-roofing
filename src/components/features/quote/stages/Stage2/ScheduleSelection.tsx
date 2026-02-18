@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { ScheduleSelector } from '@/components/features/checkout/ScheduleSelector';
+import { StageIndicator } from '../../StageIndicator';
 import styles from './Stage2.module.css';
 
 interface ScheduleSelectionProps {
   address: string;
+  quoteId: string;
   selectedDate: Date | null;
   selectedTimeSlot: 'morning' | 'afternoon' | null;
   onScheduleSelect: (date: Date, timeSlot: 'morning' | 'afternoon') => void;
@@ -21,6 +23,7 @@ interface ScheduleSelectionProps {
  */
 export function ScheduleSelection({
   address,
+  quoteId,
   selectedDate,
   selectedTimeSlot,
   onScheduleSelect,
@@ -65,6 +68,7 @@ export function ScheduleSelection({
           <span className={styles.addressLabel}>Quote for</span>
           <span className={styles.addressValue}>{address}</span>
         </p>
+        <StageIndicator currentStage={2} quoteId={quoteId} />
       </div>
 
       {/* Schedule Selector */}

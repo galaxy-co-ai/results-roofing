@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Header } from '@/components/layout';
-import { QuoteWizardProvider, Stage1Container, StageIndicator } from '@/components/features/quote';
+import { QuoteWizardProvider, Stage1Container } from '@/components/features/quote';
 import { TrustBar } from '@/components/ui';
 import styles from './page.module.css';
 
@@ -16,7 +16,6 @@ export default function NewQuotePage() {
       <Header />
       <main id="main-content" tabIndex={-1} className={styles.main}>
         <QuoteWizardProvider>
-          <StageIndicator currentStage={1} className={styles.stepper} />
           <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
             <Stage1Container />
           </Suspense>

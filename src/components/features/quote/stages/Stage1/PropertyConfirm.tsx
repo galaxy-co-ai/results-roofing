@@ -7,6 +7,7 @@ import { CheckCircle, Loader2, MapPin, ArrowLeft, Satellite } from 'lucide-react
 import type { ParsedAddress } from '@/components/features/address';
 import { useSatelliteMeasurement } from '@/hooks/useSatelliteMeasurement';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { StageIndicator } from '../../StageIndicator';
 import styles from './Stage1.module.css';
 
 interface PropertyConfirmProps {
@@ -106,6 +107,7 @@ export function PropertyConfirm({
         <p className={styles.subtitle}>
           Confirm this is the correct location for your quote
         </p>
+        <StageIndicator currentStage={1} />
       </div>
 
       {/* Satellite Image */}

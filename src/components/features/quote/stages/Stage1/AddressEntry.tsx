@@ -2,6 +2,7 @@
 
 import { Home } from 'lucide-react';
 import { AddressAutocomplete, type ParsedAddress } from '@/components/features/address';
+import { StageIndicator } from '../../StageIndicator';
 import styles from './Stage1.module.css';
 
 const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ', 'OK'];
@@ -38,6 +39,7 @@ export function AddressEntry({
           Enter your home address to see estimated pricing in seconds.
           No salesperson visit required.
         </p>
+        <StageIndicator currentStage={1} />
       </div>
 
       {/* Address Input */}

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import { Calendar, Clock, Phone, MessageSquare, Home, CheckCircle2, Sparkles } from 'lucide-react';
 import { useQuoteWizard } from '../../QuoteWizardProvider';
+import { StageIndicator } from '../../StageIndicator';
 import styles from './Schedule.module.css';
 
 interface ScheduleContainerProps {
@@ -166,6 +167,7 @@ export function ScheduleContainer({ quoteId, quoteData }: ScheduleContainerProps
       {/* Header */}
       <div className={styles.headerSection}>
         <h1 className={styles.title}>Schedule Installation</h1>
+        <StageIndicator currentStage={3} quoteId={quoteId} />
       </div>
 
       {/* Compact Quote Summary */}
