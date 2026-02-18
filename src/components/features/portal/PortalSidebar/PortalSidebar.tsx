@@ -57,6 +57,15 @@ export function PortalSidebar() {
     setIsCollapsed(!collapsed);
   };
 
+  // Sync collapsed state to a CSS custom property on the layout root
+  // so the main content margin can respond without JS coupling
+  useEffect(() => {
+    const root = document.querySelector('[data-portal-layout]');
+    if (root) {
+      root.setAttribute('data-sidebar', collapsed ? 'collapsed' : 'expanded');
+    }
+  }, [collapsed]);
+
   return (
     <aside
       className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}

@@ -298,20 +298,20 @@ function PendingPaymentState({ quote }: { quote: PendingQuote }) {
                 <p className={styles.stepDescription}>
                   {step.description}
                 </p>
-
-                {/* CTA button — only for current step */}
-                {isCurrent && (
-                  <button
-                    type="button"
-                    onClick={step.ctaAction}
-                    className={styles.stepCta}
-                  >
-                    <step.icon size={16} />
-                    {step.ctaLabel}
-                    <ArrowRight size={16} />
-                  </button>
-                )}
               </div>
+
+              {/* CTA button — only for current step, right-aligned */}
+              {isCurrent && (
+                <button
+                  type="button"
+                  onClick={step.ctaAction}
+                  className={styles.stepCta}
+                >
+                  <step.icon size={16} />
+                  {step.ctaLabel}
+                  <ArrowRight size={16} />
+                </button>
+              )}
             </div>
           );
         })}

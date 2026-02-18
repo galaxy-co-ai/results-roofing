@@ -28,7 +28,7 @@ export default function PortalLayout({
   children: React.ReactNode;
 }) {
   const content = (
-    <div className={styles.portalLayout}>
+    <div className={styles.portalLayout} data-portal-layout>
       {/* Collapsible Sidebar */}
       <PortalSidebar />
 

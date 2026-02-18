@@ -626,7 +626,7 @@
 
 .onboardingCard {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 1rem;
   padding: 1.25rem;
   background: var(--rr-color-white);
@@ -701,7 +701,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.75rem;
+  flex-shrink: 0;
+  margin-left: auto;
   padding: 0.625rem 1.25rem;
   background: var(--rr-color-blue);
   color: var(--rr-color-white);
@@ -709,6 +710,7 @@
   border-radius: 8px;
   font-weight: 600;
   font-size: 0.875rem;
+  white-space: nowrap;
   cursor: pointer;
   transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
 }
