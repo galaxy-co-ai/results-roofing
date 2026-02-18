@@ -123,6 +123,7 @@
 
   html {
     font-size: 16px;
+    scroll-padding-top: 4.5rem; /* 72px — clears sticky header (h-16 = 64px) + 8px breathing room */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;

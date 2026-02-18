@@ -1,9 +1,10 @@
 import { Header, Footer } from '@/components/layout';
-import { HeroAddressForm, HowItWorksStepper, ReviewsTicker, ScrollToTopCTA } from '@/components/features/landing';
+import { HeroAddressForm, HowItWorksStepper, ReviewsTicker, ScrollReset, ScrollToTopCTA } from '@/components/features/landing';
 
 export default function HomePage() {
   return (
     <>
+      <ScrollReset />
       <Header />
       <main id="main-content" tabIndex={-1} className="min-h-screen flex flex-col bg-white">
         {/* Hero Section */}
