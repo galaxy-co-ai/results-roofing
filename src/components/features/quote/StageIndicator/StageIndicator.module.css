@@ -1,54 +1,25 @@
 /* =================================================
-   STAGE INDICATOR STYLES
-   3-stage progress indicator for quote wizard
+   STAGE INDICATOR — Inline stepper
+   Layout: (circle) Label — (circle) Label — (circle) Label
    ================================================= */
 
 .container {
   width: 100%;
-  background-color: var(--rr-color-white);
   padding: var(--rr-space-4) 0 var(--rr-space-3);
-  border-bottom: 1px solid var(--rr-color-border-default);
-}
-
-.wrapper {
-  max-width: 520px;
-  margin: 0 auto;
-  position: relative;
-  padding: 0 var(--rr-space-4);
 }
 
 /* ========================================
-   PROGRESS TRACK
-   ======================================== */
-
-.track {
-  position: absolute;
-  top: 18px;
-  left: 56px;
-  right: 56px;
-  height: 2px;
-  background-color: var(--rr-color-gray-200);
-  z-index: 0;
-}
-
-.trackFill {
-  height: 100%;
-  background-color: var(--rr-color-blue);
-  transition: width 0.3s ease-out;
-}
-
-/* ========================================
-   STAGES LIST
+   STAGES LIST — horizontal inline
    ======================================== */
 
 .stagesList {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
   list-style: none;
   margin: 0;
   padding: 0;
-  position: relative;
-  z-index: 1;
+  gap: 0;
 }
 
 /* ========================================
@@ -57,116 +28,105 @@
 
 .stage {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  flex: 1;
-  position: relative;
 }
 
 .stageContent,
 .stageLink {
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   text-decoration: none;
   color: inherit;
-  padding: 2px;
+  padding: 2px 4px;
+  border-radius: 6px;
+}
+
+.stageLink:hover {
+  background: rgba(74, 126, 194, 0.06);
 }
 
 .stageLink:focus-visible {
   box-shadow:
     0 0 0 2px var(--rr-color-bg-primary, #fff),
     0 0 0 4px var(--rr-color-blue);
-  border-radius: 8px;
   outline: none;
 }
 
 /* ========================================
-   STAGE INDICATOR (circle)
+   CIRCLE
    ======================================== */
 
-.stageIndicator {
+.circle {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 9999px;
   font-size: 14px;
   font-weight: 600;
+  flex-shrink: 0;
   transition:
     background-color 0.15s ease-out,
     border-color 0.15s ease-out,
-    color 0.15s ease-out,
-    transform 0.15s ease-out,
-    box-shadow 0.15s ease-out;
+    color 0.15s ease-out;
 }
 
-/* Pending state */
-.stage_pending .stageIndicator {
+/* Current — solid blue */
+.current .circle {
+  background-color: var(--rr-color-blue);
+  color: var(--rr-color-white);
+}
+
+/* Completed — solid blue with checkmark */
+.completed .circle {
+  background-color: var(--rr-color-blue);
+  color: var(--rr-color-white);
+}
+
+/* Pending — outlined */
+.pending .circle {
   background-color: var(--rr-color-white);
   border: 2px solid var(--rr-color-gray-200);
   color: var(--rr-color-text-tertiary);
 }
 
-/* Current state */
-.stage_current .stageIndicator {
-  background-color: var(--rr-color-blue);
-  border: 2px solid var(--rr-color-blue);
-  color: var(--rr-color-white);
-  box-shadow: 0 0 0 4px rgba(74, 126, 194, 0.15);
-}
-
-/* Completed state */
-.stage_completed .stageIndicator {
-  background-color: var(--rr-color-blue);
-  border: 2px solid var(--rr-color-blue);
-  color: var(--rr-color-white);
-}
-
-/* Clickable hover */
-@media (hover: hover) {
-  .stage_clickable:hover .stageIndicator {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
-  }
-}
-
 /* ========================================
-   STAGE INFO (label)
+   LABEL
    ======================================== */
 
-.stageInfo {
-  text-align: center;
-}
-
-.stageLabel {
-  font-size: 13px;
+.label {
+  font-size: 14px;
   font-weight: 500;
   white-space: nowrap;
   transition: color 0.15s ease-out;
 }
 
-.stage_pending .stageLabel {
-  color: var(--rr-color-text-tertiary);
-}
-
-.stage_current .stageLabel {
+.current .label {
   color: var(--rr-color-text-primary);
   font-weight: 600;
 }
 
-.stage_completed .stageLabel {
-  color: var(--rr-color-text-secondary);
+.completed .label {
+  color: var(--rr-color-text-primary);
+}
+
+.pending .label {
+  color: var(--rr-color-text-tertiary);
 }
 
 /* ========================================
-   CONNECTOR LINE (between stages)
+   DASH SEPARATOR
    ======================================== */
 
-.connector {
-  display: none; /* Hidden — track handles the visual */
+.dash {
+  display: inline-block;
+  margin: 0 10px;
+  color: var(--rr-color-gray-200);
+  font-size: 14px;
+  font-weight: 400;
+  user-select: none;
 }
 
 /* ========================================
@@ -174,8 +134,27 @@
    ======================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .stageIndicator,
-  .trackFill {
+  .circle {
     transition: none;
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 480px) {
+  .label {
+    font-size: 12px;
+  }
+
+  .circle {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .dash {
+    margin: 0 6px;
   }
 }

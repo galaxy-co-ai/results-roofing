@@ -14,23 +14,15 @@ interface StageIndicatorProps {
 /**
  * StageIndicator - Shows progress through the 3-stage quote wizard
  *
- * Stages: Get Your Quote → Customize → Confirm & Pay
- *
+ * Inline layout: (circle) Label — (circle) Label — (circle) Label
  * Completed stages are clickable to allow navigation back.
- * Current stage shows active state.
- * Pending stages are not clickable.
  */
 export function StageIndicator({ currentStage, quoteId, className = '' }: StageIndicatorProps) {
   const stages = [1, 2, 3] as const;
 
   const getStageUrl = (stage: WizardStage): string | null => {
-    // Stage 1 is not navigable once a quote exists - can't go back to before quote creation
-    if (stage === 1) {
-      return null;
-    }
-    if (!quoteId) {
-      return null;
-    }
+    if (stage === 1) return null;
+    if (!quoteId) return null;
     const pathFn = STAGE_CONFIG[stage].path;
     return typeof pathFn === 'function' ? pathFn(quoteId) : pathFn;
   };
@@ -40,77 +32,60 @@ export function StageIndicator({ currentStage, quoteId, className = '' }: StageI
       className={`${styles.container} ${className}`}
       aria-label="Quote wizard progress"
     >
-      <div className={styles.wrapper}>
-        {/* Progress track */}
-        <div className={styles.track} aria-hidden="true">
-          <div
-            className={styles.trackFill}
-            style={{ width: `${((currentStage - 1) / (stages.length - 1)) * 100}%` }}
-          />
-        </div>
+      <ol className={styles.stagesList}>
+        {stages.map((stage, index) => {
+          const isCompleted = stage < currentStage;
+          const isCurrent = stage === currentStage;
+          const isPending = stage > currentStage;
+          const stageUrl = isCompleted ? getStageUrl(stage) : null;
+          const isClickable = isCompleted && stageUrl;
 
-        {/* Stages */}
-        <ol className={styles.stagesList}>
-          {stages.map((stage) => {
-            const isCompleted = stage < currentStage;
-            const isCurrent = stage === currentStage;
-            const isPending = stage > currentStage;
-            const stageUrl = isCompleted ? getStageUrl(stage) : null;
-            const isClickable = isCompleted && stageUrl;
-
-            const stageContent = (
-              <>
-                <div className={styles.stageIndicator}>
-                  {isCompleted ? (
-                    <Check size={16} aria-hidden="true" />
-                  ) : (
-                    <span>{stage}</span>
-                  )}
-                </div>
-                <div className={styles.stageInfo}>
-                  <span className={styles.stageLabel}>{STAGE_CONFIG[stage].label}</span>
-                </div>
-              </>
-            );
-
-            return (
-              <li
-                key={stage}
-                className={`
-                  ${styles.stage}
-                  ${isCompleted ? styles.stage_completed : ''}
-                  ${isCurrent ? styles.stage_current : ''}
-                  ${isPending ? styles.stage_pending : ''}
-                  ${isClickable ? styles.stage_clickable : ''}
-                `}
-                aria-current={isCurrent ? 'step' : undefined}
-              >
-                {isClickable ? (
-                  <Link
-                    href={stageUrl}
-                    className={styles.stageLink}
-                    aria-label={`Go back to ${STAGE_CONFIG[stage].label}`}
-                  >
-                    {stageContent}
-                  </Link>
+          const stageContent = (
+            <>
+              <span className={styles.circle}>
+                {isCompleted ? (
+                  <Check size={16} strokeWidth={3} aria-hidden="true" />
                 ) : (
-                  <div className={styles.stageContent}>
-                    {stageContent}
-                  </div>
+                  <span>{stage}</span>
                 )}
+              </span>
+              <span className={styles.label}>{STAGE_CONFIG[stage].label}</span>
+            </>
+          );
 
-                {/* Connector line */}
-                {stage < 3 && (
-                  <div
-                    className={`${styles.connector} ${isCompleted ? styles.connector_completed : ''}`}
-                    aria-hidden="true"
-                  />
-                )}
-              </li>
-            );
-          })}
-        </ol>
-      </div>
+          return (
+            <li
+              key={stage}
+              className={`
+                ${styles.stage}
+                ${isCompleted ? styles.completed : ''}
+                ${isCurrent ? styles.current : ''}
+                ${isPending ? styles.pending : ''}
+              `}
+              aria-current={isCurrent ? 'step' : undefined}
+            >
+              {/* Dash separator before this step (not the first) */}
+              {index > 0 && (
+                <span className={styles.dash} aria-hidden="true">—</span>
+              )}
+
+              {isClickable ? (
+                <Link
+                  href={stageUrl}
+                  className={styles.stageLink}
+                  aria-label={`Go back to ${STAGE_CONFIG[stage].label}`}
+                >
+                  {stageContent}
+                </Link>
+              ) : (
+                <span className={styles.stageContent}>
+                  {stageContent}
+                </span>
+              )}
+            </li>
+          );
+        })}
+      </ol>
 
       {/* Screen reader summary */}
       <div className="sr-only">
