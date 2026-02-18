@@ -6,7 +6,6 @@ import { ScheduleSelector } from '@/components/features/checkout/ScheduleSelecto
 import styles from './Stage2.module.css';
 
 interface ScheduleSelectionProps {
-  quoteId: string;
   address: string;
   selectedDate: Date | null;
   selectedTimeSlot: 'morning' | 'afternoon' | null;
@@ -21,7 +20,6 @@ interface ScheduleSelectionProps {
  * User picks installation date and time slot.
  */
 export function ScheduleSelection({
-  quoteId,
   address,
   selectedDate,
   selectedTimeSlot,

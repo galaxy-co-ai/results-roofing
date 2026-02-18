@@ -181,7 +181,6 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         }
         return (
           <ScheduleSelection
-            quoteId={quoteId}
             address={quoteData.address}
             selectedDate={state.scheduledDate}
             selectedTimeSlot={state.timeSlot}
