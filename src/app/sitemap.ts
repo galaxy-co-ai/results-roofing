@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { getAllSlugs } from '@/lib/blog/data';
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://resultsroofing.com';
 
@@ -54,5 +55,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  return staticRoutes;
+  const blogIndex = {
+    url: `${BASE_URL}/blog`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  };
+
+  const blogArticles = getAllSlugs().map((slug) => ({
+    url: `${BASE_URL}/blog/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, blogIndex, ...blogArticles];
 }
