@@ -1,5 +1,5 @@
 import { Header, Footer } from '@/components/layout';
-import { HeroAddressForm, HowItWorksStepper, ResultsSection, ReviewsTicker, ScrollReset, ScrollToTopCTA } from '@/components/features/landing';
+import { HeroAddressForm, HowItWorksStepper, ReviewsTicker, ScrollReset, ScrollToTopCTA } from '@/components/features/landing';
 
 export default function HomePage() {
   return (
@@ -29,9 +29,6 @@ export default function HomePage() {
 
         {/* Reviews Ticker */}
         <ReviewsTicker />
-
-        {/* Results Timeline */}
-        <ResultsSection />
 
         {/* How It Works */}
         <section className="py-12 md:py-16 bg-gradient-to-b from-slate-50 to-white">
