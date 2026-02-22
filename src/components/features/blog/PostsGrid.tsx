@@ -33,7 +33,8 @@ export function PostsGrid({ posts }: PostsGridProps) {
 
   return (
     <section className="mb-16">
-      <h2 className="font-[family-name:var(--font-sora)] text-2xl font-bold text-[#1a1a2e] mb-6">
+      <h2 className="flex items-center gap-3 font-[family-name:var(--font-sora)] text-2xl font-bold text-[#1a1a2e] mb-6">
+        <span className="w-1 h-6 bg-[#1a1a2e] rounded-full" />
         All Posts
       </h2>
 
@@ -51,8 +52,8 @@ export function PostsGrid({ posts }: PostsGridProps) {
             onClick={() => setActiveCategory('all')}
             className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
               activeCategory === 'all'
-                ? 'bg-[#1a1a2e] text-white'
-                : 'bg-[#f1f5f9] text-[#64748b] hover:bg-[#e2e8f0]'
+                ? 'bg-[#1a1a2e] text-white border border-transparent'
+                : 'bg-[#f1f5f9] text-[#475569] border border-[#e8ecf1] hover:bg-[#e2e8f0]'
             }`}
           >
             All
@@ -63,8 +64,8 @@ export function PostsGrid({ posts }: PostsGridProps) {
               onClick={() => setActiveCategory(key)}
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
                 activeCategory === key
-                  ? 'text-white'
-                  : 'text-[#64748b] hover:bg-[#e2e8f0]'
+                  ? 'text-white border border-transparent'
+                  : 'text-[#475569] border border-[#e8ecf1] hover:bg-[#e2e8f0]'
               }`}
               style={
                 activeCategory === key

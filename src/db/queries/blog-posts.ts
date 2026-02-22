@@ -55,22 +55,36 @@ export async function getPostById(id: string) {
 }
 
 /**
- * Get related posts in the same category, excluding current
+ * Get related posts in the same category, excluding current.
+ * Backfills with recent posts from any category if fewer than 2 same-category matches.
  */
 export async function getRelatedPosts(
   category: string,
   excludeSlug: string,
   limit = 3
 ) {
-  const posts = await db.query.blogPosts.findMany({
+  const sameCategoryPosts = await db.query.blogPosts.findMany({
     where: and(
       eq(schema.blogPosts.status, 'published'),
       eq(schema.blogPosts.category, category as typeof schema.blogPosts.category.enumValues[number])
     ),
     orderBy: [desc(schema.blogPosts.publishedAt)],
-    limit: limit + 1, // fetch one extra in case current is included
+    limit: limit + 1,
   });
-  return posts.filter((p) => p.slug !== excludeSlug).slice(0, limit);
+  const related = sameCategoryPosts.filter((p) => p.slug !== excludeSlug).slice(0, limit);
+
+  if (related.length >= 2) return related;
+
+  // Backfill with recent posts from any category
+  const recentPosts = await db.query.blogPosts.findMany({
+    where: eq(schema.blogPosts.status, 'published'),
+    orderBy: [desc(schema.blogPosts.publishedAt)],
+    limit: limit + related.length + 1,
+  });
+
+  const existingSlugs = new Set([excludeSlug, ...related.map((p) => p.slug)]);
+  const backfill = recentPosts.filter((p) => !existingSlugs.has(p.slug));
+  return [...related, ...backfill].slice(0, limit);
 }
 
 /**

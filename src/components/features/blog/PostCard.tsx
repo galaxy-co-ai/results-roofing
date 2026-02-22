@@ -6,6 +6,7 @@ import { getCategoryMeta } from '@/lib/blog/utils';
 interface PostCardProps {
   post: BlogPost | BlogPostForCard;
   large?: boolean;
+  featured?: boolean;
 }
 
 function getAuthorInitials(name: string): string {
@@ -25,7 +26,7 @@ function formatDate(date: Date | null): string {
   }
 }
 
-export function PostCard({ post, large = false }: PostCardProps) {
+export function PostCard({ post, large = false, featured = false }: PostCardProps) {
   const cat = post.category ? getCategoryMeta(post.category) : null;
 
   return (
@@ -38,13 +39,18 @@ export function PostCard({ post, large = false }: PostCardProps) {
         {/* Gradient thumbnail */}
         <div
           className={`relative flex items-center justify-center ${
-            large ? 'md:w-[45%] min-h-[220px]' : 'h-[180px]'
+            large ? 'md:w-[45%] min-h-[220px]' : 'h-[140px] sm:h-[180px]'
           }`}
           style={{ background: post.gradient || 'linear-gradient(135deg, #4361ee 0%, #1a1a2e 100%)' }}
         >
           <span className={large ? 'text-6xl' : 'text-5xl'} role="img" aria-hidden>
             {post.icon || '📝'}
           </span>
+          {featured && (
+            <span className="absolute top-3 left-3 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-white/90 text-[#4361ee] rounded-md">
+              Featured
+            </span>
+          )}
         </div>
 
         {/* Content */}
@@ -60,7 +66,7 @@ export function PostCard({ post, large = false }: PostCardProps) {
 
           <h3
             className={`font-[family-name:var(--font-sora)] font-bold text-[#1a1a2e] group-hover:text-[#4361ee] transition-colors leading-tight ${
-              large ? 'text-xl md:text-2xl mb-3' : 'text-lg mb-2'
+              large ? 'text-xl md:text-2xl mb-3' : 'text-lg mb-2 line-clamp-2 min-h-[3.25rem]'
             }`}
           >
             {post.title}
@@ -70,7 +76,7 @@ export function PostCard({ post, large = false }: PostCardProps) {
             {post.excerpt}
           </p>
 
-          <div className="flex items-center gap-3 text-xs text-[#94a3b8]">
+          <div className="flex items-center gap-3 text-xs text-[#64748b]">
             <div className="flex items-center gap-2">
               <span className="w-7 h-7 rounded-full bg-[#4361ee] text-white flex items-center justify-center text-[10px] font-bold">
                 {getAuthorInitials(post.authorName)}

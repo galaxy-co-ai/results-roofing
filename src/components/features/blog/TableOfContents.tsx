@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { extractHeadings } from '@/lib/blog/utils';
 
 interface TableOfContentsProps {
@@ -8,8 +8,8 @@ interface TableOfContentsProps {
 }
 
 export function TableOfContents({ content }: TableOfContentsProps) {
-  const [activeId, setActiveId] = useState<string>('');
-  const headings = extractHeadings(content);
+  const headings = useMemo(() => extractHeadings(content), [content]);
+  const [activeId, setActiveId] = useState<string>(headings[0]?.id ?? '');
 
   useEffect(() => {
     const observer = new IntersectionObserver(

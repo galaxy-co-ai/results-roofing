@@ -19,17 +19,24 @@ interface ArticlePageProps {
   params: Promise<{ slug: string }>;
 }
 
+/** Strip "| Results Roofing" suffix to prevent double-branding with root template */
+function stripSiteName(title: string): string {
+  return title.replace(/\s*\|\s*Results Roofing$/i, '').trim();
+}
+
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) return {};
 
+  const title = stripSiteName(post.seoTitle || post.title);
+
   return {
-    title: post.seoTitle || post.title,
+    title,
     description: post.seoDescription || post.excerpt,
     keywords: post.seoKeywords || undefined,
     openGraph: {
-      title: post.seoTitle || post.title,
+      title,
       description: post.seoDescription || post.excerpt || '',
       url: `/blog/${post.slug}`,
       type: 'article',
@@ -58,6 +65,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       .toUpperCase(),
   };
 
+  const heroGradient = post.gradient || 'linear-gradient(135deg, #4361ee 0%, #1a1a2e 100%)';
+
   return (
     <>
       <ReadingProgressBar />
@@ -68,6 +77,17 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             {/* Article content */}
             <article className="max-w-[680px]">
               <ArticleHeader post={post} />
+
+              {/* Hero banner */}
+              <div
+                className="h-[200px] md:h-[280px] rounded-2xl flex items-center justify-center mb-10"
+                style={{ background: heroGradient }}
+              >
+                <span className="text-7xl md:text-8xl" role="img" aria-hidden>
+                  {post.icon || '📝'}
+                </span>
+              </div>
+
               <ArticleBody content={post.content || ''} />
               <AuthorBio author={author} />
             </article>
@@ -76,9 +96,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <aside className="hidden lg:block pt-48">
               <TableOfContents content={post.content || ''} />
             </aside>
-          </div>
 
-          <RelatedPosts posts={relatedPosts} />
+            {/* Related posts — inside grid so sidebar stays sticky longer */}
+            <div className="lg:col-span-2">
+              <RelatedPosts posts={relatedPosts} />
+            </div>
+          </div>
         </div>
       </main>
       <Footer />
