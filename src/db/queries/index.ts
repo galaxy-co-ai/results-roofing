@@ -39,3 +39,17 @@ export {
   getOrdersByUser,
   getPendingQuotesByUser,
 } from './user-linking';
+
+// Blog Posts
+export {
+  getPublishedPosts,
+  getFeaturedPosts,
+  getPostBySlug,
+  getPostById,
+  getRelatedPosts,
+  listPosts,
+  createPost,
+  updatePost,
+  deletePost,
+  incrementViewCount,
+} from './blog-posts';

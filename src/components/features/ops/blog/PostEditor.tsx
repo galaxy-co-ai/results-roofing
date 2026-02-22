@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import {
   Save,
   Eye,
@@ -18,6 +19,28 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import type { BlogPost } from './PostList';
 import styles from './blog.module.css';
+
+// Dynamically import TipTap editor (no SSR — heavy client-only dependency)
+const TipTapEditor = dynamic(
+  () => import('./TipTapEditor').then((mod) => mod.TipTapEditor),
+  {
+    ssr: false,
+    loading: () => (
+      <div className={styles.editorLoading}>
+        <Loader2 size={20} className={styles.spinner} />
+        <span>Loading editor...</span>
+      </div>
+    ),
+  }
+);
+
+const CATEGORIES = [
+  { value: 'technology', label: 'Technology' },
+  { value: 'homeowner-tips', label: 'Homeowner Tips' },
+  { value: 'roofing-101', label: 'Roofing 101' },
+  { value: 'storm-insurance', label: 'Storm & Insurance' },
+  { value: 'company-news', label: 'Company News' },
+] as const;
 
 interface PostEditorProps {
   post?: BlogPost | null;
@@ -65,6 +88,11 @@ export function PostEditor({
     setHasChanges(true);
   };
 
+  const handleContentChange = (value: string) => {
+    setContent(value);
+    setHasChanges(true);
+  };
+
   const handleAddTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim())) {
       setTags([...tags, newTag.trim()]);
@@ -87,6 +115,8 @@ export function PostEditor({
       featuredImage,
       category,
       tags,
+      authorName: post?.authorName || 'Dalton Reed',
+      authorRole: post?.authorRole || 'Founder',
     });
     setHasChanges(false);
   };
@@ -173,49 +203,11 @@ export function PostEditor({
             rows={2}
           />
 
-          {/* Content Editor */}
+          {/* Content Editor — TipTap */}
           <div className={styles.contentEditor}>
-            <div className={styles.editorToolbar}>
-              <button type="button" title="Bold">
-                <strong>B</strong>
-              </button>
-              <button type="button" title="Italic">
-                <em>I</em>
-              </button>
-              <button type="button" title="Heading">
-                H
-              </button>
-              <button type="button" title="Link">
-                🔗
-              </button>
-              <button type="button" title="Image">
-                <ImageIcon size={14} />
-              </button>
-              <button type="button" title="Quote">
-                &quot;
-              </button>
-              <button type="button" title="List">
-                •
-              </button>
-              <button type="button" title="Code">
-                {'</>'}
-              </button>
-            </div>
-            <textarea
-              placeholder="Write your post content here...
-
-You can use Markdown formatting:
-- **bold** for bold text
-- *italic* for italic text
-- # Heading for headings
-- [link](url) for links
-- ![alt](url) for images"
-              value={content}
-              onChange={(e) => {
-                setContent(e.target.value);
-                setHasChanges(true);
-              }}
-              className={styles.contentInput}
+            <TipTapEditor
+              content={content}
+              onChange={handleContentChange}
             />
           </div>
         </main>
@@ -286,11 +278,11 @@ You can use Markdown formatting:
                 className={styles.categorySelect}
               >
                 <option value="">Select category</option>
-                <option value="roofing-tips">Roofing Tips</option>
-                <option value="maintenance">Maintenance</option>
-                <option value="materials">Materials</option>
-                <option value="news">News</option>
-                <option value="case-studies">Case Studies</option>
+                {CATEGORIES.map((cat) => (
+                  <option key={cat.value} value={cat.value}>
+                    {cat.label}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -351,7 +343,7 @@ You can use Markdown formatting:
                       <dd>{new Date(post.publishedAt).toLocaleDateString()}</dd>
                     </div>
                   )}
-                  {post.viewCount !== undefined && (
+                  {post.viewCount != null && (
                     <div>
                       <dt>Views</dt>
                       <dd>{post.viewCount.toLocaleString()}</dd>

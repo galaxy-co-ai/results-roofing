@@ -20,6 +20,9 @@ export * from './pricing-tiers';
 // Relations
 export * from './relations';
 
+// Blog
+export * from './blog-posts';
+
 // Admin/Dev tools
 export * from './feedback';
 export * from './dev-tasks';

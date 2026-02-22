@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Header } from '@/components/layout/Header/Header';
 import { Footer } from '@/components/layout/Footer/Footer';
-import { getArticleBySlug, getAllSlugs } from '@/lib/blog/data';
+import { getPostBySlug, getRelatedPosts } from '@/db/queries/blog-posts';
 import {
   ReadingProgressBar,
   ArticleHeader,
@@ -11,39 +11,52 @@ import {
   AuthorBio,
   RelatedPosts,
 } from '@/components/features/blog';
+import { ViewTracker } from '@/components/features/blog/ViewTracker';
+
+export const dynamic = 'force-dynamic';
 
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return getAllSlugs().map((slug) => ({ slug }));
-}
-
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getArticleBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) return {};
 
   return {
-    title: post.seo.metaTitle,
-    description: post.seo.metaDescription,
-    keywords: post.seo.keywords,
+    title: post.seoTitle || post.title,
+    description: post.seoDescription || post.excerpt,
+    keywords: post.seoKeywords || undefined,
     openGraph: {
-      title: post.seo.metaTitle,
-      description: post.seo.metaDescription,
+      title: post.seoTitle || post.title,
+      description: post.seoDescription || post.excerpt || '',
       url: `/blog/${post.slug}`,
       type: 'article',
-      publishedTime: post.date,
-      authors: [post.author.name],
+      publishedTime: post.publishedAt?.toISOString(),
+      authors: [post.authorName],
     },
   };
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
-  const post = getArticleBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) notFound();
+
+  const relatedPosts = post.category
+    ? await getRelatedPosts(post.category, post.slug, 3)
+    : [];
+
+  const author = {
+    name: post.authorName,
+    role: post.authorRole || '',
+    avatar: post.authorName
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase(),
+  };
 
   return (
     <>
@@ -55,20 +68,21 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             {/* Article content */}
             <article className="max-w-[680px]">
               <ArticleHeader post={post} />
-              <ArticleBody sections={post.sections} />
-              <AuthorBio author={post.author} />
+              <ArticleBody content={post.content || ''} />
+              <AuthorBio author={author} />
             </article>
 
             {/* Sidebar */}
             <aside className="hidden lg:block pt-48">
-              <TableOfContents sections={post.sections} />
+              <TableOfContents content={post.content || ''} />
             </aside>
           </div>
 
-          <RelatedPosts currentSlug={post.slug} />
+          <RelatedPosts posts={relatedPosts} />
         </div>
       </main>
       <Footer />
+      <ViewTracker slug={post.slug} />
     </>
   );
 }

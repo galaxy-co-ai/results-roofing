@@ -1,14 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { BlogSection } from '@/lib/blog/types';
+import { extractHeadings } from '@/lib/blog/utils';
 
 interface TableOfContentsProps {
-  sections: BlogSection[];
+  content: string; // markdown
 }
 
-export function TableOfContents({ sections }: TableOfContentsProps) {
+export function TableOfContents({ content }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('');
+  const headings = extractHeadings(content);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -22,16 +23,15 @@ export function TableOfContents({ sections }: TableOfContentsProps) {
       { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
     );
 
-    for (const section of sections) {
-      const el = document.getElementById(section.id);
+    for (const heading of headings) {
+      const el = document.getElementById(heading.id);
       if (el) observer.observe(el);
     }
 
     return () => observer.disconnect();
-  }, [sections]);
+  }, [headings]);
 
-  // Filter out intro since we don't show its heading
-  const tocSections = sections.filter((s) => s.id !== 'intro');
+  if (headings.length === 0) return null;
 
   return (
     <nav className="sticky top-24" aria-label="Table of contents">
@@ -39,17 +39,17 @@ export function TableOfContents({ sections }: TableOfContentsProps) {
         On this page
       </p>
       <ul className="space-y-1 border-l border-[#e8ecf1]">
-        {tocSections.map((section) => (
-          <li key={section.id}>
+        {headings.map((heading) => (
+          <li key={heading.id}>
             <a
-              href={`#${section.id}`}
+              href={`#${heading.id}`}
               className={`block pl-4 py-1 text-[13px] leading-snug transition-colors ${
-                activeId === section.id
+                activeId === heading.id
                   ? 'text-[#4361ee] font-medium border-l-2 border-[#4361ee] -ml-px'
                   : 'text-[#64748b] hover:text-[#1a1a2e]'
               }`}
             >
-              {section.title}
+              {heading.title}
             </a>
           </li>
         ))}

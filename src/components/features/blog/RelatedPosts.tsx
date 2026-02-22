@@ -1,13 +1,12 @@
-import { getRelatedPosts } from '@/lib/blog/data';
+import type { BlogPost } from '@/lib/blog/types';
 import { PostCard } from './PostCard';
 
 interface RelatedPostsProps {
-  currentSlug: string;
+  posts: BlogPost[];
 }
 
-export function RelatedPosts({ currentSlug }: RelatedPostsProps) {
-  const related = getRelatedPosts(currentSlug, 3);
-  if (related.length === 0) return null;
+export function RelatedPosts({ posts }: RelatedPostsProps) {
+  if (posts.length === 0) return null;
 
   return (
     <section className="mt-16 pt-12 border-t border-[#e8ecf1]">
@@ -15,7 +14,7 @@ export function RelatedPosts({ currentSlug }: RelatedPostsProps) {
         Keep Reading
       </h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {related.map((post) => (
+        {posts.map((post) => (
           <PostCard key={post.slug} post={post} />
         ))}
       </div>

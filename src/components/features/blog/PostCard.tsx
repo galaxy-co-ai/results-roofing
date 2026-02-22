@@ -1,14 +1,32 @@
 import Link from 'next/link';
-import type { BlogArticle } from '@/lib/blog/types';
+import { format } from 'date-fns';
+import type { BlogPost, BlogPostForCard } from '@/lib/blog/types';
 import { getCategoryMeta } from '@/lib/blog/utils';
 
 interface PostCardProps {
-  post: BlogArticle;
+  post: BlogPost | BlogPostForCard;
   large?: boolean;
 }
 
+function getAuthorInitials(name: string): string {
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase();
+}
+
+function formatDate(date: Date | null): string {
+  if (!date) return '';
+  try {
+    return format(date, 'MMM d, yyyy');
+  } catch {
+    return '';
+  }
+}
+
 export function PostCard({ post, large = false }: PostCardProps) {
-  const cat = getCategoryMeta(post.category);
+  const cat = post.category ? getCategoryMeta(post.category) : null;
 
   return (
     <Link href={`/blog/${post.slug}`} className="group block">
@@ -22,21 +40,23 @@ export function PostCard({ post, large = false }: PostCardProps) {
           className={`relative flex items-center justify-center ${
             large ? 'md:w-[45%] min-h-[220px]' : 'h-[180px]'
           }`}
-          style={{ background: post.gradient }}
+          style={{ background: post.gradient || 'linear-gradient(135deg, #4361ee 0%, #1a1a2e 100%)' }}
         >
           <span className={large ? 'text-6xl' : 'text-5xl'} role="img" aria-hidden>
-            {post.icon}
+            {post.icon || '📝'}
           </span>
         </div>
 
         {/* Content */}
         <div className={`p-5 ${large ? 'md:flex-1 md:p-8' : ''}`}>
-          <span
-            className="inline-block text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full mb-3"
-            style={{ color: cat.color, backgroundColor: `${cat.color}14` }}
-          >
-            {cat.label}
-          </span>
+          {cat && (
+            <span
+              className="inline-block text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full mb-3"
+              style={{ color: cat.color, backgroundColor: `${cat.color}14` }}
+            >
+              {cat.label}
+            </span>
+          )}
 
           <h3
             className={`font-[family-name:var(--font-sora)] font-bold text-[#1a1a2e] group-hover:text-[#4361ee] transition-colors leading-tight ${
@@ -53,12 +73,12 @@ export function PostCard({ post, large = false }: PostCardProps) {
           <div className="flex items-center gap-3 text-xs text-[#94a3b8]">
             <div className="flex items-center gap-2">
               <span className="w-7 h-7 rounded-full bg-[#4361ee] text-white flex items-center justify-center text-[10px] font-bold">
-                {post.author.avatar}
+                {getAuthorInitials(post.authorName)}
               </span>
-              <span className="font-medium text-[#1a1a2e]">{post.author.name}</span>
+              <span className="font-medium text-[#1a1a2e]">{post.authorName}</span>
             </div>
             <span>·</span>
-            <span>{post.date}</span>
+            <span>{formatDate(post.publishedAt)}</span>
             <span>·</span>
             <span>{post.readTime} min read</span>
           </div>

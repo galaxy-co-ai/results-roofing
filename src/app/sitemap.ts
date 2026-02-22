@@ -1,9 +1,11 @@
 import type { MetadataRoute } from 'next';
-import { getAllSlugs } from '@/lib/blog/data';
+import { getPublishedPosts } from '@/db/queries/blog-posts';
+
+export const dynamic = 'force-dynamic';
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://resultsroofing.com';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = [
     {
       url: BASE_URL,
@@ -62,9 +64,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   };
 
-  const blogArticles = getAllSlugs().map((slug) => ({
-    url: `${BASE_URL}/blog/${slug}`,
-    lastModified: new Date(),
+  const posts = await getPublishedPosts();
+  const blogArticles = posts.map((post) => ({
+    url: `${BASE_URL}/blog/${post.slug}`,
+    lastModified: post.updatedAt,
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));

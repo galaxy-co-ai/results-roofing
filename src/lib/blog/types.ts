@@ -1,5 +1,28 @@
-// Blog data types — static data layer for public blog
+import type { BlogPost as DBBlogPost } from '../../db/schema/blog-posts';
 
+// Re-export the DB type as the canonical blog post type
+export type BlogPost = DBBlogPost;
+
+// Subset for list/card views — avoids shipping full content to every card
+export type BlogPostForCard = Pick<
+  BlogPost,
+  | 'id'
+  | 'title'
+  | 'slug'
+  | 'excerpt'
+  | 'gradient'
+  | 'icon'
+  | 'category'
+  | 'authorName'
+  | 'authorRole'
+  | 'readTime'
+  | 'featured'
+  | 'publishedAt'
+  | 'viewCount'
+  | 'featuredImage'
+>;
+
+// Blog category type (derived from enum values)
 export type BlogCategory =
   | 'technology'
   | 'homeowner-tips'
@@ -15,12 +38,14 @@ export const BLOG_CATEGORIES: Record<BlogCategory, { label: string; color: strin
   'company-news': { label: 'Company News', color: '#10b981' },
 };
 
+// Computed author shape for components that display author info
 export interface BlogAuthor {
   name: string;
   role: string;
   avatar: string; // initials like "DR"
 }
 
+// Legacy types — used by data.ts and seed script
 export interface BlogSection {
   id: string;
   title: string;

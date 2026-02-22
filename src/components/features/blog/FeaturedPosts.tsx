@@ -1,8 +1,12 @@
-import { getFeaturedPosts } from '@/lib/blog/data';
+import type { BlogPost } from '@/lib/blog/types';
 import { PostCard } from './PostCard';
 
-export function FeaturedPosts() {
-  const featured = getFeaturedPosts().slice(0, 2);
+interface FeaturedPostsProps {
+  posts: BlogPost[];
+}
+
+export function FeaturedPosts({ posts }: FeaturedPostsProps) {
+  if (posts.length === 0) return null;
 
   return (
     <section className="mb-12">
@@ -10,7 +14,7 @@ export function FeaturedPosts() {
         Featured
       </h2>
       <div className="grid md:grid-cols-2 gap-6">
-        {featured.map((post) => (
+        {posts.map((post) => (
           <PostCard key={post.slug} post={post} large />
         ))}
       </div>

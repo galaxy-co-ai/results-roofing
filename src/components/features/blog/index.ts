@@ -10,3 +10,4 @@ export { TableOfContents } from './TableOfContents';
 export { AuthorBio } from './AuthorBio';
 export { RelatedPosts } from './RelatedPosts';
 export { ShareButton } from './ShareButton';
+export { ViewTracker } from './ViewTracker';

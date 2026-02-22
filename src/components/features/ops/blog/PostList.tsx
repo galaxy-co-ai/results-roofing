@@ -27,26 +27,33 @@ import styles from './blog.module.css';
 
 export type PostStatus = 'draft' | 'published' | 'scheduled' | 'archived';
 
+/**
+ * BlogPost shape — matches the DB row returned by the API.
+ */
 export interface BlogPost {
   id: string;
   title: string;
   slug: string;
-  excerpt?: string;
-  content?: string;
-  featuredImage?: string;
+  excerpt?: string | null;
+  content?: string | null;
+  featuredImage?: string | null;
+  gradient?: string | null;
+  icon?: string | null;
   status: PostStatus;
-  author: {
-    id: string;
-    name: string;
-    avatar?: string;
-  };
-  category?: string;
-  tags?: string[];
-  publishedAt?: string;
-  scheduledAt?: string;
+  authorName: string;
+  authorRole?: string | null;
+  category?: string | null;
+  tags?: string[] | null;
+  readTime?: number | null;
+  featured?: boolean | null;
+  publishedAt?: string | null;
+  scheduledAt?: string | null;
   createdAt: string;
   updatedAt: string;
-  viewCount?: number;
+  viewCount?: number | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  seoKeywords?: string[] | null;
 }
 
 interface PostListProps {
@@ -79,7 +86,7 @@ function getStatusBadge(status: PostStatus) {
   }
 }
 
-function formatDate(dateStr?: string): string {
+function formatDate(dateStr?: string | null): string {
   if (!dateStr) return '';
   try {
     return format(new Date(dateStr), 'MMM d, yyyy');
@@ -187,7 +194,9 @@ export function PostList({
                 style={{
                   backgroundImage: post.featuredImage
                     ? `url(${post.featuredImage})`
-                    : 'linear-gradient(135deg, var(--ops-accent-documents) 0%, color-mix(in srgb, var(--ops-accent-documents) 80%, black) 100%)',
+                    : post.gradient
+                      ? post.gradient
+                      : 'linear-gradient(135deg, var(--ops-accent-documents) 0%, color-mix(in srgb, var(--ops-accent-documents) 80%, black) 100%)',
                 }}
               >
                 {getStatusBadge(post.status)}
@@ -244,7 +253,7 @@ export function PostList({
                 <div className={styles.postMeta}>
                   <div className={styles.metaItem}>
                     <User size={12} />
-                    <span>{post.author.name}</span>
+                    <span>{post.authorName}</span>
                   </div>
                   <div className={styles.metaItem}>
                     <Calendar size={12} />
@@ -274,7 +283,7 @@ export function PostList({
                 )}
 
                 {/* Stats */}
-                {post.status === 'published' && post.viewCount !== undefined && (
+                {post.status === 'published' && post.viewCount != null && (
                   <div className={styles.postStats}>
                     <Eye size={12} />
                     <span>{post.viewCount.toLocaleString()} views</span>

@@ -1,32 +1,35 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import articles from '@/lib/blog/data';
 import { BLOG_CATEGORIES } from '@/lib/blog/types';
-import type { BlogCategory } from '@/lib/blog/types';
+import type { BlogCategory, BlogPost } from '@/lib/blog/types';
 import { PostCard } from './PostCard';
 
 const categories = Object.entries(BLOG_CATEGORIES) as [BlogCategory, { label: string; color: string }][];
 
-export function PostsGrid() {
+interface PostsGridProps {
+  posts: BlogPost[];
+}
+
+export function PostsGrid({ posts }: PostsGridProps) {
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<BlogCategory | 'all'>('all');
 
   const filtered = useMemo(() => {
-    let posts = articles;
+    let result = posts;
     if (activeCategory !== 'all') {
-      posts = posts.filter((p) => p.category === activeCategory);
+      result = result.filter((p) => p.category === activeCategory);
     }
     if (search.trim()) {
       const q = search.toLowerCase();
-      posts = posts.filter(
+      result = result.filter(
         (p) =>
           p.title.toLowerCase().includes(q) ||
-          p.excerpt.toLowerCase().includes(q)
+          p.excerpt?.toLowerCase().includes(q)
       );
     }
-    return posts;
-  }, [search, activeCategory]);
+    return result;
+  }, [posts, search, activeCategory]);
 
   return (
     <section className="mb-16">
