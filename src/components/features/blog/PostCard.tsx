@@ -1,6 +1,13 @@
 import Link from 'next/link';
-import { format } from 'date-fns';
-import type { BlogPost, BlogPostForCard } from '@/lib/blog/types';
+import {
+  Satellite,
+  Home,
+  BookOpen,
+  Shield,
+  Megaphone,
+  type LucideIcon,
+} from 'lucide-react';
+import type { BlogPost, BlogPostForCard, BlogCategory } from '@/lib/blog/types';
 import { getCategoryMeta } from '@/lib/blog/utils';
 
 interface PostCardProps {
@@ -9,55 +16,106 @@ interface PostCardProps {
   featured?: boolean;
 }
 
-function getAuthorInitials(name: string): string {
-  return name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase();
+/* ── Category → visual mapping ─────────────────────────── */
+
+interface CategoryVisual {
+  bg: string;
+  accent: string;
+  icon: LucideIcon;
+  pattern: string;
 }
 
-function formatDate(date: Date | null): string {
-  if (!date) return '';
-  try {
-    return format(date, 'MMM d, yyyy');
-  } catch {
-    return '';
-  }
+const CATEGORY_VISUALS: Record<BlogCategory, CategoryVisual> = {
+  technology: {
+    bg: '#EEF2FF',
+    accent: '#2563EB',
+    icon: Satellite,
+    pattern:
+      'radial-gradient(circle, #2563EB 0.6px, transparent 0.6px)',
+  },
+  'homeowner-tips': {
+    bg: '#EFF6FF',
+    accent: '#1D4ED8',
+    icon: Home,
+    pattern:
+      'repeating-linear-gradient(135deg, #1D4ED8 0px, #1D4ED8 1px, transparent 1px, transparent 8px)',
+  },
+  'roofing-101': {
+    bg: '#F0F5FF',
+    accent: '#3B82F6',
+    icon: BookOpen,
+    pattern:
+      'repeating-linear-gradient(0deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px)',
+  },
+  'storm-insurance': {
+    bg: '#EEF2FF',
+    accent: '#1E40AF',
+    icon: Shield,
+    pattern:
+      'repeating-linear-gradient(0deg, transparent 0px, transparent 6px, #1E40AF 6px, #1E40AF 7px)',
+  },
+  'company-news': {
+    bg: '#F5F7FF',
+    accent: '#2563EB',
+    icon: Megaphone,
+    pattern:
+      'radial-gradient(circle, #2563EB 0.8px, transparent 0.8px)',
+  },
+};
+
+const DEFAULT_VISUAL: CategoryVisual = {
+  bg: '#F0F5FF',
+  accent: '#3B82F6',
+  icon: BookOpen,
+  pattern: 'radial-gradient(circle, #3B82F6 0.6px, transparent 0.6px)',
+};
+
+function getVisual(category?: BlogCategory | string | null): CategoryVisual {
+  if (!category) return DEFAULT_VISUAL;
+  return CATEGORY_VISUALS[category as BlogCategory] ?? DEFAULT_VISUAL;
 }
 
 export function PostCard({ post, large = false, featured = false }: PostCardProps) {
   const cat = post.category ? getCategoryMeta(post.category) : null;
+  const vis = getVisual(post.category);
+  const Icon = vis.icon;
 
   return (
-    <Link href={`/blog/${post.slug}`} className="group block">
+    <Link href={`/blog/${post.slug}`} className="group block h-full">
       <article
-        className={`rounded-2xl border border-[#e8ecf1] bg-white overflow-hidden transition-shadow hover:shadow-lg ${
-          large ? 'flex flex-col md:flex-row' : ''
+        className={`rounded-lg border border-[#E8EDF5] bg-white overflow-hidden transition-all duration-150 hover:shadow-md hover:-translate-y-0.5 h-full ${
+          large ? 'flex flex-col md:flex-row' : 'flex flex-col'
         }`}
       >
-        {/* Gradient thumbnail */}
+        {/* Pattern cover */}
         <div
           className={`relative flex items-center justify-center ${
-            large ? 'md:w-[45%] min-h-[220px]' : 'h-[140px] sm:h-[180px]'
+            large ? 'md:w-[45%] min-h-[180px]' : 'h-[140px]'
           }`}
-          style={{ background: post.gradient || 'linear-gradient(135deg, #4361ee 0%, #1a1a2e 100%)' }}
+          style={{
+            backgroundColor: vis.bg,
+            backgroundImage: vis.pattern,
+            backgroundSize: vis.pattern.includes('radial') ? '16px 16px' : undefined,
+          }}
         >
-          <span className={large ? 'text-6xl' : 'text-5xl'} role="img" aria-hidden>
-            {post.icon || '📝'}
-          </span>
+          <Icon
+            size={36}
+            className="opacity-40 drop-shadow-sm"
+            style={{ color: vis.accent }}
+            strokeWidth={1.5}
+          />
           {featured && (
-            <span className="absolute top-3 left-3 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-white/90 text-[#4361ee] rounded-md">
+            <span className="absolute top-3 left-3 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-white/90 text-[#2563EB] rounded-md">
               Featured
             </span>
           )}
         </div>
 
         {/* Content */}
-        <div className={`p-5 ${large ? 'md:flex-1 md:p-8' : ''}`}>
+        <div className={`p-4 flex flex-col flex-1 ${large ? 'md:p-6' : ''}`}>
           {cat && (
             <span
-              className="inline-block text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full mb-3"
+              className="inline-block text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full mb-2 w-fit"
               style={{ color: cat.color, backgroundColor: `${cat.color}14` }}
             >
               {cat.label}
@@ -65,29 +123,16 @@ export function PostCard({ post, large = false, featured = false }: PostCardProp
           )}
 
           <h3
-            className={`font-[family-name:var(--font-sora)] font-bold text-[#1a1a2e] group-hover:text-[#4361ee] transition-colors leading-tight ${
-              large ? 'text-xl md:text-2xl mb-3' : 'text-lg mb-2 line-clamp-2 min-h-[3.25rem]'
+            className={`font-[family-name:var(--font-sora)] font-semibold text-[#1a1a2e] group-hover:text-[#2563EB] transition-colors leading-tight line-clamp-2 ${
+              large ? 'text-lg md:text-xl mb-2' : 'text-base mb-2'
             }`}
           >
             {post.title}
           </h3>
 
-          <p className="text-[#64748b] text-sm leading-relaxed line-clamp-2 mb-4">
+          <p className="text-sm text-[#6B7A94] leading-relaxed line-clamp-2">
             {post.excerpt}
           </p>
-
-          <div className="flex items-center gap-3 text-xs text-[#64748b]">
-            <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-full bg-[#4361ee] text-white flex items-center justify-center text-[10px] font-bold">
-                {getAuthorInitials(post.authorName)}
-              </span>
-              <span className="font-medium text-[#1a1a2e]">{post.authorName}</span>
-            </div>
-            <span>·</span>
-            <span>{formatDate(post.publishedAt)}</span>
-            <span>·</span>
-            <span>{post.readTime} min read</span>
-          </div>
         </div>
       </article>
     </Link>

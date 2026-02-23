@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { Search } from 'lucide-react';
 import { BLOG_CATEGORIES } from '@/lib/blog/types';
 import type { BlogCategory, BlogPost } from '@/lib/blog/types';
 import { PostCard } from './PostCard';
@@ -33,27 +34,30 @@ export function PostsGrid({ posts }: PostsGridProps) {
 
   return (
     <section className="mb-16">
-      <h2 className="flex items-center gap-3 font-[family-name:var(--font-sora)] text-2xl font-bold text-[#1a1a2e] mb-6">
+      <h2 className="flex items-center gap-3 font-[family-name:var(--font-sora)] text-2xl font-bold text-[#1a1a2e] mb-4">
         <span className="w-1 h-6 bg-[#1a1a2e] rounded-full" />
-        All Posts
+        All Resources
       </h2>
 
       {/* Search + filters */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-8">
-        <input
-          type="text"
-          placeholder="Search articles..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 px-4 py-2.5 rounded-xl border border-[#e8ecf1] text-sm focus:outline-none focus:ring-2 focus:ring-[#4361ee] bg-white"
-        />
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+        <div className="relative flex-1 max-w-xs">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B7A94]" />
+          <input
+            type="text"
+            placeholder="Search articles..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full h-9 pl-9 pr-3 rounded-md border border-[#E8EDF5] text-sm text-[#1a1a2e] placeholder:text-[#6B7A94] focus:outline-none focus:ring-2 focus:ring-[#2563EB] bg-white"
+          />
+        </div>
         <div className="flex gap-2 flex-wrap">
           <button
             onClick={() => setActiveCategory('all')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+            className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${
               activeCategory === 'all'
-                ? 'bg-[#1a1a2e] text-white border border-transparent'
-                : 'bg-[#f1f5f9] text-[#475569] border border-[#e8ecf1] hover:bg-[#e2e8f0]'
+                ? 'bg-[#2563EB] text-white'
+                : 'bg-[#F2F4F8] text-[#6B7A94] border border-[#E8EDF5] hover:bg-[#E8EDF5]'
             }`}
           >
             All
@@ -62,16 +66,11 @@ export function PostsGrid({ posts }: PostsGridProps) {
             <button
               key={key}
               onClick={() => setActiveCategory(key)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+              className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${
                 activeCategory === key
-                  ? 'text-white border border-transparent'
-                  : 'text-[#475569] border border-[#e8ecf1] hover:bg-[#e2e8f0]'
+                  ? 'bg-[#2563EB] text-white'
+                  : 'bg-[#F2F4F8] text-[#6B7A94] border border-[#E8EDF5] hover:bg-[#E8EDF5]'
               }`}
-              style={
-                activeCategory === key
-                  ? { backgroundColor: val.color }
-                  : { backgroundColor: '#f1f5f9' }
-              }
             >
               {val.label}
             </button>
@@ -81,7 +80,7 @@ export function PostsGrid({ posts }: PostsGridProps) {
 
       {/* Grid */}
       {filtered.length > 0 ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((post) => (
             <PostCard key={post.slug} post={post} />
           ))}

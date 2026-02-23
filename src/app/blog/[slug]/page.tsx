@@ -1,5 +1,13 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import {
+  Satellite,
+  Home,
+  BookOpen,
+  Shield,
+  Megaphone,
+  type LucideIcon,
+} from 'lucide-react';
 import { Header } from '@/components/layout/Header/Header';
 import { Footer } from '@/components/layout/Footer/Footer';
 import { getPostBySlug, getRelatedPosts } from '@/db/queries/blog-posts';
@@ -12,6 +20,14 @@ import {
   RelatedPosts,
 } from '@/components/features/blog';
 import { ViewTracker } from '@/components/features/blog/ViewTracker';
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  Satellite,
+  Home,
+  BookOpen,
+  Shield,
+  Megaphone,
+};
 
 export const dynamic = 'force-dynamic';
 
@@ -65,7 +81,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       .toUpperCase(),
   };
 
-  const heroGradient = post.gradient || 'linear-gradient(135deg, #4361ee 0%, #1a1a2e 100%)';
+  const heroPattern = post.gradient || 'radial-gradient(circle, #2563EB 0.6px, transparent 0.6px)';
+  const HeroIcon = (post.icon ? ICON_MAP[post.icon] : null) ?? BookOpen;
 
   return (
     <>
@@ -81,11 +98,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               {/* Hero banner */}
               <div
                 className="h-[200px] md:h-[280px] rounded-2xl flex items-center justify-center mb-10"
-                style={{ background: heroGradient }}
+                style={{
+                  backgroundColor: '#EEF2FF',
+                  backgroundImage: heroPattern,
+                  backgroundSize: heroPattern.includes('radial') ? '16px 16px' : undefined,
+                }}
               >
-                <span className="text-7xl md:text-8xl" role="img" aria-hidden>
-                  {post.icon || '📝'}
-                </span>
+                <HeroIcon
+                  size={56}
+                  className="opacity-40 drop-shadow-sm"
+                  style={{ color: '#2563EB' }}
+                  strokeWidth={1.5}
+                />
               </div>
 
               <ArticleBody content={post.content || ''} />

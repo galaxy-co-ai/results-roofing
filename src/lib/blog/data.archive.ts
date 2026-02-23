@@ -4,15 +4,15 @@ const articles: BlogArticle[] = [
   {
     id: 1,
     slug: 'satellite-roof-measurements',
-    title: `How Satellite Roof Measurements Are Changing the Way You Get a Roofing Quote`,
+    title: `Satellite Roof Quotes: How They Work`,
     excerpt: `Traditional roofing quotes mean a stranger on your roof and days of waiting. We measure your roof from space in under 2 seconds. Here's exactly how it works.`,
     category: 'technology',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 12, 2026',
     readTime: 7,
     featured: true,
-    gradient: 'linear-gradient(135deg, #4361ee 0%, #1a1a2e 100%)',
-    icon: '🛰️',
+    gradient: 'radial-gradient(circle, #2563EB 0.6px, transparent 0.6px)',
+    icon: 'Satellite',
     sections: [
       {
         id: 'intro',
@@ -108,15 +108,15 @@ Your roof has already been measured. You just haven't seen the data yet. Enter y
   {
     id: 2,
     slug: '5-signs-you-need-new-roof',
-    title: `5 Warning Signs Your Roof Needs Replacing (Before It's Too Late)`,
+    title: `5 Signs Your Roof Needs Replacing`,
     excerpt: `Most homeowners don't think about their roof until there's a bucket in the living room. Here are five signs it's time — and what happens if you wait.`,
     category: 'homeowner-tips',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 6, 2026',
     readTime: 7,
     featured: true,
-    gradient: 'linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)',
-    icon: '🏠',
+    gradient: 'repeating-linear-gradient(135deg, #1D4ED8 0px, #1D4ED8 1px, transparent 1px, transparent 8px)',
+    icon: 'Home',
     sections: [
       {
         id: 'intro',
@@ -216,15 +216,15 @@ A roof replacement isn't fun, but it's a lot less painful when you're the one in
   {
     id: 3,
     slug: 'understanding-roof-pitch',
-    title: `Understanding Roof Pitch: What It Means for Your Replacement Cost`,
+    title: `Roof Pitch and What It Costs You`,
     excerpt: `Roof pitch sounds technical, but it's the single biggest factor most homeowners overlook when budgeting for a new roof. Here's what you actually need to know.`,
     category: 'roofing-101',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 10, 2026',
     readTime: 6,
     featured: false,
-    gradient: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
-    icon: '📐',
+    gradient: 'repeating-linear-gradient(0deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px)',
+    icon: 'BookOpen',
     sections: [
       {
         id: 'intro',
@@ -336,15 +336,15 @@ Pitch isn't something you can change about your home (short of a complete struct
   {
     id: 4,
     slug: 'gaf-vs-owens-corning-vs-certainteed',
-    title: `GAF vs. Owens Corning vs. CertainTeed: Which Shingles Are Right for Your Home?`,
+    title: `GAF vs. Owens Corning vs. CertainTeed`,
     excerpt: `The Big Three shingle brands all make solid products. But they're not identical. Here's an honest comparison from someone who installs all three.`,
     category: 'roofing-101',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 13, 2026',
     readTime: 8,
     featured: true,
-    gradient: 'linear-gradient(135deg, #10b981 0%, #064e3b 100%)',
-    icon: '🏷️',
+    gradient: 'repeating-linear-gradient(0deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px)',
+    icon: 'BookOpen',
     sections: [
       {
         id: 'intro',
@@ -465,15 +465,15 @@ But here's what matters more than any of this: hire a good contractor. The best 
   {
     id: 5,
     slug: 'storm-damage-insurance-claim-guide',
-    title: `Filed a Storm Damage Claim? Here's What Actually Happens Next`,
+    title: `Storm Damage Claims: Step by Step`,
     excerpt: `The insurance claim process is confusing by design. Here's a plain-English walkthrough of every step — from the first phone call to the final check.`,
     category: 'storm-insurance',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 10, 2026',
     readTime: 8,
     featured: true,
-    gradient: 'linear-gradient(135deg, #6366f1 0%, #1e1b4b 100%)',
-    icon: '⛈️',
+    gradient: 'repeating-linear-gradient(0deg, transparent 0px, transparent 6px, #1E40AF 6px, #1E40AF 7px)',
+    icon: 'Shield',
     sections: [
       {
         id: 'intro',
@@ -593,15 +593,15 @@ Want to know what your roof replacement would cost independent of insurance? Our
   {
     id: 6,
     slug: 'instant-satellite-roof-quotes-launch',
-    title: `We Just Launched Instant Satellite Roof Quotes — Here's How It Works`,
+    title: `Instant Satellite Quotes Are Here`,
     excerpt: `Enter your address, get a real quote in under two minutes. No sales call, no home visit, no guessing. Here's the technology behind it and why we built it.`,
     category: 'company-news',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 7, 2026',
     readTime: 6,
     featured: true,
-    gradient: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
-    icon: '🛰️',
+    gradient: 'radial-gradient(circle, #2563EB 0.8px, transparent 0.8px)',
+    icon: 'Megaphone',
     sections: [
       {
         id: 'intro',
@@ -693,15 +693,15 @@ If the number works for you, schedule your installation through the same portal.
   {
     id: 7,
     slug: 'roof-replacement-day-by-day-timeline',
-    title: `Day-by-Day: What to Expect During Your Roof Replacement`,
+    title: `Your Roof Replacement, Day by Day`,
     excerpt: `Trucks in the driveway, strangers on your roof, and a lot of noise. Here's exactly what happens each day so nothing catches you off guard.`,
     category: 'homeowner-tips',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 5, 2026',
     readTime: 7,
     featured: false,
-    gradient: 'linear-gradient(135deg, #f97316 0%, #dc2626 100%)',
-    icon: '🔨',
+    gradient: 'repeating-linear-gradient(135deg, #1D4ED8 0px, #1D4ED8 1px, transparent 1px, transparent 8px)',
+    icon: 'Home',
     sections: [
       {
         id: 'intro',
@@ -807,15 +807,15 @@ When it's done, you'll have a roof that should last 25-30 years with zero involv
   {
     id: 8,
     slug: 'roofing-financing-options-explained',
-    title: `Can't Afford a New Roof? Here's How Roofing Financing Actually Works`,
+    title: `Roof Financing Options Explained`,
     excerpt: `A new roof costs $8,000-$15,000 and most people don't have that sitting in savings. Here's a plain-English breakdown of every way to pay — and which ones are worth it.`,
     category: 'homeowner-tips',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 12, 2026',
     readTime: 8,
     featured: false,
-    gradient: 'linear-gradient(135deg, #059669 0%, #065f46 100%)',
-    icon: '💰',
+    gradient: 'repeating-linear-gradient(135deg, #1D4ED8 0px, #1D4ED8 1px, transparent 1px, transparent 8px)',
+    icon: 'Home',
     sections: [
       {
         id: 'intro',
@@ -938,15 +938,15 @@ A new roof is one of the few home expenses that's genuinely non-optional. When i
   {
     id: 9,
     slug: 'roof-replacement-cost',
-    title: `How Much Does a Roof Replacement Actually Cost? (No BS Pricing Guide)`,
+    title: `Roof Replacement Cost Guide`,
     excerpt: `National averages are useless when you're writing a check. Here's what roof replacements actually cost in TX, GA, NC, AZ, and OK — by size, material, and the hidden line items nobody warns you about.`,
     category: 'roofing-101',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 18, 2026',
     readTime: 8,
     featured: true,
-    gradient: 'linear-gradient(135deg, #059669 0%, #14b8a6 100%)',
-    icon: '💵',
+    gradient: 'repeating-linear-gradient(0deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px)',
+    icon: 'BookOpen',
     sections: [
       {
         id: 'intro',
@@ -1058,15 +1058,15 @@ No appointment. No salesperson. No waiting a week for someone to climb a ladder 
   {
     id: 10,
     slug: 'choosing-roofing-contractor',
-    title: `How to Choose a Roofing Contractor (And 9 Red Flags That Should Make You Run)`,
+    title: `Choosing a Contractor: 9 Red Flags`,
     excerpt: `40% of homeowners say poor communication is their biggest frustration with roofers. Here's how to spot the bad ones before they get your deposit — and what the good ones look like.`,
     category: 'homeowner-tips',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 18, 2026',
     readTime: 8,
     featured: true,
-    gradient: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
-    icon: '🚩',
+    gradient: 'repeating-linear-gradient(135deg, #1D4ED8 0px, #1D4ED8 1px, transparent 1px, transparent 8px)',
+    icon: 'Home',
     sections: [
       {
         id: 'intro',
@@ -1175,15 +1175,15 @@ Want to skip the runaround entirely? Our satellite quote gives you a real price 
   {
     id: 11,
     slug: 'roof-ventilation-guide',
-    title: `Roof Ventilation: The Invisible System That's Costing (or Saving) You Hundreds`,
+    title: `Roof Ventilation: The Hidden Cost`,
     excerpt: `Your attic can hit 160°F in a Texas summer. If that heat has nowhere to go, it's cooking your shingles from the inside, running up your electric bill, and might even void your warranty.`,
     category: 'roofing-101',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 18, 2026',
     readTime: 7,
     featured: false,
-    gradient: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)',
-    icon: '🌬️',
+    gradient: 'repeating-linear-gradient(0deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px)',
+    icon: 'BookOpen',
     sections: [
       {
         id: 'intro',
@@ -1286,15 +1286,15 @@ Want to see what your current roof looks like from above? Our satellite measurem
   {
     id: 12,
     slug: 'metal-roof-vs-shingles',
-    title: `Metal Roof vs. Shingles: An Honest Comparison for Homeowners Who Hate Hype`,
+    title: `Metal Roof vs. Shingles: Honest Take`,
     excerpt: `Metal roof fans will tell you shingles are garbage. Shingle companies will tell you metal is overpriced. Here's what's actually true — including when each one makes sense and when it doesn't.`,
     category: 'roofing-101',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 18, 2026',
     readTime: 8,
     featured: false,
-    gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
-    icon: '⚖️',
+    gradient: 'repeating-linear-gradient(0deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px)',
+    icon: 'BookOpen',
     sections: [
       {
         id: 'intro',
@@ -1421,15 +1421,15 @@ Want to see what your roof replacement would cost with architectural shingles? O
   {
     id: 13,
     slug: 'roof-warranty-guide',
-    title: `Roof Warranties Decoded: What's Actually Covered (And What Isn't)`,
+    title: `Roof Warranties Decoded`,
     excerpt: `You have two warranties on your roof and most homeowners don't know about the second one. Here's what manufacturer and workmanship warranties actually cover — and the fine print that can leave you paying out of pocket.`,
     category: 'homeowner-tips',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 18, 2026',
     readTime: 7,
     featured: false,
-    gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-    icon: '📋',
+    gradient: 'repeating-linear-gradient(135deg, #1D4ED8 0px, #1D4ED8 1px, transparent 1px, transparent 8px)',
+    icon: 'Home',
     sections: [
       {
         id: 'intro',
@@ -1532,15 +1532,15 @@ When you get a quote from us, we walk you through the exact warranty coverage yo
   {
     id: 14,
     slug: 'whats-included-roof-replacement',
-    title: `What's Actually Included in a Roof Replacement? (The Full Breakdown)`,
+    title: `What's Included in a Roof Replacement`,
     excerpt: `One quote says $8,000. Another says $14,000. Same house, same shingles. The difference isn't the shingles — it's everything underneath them. Here's every component that should be in your roof replacement, what it does, and what cheap quotes leave out.`,
     category: 'roofing-101',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 18, 2026',
     readTime: 8,
     featured: false,
-    gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    icon: '🧩',
+    gradient: 'repeating-linear-gradient(0deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px)',
+    icon: 'BookOpen',
     sections: [
       {
         id: 'intro',
@@ -1658,15 +1658,15 @@ When you get a quote from us, every component is itemized. We specify brands, qu
   {
     id: 15,
     slug: 'best-time-replace-roof',
-    title: `When's the Best Time to Replace Your Roof? (Season-by-Season Breakdown)`,
+    title: `Best Season to Replace Your Roof`,
     excerpt: `Fall gets all the credit, but it's not always the best answer — especially in Texas, Arizona, and the Southeast. Here's when to schedule your roof replacement based on where you live, what you'll pay, and what the weather will do to your shingles.`,
     category: 'homeowner-tips',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 18, 2026',
     readTime: 7,
     featured: false,
-    gradient: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
-    icon: '📅',
+    gradient: 'repeating-linear-gradient(135deg, #1D4ED8 0px, #1D4ED8 1px, transparent 1px, transparent 8px)',
+    icon: 'Home',
     sections: [
       {
         id: 'intro',
@@ -1763,15 +1763,15 @@ Get your instant satellite quote from us any time — we'll help you figure out 
   {
     id: 16,
     slug: 'first-time-homebuyer-roof',
-    title: `First-Time Homebuyer? Here's What You Need to Know About Your Roof`,
+    title: `First-Time Buyer Roof Guide`,
     excerpt: `Your home inspector spent 15 minutes on the roof — from the ground. Here's what they probably missed, how to do the age math that actually matters, and how to use the roof as negotiation leverage without killing the deal.`,
     category: 'homeowner-tips',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 18, 2026',
     readTime: 7,
     featured: false,
-    gradient: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
-    icon: '🏡',
+    gradient: 'repeating-linear-gradient(135deg, #1D4ED8 0px, #1D4ED8 1px, transparent 1px, transparent 8px)',
+    icon: 'Home',
     sections: [
       {
         id: 'intro',
@@ -1882,15 +1882,15 @@ Your roof protects everything underneath it. A little attention in your first ye
   {
     id: 17,
     slug: 'roof-maintenance-guide',
-    title: `Roof Maintenance That Actually Matters (And 3 Things You're Wasting Money On)`,
+    title: `Roof Maintenance That Matters`,
     excerpt: `Most roof maintenance advice is either obvious or wrong. Here's what actually extends your roof's life, what's a waste of money, and what might actively damage your shingles.`,
     category: 'homeowner-tips',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 18, 2026',
     readTime: 7,
     featured: false,
-    gradient: 'linear-gradient(135deg, #0d9488 0%, #0f766e 100%)',
-    icon: '🔧',
+    gradient: 'repeating-linear-gradient(135deg, #1D4ED8 0px, #1D4ED8 1px, transparent 1px, transparent 8px)',
+    icon: 'Home',
     sections: [
       {
         id: 'intro',
@@ -2046,15 +2046,15 @@ The smart move is to start getting replacement quotes when your roof hits the 15
   {
     id: 18,
     slug: 'hail-damage-identification',
-    title: `Hail Damage vs. Normal Wear: How to Tell the Difference`,
+    title: `Hail Damage vs. Normal Wear`,
     excerpt: `That dark spot on your shingle might be a $12,000 insurance claim or just your roof aging normally. Here's how to tell the difference — and how to avoid the storm chasers who profit from you not knowing.`,
     category: 'storm-insurance',
     author: { name: 'Dalton Reed', role: 'Founder', avatar: 'DR' },
     date: 'Feb 18, 2026',
     readTime: 7,
     featured: true,
-    gradient: 'linear-gradient(135deg, #475569 0%, #1e293b 100%)',
-    icon: '🧊',
+    gradient: 'repeating-linear-gradient(0deg, transparent 0px, transparent 6px, #1E40AF 6px, #1E40AF 7px)',
+    icon: 'Shield',
     sections: [
       {
         id: 'intro',

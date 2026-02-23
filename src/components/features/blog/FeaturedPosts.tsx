@@ -9,12 +9,12 @@ export function FeaturedPosts({ posts }: FeaturedPostsProps) {
   if (posts.length === 0) return null;
 
   return (
-    <section className="mb-12">
-      <h2 className="flex items-center gap-3 font-[family-name:var(--font-sora)] text-2xl font-bold text-[#1a1a2e] mb-6">
-        <span className="w-1 h-6 bg-[#4361ee] rounded-full" />
+    <section className="mb-10">
+      <h2 className="flex items-center gap-3 font-[family-name:var(--font-sora)] text-2xl font-bold text-[#1a1a2e] mb-4">
+        <span className="w-1 h-6 bg-[#2563EB] rounded-full" />
         Featured
       </h2>
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-4 items-stretch">
         {posts.map((post) => (
           <PostCard key={post.slug} post={post} large featured />
         ))}

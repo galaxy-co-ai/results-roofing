@@ -7,11 +7,11 @@ import { getPublishedPosts, getFeaturedPosts } from '@/db/queries/blog-posts';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Roofing Blog — Honest Advice for Homeowners',
+  title: 'Resources — Roofing Guides & Tips',
   description:
     'Straight-talk roofing articles on replacement costs, materials, storm damage, financing, and maintenance. No fluff, no sales pitches.',
   openGraph: {
-    title: 'The Results Blog',
+    title: 'Resources',
     description: 'Honest roofing advice for homeowners who want straight answers.',
     url: '/blog',
   },
