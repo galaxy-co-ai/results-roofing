@@ -81,7 +81,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       .toUpperCase(),
   };
 
-  const heroPattern = post.gradient || 'radial-gradient(circle, #2563EB 0.6px, transparent 0.6px)';
+  const heroPattern = post.gradient || 'radial-gradient(circle, rgba(37,99,235,0.12) 0.6px, transparent 0.6px)';
   const HeroIcon = (post.icon ? ICON_MAP[post.icon] : null) ?? BookOpen;
 
   return (
@@ -106,7 +106,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               >
                 <HeroIcon
                   size={56}
-                  className="opacity-40 drop-shadow-sm"
+                  className="relative z-10 opacity-60 drop-shadow-sm"
                   style={{ color: '#2563EB' }}
                   strokeWidth={1.5}
                 />

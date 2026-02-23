@@ -31,35 +31,35 @@ const CATEGORY_VISUALS: Record<BlogCategory, CategoryVisual> = {
     accent: '#2563EB',
     icon: Satellite,
     pattern:
-      'radial-gradient(circle, #2563EB 0.6px, transparent 0.6px)',
+      'radial-gradient(circle, rgba(37,99,235,0.12) 0.6px, transparent 0.6px)',
   },
   'homeowner-tips': {
     bg: '#EFF6FF',
     accent: '#1D4ED8',
     icon: Home,
     pattern:
-      'repeating-linear-gradient(135deg, #1D4ED8 0px, #1D4ED8 1px, transparent 1px, transparent 8px)',
+      'repeating-linear-gradient(135deg, rgba(29,78,216,0.10) 0px, rgba(29,78,216,0.10) 1px, transparent 1px, transparent 8px)',
   },
   'roofing-101': {
     bg: '#F0F5FF',
     accent: '#3B82F6',
     icon: BookOpen,
     pattern:
-      'repeating-linear-gradient(0deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, #3B82F6 0px, #3B82F6 1px, transparent 1px, transparent 10px)',
+      'repeating-linear-gradient(0deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px)',
   },
   'storm-insurance': {
     bg: '#EEF2FF',
     accent: '#1E40AF',
     icon: Shield,
     pattern:
-      'repeating-linear-gradient(0deg, transparent 0px, transparent 6px, #1E40AF 6px, #1E40AF 7px)',
+      'repeating-linear-gradient(0deg, transparent 0px, transparent 6px, rgba(30,64,175,0.10) 6px, rgba(30,64,175,0.10) 7px)',
   },
   'company-news': {
     bg: '#F5F7FF',
     accent: '#2563EB',
     icon: Megaphone,
     pattern:
-      'radial-gradient(circle, #2563EB 0.8px, transparent 0.8px)',
+      'radial-gradient(circle, rgba(37,99,235,0.12) 0.8px, transparent 0.8px)',
   },
 };
 
@@ -67,7 +67,7 @@ const DEFAULT_VISUAL: CategoryVisual = {
   bg: '#F0F5FF',
   accent: '#3B82F6',
   icon: BookOpen,
-  pattern: 'radial-gradient(circle, #3B82F6 0.6px, transparent 0.6px)',
+  pattern: 'radial-gradient(circle, rgba(59,130,246,0.10) 0.6px, transparent 0.6px)',
 };
 
 function getVisual(category?: BlogCategory | string | null): CategoryVisual {
@@ -99,8 +99,8 @@ export function PostCard({ post, large = false, featured = false }: PostCardProp
           }}
         >
           <Icon
-            size={36}
-            className="opacity-40 drop-shadow-sm"
+            size={40}
+            className="relative z-10 opacity-60 drop-shadow-sm"
             style={{ color: vis.accent }}
             strokeWidth={1.5}
           />
