@@ -26,6 +26,7 @@ import {
   OpsActionCard,
   OpsEmptyState,
   OpsOnboardingStep,
+  OpsChartSkeleton,
 } from '@/components/ui/ops';
 
 // TODO: Replace with real time-series endpoint when historical data is available
@@ -148,7 +149,9 @@ export default function OpsDashboard() {
             <CardDescription>Monthly leads and completed jobs</CardDescription>
           </CardHeader>
           <CardContent>
-            {ghlConnected !== false ? (
+            {loading ? (
+              <OpsChartSkeleton className="h-64" />
+            ) : ghlConnected !== false ? (
               <ChartContainer config={chartConfig} className="h-64 w-full">
                 <AreaChart data={activityData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                   <defs>
@@ -182,7 +185,9 @@ export default function OpsDashboard() {
             <CardDescription>Deals by stage</CardDescription>
           </CardHeader>
           <CardContent>
-            {ghlConnected !== false && pipelineChartData.length > 0 ? (
+            {loading ? (
+              <OpsChartSkeleton className="h-64" />
+            ) : ghlConnected !== false && pipelineChartData.length > 0 ? (
               <ChartContainer config={pipelineConfig} className="h-64 w-full">
                 <BarChart data={pipelineChartData} layout="vertical" margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" horizontal={false} />
