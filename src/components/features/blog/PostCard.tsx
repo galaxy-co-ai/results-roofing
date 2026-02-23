@@ -27,47 +27,47 @@ interface CategoryVisual {
 
 const CATEGORY_VISUALS: Record<BlogCategory, CategoryVisual> = {
   technology: {
-    bg: '#EEF2FF',
+    bg: '#F2F5FF',
     accent: '#2563EB',
     icon: Satellite,
     pattern:
-      'radial-gradient(circle, rgba(37,99,235,0.12) 0.6px, transparent 0.6px)',
+      'radial-gradient(circle, rgba(37,99,235,0.06) 0.6px, transparent 0.6px)',
   },
   'homeowner-tips': {
-    bg: '#EFF6FF',
+    bg: '#F3F6FF',
     accent: '#1D4ED8',
     icon: Home,
     pattern:
-      'repeating-linear-gradient(135deg, rgba(29,78,216,0.10) 0px, rgba(29,78,216,0.10) 1px, transparent 1px, transparent 8px)',
+      'repeating-linear-gradient(135deg, rgba(29,78,216,0.05) 0px, rgba(29,78,216,0.05) 1px, transparent 1px, transparent 8px)',
   },
   'roofing-101': {
-    bg: '#F0F5FF',
+    bg: '#F2F6FF',
     accent: '#3B82F6',
     icon: BookOpen,
     pattern:
-      'repeating-linear-gradient(0deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px)',
+      'repeating-linear-gradient(0deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px)',
   },
   'storm-insurance': {
-    bg: '#EEF2FF',
+    bg: '#F2F5FF',
     accent: '#1E40AF',
     icon: Shield,
     pattern:
-      'repeating-linear-gradient(0deg, transparent 0px, transparent 6px, rgba(30,64,175,0.10) 6px, rgba(30,64,175,0.10) 7px)',
+      'repeating-linear-gradient(0deg, transparent 0px, transparent 6px, rgba(30,64,175,0.05) 6px, rgba(30,64,175,0.05) 7px)',
   },
   'company-news': {
-    bg: '#F5F7FF',
+    bg: '#F4F6FF',
     accent: '#2563EB',
     icon: Megaphone,
     pattern:
-      'radial-gradient(circle, rgba(37,99,235,0.12) 0.8px, transparent 0.8px)',
+      'radial-gradient(circle, rgba(37,99,235,0.06) 0.8px, transparent 0.8px)',
   },
 };
 
 const DEFAULT_VISUAL: CategoryVisual = {
-  bg: '#F0F5FF',
+  bg: '#F2F6FF',
   accent: '#3B82F6',
   icon: BookOpen,
-  pattern: 'radial-gradient(circle, rgba(59,130,246,0.10) 0.6px, transparent 0.6px)',
+  pattern: 'radial-gradient(circle, rgba(59,130,246,0.05) 0.6px, transparent 0.6px)',
 };
 
 function getVisual(category?: BlogCategory | string | null): CategoryVisual {
@@ -89,7 +89,7 @@ export function PostCard({ post, large = false, featured = false }: PostCardProp
       >
         {/* Pattern cover */}
         <div
-          className={`relative flex items-center justify-center ${
+          className={`relative ${
             large ? 'md:w-[45%] min-h-[180px]' : 'h-[140px]'
           }`}
           style={{
@@ -99,8 +99,8 @@ export function PostCard({ post, large = false, featured = false }: PostCardProp
           }}
         >
           <Icon
-            size={40}
-            className="relative z-10 opacity-60 drop-shadow-sm"
+            size={36}
+            className="absolute bottom-3 right-3 z-10 opacity-30"
             style={{ color: vis.accent }}
             strokeWidth={1.5}
           />

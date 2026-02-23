@@ -11,7 +11,7 @@ const articles: BlogArticle[] = [
     date: 'Feb 12, 2026',
     readTime: 7,
     featured: true,
-    gradient: 'radial-gradient(circle, rgba(37,99,235,0.12) 0.6px, transparent 0.6px)',
+    gradient: 'radial-gradient(circle, rgba(37,99,235,0.06) 0.6px, transparent 0.6px)',
     icon: 'Satellite',
     sections: [
       {
@@ -115,7 +115,7 @@ Your roof has already been measured. You just haven't seen the data yet. Enter y
     date: 'Feb 6, 2026',
     readTime: 7,
     featured: true,
-    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.10) 0px, rgba(29,78,216,0.10) 1px, transparent 1px, transparent 8px)',
+    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.05) 0px, rgba(29,78,216,0.05) 1px, transparent 1px, transparent 8px)',
     icon: 'Home',
     sections: [
       {
@@ -223,7 +223,7 @@ A roof replacement isn't fun, but it's a lot less painful when you're the one in
     date: 'Feb 10, 2026',
     readTime: 6,
     featured: false,
-    gradient: 'repeating-linear-gradient(0deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px)',
+    gradient: 'repeating-linear-gradient(0deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px)',
     icon: 'BookOpen',
     sections: [
       {
@@ -343,7 +343,7 @@ Pitch isn't something you can change about your home (short of a complete struct
     date: 'Feb 13, 2026',
     readTime: 8,
     featured: true,
-    gradient: 'repeating-linear-gradient(0deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px)',
+    gradient: 'repeating-linear-gradient(0deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px)',
     icon: 'BookOpen',
     sections: [
       {
@@ -472,7 +472,7 @@ But here's what matters more than any of this: hire a good contractor. The best 
     date: 'Feb 10, 2026',
     readTime: 8,
     featured: true,
-    gradient: 'repeating-linear-gradient(0deg, transparent 0px, transparent 6px, rgba(30,64,175,0.10) 6px, rgba(30,64,175,0.10) 7px)',
+    gradient: 'repeating-linear-gradient(0deg, transparent 0px, transparent 6px, rgba(30,64,175,0.05) 6px, rgba(30,64,175,0.05) 7px)',
     icon: 'Shield',
     sections: [
       {
@@ -600,7 +600,7 @@ Want to know what your roof replacement would cost independent of insurance? Our
     date: 'Feb 7, 2026',
     readTime: 6,
     featured: true,
-    gradient: 'radial-gradient(circle, rgba(37,99,235,0.12) 0.8px, transparent 0.8px)',
+    gradient: 'radial-gradient(circle, rgba(37,99,235,0.06) 0.8px, transparent 0.8px)',
     icon: 'Megaphone',
     sections: [
       {
@@ -700,7 +700,7 @@ If the number works for you, schedule your installation through the same portal.
     date: 'Feb 5, 2026',
     readTime: 7,
     featured: false,
-    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.10) 0px, rgba(29,78,216,0.10) 1px, transparent 1px, transparent 8px)',
+    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.05) 0px, rgba(29,78,216,0.05) 1px, transparent 1px, transparent 8px)',
     icon: 'Home',
     sections: [
       {
@@ -814,7 +814,7 @@ When it's done, you'll have a roof that should last 25-30 years with zero involv
     date: 'Feb 12, 2026',
     readTime: 8,
     featured: false,
-    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.10) 0px, rgba(29,78,216,0.10) 1px, transparent 1px, transparent 8px)',
+    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.05) 0px, rgba(29,78,216,0.05) 1px, transparent 1px, transparent 8px)',
     icon: 'Home',
     sections: [
       {
@@ -945,7 +945,7 @@ A new roof is one of the few home expenses that's genuinely non-optional. When i
     date: 'Feb 18, 2026',
     readTime: 8,
     featured: true,
-    gradient: 'repeating-linear-gradient(0deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px)',
+    gradient: 'repeating-linear-gradient(0deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px)',
     icon: 'BookOpen',
     sections: [
       {
@@ -1065,7 +1065,7 @@ No appointment. No salesperson. No waiting a week for someone to climb a ladder 
     date: 'Feb 18, 2026',
     readTime: 8,
     featured: true,
-    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.10) 0px, rgba(29,78,216,0.10) 1px, transparent 1px, transparent 8px)',
+    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.05) 0px, rgba(29,78,216,0.05) 1px, transparent 1px, transparent 8px)',
     icon: 'Home',
     sections: [
       {
@@ -1182,7 +1182,7 @@ Want to skip the runaround entirely? Our satellite quote gives you a real price 
     date: 'Feb 18, 2026',
     readTime: 7,
     featured: false,
-    gradient: 'repeating-linear-gradient(0deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px)',
+    gradient: 'repeating-linear-gradient(0deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px)',
     icon: 'BookOpen',
     sections: [
       {
@@ -1293,7 +1293,7 @@ Want to see what your current roof looks like from above? Our satellite measurem
     date: 'Feb 18, 2026',
     readTime: 8,
     featured: false,
-    gradient: 'repeating-linear-gradient(0deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px)',
+    gradient: 'repeating-linear-gradient(0deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px)',
     icon: 'BookOpen',
     sections: [
       {
@@ -1428,7 +1428,7 @@ Want to see what your roof replacement would cost with architectural shingles? O
     date: 'Feb 18, 2026',
     readTime: 7,
     featured: false,
-    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.10) 0px, rgba(29,78,216,0.10) 1px, transparent 1px, transparent 8px)',
+    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.05) 0px, rgba(29,78,216,0.05) 1px, transparent 1px, transparent 8px)',
     icon: 'Home',
     sections: [
       {
@@ -1539,7 +1539,7 @@ When you get a quote from us, we walk you through the exact warranty coverage yo
     date: 'Feb 18, 2026',
     readTime: 8,
     featured: false,
-    gradient: 'repeating-linear-gradient(0deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 10px)',
+    gradient: 'repeating-linear-gradient(0deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(90deg, rgba(59,130,246,0.04) 0px, rgba(59,130,246,0.04) 1px, transparent 1px, transparent 10px)',
     icon: 'BookOpen',
     sections: [
       {
@@ -1665,7 +1665,7 @@ When you get a quote from us, every component is itemized. We specify brands, qu
     date: 'Feb 18, 2026',
     readTime: 7,
     featured: false,
-    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.10) 0px, rgba(29,78,216,0.10) 1px, transparent 1px, transparent 8px)',
+    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.05) 0px, rgba(29,78,216,0.05) 1px, transparent 1px, transparent 8px)',
     icon: 'Home',
     sections: [
       {
@@ -1770,7 +1770,7 @@ Get your instant satellite quote from us any time — we'll help you figure out 
     date: 'Feb 18, 2026',
     readTime: 7,
     featured: false,
-    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.10) 0px, rgba(29,78,216,0.10) 1px, transparent 1px, transparent 8px)',
+    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.05) 0px, rgba(29,78,216,0.05) 1px, transparent 1px, transparent 8px)',
     icon: 'Home',
     sections: [
       {
@@ -1889,7 +1889,7 @@ Your roof protects everything underneath it. A little attention in your first ye
     date: 'Feb 18, 2026',
     readTime: 7,
     featured: false,
-    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.10) 0px, rgba(29,78,216,0.10) 1px, transparent 1px, transparent 8px)',
+    gradient: 'repeating-linear-gradient(135deg, rgba(29,78,216,0.05) 0px, rgba(29,78,216,0.05) 1px, transparent 1px, transparent 8px)',
     icon: 'Home',
     sections: [
       {
@@ -2053,7 +2053,7 @@ The smart move is to start getting replacement quotes when your roof hits the 15
     date: 'Feb 18, 2026',
     readTime: 7,
     featured: true,
-    gradient: 'repeating-linear-gradient(0deg, transparent 0px, transparent 6px, rgba(30,64,175,0.10) 6px, rgba(30,64,175,0.10) 7px)',
+    gradient: 'repeating-linear-gradient(0deg, transparent 0px, transparent 6px, rgba(30,64,175,0.05) 6px, rgba(30,64,175,0.05) 7px)',
     icon: 'Shield',
     sections: [
       {
