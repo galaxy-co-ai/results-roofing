@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import {
   FolderOpen,
   FileSignature,
@@ -38,28 +38,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { OpsPageHeader } from '@/components/ui/ops';
-
-interface Document {
-  id: string;
-  name: string;
-  type: string;
-  status: string;
-  folder: string;
-  customerName: string | null;
-  customerEmail: string | null;
-  propertyAddress: string | null;
-  quoteId: string | null;
-  docusealDocumentUrl: string | null;
-  signedAt: string | null;
-  createdAt: string;
-}
-
-interface FolderStats {
-  folder: string;
-  count: number;
-  label: string;
-  icon: React.ReactNode;
-}
+import { useOpsDocuments } from '@/hooks/ops/use-ops-queries';
 
 const FOLDER_CONFIG: Record<string, { label: string; icon: React.ReactNode }> = {
   deposits: { label: 'Deposits', icon: <FileSignature className="size-5" style={{ color: 'var(--ops-accent-pipeline)' }} /> },
@@ -79,36 +58,11 @@ const STATUS_CONFIG: Record<string, { label: string; variant: 'default' | 'secon
 };
 
 export default function DocumentsPage() {
-  const [documents, setDocuments] = useState<Document[]>([]);
-  const [folderStats, setFolderStats] = useState<FolderStats[]>([]);
   const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchDocuments = useCallback(async (folder?: string | null) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const url = folder
-        ? `/api/ops/documents?folder=${encodeURIComponent(folder)}`
-        : '/api/ops/documents';
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Failed to fetch documents');
-
-      const data = await response.json();
-      setDocuments(data.documents || []);
-      setFolderStats(data.folderStats || []);
-    } catch {
-      setError('Could not load documents');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchDocuments(selectedFolder);
-  }, [fetchDocuments, selectedFolder]);
+  const { data, isLoading: loading, error: queryError, refetch } = useOpsDocuments(selectedFolder);
+  const documents = data?.documents || [];
+  const folderStats = data?.folderStats || [];
+  const error = queryError ? 'Could not load documents' : null;
 
   const handleFolderClick = (folder: string | null) => {
     setSelectedFolder(folder);
@@ -143,7 +97,7 @@ export default function DocumentsPage() {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => fetchDocuments(selectedFolder)}
+          onClick={() => refetch()}
           disabled={loading}
           className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
         >
@@ -158,7 +112,7 @@ export default function DocumentsPage() {
           <AlertCircle className="size-4" />
           <AlertDescription className="flex items-center justify-between">
             <span>{error}</span>
-            <button onClick={() => setError(null)} className="ml-4">
+            <button onClick={() => refetch()} className="ml-4">
               <X className="size-4" />
             </button>
           </AlertDescription>

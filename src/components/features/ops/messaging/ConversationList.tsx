@@ -21,25 +21,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import styles from './messaging.module.css';
+import { type MessageType, type Conversation } from '@/types/ops';
 
-export type MessageType = 'TYPE_SMS' | 'TYPE_EMAIL' | 'TYPE_CALL';
-
-export interface Conversation {
-  id: string;
-  contactId: string;
-  contact?: {
-    id: string;
-    name?: string;
-    email?: string;
-    phone?: string;
-  };
-  lastMessageBody?: string;
-  lastMessageDate?: string;
-  lastMessageType?: MessageType;
-  lastMessageDirection?: 'inbound' | 'outbound';
-  unreadCount?: number;
-  starred?: boolean;
-}
+export type { MessageType, Conversation };
 
 interface ConversationListProps {
   conversations: Conversation[];

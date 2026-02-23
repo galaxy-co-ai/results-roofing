@@ -24,32 +24,9 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import styles from './support.module.css';
+import { type TicketStatus, type TicketPriority, type TicketChannel, type Ticket } from '@/types/ops';
 
-export type TicketStatus = 'open' | 'pending' | 'resolved' | 'closed';
-export type TicketPriority = 'low' | 'medium' | 'high' | 'urgent';
-export type TicketChannel = 'sms' | 'email' | 'phone' | 'web';
-
-export interface Ticket {
-  id: string;
-  subject: string;
-  preview: string;
-  status: TicketStatus;
-  priority: TicketPriority;
-  channel: TicketChannel;
-  contact: {
-    id: string;
-    name: string;
-    email?: string;
-    phone?: string;
-  };
-  assignedTo?: string;
-  tags?: string[];
-  messageCount: number;
-  unreadCount: number;
-  createdAt: string;
-  updatedAt: string;
-  lastMessageAt?: string;
-}
+export type { TicketStatus, TicketPriority, TicketChannel, Ticket };
 
 interface SupportInboxProps {
   tickets: Ticket[];

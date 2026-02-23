@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
 import {
   Plus,
   RefreshCw,
@@ -9,7 +8,6 @@ import {
 } from 'lucide-react';
 import {
   PipelineBoard,
-  type PipelineStage,
   type Opportunity,
 } from '@/components/features/ops/crm/PipelineBoard';
 import { Button } from '@/components/ui/button';
@@ -18,74 +16,19 @@ import {
   AlertDescription,
 } from '@/components/ui/alert';
 import { OpsPageHeader, OpsStatCard } from '@/components/ui/ops';
-
-interface PipelineStats {
-  totalDeals: number;
-  totalValue: number;
-  averageValue: number;
-}
+import { useOpsPipeline, useMoveOpportunity } from '@/hooks/ops/use-ops-queries';
+import type { PipelineStats } from '@/types/ops';
 
 export default function PipelinePage() {
-  const [stages, setStages] = useState<PipelineStage[]>([]);
-  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading: loading, error: queryError, refetch } = useOpsPipeline();
+  const moveOpportunity = useMoveOpportunity();
 
-  const fetchPipeline = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  const stages = data?.stages || [];
+  const opportunities = data?.opportunities || [];
+  const error = queryError ? 'Could not load pipeline' : null;
 
-    try {
-      const response = await fetch('/api/ops/pipelines?opportunities=true');
-      if (!response.ok) throw new Error('Failed to fetch pipeline');
-
-      const data = await response.json();
-
-      const pipeline = data.pipelines?.[0];
-      if (pipeline) {
-        setStages(pipeline.stages || []);
-      } else {
-        setStages([
-          { id: 'stage-1', name: 'New Lead', position: 0 },
-          { id: 'stage-2', name: 'Contacted', position: 1 },
-          { id: 'stage-3', name: 'Quote Sent', position: 2 },
-          { id: 'stage-4', name: 'Negotiation', position: 3 },
-          { id: 'stage-5', name: 'Won', position: 4 },
-        ]);
-      }
-
-      setOpportunities(data.opportunities || []);
-    } catch {
-      setError('Could not load pipeline');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchPipeline();
-  }, [fetchPipeline]);
-
-  const handleMoveOpportunity = async (opportunityId: string, newStageId: string) => {
-    setOpportunities((prev) =>
-      prev.map((opp) =>
-        opp.id === opportunityId ? { ...opp, pipelineStageId: newStageId } : opp
-      )
-    );
-
-    try {
-      const response = await fetch(`/api/ops/opportunities/${opportunityId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pipelineStageId: newStageId }),
-      });
-
-      if (!response.ok) {
-        fetchPipeline();
-      }
-    } catch {
-      fetchPipeline();
-    }
+  const handleMoveOpportunity = (opportunityId: string, newStageId: string) => {
+    moveOpportunity.mutate({ opportunityId, stageId: newStageId });
   };
 
   const handleViewOpportunity = (_opportunity: Opportunity) => {
@@ -99,14 +42,11 @@ export default function PipelinePage() {
   const handleDeleteOpportunity = async (opportunityId: string) => {
     if (!confirm('Are you sure you want to delete this deal?')) return;
 
-    setOpportunities((prev) => prev.filter((opp) => opp.id !== opportunityId));
-
     try {
-      await fetch(`/api/ops/opportunities/${opportunityId}`, {
-        method: 'DELETE',
-      });
+      await fetch(`/api/ops/opportunities/${opportunityId}`, { method: 'DELETE' });
+      refetch();
     } catch {
-      fetchPipeline();
+      refetch();
     }
   };
 
@@ -142,7 +82,7 @@ export default function PipelinePage() {
           <Button
             variant="outline"
             size="sm"
-            onClick={fetchPipeline}
+            onClick={() => refetch()}
             disabled={loading}
             className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
           >
@@ -182,7 +122,7 @@ export default function PipelinePage() {
           <AlertDescription className="flex items-center justify-between">
             <span>{error}</span>
             <button
-              onClick={() => setError(null)}
+              onClick={() => refetch()}
               className="ml-4 transition-colors hover:text-[var(--admin-text-primary)]"
             >
               <X className="size-4" />

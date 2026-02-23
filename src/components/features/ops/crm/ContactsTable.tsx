@@ -41,20 +41,9 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
+import { type OpsContact } from '@/types/ops';
 
-export interface Contact {
-  id: string;
-  firstName?: string;
-  lastName?: string;
-  name?: string;
-  email?: string;
-  phone?: string;
-  city?: string;
-  state?: string;
-  tags?: string[];
-  source?: string;
-  dateAdded?: string;
-}
+export type Contact = OpsContact;
 
 interface ContactsTableProps {
   contacts: Contact[];

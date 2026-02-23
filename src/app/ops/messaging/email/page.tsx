@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Mail,
   RefreshCw,
@@ -20,108 +20,63 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { OpsPageHeader } from '@/components/ui/ops';
 import messagingStyles from '@/components/features/ops/messaging/messaging.module.css';
+import { useOpsConversations, useConversationMessages, useMarkConversationRead } from '@/hooks/ops/use-ops-queries';
+import type { OpsContact } from '@/types/ops';
 
-interface Contact {
-  id: string;
-  name?: string;
-  email?: string;
-  phone?: string;
-}
+type Contact = OpsContact;
 
 export default function EmailPage() {
-  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [loadingList, setLoadingList] = useState(true);
-  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [localMessages, setLocalMessages] = useState<Message[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState<'all' | 'unread' | 'starred'>('all');
 
-  const fetchConversations = useCallback(async () => {
-    setLoadingList(true);
-    try {
-      const params = new URLSearchParams({
-        type: 'TYPE_EMAIL',
-        ...(filter !== 'all' && { status: filter }),
-        ...(searchQuery && { q: searchQuery }),
-      });
-      const response = await fetch(`/api/ops/conversations?${params}`);
-      if (response.ok) {
-        const data = await response.json();
-        setConversations(data.conversations || []);
-      }
-    } catch (error) {
-      console.error('Failed to fetch email conversations:', error);
-    } finally {
-      setLoadingList(false);
-    }
-  }, [filter, searchQuery]);
+  const { data: conversations = [], isLoading: loadingList, refetch: refetchConversations } =
+    useOpsConversations('TYPE_EMAIL', filter, searchQuery);
+  const { data: fetchedMessages = [], isLoading: loadingMessages } =
+    useConversationMessages(selectedConversation?.id ?? null);
+  const markRead = useMarkConversationRead();
 
-  const fetchMessages = useCallback(async (conversationId: string) => {
-    setLoadingMessages(true);
-    try {
-      const response = await fetch(`/api/ops/conversations/${conversationId}?messages=true`);
-      if (response.ok) {
-        const data = await response.json();
-        setMessages(data.messages || []);
-      }
-    } catch (error) {
-      console.error('Failed to fetch email messages:', error);
-    } finally {
-      setLoadingMessages(false);
-    }
-  }, []);
+  const messages = localMessages.length > 0 ? localMessages : fetchedMessages;
 
   useEffect(() => {
-    fetchConversations();
-  }, [fetchConversations]);
+    setLocalMessages([]);
+  }, [fetchedMessages]);
 
   useEffect(() => {
     if (selectedConversation) {
-      fetchMessages(selectedConversation.id);
-      fetch(`/api/ops/conversations/${selectedConversation.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ read: true }),
-      });
+      markRead.mutate(selectedConversation.id);
     }
-  }, [selectedConversation, fetchMessages]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedConversation?.id]);
 
   const handleSelectConversation = (conversation: Conversation) => {
     setSelectedConversation(conversation);
   };
 
   const handleStar = async (conversationId: string, starred: boolean) => {
-    setConversations((prev) =>
-      prev.map((c) => (c.id === conversationId ? { ...c, starred } : c))
-    );
     await fetch(`/api/ops/conversations/${conversationId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ starred }),
     });
+    refetchConversations();
   };
 
   const handleMarkRead = async (conversationId: string) => {
-    setConversations((prev) =>
-      prev.map((c) => (c.id === conversationId ? { ...c, unreadCount: 0 } : c))
-    );
-    await fetch(`/api/ops/conversations/${conversationId}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ read: true }),
-    });
+    markRead.mutate(conversationId);
+    refetchConversations();
   };
 
   const handleDelete = async (conversationId: string) => {
     if (!confirm('Are you sure you want to delete this email thread?')) return;
 
-    setConversations((prev) => prev.filter((c) => c.id !== conversationId));
     if (selectedConversation?.id === conversationId) {
       setSelectedConversation(null);
-      setMessages([]);
+      setLocalMessages([]);
     }
     await fetch(`/api/ops/conversations/${conversationId}`, { method: 'DELETE' });
+    refetchConversations();
   };
 
   const handleSendEmail = async (data: { body: string; subject?: string }) => {
@@ -142,7 +97,7 @@ export default function EmailPage() {
       },
       dateAdded: new Date().toISOString(),
     };
-    setMessages((prev) => [...prev, newMessage]);
+    setLocalMessages((prev) => [...(prev.length ? prev : fetchedMessages), newMessage]);
 
     try {
       const response = await fetch('/api/ops/conversations', {
@@ -159,28 +114,17 @@ export default function EmailPage() {
 
       if (response.ok) {
         const { message } = await response.json();
-        setMessages((prev) =>
+        setLocalMessages((prev) =>
           prev.map((m) => (m.id === newMessage.id ? { ...m, ...message, status: 'sent' } : m))
         );
-        setConversations((prev) =>
-          prev.map((c) =>
-            c.id === selectedConversation.id
-              ? {
-                  ...c,
-                  lastMessageBody: data.subject,
-                  lastMessageDate: new Date().toISOString(),
-                  lastMessageDirection: 'outbound',
-                }
-              : c
-          )
-        );
+        refetchConversations();
       } else {
-        setMessages((prev) =>
+        setLocalMessages((prev) =>
           prev.map((m) => (m.id === newMessage.id ? { ...m, status: 'failed' } : m))
         );
       }
     } catch {
-      setMessages((prev) =>
+      setLocalMessages((prev) =>
         prev.map((m) => (m.id === newMessage.id ? { ...m, status: 'failed' } : m))
       );
     }
@@ -201,7 +145,7 @@ export default function EmailPage() {
         <Button
           variant="outline"
           size="sm"
-          onClick={fetchConversations}
+          onClick={() => refetchConversations()}
           disabled={loadingList}
           className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
         >

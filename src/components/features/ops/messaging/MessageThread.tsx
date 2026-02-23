@@ -11,42 +11,10 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import styles from './messaging.module.css';
+import { type MessageStatus, type MessageDirection, type MessageType, type Message, type OpsContact } from '@/types/ops';
 
-export type MessageStatus = 'pending' | 'scheduled' | 'sent' | 'delivered' | 'read' | 'failed' | 'undelivered';
-export type MessageDirection = 'inbound' | 'outbound';
-export type MessageType = 'TYPE_SMS' | 'TYPE_EMAIL' | 'TYPE_CALL';
-
-export interface Message {
-  id: string;
-  conversationId: string;
-  type: MessageType;
-  direction: MessageDirection;
-  status: MessageStatus;
-  body?: string;
-  contentType?: string;
-  attachments?: Array<{
-    id: string;
-    url: string;
-    fileName?: string;
-    mimeType?: string;
-  }>;
-  meta?: {
-    email?: {
-      subject?: string;
-      from?: string;
-      to?: string[];
-      html?: string;
-    };
-  };
-  dateAdded?: string;
-}
-
-export interface Contact {
-  id: string;
-  name?: string;
-  email?: string;
-  phone?: string;
-}
+export type { MessageStatus, MessageDirection, MessageType, Message };
+export type Contact = OpsContact;
 
 interface MessageThreadProps {
   messages: Message[];

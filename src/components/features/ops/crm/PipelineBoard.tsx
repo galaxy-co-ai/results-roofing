@@ -41,29 +41,9 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import styles from './PipelineBoard.module.css';
+import { type PipelineStage, type Opportunity } from '@/types/ops';
 
-export interface PipelineStage {
-  id: string;
-  name: string;
-  position?: number;
-}
-
-export interface Opportunity {
-  id: string;
-  name: string;
-  pipelineId: string;
-  pipelineStageId: string;
-  status: 'open' | 'won' | 'lost' | 'abandoned';
-  monetaryValue?: number;
-  contactId: string;
-  createdAt?: string;
-  contact?: {
-    id: string;
-    name?: string;
-    email?: string;
-    phone?: string;
-  };
-}
+export type { PipelineStage, Opportunity };
 
 interface PipelineBoardProps {
   stages: PipelineStage[];

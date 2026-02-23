@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useOpsHealth } from '@/hooks/ops/use-ops-queries';
 import {
   Users,
   MessageSquare,
@@ -26,13 +26,6 @@ import {
   OpsEmptyState,
   OpsOnboardingStep,
 } from '@/components/ui/ops';
-
-interface HealthStatus {
-  ghl?: {
-    connected: boolean;
-    locationId?: string;
-  };
-}
 
 // Sample data for charts
 const activityData = [
@@ -61,26 +54,8 @@ const pipelineConfig = {
 } satisfies ChartConfig;
 
 export default function OpsDashboard() {
-  const [loading, setLoading] = useState(true);
-  const [ghlConnected, setGhlConnected] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const checkHealth = async () => {
-      try {
-        const response = await fetch('/api/ops/health');
-        if (response.ok) {
-          const data: HealthStatus = await response.json();
-          setGhlConnected(data.ghl?.connected ?? false);
-        }
-      } catch {
-        setGhlConnected(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkHealth();
-  }, []);
+  const { data: health, isLoading: loading } = useOpsHealth();
+  const ghlConnected = health?.ghl?.connected ?? null;
 
   const handleConnectGHL = () => {
     window.open('https://app.gohighlevel.com/', '_blank');

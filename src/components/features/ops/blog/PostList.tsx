@@ -24,37 +24,9 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import styles from './blog.module.css';
+import { type PostStatus, type BlogPost } from '@/types/ops';
 
-export type PostStatus = 'draft' | 'published' | 'scheduled' | 'archived';
-
-/**
- * BlogPost shape — matches the DB row returned by the API.
- */
-export interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt?: string | null;
-  content?: string | null;
-  featuredImage?: string | null;
-  gradient?: string | null;
-  icon?: string | null;
-  status: PostStatus;
-  authorName: string;
-  authorRole?: string | null;
-  category?: string | null;
-  tags?: string[] | null;
-  readTime?: number | null;
-  featured?: boolean | null;
-  publishedAt?: string | null;
-  scheduledAt?: string | null;
-  createdAt: string;
-  updatedAt: string;
-  viewCount?: number | null;
-  seoTitle?: string | null;
-  seoDescription?: string | null;
-  seoKeywords?: string[] | null;
-}
+export type { PostStatus, BlogPost };
 
 interface PostListProps {
   posts: BlogPost[];

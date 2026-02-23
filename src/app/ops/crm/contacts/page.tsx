@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import {
   Plus,
   RefreshCw,
@@ -39,13 +39,15 @@ import {
   AlertDescription,
 } from '@/components/ui/alert';
 import { OpsPageHeader } from '@/components/ui/ops';
+import { useOpsContacts, useCreateContact, useDeleteContact } from '@/hooks/ops/use-ops-queries';
 
 export default function ContactsPage() {
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: contacts = [], isLoading: loading, error: queryError, refetch } = useOpsContacts();
+  const createContact = useCreateContact();
+  const deleteContact = useDeleteContact();
+
   const [showAddDialog, setShowAddDialog] = useState(false);
-  const [isAdding, setIsAdding] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
   const [newContact, setNewContact] = useState({
     firstName: '',
     lastName: '',
@@ -56,77 +58,36 @@ export default function ContactsPage() {
     source: 'manual',
   });
 
-  const fetchContacts = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch('/api/ops/contacts');
-      if (!response.ok) throw new Error('Failed to fetch contacts');
-
-      const data = await response.json();
-      setContacts(data.contacts || []);
-    } catch {
-      setError('Could not load contacts');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchContacts();
-  }, [fetchContacts]);
+  const error = localError || (queryError ? 'Could not load contacts' : null);
 
   const handleAddContact = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newContact.email && !newContact.phone) return;
 
-    setIsAdding(true);
-
     try {
-      const response = await fetch('/api/ops/contacts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newContact),
+      await createContact.mutateAsync(newContact);
+      setNewContact({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        city: '',
+        state: '',
+        source: 'manual',
       });
-
-      if (response.ok) {
-        const { contact } = await response.json();
-        setContacts((prev) => [contact, ...prev]);
-        setNewContact({
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: '',
-          city: '',
-          state: '',
-          source: 'manual',
-        });
-        setShowAddDialog(false);
-      } else {
-        const data = await response.json();
-        setError(data.error || 'Failed to create contact');
-      }
-    } catch {
-      setError('Failed to create contact');
-    } finally {
-      setIsAdding(false);
+      setShowAddDialog(false);
+      setLocalError(null);
+    } catch (err) {
+      setLocalError(err instanceof Error ? err.message : 'Failed to create contact');
     }
   };
 
   const handleDeleteContact = async (contactId: string) => {
     if (!confirm('Are you sure you want to delete this contact?')) return;
-
     try {
-      const response = await fetch(`/api/ops/contacts/${contactId}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        setContacts((prev) => prev.filter((c) => c.id !== contactId));
-      }
+      await deleteContact.mutateAsync(contactId);
     } catch {
-      fetchContacts();
+      refetch();
     }
   };
 
@@ -152,7 +113,7 @@ export default function ContactsPage() {
           <Button
             variant="outline"
             size="sm"
-            onClick={fetchContacts}
+            onClick={() => refetch()}
             disabled={loading}
             className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
           >
@@ -177,7 +138,7 @@ export default function ContactsPage() {
           <AlertDescription className="flex items-center justify-between">
             <span>{error}</span>
             <button
-              onClick={() => setError(null)}
+              onClick={() => setLocalError(null)}
               className="ml-4 transition-colors hover:text-[var(--admin-text-primary)]"
             >
               <X className="size-4" />
@@ -328,10 +289,10 @@ export default function ContactsPage() {
               </Button>
               <Button
                 type="submit"
-                disabled={isAdding || (!newContact.email && !newContact.phone)}
+                disabled={createContact.isPending || (!newContact.email && !newContact.phone)}
                 className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
               >
-                {isAdding && <Loader2 className="mr-2 size-4 animate-spin" />}
+                {createContact.isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
                 Add Contact
               </Button>
             </SheetFooter>

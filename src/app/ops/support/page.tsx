@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import {
   Inbox,
@@ -21,98 +21,46 @@ import { Button } from '@/components/ui/button';
 import { OpsPageHeader } from '@/components/ui/ops';
 import { staggerContainer, fadeInUp } from '@/lib/animation-variants';
 import supportStyles from '@/components/features/ops/support/support.module.css';
+import { useOpsTickets, useTicketMessages } from '@/hooks/ops/use-ops-queries';
 
 export default function SupportPage() {
-  const [tickets, setTickets] = useState<Ticket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
-  const [messages, setMessages] = useState<TicketMessage[]>([]);
-  const [loadingList, setLoadingList] = useState(true);
-  const [loadingMessages, setLoadingMessages] = useState(false);
   const [sending, setSending] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<TicketStatus | 'all'>('all');
 
-  const fetchTickets = useCallback(async () => {
-    setLoadingList(true);
-    try {
-      const params = new URLSearchParams({
-        ...(statusFilter !== 'all' && { status: statusFilter }),
-        ...(searchQuery && { q: searchQuery }),
-      });
-      const response = await fetch(`/api/ops/support/tickets?${params}`);
-      if (response.ok) {
-        const data = await response.json();
-        setTickets(data.tickets || []);
-      }
-    } catch (error) {
-      console.error('Failed to fetch tickets:', error);
-    } finally {
-      setLoadingList(false);
-    }
-  }, [statusFilter, searchQuery]);
-
-  const fetchMessages = useCallback(async (ticketId: string) => {
-    setLoadingMessages(true);
-    try {
-      const response = await fetch(`/api/ops/support/tickets/${ticketId}/messages`);
-      if (response.ok) {
-        const data = await response.json();
-        setMessages(data.messages || []);
-      }
-    } catch (error) {
-      console.error('Failed to fetch messages:', error);
-    } finally {
-      setLoadingMessages(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchTickets();
-  }, [fetchTickets]);
-
-  useEffect(() => {
-    if (selectedTicket) {
-      fetchMessages(selectedTicket.id);
-    }
-  }, [selectedTicket, fetchMessages]);
+  const { data: tickets = [], isLoading: loadingList, refetch: refetchTickets } =
+    useOpsTickets(statusFilter, searchQuery);
+  const { data: messages = [], isLoading: loadingMessages } =
+    useTicketMessages(selectedTicket?.id ?? null);
 
   const handleSelectTicket = (ticket: Ticket) => {
     setSelectedTicket(ticket);
-    // Mark as read
-    if (ticket.unreadCount > 0) {
-      setTickets((prev) =>
-        prev.map((t) => (t.id === ticket.id ? { ...t, unreadCount: 0 } : t))
-      );
-    }
   };
 
   const handleStatusChange = async (ticketId: string, status: TicketStatus) => {
-    setTickets((prev) =>
-      prev.map((t) => (t.id === ticketId ? { ...t, status } : t))
-    );
     if (selectedTicket?.id === ticketId) {
       setSelectedTicket((prev) => (prev ? { ...prev, status } : null));
     }
     // TODO: API call to update status
+    refetchTickets();
   };
 
   const handleArchive = async (ticketId: string) => {
-    setTickets((prev) => prev.filter((t) => t.id !== ticketId));
     if (selectedTicket?.id === ticketId) {
       setSelectedTicket(null);
-      setMessages([]);
     }
     // TODO: API call to archive
+    refetchTickets();
   };
 
   const handleDelete = async (ticketId: string) => {
     if (!confirm('Are you sure you want to delete this ticket?')) return;
-    setTickets((prev) => prev.filter((t) => t.id !== ticketId));
     if (selectedTicket?.id === ticketId) {
       setSelectedTicket(null);
-      setMessages([]);
     }
     // TODO: API call to delete
+    refetchTickets();
   };
 
   const handleSendMessage = async (data: { body: string; channel: 'sms' | 'email' }) => {
@@ -120,35 +68,9 @@ export default function SupportPage() {
 
     setSending(true);
     try {
-      // Optimistic update
-      const newMessage: TicketMessage = {
-        id: `temp-${Date.now()}`,
-        ticketId: selectedTicket.id,
-        direction: 'outbound',
-        channel: data.channel,
-        body: data.body,
-        author: { id: 'agent', name: 'Agent', type: 'agent' },
-        createdAt: new Date().toISOString(),
-      };
-      setMessages((prev) => [...prev, newMessage]);
-
-      // Update ticket preview
-      setTickets((prev) =>
-        prev.map((t) =>
-          t.id === selectedTicket.id
-            ? {
-                ...t,
-                preview: data.body.substring(0, 100),
-                messageCount: t.messageCount + 1,
-                updatedAt: new Date().toISOString(),
-                lastMessageAt: new Date().toISOString(),
-              }
-            : t
-        )
-      );
-
       // TODO: API call to send message
       await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate API
+      refetchTickets();
     } finally {
       setSending(false);
     }
@@ -179,7 +101,7 @@ export default function SupportPage() {
           <Button
             variant="outline"
             size="sm"
-            onClick={fetchTickets}
+            onClick={() => refetchTickets()}
             disabled={loadingList}
             className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
           >
