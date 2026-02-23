@@ -216,6 +216,8 @@
   --ops-accent-support-muted: var(--admin-status-error-muted);
   --ops-accent-documents: #06B6D4;                    /* Cyan - docs */
   --ops-accent-documents-muted: #CFFAFE;
+  --ops-accent-negotiation: #EC4899;                   /* Pink - negotiation stage */
+  --ops-accent-negotiation-muted: #FDF2F8;
 
   /* ========================================
      MOTION CONSTANTS

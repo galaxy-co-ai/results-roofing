@@ -84,7 +84,7 @@ const STAGE_COLORS: Record<string, string> = {
   'New Lead': 'var(--ops-accent-crm)',
   'Contacted': 'var(--ops-accent-messaging)',
   'Quote Sent': 'var(--ops-accent-analytics)',
-  'Negotiation': '#EC4899', // Pink - no semantic equivalent yet
+  'Negotiation': 'var(--ops-accent-negotiation)',
   'Won': 'var(--ops-accent-pipeline)',
   'Lost': 'var(--ops-accent-support)',
 };

@@ -173,7 +173,7 @@ export default function DocumentsPage() {
                     </div>
                     <div>
                       <p className="text-sm font-medium">{config.label}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground tabular-nums">
                         {stat.count} document{stat.count !== 1 ? 's' : ''}
                       </p>
                     </div>
@@ -205,7 +205,7 @@ export default function DocumentsPage() {
               {FOLDER_CONFIG[selectedFolder]?.icon}
               {FOLDER_CONFIG[selectedFolder]?.label || selectedFolder}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="tabular-nums">
               {documents.length} document{documents.length !== 1 ? 's' : ''}
             </CardDescription>
           </CardHeader>
