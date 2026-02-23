@@ -30,3 +30,6 @@ export * from './dev-notes';
 export * from './changelog';
 export * from './ai-memories';
 export * from './documents';
+
+// Ops Support
+export * from './tickets';

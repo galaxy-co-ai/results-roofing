@@ -12,6 +12,7 @@ import { contracts } from './contracts';
 import { orders } from './orders';
 import { payments } from './payments';
 import { appointments } from './appointments';
+import { tickets, ticketMessages } from './tickets';
 
 /**
  * Lead relations
@@ -98,5 +99,22 @@ export const appointmentsRelations = relations(appointments, ({ one }) => ({
   order: one(orders, {
     fields: [appointments.orderId],
     references: [orders.id],
+  }),
+}));
+
+/**
+ * Ticket relations
+ */
+export const ticketsRelations = relations(tickets, ({ many }) => ({
+  messages: many(ticketMessages),
+}));
+
+/**
+ * Ticket message relations
+ */
+export const ticketMessagesRelations = relations(ticketMessages, ({ one }) => ({
+  ticket: one(tickets, {
+    fields: [ticketMessages.ticketId],
+    references: [tickets.id],
   }),
 }));

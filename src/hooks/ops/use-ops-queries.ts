@@ -11,6 +11,7 @@ import type {
   TicketStatus,
   OpsDocument,
   HealthStatus,
+  DashboardStats,
 } from '@/types/ops';
 import type { TicketMessage } from '@/components/features/ops/support';
 
@@ -21,6 +22,7 @@ import type { TicketMessage } from '@/components/features/ops/support';
 export const opsKeys = {
   all: ['ops'] as const,
   health: () => [...opsKeys.all, 'health'] as const,
+  dashboardStats: () => [...opsKeys.all, 'dashboard-stats'] as const,
   contacts: () => [...opsKeys.all, 'contacts'] as const,
   pipeline: () => [...opsKeys.all, 'pipeline'] as const,
   conversations: (type: string) => [...opsKeys.all, 'conversations', type] as const,
@@ -63,6 +65,18 @@ export function useOpsHealth() {
   return useQuery({
     queryKey: opsKeys.health(),
     queryFn: () => opsFetch<HealthStatus>('/api/ops/health'),
+    staleTime: 60_000,
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Dashboard Stats
+// ---------------------------------------------------------------------------
+
+export function useOpsDashboardStats() {
+  return useQuery({
+    queryKey: opsKeys.dashboardStats(),
+    queryFn: () => opsFetch<DashboardStats>('/api/ops/dashboard/stats'),
     staleTime: 60_000,
   });
 }
@@ -302,5 +316,60 @@ export function useTicketMessages(ticketId: string | null) {
         `/api/ops/support/tickets/${ticketId}/messages`
       ).then((d) => d.messages),
     enabled: !!ticketId,
+  });
+}
+
+export function useUpdateTicket() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      ticketId,
+      ...data
+    }: {
+      ticketId: string;
+      status?: TicketStatus;
+      priority?: string;
+      tags?: string[];
+      assignedTo?: string | null;
+    }) =>
+      opsMutate<{ ticket: Partial<Ticket> }>(`/api/ops/support/tickets/${ticketId}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'tickets'] }),
+  });
+}
+
+export function useDeleteTicket() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (ticketId: string) =>
+      opsMutate<{ success: boolean }>(`/api/ops/support/tickets/${ticketId}`, {
+        method: 'DELETE',
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'tickets'] }),
+  });
+}
+
+export function useSendTicketMessage() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      ticketId,
+      body,
+      channel,
+    }: {
+      ticketId: string;
+      body: string;
+      channel: 'sms' | 'email';
+    }) =>
+      opsMutate<{ message: TicketMessage }>(`/api/ops/support/tickets/${ticketId}/messages`, {
+        method: 'POST',
+        body: JSON.stringify({ body, channel }),
+      }),
+    onSuccess: (_data, vars) => {
+      qc.invalidateQueries({ queryKey: opsKeys.ticketMessages(vars.ticketId) });
+      qc.invalidateQueries({ queryKey: [...opsKeys.all, 'tickets'] });
+    },
   });
 }

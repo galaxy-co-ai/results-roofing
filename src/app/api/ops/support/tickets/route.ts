@@ -1,129 +1,22 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { db, eq, desc, and } from '@/db';
+import { tickets, ticketMessages, type NewSupportTicket } from '@/db/schema';
 import { isOpsAuthenticated } from '@/lib/ops/auth';
 
-// Mock tickets for demo
-const mockTickets = [
-  {
-    id: 'ticket-1',
-    subject: 'Roof leak after recent rain',
-    preview: 'Hi, we noticed water coming through the ceiling...',
-    status: 'open' as const,
-    priority: 'high' as const,
-    channel: 'email' as const,
-    contact: {
-      id: 'contact-1',
-      name: 'John Smith',
-      email: 'john.smith@email.com',
-      phone: '+1 (555) 123-4567',
-    },
-    tags: ['urgent', 'leak'],
-    messageCount: 3,
-    unreadCount: 2,
-    createdAt: new Date(Date.now() - 2 * 3600000).toISOString(),
-    updatedAt: new Date(Date.now() - 30 * 60000).toISOString(),
-    lastMessageAt: new Date(Date.now() - 30 * 60000).toISOString(),
-  },
-  {
-    id: 'ticket-2',
-    subject: 'Question about warranty',
-    preview: 'I wanted to ask about the warranty coverage...',
-    status: 'pending' as const,
-    priority: 'medium' as const,
-    channel: 'sms' as const,
-    contact: {
-      id: 'contact-2',
-      name: 'Sarah Johnson',
-      email: 'sarah.j@email.com',
-      phone: '+1 (555) 234-5678',
-    },
-    tags: ['warranty'],
-    messageCount: 5,
-    unreadCount: 0,
-    createdAt: new Date(Date.now() - 24 * 3600000).toISOString(),
-    updatedAt: new Date(Date.now() - 3 * 3600000).toISOString(),
-    lastMessageAt: new Date(Date.now() - 3 * 3600000).toISOString(),
-  },
-  {
-    id: 'ticket-3',
-    subject: 'Schedule inspection',
-    preview: 'Can I reschedule my inspection to next week?',
-    status: 'open' as const,
-    priority: 'low' as const,
-    channel: 'sms' as const,
-    contact: {
-      id: 'contact-3',
-      name: 'Mike Brown',
-      email: 'mike.brown@email.com',
-      phone: '+1 (555) 345-6789',
-    },
-    tags: ['scheduling'],
-    messageCount: 2,
-    unreadCount: 1,
-    createdAt: new Date(Date.now() - 5 * 3600000).toISOString(),
-    updatedAt: new Date(Date.now() - 60 * 60000).toISOString(),
-    lastMessageAt: new Date(Date.now() - 60 * 60000).toISOString(),
-  },
-  {
-    id: 'ticket-4',
-    subject: 'Invoice discrepancy',
-    preview: 'The invoice amount doesn\'t match our quote...',
-    status: 'pending' as const,
-    priority: 'high' as const,
-    channel: 'email' as const,
-    contact: {
-      id: 'contact-4',
-      name: 'Emily Davis',
-      email: 'emily.d@email.com',
-      phone: '+1 (555) 456-7890',
-    },
-    tags: ['billing', 'urgent'],
-    messageCount: 7,
-    unreadCount: 1,
-    createdAt: new Date(Date.now() - 48 * 3600000).toISOString(),
-    updatedAt: new Date(Date.now() - 2 * 3600000).toISOString(),
-    lastMessageAt: new Date(Date.now() - 2 * 3600000).toISOString(),
-  },
-  {
-    id: 'ticket-5',
-    subject: 'Great work on the roof!',
-    preview: 'Just wanted to say thank you for the excellent...',
-    status: 'resolved' as const,
-    priority: 'low' as const,
-    channel: 'email' as const,
-    contact: {
-      id: 'contact-5',
-      name: 'Robert Wilson',
-      email: 'r.wilson@email.com',
-      phone: '+1 (555) 567-8901',
-    },
-    tags: ['feedback', 'positive'],
-    messageCount: 4,
-    unreadCount: 0,
-    createdAt: new Date(Date.now() - 72 * 3600000).toISOString(),
-    updatedAt: new Date(Date.now() - 24 * 3600000).toISOString(),
-    lastMessageAt: new Date(Date.now() - 24 * 3600000).toISOString(),
-  },
-  {
-    id: 'ticket-6',
-    subject: 'Material question',
-    preview: 'What type of shingles do you recommend for...',
-    status: 'open' as const,
-    priority: 'medium' as const,
-    channel: 'phone' as const,
-    contact: {
-      id: 'contact-6',
-      name: 'Lisa Anderson',
-      email: 'lisa.a@email.com',
-      phone: '+1 (555) 678-9012',
-    },
-    tags: ['pre-sale', 'materials'],
-    messageCount: 1,
-    unreadCount: 1,
-    createdAt: new Date(Date.now() - 1 * 3600000).toISOString(),
-    updatedAt: new Date(Date.now() - 1 * 3600000).toISOString(),
-    lastMessageAt: new Date(Date.now() - 1 * 3600000).toISOString(),
-  },
-];
+const createTicketSchema = z.object({
+  subject: z.string().min(1).max(500),
+  message: z.string().min(1),
+  priority: z.enum(['low', 'medium', 'high', 'urgent']).optional(),
+  channel: z.enum(['sms', 'email', 'phone', 'web']).optional(),
+  contact: z.object({
+    name: z.string().min(1),
+    email: z.string().email().optional(),
+    phone: z.string().optional(),
+    id: z.string().optional(),
+  }),
+  tags: z.array(z.string()).optional(),
+});
 
 /**
  * GET /api/ops/support/tickets
@@ -135,48 +28,79 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { searchParams } = new URL(request.url);
-  const status = searchParams.get('status');
-  const priority = searchParams.get('priority');
-  const q = searchParams.get('q');
+  try {
+    const { searchParams } = new URL(request.url);
+    const status = searchParams.get('status');
+    const priority = searchParams.get('priority');
+    const q = searchParams.get('q');
 
-  let filtered = [...mockTickets];
+    // Build where conditions
+    const conditions = [];
+    if (status && status !== 'all') {
+      conditions.push(
+        eq(tickets.status, status as typeof tickets.status.enumValues[number])
+      );
+    }
+    if (priority) {
+      conditions.push(
+        eq(tickets.priority, priority as typeof tickets.priority.enumValues[number])
+      );
+    }
 
-  // Filter by status
-  if (status && status !== 'all') {
-    filtered = filtered.filter((t) => t.status === status);
-  }
+    const results = await db
+      .select()
+      .from(tickets)
+      .where(conditions.length > 0 ? and(...conditions) : undefined)
+      .orderBy(desc(tickets.lastMessageAt), desc(tickets.createdAt));
 
-  // Filter by priority
-  if (priority) {
-    filtered = filtered.filter((t) => t.priority === priority);
-  }
+    // Client-side search filter (text search across multiple fields)
+    let filtered = results;
+    if (q) {
+      const query = q.toLowerCase();
+      filtered = results.filter(
+        (t) =>
+          t.subject.toLowerCase().includes(query) ||
+          t.preview?.toLowerCase().includes(query) ||
+          t.contactName.toLowerCase().includes(query) ||
+          t.contactEmail?.toLowerCase().includes(query) ||
+          t.tags?.some((tag) => tag.toLowerCase().includes(query))
+      );
+    }
 
-  // Search
-  if (q) {
-    const query = q.toLowerCase();
-    filtered = filtered.filter(
-      (t) =>
-        t.subject.toLowerCase().includes(query) ||
-        t.preview.toLowerCase().includes(query) ||
-        t.contact.name.toLowerCase().includes(query) ||
-        t.contact.email?.toLowerCase().includes(query) ||
-        t.tags?.some((tag) => tag.toLowerCase().includes(query))
+    // Map to API shape (contact as nested object)
+    const mapped = filtered.map((t) => ({
+      id: t.id,
+      subject: t.subject,
+      preview: t.preview,
+      status: t.status,
+      priority: t.priority,
+      channel: t.channel,
+      contact: {
+        id: t.contactId || t.id,
+        name: t.contactName,
+        email: t.contactEmail,
+        phone: t.contactPhone,
+      },
+      assignedTo: t.assignedTo,
+      tags: t.tags,
+      messageCount: t.messageCount,
+      unreadCount: t.unreadCount,
+      createdAt: t.createdAt.toISOString(),
+      updatedAt: t.updatedAt.toISOString(),
+      lastMessageAt: t.lastMessageAt?.toISOString(),
+    }));
+
+    return NextResponse.json({
+      tickets: mapped,
+      total: mapped.length,
+    });
+  } catch (error) {
+    console.error('Failed to fetch tickets:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch tickets' },
+      { status: 500 }
     );
   }
-
-  // Sort by last message (most recent first)
-  filtered.sort(
-    (a, b) =>
-      new Date(b.lastMessageAt || b.updatedAt).getTime() -
-      new Date(a.lastMessageAt || a.updatedAt).getTime()
-  );
-
-  return NextResponse.json({
-    tickets: filtered,
-    total: filtered.length,
-    mock: true,
-  });
 }
 
 /**
@@ -191,26 +115,72 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
+    const validated = createTicketSchema.parse(body);
 
-    // Create mock ticket
-    const newTicket = {
-      id: `ticket-${Date.now()}`,
-      subject: body.subject,
-      preview: body.message?.substring(0, 100) || '',
-      status: 'open' as const,
-      priority: body.priority || 'medium',
-      channel: body.channel || 'web',
-      contact: body.contact,
-      tags: body.tags || [],
+    const now = new Date();
+
+    const newTicket: NewSupportTicket = {
+      subject: validated.subject,
+      preview: validated.message.substring(0, 200),
+      priority: validated.priority || 'medium',
+      channel: validated.channel || 'web',
+      contactName: validated.contact.name,
+      contactEmail: validated.contact.email || null,
+      contactPhone: validated.contact.phone || null,
+      contactId: validated.contact.id || null,
+      tags: validated.tags || [],
       messageCount: 1,
       unreadCount: 0,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      lastMessageAt: new Date().toISOString(),
+      lastMessageAt: now,
     };
 
-    return NextResponse.json({ ticket: newTicket, mock: true });
-  } catch {
+    const [created] = await db.insert(tickets).values(newTicket).returning();
+
+    // Create the initial message
+    // Message channel maps from ticket channel ('web' -> 'email' since web submissions arrive as email)
+    const messageChannel = (validated.channel === 'web' ? 'email' : validated.channel) || 'email';
+    await db.insert(ticketMessages).values({
+      ticketId: created.id,
+      body: validated.message,
+      direction: 'inbound',
+      channel: messageChannel,
+      authorId: validated.contact.id || null,
+      authorName: validated.contact.name,
+      authorType: 'contact',
+    });
+
+    // Map to API shape
+    const ticket = {
+      id: created.id,
+      subject: created.subject,
+      preview: created.preview,
+      status: created.status,
+      priority: created.priority,
+      channel: created.channel,
+      contact: {
+        id: created.contactId || created.id,
+        name: created.contactName,
+        email: created.contactEmail,
+        phone: created.contactPhone,
+      },
+      assignedTo: created.assignedTo,
+      tags: created.tags,
+      messageCount: created.messageCount,
+      unreadCount: created.unreadCount,
+      createdAt: created.createdAt.toISOString(),
+      updatedAt: created.updatedAt.toISOString(),
+      lastMessageAt: created.lastMessageAt?.toISOString(),
+    };
+
+    return NextResponse.json({ ticket }, { status: 201 });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Invalid ticket data', details: error.errors },
+        { status: 400 }
+      );
+    }
+    console.error('Failed to create ticket:', error);
     return NextResponse.json(
       { error: 'Failed to create ticket' },
       { status: 500 }

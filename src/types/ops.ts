@@ -196,3 +196,18 @@ export interface HealthStatus {
     locationId?: string;
   };
 }
+
+export interface PipelineStageStat {
+  stageId: string;
+  stageName: string;
+  count: number;
+  value: number;
+}
+
+export interface DashboardStats {
+  contacts: number;
+  conversations: number;
+  pipelineValue: number;
+  pipelineByStage: PipelineStageStat[];
+  mock: boolean;
+}

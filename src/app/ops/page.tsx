@@ -1,6 +1,7 @@
 'use client';
 
-import { useOpsHealth } from '@/hooks/ops/use-ops-queries';
+import { useMemo } from 'react';
+import { useOpsHealth, useOpsDashboardStats } from '@/hooks/ops/use-ops-queries';
 import {
   Users,
   MessageSquare,
@@ -27,7 +28,7 @@ import {
   OpsOnboardingStep,
 } from '@/components/ui/ops';
 
-// Sample data for charts
+// TODO: Replace with real time-series endpoint when historical data is available
 const activityData = [
   { month: 'Jan', leads: 45, jobs: 12 },
   { month: 'Feb', leads: 52, jobs: 18 },
@@ -35,13 +36,6 @@ const activityData = [
   { month: 'Apr', leads: 48, jobs: 15 },
   { month: 'May', leads: 73, jobs: 28 },
   { month: 'Jun', leads: 68, jobs: 24 },
-];
-
-const pipelineData = [
-  { stage: 'New', value: 24 },
-  { stage: 'Contacted', value: 18 },
-  { stage: 'Quoted', value: 12 },
-  { stage: 'Won', value: 8 },
 ];
 
 const chartConfig = {
@@ -53,9 +47,30 @@ const pipelineConfig = {
   value: { label: 'Deals', color: 'hsl(var(--primary))' },
 } satisfies ChartConfig;
 
+function formatCurrency(amount: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
 export default function OpsDashboard() {
-  const { data: health, isLoading: loading } = useOpsHealth();
+  const { data: health, isLoading: healthLoading } = useOpsHealth();
+  const { data: stats, isLoading: statsLoading } = useOpsDashboardStats();
+
   const ghlConnected = health?.ghl?.connected ?? null;
+  const loading = healthLoading || statsLoading;
+
+  // Derive pipeline chart data from real stats
+  const pipelineChartData = useMemo(() => {
+    if (!stats?.pipelineByStage?.length) return [];
+    return stats.pipelineByStage.map((s) => ({
+      stage: s.stageName,
+      value: s.count,
+    }));
+  }, [stats?.pipelineByStage]);
 
   const handleConnectGHL = () => {
     window.open('https://app.gohighlevel.com/', '_blank');
@@ -104,26 +119,22 @@ export default function OpsDashboard() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <OpsStatCard
           label="Total Contacts"
-          value={ghlConnected ? '1,234' : '--'}
-          change={ghlConnected ? 12.5 : undefined}
+          value={stats ? stats.contacts.toLocaleString() : '--'}
           loading={loading}
         />
         <OpsStatCard
           label="Conversations"
-          value={ghlConnected ? '89' : '--'}
-          change={ghlConnected ? 8.2 : undefined}
+          value={stats ? stats.conversations.toLocaleString() : '--'}
           loading={loading}
         />
         <OpsStatCard
           label="Pipeline Value"
-          value={ghlConnected ? '$142,500' : '--'}
-          change={ghlConnected ? 18.3 : undefined}
+          value={stats ? formatCurrency(stats.pipelineValue) : '--'}
           loading={loading}
         />
         <OpsStatCard
-          label="Avg Response Time"
-          value={ghlConnected ? '2.4h' : '--'}
-          change={ghlConnected ? -15.2 : undefined}
+          label="Open Deals"
+          value={stats ? stats.pipelineByStage.reduce((sum, s) => sum + s.count, 0).toLocaleString() : '--'}
           loading={loading}
         />
       </div>
@@ -137,7 +148,7 @@ export default function OpsDashboard() {
             <CardDescription>Monthly leads and completed jobs</CardDescription>
           </CardHeader>
           <CardContent>
-            {ghlConnected ? (
+            {ghlConnected !== false ? (
               <ChartContainer config={chartConfig} className="h-64 w-full">
                 <AreaChart data={activityData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                   <defs>
@@ -171,9 +182,9 @@ export default function OpsDashboard() {
             <CardDescription>Deals by stage</CardDescription>
           </CardHeader>
           <CardContent>
-            {ghlConnected ? (
+            {ghlConnected !== false && pipelineChartData.length > 0 ? (
               <ChartContainer config={pipelineConfig} className="h-64 w-full">
-                <BarChart data={pipelineData} layout="vertical" margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <BarChart data={pipelineChartData} layout="vertical" margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                   <XAxis type="number" axisLine={false} tickLine={false} fontSize={12} />
                   <YAxis dataKey="stage" type="category" axisLine={false} tickLine={false} fontSize={12} width={70} />

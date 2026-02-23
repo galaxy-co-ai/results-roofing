@@ -15,17 +15,21 @@ import {
   TicketDetail,
   type Ticket,
   type TicketStatus,
-  type TicketMessage,
 } from '@/components/features/ops/support';
 import { Button } from '@/components/ui/button';
 import { OpsPageHeader } from '@/components/ui/ops';
 import { staggerContainer, fadeInUp } from '@/lib/animation-variants';
 import supportStyles from '@/components/features/ops/support/support.module.css';
-import { useOpsTickets, useTicketMessages } from '@/hooks/ops/use-ops-queries';
+import {
+  useOpsTickets,
+  useTicketMessages,
+  useUpdateTicket,
+  useDeleteTicket,
+  useSendTicketMessage,
+} from '@/hooks/ops/use-ops-queries';
 
 export default function SupportPage() {
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
-  const [sending, setSending] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<TicketStatus | 'all'>('all');
 
@@ -34,46 +38,43 @@ export default function SupportPage() {
   const { data: messages = [], isLoading: loadingMessages } =
     useTicketMessages(selectedTicket?.id ?? null);
 
+  const updateTicket = useUpdateTicket();
+  const deleteTicket = useDeleteTicket();
+  const sendMessage = useSendTicketMessage();
+
   const handleSelectTicket = (ticket: Ticket) => {
     setSelectedTicket(ticket);
   };
 
-  const handleStatusChange = async (ticketId: string, status: TicketStatus) => {
+  const handleStatusChange = (ticketId: string, status: TicketStatus) => {
     if (selectedTicket?.id === ticketId) {
       setSelectedTicket((prev) => (prev ? { ...prev, status } : null));
     }
-    // TODO: API call to update status
-    refetchTickets();
+    updateTicket.mutate({ ticketId, status });
   };
 
-  const handleArchive = async (ticketId: string) => {
+  const handleArchive = (ticketId: string) => {
     if (selectedTicket?.id === ticketId) {
       setSelectedTicket(null);
     }
-    // TODO: API call to archive
-    refetchTickets();
+    updateTicket.mutate({ ticketId, status: 'closed' });
   };
 
-  const handleDelete = async (ticketId: string) => {
+  const handleDelete = (ticketId: string) => {
     if (!confirm('Are you sure you want to delete this ticket?')) return;
     if (selectedTicket?.id === ticketId) {
       setSelectedTicket(null);
     }
-    // TODO: API call to delete
-    refetchTickets();
+    deleteTicket.mutate(ticketId);
   };
 
   const handleSendMessage = async (data: { body: string; channel: 'sms' | 'email' }) => {
     if (!selectedTicket) return;
-
-    setSending(true);
-    try {
-      // TODO: API call to send message
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate API
-      refetchTickets();
-    } finally {
-      setSending(false);
-    }
+    await sendMessage.mutateAsync({
+      ticketId: selectedTicket.id,
+      body: data.body,
+      channel: data.channel,
+    });
   };
 
   const handleTicketStatusChange = (status: TicketStatus) => {
@@ -165,7 +166,7 @@ export default function SupportPage() {
               onSendMessage={handleSendMessage}
               onStatusChange={handleTicketStatusChange}
               loading={loadingMessages}
-              sending={sending}
+              sending={sendMessage.isPending}
             />
           ) : (
             <div className={supportStyles.noTicketSelected}>
