@@ -41,6 +41,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
+import { Skeleton } from '@/components/ui/skeleton';
 import { type OpsContact } from '@/types/ops';
 
 export type Contact = OpsContact;
@@ -369,11 +370,30 @@ export function ContactsTable({
             </thead>
             <tbody className="[&_tr:last-child]:border-0">
               {loading ? (
-                <tr>
-                  <td colSpan={columns.length} className="h-32 text-center text-muted-foreground">
-                    Loading contacts...
-                  </td>
-                </tr>
+                Array.from({ length: 8 }).map((_, i) => (
+                  <tr key={i} className="border-b border-border/50">
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <Skeleton className="h-8 w-8 rounded-full" />
+                        <div className="space-y-1.5">
+                          <Skeleton className="h-3.5 w-28" />
+                          <Skeleton className="h-2.5 w-16" />
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3"><Skeleton className="h-3.5 w-36" /></td>
+                    <td className="px-4 py-3"><Skeleton className="h-3.5 w-24" /></td>
+                    <td className="px-4 py-3"><Skeleton className="h-3.5 w-20" /></td>
+                    <td className="px-4 py-3">
+                      <div className="flex gap-1">
+                        <Skeleton className="h-5 w-14 rounded-full" />
+                        <Skeleton className="h-5 w-12 rounded-full" />
+                      </div>
+                    </td>
+                    <td className="px-4 py-3"><Skeleton className="h-3.5 w-20" /></td>
+                    <td className="px-4 py-3"><Skeleton className="h-8 w-8 rounded-md" /></td>
+                  </tr>
+                ))
               ) : table.getRowModel().rows.length > 0 ? (
                 table.getRowModel().rows.map((row) => (
                   <tr

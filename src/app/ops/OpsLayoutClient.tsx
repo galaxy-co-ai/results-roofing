@@ -1,5 +1,6 @@
 'use client';
 
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { OpsShell } from '@/components/ops/shell/OpsShell';
 
 interface OpsLayoutClientProps {
@@ -9,8 +10,10 @@ interface OpsLayoutClientProps {
 
 export function OpsLayoutClient({ children, fontClasses }: OpsLayoutClientProps) {
   return (
-    <OpsShell fontClasses={fontClasses}>
-      {children}
-    </OpsShell>
+    <NuqsAdapter>
+      <OpsShell fontClasses={fontClasses}>
+        {children}
+      </OpsShell>
+    </NuqsAdapter>
   );
 }

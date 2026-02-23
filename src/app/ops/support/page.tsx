@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion } from 'motion/react';
 import {
   Inbox,
@@ -27,11 +27,19 @@ import {
   useDeleteTicket,
   useSendTicketMessage,
 } from '@/hooks/ops/use-ops-queries';
+import { useSearchParam, useFilterParam } from '@/hooks/ops/use-ops-filters';
 
 export default function SupportPage() {
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<TicketStatus | 'all'>('all');
+  const [searchQuery, setSearchQuery] = useSearchParam('q');
+  const [statusFilter, setStatusFilter] = useFilterParam(
+    'status',
+    ['all', 'open', 'pending', 'resolved', 'closed'] as const,
+    'all',
+  );
+
+  const handleSearchChange = useCallback((v: string) => { setSearchQuery(v); }, [setSearchQuery]);
+  const handleStatusFilterChange = useCallback((v: TicketStatus | 'all') => { setStatusFilter(v); }, [setStatusFilter]);
 
   const { data: tickets = [], isLoading: loadingList, refetch: refetchTickets } =
     useOpsTickets(statusFilter, searchQuery);
@@ -151,9 +159,9 @@ export default function SupportPage() {
             onDelete={handleDelete}
             loading={loadingList}
             searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
+            onSearchChange={handleSearchChange}
             statusFilter={statusFilter}
-            onStatusFilterChange={setStatusFilter}
+            onStatusFilterChange={handleStatusFilterChange}
           />
         </div>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   MessageSquare,
   RefreshCw,
@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/button';
 import { OpsPageHeader } from '@/components/ui/ops';
 import messagingStyles from '@/components/features/ops/messaging/messaging.module.css';
 import { useOpsConversations, useConversationMessages, useMarkConversationRead } from '@/hooks/ops/use-ops-queries';
+import { useSearchParam, useFilterParam } from '@/hooks/ops/use-ops-filters';
 import type { OpsContact } from '@/types/ops';
 
 type Contact = OpsContact;
@@ -26,8 +27,12 @@ type Contact = OpsContact;
 export default function SMSPage() {
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [localMessages, setLocalMessages] = useState<Message[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filter, setFilter] = useState<'all' | 'unread' | 'starred'>('all');
+  const [searchQuery, setSearchQuery] = useSearchParam('q');
+  const [filter, setFilter] = useFilterParam('filter', ['all', 'unread', 'starred'] as const, 'all');
+
+  // Wrap nuqs setters for components expecting sync callbacks
+  const handleSearchChange = useCallback((v: string) => { setSearchQuery(v); }, [setSearchQuery]);
+  const handleFilterChange = useCallback((v: 'all' | 'unread' | 'starred') => { setFilter(v); }, [setFilter]);
 
   const { data: conversations = [], isLoading: loadingList, refetch: refetchConversations } =
     useOpsConversations('TYPE_SMS', filter, searchQuery);
@@ -154,9 +159,9 @@ export default function SMSPage() {
             onDelete={handleDelete}
             loading={loadingList}
             searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
+            onSearchChange={handleSearchChange}
             filter={filter}
-            onFilterChange={setFilter}
+            onFilterChange={handleFilterChange}
           />
         </div>
 

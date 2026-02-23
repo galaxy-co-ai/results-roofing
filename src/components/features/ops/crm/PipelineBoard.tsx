@@ -40,6 +40,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
+import { Skeleton } from '@/components/ui/skeleton';
 import styles from './PipelineBoard.module.css';
 import { type PipelineStage, type Opportunity } from '@/types/ops';
 
@@ -354,9 +355,38 @@ export function PipelineBoard({
 
   if (loading) {
     return (
-      <div className={styles.loading}>
-        <div className={styles.loadingSpinner} />
-        Loading pipeline...
+      <div className={styles.board}>
+        {[3, 2, 4, 1].map((cardCount, colIdx) => (
+          <div key={colIdx} className={styles.column}>
+            <div className={styles.columnHeader}>
+              <Skeleton className="h-2 w-2 rounded-full" />
+              <Skeleton className="h-3.5 w-20" />
+              <Skeleton className="ml-auto h-5 w-6 rounded-full" />
+            </div>
+            <div className={styles.columnValue}>
+              <Skeleton className="h-3 w-16" />
+            </div>
+            <div className={styles.columnContent}>
+              {Array.from({ length: cardCount }).map((_, cardIdx) => (
+                <div key={cardIdx} className={styles.card} style={{ cursor: 'default' }}>
+                  <div className={styles.cardHeader}>
+                    <Skeleton className="h-5 w-16 rounded-full" />
+                  </div>
+                  <Skeleton className="mb-2 h-3.5 w-3/4" />
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <Skeleton className="h-3 w-3 rounded-full" />
+                    <Skeleton className="h-3 w-20" />
+                  </div>
+                  <div className="flex items-center gap-2 border-t border-border pt-2">
+                    <Skeleton className="h-4 w-4 rounded" />
+                    <Skeleton className="h-4 w-4 rounded" />
+                    <Skeleton className="ml-auto h-3 w-12" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     );
   }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback } from 'react';
 import {
   FolderOpen,
   FileSignature,
@@ -37,8 +37,10 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { OpsPageHeader } from '@/components/ui/ops';
 import { useOpsDocuments } from '@/hooks/ops/use-ops-queries';
+import { useNullableParam } from '@/hooks/ops/use-ops-filters';
 
 const FOLDER_CONFIG: Record<string, { label: string; icon: React.ReactNode }> = {
   deposits: { label: 'Deposits', icon: <FileSignature className="size-5" style={{ color: 'var(--ops-accent-pipeline)' }} /> },
@@ -58,15 +60,15 @@ const STATUS_CONFIG: Record<string, { label: string; variant: 'default' | 'secon
 };
 
 export default function DocumentsPage() {
-  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
+  const [selectedFolder, setSelectedFolder] = useNullableParam('folder');
   const { data, isLoading: loading, error: queryError, refetch } = useOpsDocuments(selectedFolder);
   const documents = data?.documents || [];
   const folderStats = data?.folderStats || [];
   const error = queryError ? 'Could not load documents' : null;
 
-  const handleFolderClick = (folder: string | null) => {
+  const handleFolderClick = useCallback((folder: string | null) => {
     setSelectedFolder(folder);
-  };
+  }, [setSelectedFolder]);
 
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-US', {
@@ -136,7 +138,25 @@ export default function DocumentsPage() {
       )}
 
       {/* Folder Grid (when no folder selected) */}
-      {!selectedFolder && (
+      {!selectedFolder && loading && (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Card key={i} className="rounded-lg border border-border">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <Skeleton className="h-9 w-9 rounded-lg" />
+                  <div className="space-y-1.5">
+                    <Skeleton className="h-3.5 w-20" />
+                    <Skeleton className="h-3 w-24" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {!selectedFolder && !loading && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {folderStats.map((stat) => {
             const config = FOLDER_CONFIG[stat.folder] || { label: stat.folder, icon: <FolderOpen className="size-5" /> };
@@ -191,9 +211,35 @@ export default function DocumentsPage() {
           </CardHeader>
           <CardContent>
             {loading ? (
-              <div className="flex items-center justify-center py-8">
-                <RefreshCw className="size-6 animate-spin text-muted-foreground" />
-              </div>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Document</TableHead>
+                    <TableHead>Customer</TableHead>
+                    <TableHead>Property</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <TableRow key={i}>
+                      <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+                      <TableCell>
+                        <div className="space-y-1">
+                          <Skeleton className="h-3.5 w-24" />
+                          <Skeleton className="h-3 w-32" />
+                        </div>
+                      </TableCell>
+                      <TableCell><Skeleton className="h-3.5 w-40" /></TableCell>
+                      <TableCell><Skeleton className="h-5 w-16 rounded-full" /></TableCell>
+                      <TableCell><Skeleton className="h-3.5 w-28" /></TableCell>
+                      <TableCell className="text-right"><Skeleton className="ml-auto h-8 w-8 rounded-md" /></TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             ) : documents.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
                 <FileSignature className="size-10 mx-auto mb-4 opacity-50" />
