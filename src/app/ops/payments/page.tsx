@@ -1,101 +1,87 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Search, MoreHorizontal, ArrowUpDown, Download, Eye, Trash2 } from 'lucide-react';
+import { Search, MoreHorizontal, ArrowUpDown, Download, Eye, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table';
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody,
 } from '@/components/ui/dialog';
-import { useToast } from '@/components/ui/Toast';
+import { useOpsPayments } from '@/hooks/ops/use-ops-queries';
+import type { OpsPayment } from '@/types/ops';
 
-interface Payment {
-  id: string;
-  date: string;
-  customer: string;
-  invoice: string;
-  amount: number;
-  method: string;
-  payStatus: string;
-  fundStatus: string;
-}
-
-const INITIAL_PAYMENTS: Payment[] = [
-  { id: '1', date: 'Feb 10, 2026', customer: 'Mike Torres', invoice: 'INV-2042', amount: 6000, method: 'Credit Card', payStatus: 'approved', fundStatus: 'funded' },
-  { id: '2', date: 'Feb 8, 2026', customer: 'Maria Lopez', invoice: 'INV-2041', amount: 7500, method: 'ACH', payStatus: 'approved', fundStatus: 'pending' },
-  { id: '3', date: 'Feb 5, 2026', customer: 'James Wilson', invoice: 'INV-2037', amount: 22100, method: 'Check', payStatus: 'approved', fundStatus: 'funded' },
-  { id: '4', date: 'Feb 2, 2026', customer: 'Lisa Brown', invoice: 'INV-2036', amount: 17000, method: 'Credit Card', payStatus: 'approved', fundStatus: 'funded' },
-  { id: '5', date: 'Jan 28, 2026', customer: 'Robert Chen', invoice: 'INV-2035', amount: 8500, method: 'Credit Card', payStatus: 'failed', fundStatus: '—' },
-  { id: '6', date: 'Jan 25, 2026', customer: 'Amanda White', invoice: 'INV-2034', amount: 12000, method: 'ACH', payStatus: 'approved', fundStatus: 'funded' },
-  { id: '7', date: 'Jan 20, 2026', customer: 'John Davis', invoice: 'INV-2033', amount: 15000, method: 'Credit Card', payStatus: 'refunded', fundStatus: '—' },
-];
-
-const PAY_STATUS_STYLES: Record<string, string> = {
-  approved: 'bg-green-50 text-green-700 border-green-200',
+const STATUS_STYLES: Record<string, string> = {
+  succeeded: 'bg-green-50 text-green-700 border-green-200',
   pending: 'bg-amber-50 text-amber-700 border-amber-200',
+  processing: 'bg-blue-50 text-blue-700 border-blue-200',
   failed: 'bg-red-50 text-red-700 border-red-200',
   refunded: 'bg-purple-50 text-purple-700 border-purple-200',
 };
 
-const FUND_STATUS_STYLES: Record<string, string> = {
-  funded: 'bg-green-50 text-green-700 border-green-200',
-  pending: 'bg-amber-50 text-amber-700 border-amber-200',
-  '—': '',
-};
+const STATUSES = ['all', 'succeeded', 'pending', 'processing', 'failed', 'refunded'];
+const METHODS = ['all', 'card', 'bank_transfer', 'financing'];
 
-const PAY_STATUSES = ['all', 'approved', 'pending', 'failed', 'refunded'];
-const METHODS = ['all', 'Credit Card', 'ACH', 'Check'];
+function formatDate(dateStr: string | null | undefined) {
+  if (!dateStr) return '—';
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function methodLabel(m: string | null) {
+  if (!m) return '—';
+  const map: Record<string, string> = { card: 'Credit Card', bank_transfer: 'ACH', financing: 'Financing' };
+  return map[m] || m;
+}
 
 export default function PaymentsPage() {
-  const { success } = useToast();
-  const [payments, setPayments] = useState(INITIAL_PAYMENTS);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [methodFilter, setMethodFilter] = useState('all');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
-  const [viewPayment, setViewPayment] = useState<Payment | null>(null);
+  const [viewPayment, setViewPayment] = useState<OpsPayment | null>(null);
 
-  const filtered = useMemo(() => {
-    let result = payments;
-    if (search) {
-      const q = search.toLowerCase();
-      result = result.filter(p =>
-        p.customer.toLowerCase().includes(q) ||
-        p.invoice.toLowerCase().includes(q)
-      );
-    }
-    if (statusFilter !== 'all') result = result.filter(p => p.payStatus === statusFilter);
-    if (methodFilter !== 'all') result = result.filter(p => p.method === methodFilter);
-    result = [...result].sort((a, b) => sortDir === 'asc' ? a.amount - b.amount : b.amount - a.amount);
-    return result;
-  }, [payments, search, statusFilter, methodFilter, sortDir]);
+  const { data, isLoading, refetch } = useOpsPayments(
+    statusFilter !== 'all' ? statusFilter : undefined,
+    methodFilter !== 'all' ? methodFilter : undefined,
+    search || undefined,
+  );
 
-  const approvedPayments = payments.filter(p => p.payStatus === 'approved');
-  const totalReceived = approvedPayments.reduce((s, p) => s + p.amount, 0);
-  const failedTotal = payments.filter(p => p.payStatus === 'failed').reduce((s, p) => s + p.amount, 0);
-  function handleDelete(p: Payment) {
-    setPayments(prev => prev.filter(pay => pay.id !== p.id));
-    setViewPayment(null);
-    success('Payment removed', `Payment from ${p.customer} removed`);
-  }
+  const payments = data?.payments ?? [];
+  const stats = data?.stats ?? { totalReceived: 0, pendingAmount: 0, failedAmount: 0 };
+
+  const sorted = useMemo(() => {
+    return [...payments].sort((a, b) => sortDir === 'asc' ? a.amount - b.amount : b.amount - a.amount);
+  }, [payments, sortDir]);
+
+  const succeededPayments = payments.filter(p => p.status === 'succeeded');
+  const avgTransaction = succeededPayments.length
+    ? Math.round(stats.totalReceived / succeededPayments.length)
+    : 0;
 
   function handleExportCSV() {
-    const headers = ['Date', 'Customer', 'Invoice', 'Amount', 'Method', 'Payment Status', 'Funding'];
-    const rows = payments.map(p => [p.date, p.customer, p.invoice, `$${p.amount}`, p.method, p.payStatus, p.fundStatus]);
+    const headers = ['Date', 'Customer', 'Invoice', 'Amount', 'Method', 'Status', 'Type'];
+    const rows = payments.map(p => [
+      formatDate(p.processedAt || p.createdAt),
+      p.customerName || '—',
+      p.confirmationNumber || '—',
+      `$${p.amount}`,
+      methodLabel(p.paymentMethod),
+      p.status,
+      p.type,
+    ]);
     const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url; a.download = 'payments.csv'; a.click();
     URL.revokeObjectURL(url);
-    success('CSV exported', `${payments.length} payments exported`);
   }
 
   return (
@@ -105,30 +91,46 @@ export default function PaymentsPage() {
           <h1 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'var(--ops-font-display)' }}>
             Payments
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">Track all payment activity</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            {isLoading ? '...' : `${payments.length} payments tracked`}
+          </p>
         </div>
-        <Button variant="outline" size="sm" className="gap-2" onClick={handleExportCSV}>
-          <Download className="h-4 w-4" />
-          Export CSV
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" className="gap-2" onClick={handleExportCSV} disabled={isLoading || payments.length === 0}>
+            <Download className="h-4 w-4" />
+            Export CSV
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
+            <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Received</p>
-          <p className="text-2xl font-bold tabular-nums mt-1 text-green-600">${totalReceived.toLocaleString()}</p>
+          <p className="text-2xl font-bold tabular-nums mt-1 text-green-600">
+            {isLoading ? '—' : `$${stats.totalReceived.toLocaleString()}`}
+          </p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Pending Funding</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">${payments.filter(p => p.fundStatus === 'pending').reduce((s, p) => s + p.amount, 0).toLocaleString()}</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Pending</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">
+            {isLoading ? '—' : `$${stats.pendingAmount.toLocaleString()}`}
+          </p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Failed</p>
-          <p className="text-2xl font-bold tabular-nums mt-1 text-red-600">${failedTotal.toLocaleString()}</p>
+          <p className="text-2xl font-bold tabular-nums mt-1 text-red-600">
+            {isLoading ? '—' : `$${stats.failedAmount.toLocaleString()}`}
+          </p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Avg Transaction</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">${approvedPayments.length ? Math.round(totalReceived / approvedPayments.length).toLocaleString() : '0'}</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">
+            {isLoading ? '—' : `$${avgTransaction.toLocaleString()}`}
+          </p>
         </CardContent></Card>
       </div>
 
@@ -140,13 +142,13 @@ export default function PaymentsPage() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm">
-              {methodFilter === 'all' ? 'Method' : methodFilter}
+              {methodFilter === 'all' ? 'Method' : methodLabel(methodFilter)}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {METHODS.map(m => (
               <DropdownMenuItem key={m} onClick={() => setMethodFilter(m)}>
-                {m === 'all' ? 'All Methods' : m}
+                {m === 'all' ? 'All Methods' : methodLabel(m)}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
@@ -158,7 +160,7 @@ export default function PaymentsPage() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            {PAY_STATUSES.map(s => (
+            {STATUSES.map(s => (
               <DropdownMenuItem key={s} onClick={() => setStatusFilter(s)}>
                 {s === 'all' ? 'All Statuses' : s.charAt(0).toUpperCase() + s.slice(1)}
               </DropdownMenuItem>
@@ -168,71 +170,79 @@ export default function PaymentsPage() {
       </div>
 
       <Card>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Date</TableHead>
-              <TableHead>Customer</TableHead>
-              <TableHead>Invoice</TableHead>
-              <TableHead className="text-right">
-                <button className="flex items-center justify-end gap-1 hover:text-foreground transition-colors" onClick={() => setSortDir(d => d === 'asc' ? 'desc' : 'asc')}>
-                  Amount <ArrowUpDown className="h-3 w-3" />
-                </button>
-              </TableHead>
-              <TableHead>Method</TableHead>
-              <TableHead>Payment Status</TableHead>
-              <TableHead>Funding</TableHead>
-              <TableHead className="w-10" />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map((p) => (
-              <TableRow key={p.id} className="cursor-pointer" onClick={() => setViewPayment(p)}>
-                <TableCell className="text-muted-foreground text-xs">{p.date}</TableCell>
-                <TableCell className="font-medium">{p.customer}</TableCell>
-                <TableCell className="text-primary font-medium">{p.invoice}</TableCell>
-                <TableCell className="text-right font-medium tabular-nums">${p.amount.toLocaleString()}</TableCell>
-                <TableCell className="text-muted-foreground text-xs">{p.method}</TableCell>
-                <TableCell>
-                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${PAY_STATUS_STYLES[p.payStatus]}`}>
-                    {p.payStatus.charAt(0).toUpperCase() + p.payStatus.slice(1)}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  {p.fundStatus !== '—' ? (
-                    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${FUND_STATUS_STYLES[p.fundStatus]}`}>
-                      {p.fundStatus.charAt(0).toUpperCase() + p.fundStatus.slice(1)}
-                    </span>
-                  ) : <span className="text-muted-foreground">—</span>}
-                </TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(ev) => ev.stopPropagation()}>
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); setViewPayment(p); }}>
-                        <Eye className="h-4 w-4 mr-2" /> View Details
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-red-600" onClick={(ev) => { ev.stopPropagation(); handleDelete(p); }}>
-                        <Trash2 className="h-4 w-4 mr-2" /> Remove
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
+        {isLoading ? (
+          <div className="p-4 space-y-3">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 flex-1" />
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-20" />
+              </div>
             ))}
-            {filtered.length === 0 && (
-              <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No payments match your search</TableCell></TableRow>
-            )}
-          </TableBody>
-        </Table>
-        <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-muted-foreground">
-          <span>Showing {filtered.length} of {payments.length}</span>
-        </div>
+          </div>
+        ) : sorted.length === 0 ? (
+          <div className="p-12 text-center text-muted-foreground">
+            <p className="text-sm">{payments.length === 0 ? 'No payments recorded yet' : 'No payments match your filter'}</p>
+          </div>
+        ) : (
+          <>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Customer</TableHead>
+                  <TableHead>Invoice</TableHead>
+                  <TableHead className="text-right">
+                    <button className="flex items-center justify-end gap-1 hover:text-foreground transition-colors" onClick={() => setSortDir(d => d === 'asc' ? 'desc' : 'asc')}>
+                      Amount <ArrowUpDown className="h-3 w-3" />
+                    </button>
+                  </TableHead>
+                  <TableHead>Method</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead className="w-10" />
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {sorted.map((p) => (
+                  <TableRow key={p.id} className="cursor-pointer" onClick={() => setViewPayment(p)}>
+                    <TableCell className="text-muted-foreground text-xs">{formatDate(p.processedAt || p.createdAt)}</TableCell>
+                    <TableCell className="font-medium">{p.customerName || '—'}</TableCell>
+                    <TableCell className="text-primary font-medium">{p.confirmationNumber || '—'}</TableCell>
+                    <TableCell className="text-right font-medium tabular-nums">${p.amount.toLocaleString()}</TableCell>
+                    <TableCell className="text-muted-foreground text-xs">{methodLabel(p.paymentMethod)}</TableCell>
+                    <TableCell>
+                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[p.status] || STATUS_STYLES.pending}`}>
+                        {p.status.charAt(0).toUpperCase() + p.status.slice(1)}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-xs capitalize">{p.type}</TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(ev) => ev.stopPropagation()}>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); setViewPayment(p); }}>
+                            <Eye className="h-4 w-4 mr-2" /> View Details
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-muted-foreground">
+              <span>{sorted.length} payments</span>
+            </div>
+          </>
+        )}
       </Card>
 
       {/* View Payment Dialog */}
@@ -242,13 +252,16 @@ export default function PaymentsPage() {
           {viewPayment && (
             <DialogBody className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div><p className="text-xs text-muted-foreground">Customer</p><p className="font-medium">{viewPayment.customer}</p></div>
-                <div><p className="text-xs text-muted-foreground">Invoice</p><p className="font-medium text-primary">{viewPayment.invoice}</p></div>
+                <div><p className="text-xs text-muted-foreground">Customer</p><p className="font-medium">{viewPayment.customerName || '—'}</p></div>
+                <div><p className="text-xs text-muted-foreground">Invoice</p><p className="font-medium text-primary">{viewPayment.confirmationNumber || '—'}</p></div>
                 <div><p className="text-xs text-muted-foreground">Amount</p><p className="font-medium tabular-nums">${viewPayment.amount.toLocaleString()}</p></div>
-                <div><p className="text-xs text-muted-foreground">Date</p><p className="font-medium">{viewPayment.date}</p></div>
-                <div><p className="text-xs text-muted-foreground">Method</p><p className="font-medium">{viewPayment.method}</p></div>
-                <div><p className="text-xs text-muted-foreground">Payment Status</p><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${PAY_STATUS_STYLES[viewPayment.payStatus]}`}>{viewPayment.payStatus.charAt(0).toUpperCase() + viewPayment.payStatus.slice(1)}</span></div>
-                <div><p className="text-xs text-muted-foreground">Funding</p><p className="font-medium">{viewPayment.fundStatus}</p></div>
+                <div><p className="text-xs text-muted-foreground">Date</p><p className="font-medium">{formatDate(viewPayment.processedAt || viewPayment.createdAt)}</p></div>
+                <div><p className="text-xs text-muted-foreground">Method</p><p className="font-medium">{methodLabel(viewPayment.paymentMethod)}</p></div>
+                <div><p className="text-xs text-muted-foreground">Status</p><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[viewPayment.status] || STATUS_STYLES.pending}`}>{viewPayment.status.charAt(0).toUpperCase() + viewPayment.status.slice(1)}</span></div>
+                <div><p className="text-xs text-muted-foreground">Type</p><p className="font-medium capitalize">{viewPayment.type}</p></div>
+                {viewPayment.cardBrand && viewPayment.cardLast4 && (
+                  <div><p className="text-xs text-muted-foreground">Card</p><p className="font-medium">{viewPayment.cardBrand} ···· {viewPayment.cardLast4}</p></div>
+                )}
               </div>
             </DialogBody>
           )}

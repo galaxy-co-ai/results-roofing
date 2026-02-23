@@ -1,54 +1,28 @@
 'use client';
 
-import { useState } from 'react';
-import { Plus, ChevronLeft, ChevronRight, Clock, MapPin } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { ChevronLeft, ChevronRight, Clock, MapPin, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, DialogBody,
 } from '@/components/ui/dialog';
-import { useToast } from '@/components/ui/Toast';
+import { useOpsCalendar } from '@/hooks/ops/use-ops-queries';
+import type { OpsAppointment } from '@/types/ops';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-type EventType = 'appointment' | 'inspection' | 'installation' | 'follow-up';
-
-interface CalEvent {
-  time: string;
-  title: string;
-  type: EventType;
-  address?: string;
-}
-
-const INITIAL_EVENTS: Record<number, CalEvent[]> = {
-  3: [{ time: '9:00 AM', title: 'Roof Inspection', type: 'inspection', address: '2187 Herndon Ave' }],
-  5: [
-    { time: '10:00 AM', title: 'Estimate Appointment', type: 'appointment', address: '1 Carriage Dr' },
-    { time: '2:00 PM', title: 'Follow-up Call', type: 'follow-up', address: 'John Davis' },
-  ],
-  8: [{ time: '7:00 AM', title: 'Installation - Day 1', type: 'installation', address: '445 Elm Street' }],
-  9: [{ time: '7:00 AM', title: 'Installation - Day 2', type: 'installation', address: '445 Elm Street' }],
-  11: [{ time: '2:00 PM', title: 'Roof Inspection', type: 'inspection', address: '123 Main St' }],
-  12: [
-    { time: '8:00 AM', title: 'Installation', type: 'installation', address: '789 Elm Ave' },
-    { time: '3:00 PM', title: 'Estimate Appointment', type: 'appointment', address: '9 Sugar Bowl Ln' },
-  ],
-  15: [{ time: '10:00 AM', title: 'Follow-up', type: 'follow-up', address: 'Maria Lopez' }],
-  18: [{ time: '9:00 AM', title: 'Inspection', type: 'inspection', address: '8812 Oak Park Blvd' }],
-  22: [{ time: '7:00 AM', title: 'Installation - Day 1', type: 'installation', address: '2726 Askew Ave' }],
-  23: [{ time: '7:00 AM', title: 'Installation - Day 2', type: 'installation', address: '2726 Askew Ave' }],
-  24: [{ time: '7:00 AM', title: 'Installation - Day 3', type: 'installation', address: '2726 Askew Ave' }],
-  26: [{ time: '11:00 AM', title: 'Estimate Appointment', type: 'appointment', address: '214 N 3rd St' }],
-};
 
 const TYPE_COLORS: Record<string, string> = {
   appointment: 'bg-blue-100 text-blue-800 border-blue-200',
   inspection: 'bg-purple-100 text-purple-800 border-purple-200',
   installation: 'bg-green-100 text-green-800 border-green-200',
-  'follow-up': 'bg-amber-100 text-amber-800 border-amber-200',
+  follow_up: 'bg-amber-100 text-amber-800 border-amber-200',
 };
+
+function formatTime(dateStr: string) {
+  return new Date(dateStr).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+}
 
 function getCalendarData(month: number, year: number) {
   const firstDay = new Date(year, month, 1).getDay();
@@ -57,30 +31,44 @@ function getCalendarData(month: number, year: number) {
 }
 
 export default function CalendarPage() {
-  const { success } = useToast();
   const now = new Date();
   const [currentMonth, setCurrentMonth] = useState(now.getMonth());
   const [currentYear, setCurrentYear] = useState(now.getFullYear());
-  const [events, setEvents] = useState<Record<number, CalEvent[]>>(INITIAL_EVENTS);
-  const [showNewDialog, setShowNewDialog] = useState(false);
-  const [viewEvent, setViewEvent] = useState<{ day: number; event: CalEvent } | null>(null);
+  const [viewEvent, setViewEvent] = useState<OpsAppointment | null>(null);
 
-  // Form state
-  const [formTitle, setFormTitle] = useState('');
-  const [formTime, setFormTime] = useState('9:00 AM');
-  const [formType, setFormType] = useState<EventType>('appointment');
-  const [formAddress, setFormAddress] = useState('');
-  const [formDay, setFormDay] = useState(1);
+  const monthKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
+  const { data: appointments = [], isLoading, refetch } = useOpsCalendar(monthKey);
 
   const { firstDay, daysInMonth } = getCalendarData(currentMonth, currentYear);
   const isCurrentMonth = currentMonth === now.getMonth() && currentYear === now.getFullYear();
   const today = isCurrentMonth ? now.getDate() : -1;
   const monthName = new Date(currentYear, currentMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
-  const upcomingEvents = Object.entries(events)
-    .filter(([day]) => isCurrentMonth ? Number(day) >= now.getDate() : true)
-    .sort(([a], [b]) => Number(a) - Number(b))
-    .slice(0, 5);
+  // Group appointments by day of month
+  const eventsByDay = useMemo(() => {
+    const map: Record<number, OpsAppointment[]> = {};
+    for (const apt of appointments) {
+      const d = new Date(apt.scheduledStart);
+      if (d.getFullYear() === currentYear && d.getMonth() === currentMonth) {
+        const day = d.getDate();
+        if (!map[day]) map[day] = [];
+        map[day].push(apt);
+      }
+    }
+    return map;
+  }, [appointments, currentMonth, currentYear]);
+
+  // Upcoming events (from today or start of month)
+  const upcoming = useMemo(() => {
+    const cutoff = isCurrentMonth ? now.getDate() : 1;
+    return appointments
+      .filter(a => {
+        const d = new Date(a.scheduledStart).getDate();
+        return d >= cutoff && a.status !== 'cancelled';
+      })
+      .sort((a, b) => new Date(a.scheduledStart).getTime() - new Date(b.scheduledStart).getTime())
+      .slice(0, 5);
+  }, [appointments, isCurrentMonth, now]);
 
   function prevMonth() {
     if (currentMonth === 0) {
@@ -105,47 +93,6 @@ export default function CalendarPage() {
     setCurrentYear(now.getFullYear());
   }
 
-  function openNewEvent(day?: number) {
-    setFormTitle('');
-    setFormTime('9:00 AM');
-    setFormType('appointment');
-    setFormAddress('');
-    setFormDay(day || (isCurrentMonth ? now.getDate() : 1));
-    setShowNewDialog(true);
-  }
-
-  function handleCreate() {
-    if (!formTitle.trim()) return;
-    const newEvent: CalEvent = {
-      title: formTitle.trim(),
-      time: formTime,
-      type: formType,
-      address: formAddress.trim() || undefined,
-    };
-    setEvents(prev => ({
-      ...prev,
-      [formDay]: [...(prev[formDay] || []), newEvent],
-    }));
-    setShowNewDialog(false);
-    success('Event created', `${newEvent.title} on ${monthName.split(' ')[0]} ${formDay}`);
-  }
-
-  function handleDeleteEvent(day: number, index: number) {
-    setEvents(prev => {
-      const dayEvents = [...(prev[day] || [])];
-      dayEvents.splice(index, 1);
-      const next = { ...prev };
-      if (dayEvents.length === 0) {
-        delete next[day];
-      } else {
-        next[day] = dayEvents;
-      }
-      return next;
-    });
-    setViewEvent(null);
-    success('Event deleted', 'Event removed from calendar');
-  }
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -153,11 +100,13 @@ export default function CalendarPage() {
           <h1 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'var(--ops-font-display)' }}>
             Calendar
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">Team scheduling and appointments</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            {isLoading ? '...' : `${appointments.length} appointments this month`}
+          </p>
         </div>
-        <Button size="sm" className="gap-2" onClick={() => openNewEvent()}>
-          <Plus className="h-4 w-4" />
-          New Event
+        <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
+          <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+          Refresh
         </Button>
       </div>
 
@@ -179,215 +128,198 @@ export default function CalendarPage() {
             </div>
           </CardHeader>
           <CardContent className="p-3">
-            {/* Day Headers */}
-            <div className="grid grid-cols-7 mb-1">
-              {DAYS.map(day => (
-                <div key={day} className="text-center text-xs font-medium text-muted-foreground py-2">
-                  {day}
-                </div>
-              ))}
-            </div>
-
-            {/* Calendar Grid */}
-            <div className="grid grid-cols-7 border-t border-l">
-              {/* Empty cells before first day */}
-              {Array.from({ length: firstDay }).map((_, i) => (
-                <div key={`empty-${i}`} className="border-b border-r min-h-[100px] p-1 bg-muted/20" />
-              ))}
-
-              {/* Day cells */}
-              {Array.from({ length: daysInMonth }).map((_, i) => {
-                const day = i + 1;
-                const dayEvents = events[day] || [];
-                const isToday = day === today;
-
-                return (
-                  <div
-                    key={day}
-                    className={`border-b border-r min-h-[100px] p-1 cursor-pointer ${isToday ? 'bg-blue-50/50' : 'hover:bg-muted/20'} transition-colors`}
-                    onClick={() => openNewEvent(day)}
-                  >
-                    <span className={`inline-flex items-center justify-center text-xs w-6 h-6 rounded-full ${
-                      isToday ? 'bg-primary text-primary-foreground font-bold' : 'text-foreground'
-                    }`}>
-                      {day}
-                    </span>
-                    <div className="mt-0.5 space-y-0.5">
-                      {dayEvents.slice(0, 2).map((event, ei) => (
-                        <div
-                          key={ei}
-                          className={`text-[10px] px-1 py-0.5 rounded truncate border cursor-pointer hover:opacity-80 ${TYPE_COLORS[event.type]}`}
-                          onClick={(e) => { e.stopPropagation(); setViewEvent({ day, event }); }}
-                        >
-                          {event.time} {event.title}
-                        </div>
-                      ))}
-                      {dayEvents.length > 2 && (
-                        <div className="text-[10px] text-muted-foreground px-1">+{dayEvents.length - 2} more</div>
-                      )}
-                    </div>
+            {isLoading ? (
+              <div className="space-y-2">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="flex gap-1">
+                    {Array.from({ length: 7 }).map((_, j) => (
+                      <Skeleton key={j} className="h-24 flex-1" />
+                    ))}
                   </div>
-                );
-              })}
-            </div>
-
-            {/* Legend */}
-            <div className="flex items-center gap-4 mt-3 pt-3 border-t">
-              {Object.entries(TYPE_COLORS).map(([type, cls]) => (
-                <div key={type} className="flex items-center gap-1.5">
-                  <div className={`w-2.5 h-2.5 rounded-sm border ${cls}`} />
-                  <span className="text-[11px] text-muted-foreground capitalize">{type}</span>
+                ))}
+              </div>
+            ) : (
+              <>
+                {/* Day Headers */}
+                <div className="grid grid-cols-7 mb-1">
+                  {DAYS.map(day => (
+                    <div key={day} className="text-center text-xs font-medium text-muted-foreground py-2">
+                      {day}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+
+                {/* Calendar Grid */}
+                <div className="grid grid-cols-7 border-t border-l">
+                  {Array.from({ length: firstDay }).map((_, i) => (
+                    <div key={`empty-${i}`} className="border-b border-r min-h-[100px] p-1 bg-muted/20" />
+                  ))}
+
+                  {Array.from({ length: daysInMonth }).map((_, i) => {
+                    const day = i + 1;
+                    const dayEvents = eventsByDay[day] || [];
+                    const isToday = day === today;
+
+                    return (
+                      <div
+                        key={day}
+                        className={`border-b border-r min-h-[100px] p-1 ${isToday ? 'bg-blue-50/50' : ''}`}
+                      >
+                        <span className={`inline-flex items-center justify-center text-xs w-6 h-6 rounded-full ${
+                          isToday ? 'bg-primary text-primary-foreground font-bold' : 'text-foreground'
+                        }`}>
+                          {day}
+                        </span>
+                        <div className="mt-0.5 space-y-0.5">
+                          {dayEvents.slice(0, 2).map((event) => (
+                            <div
+                              key={event.id}
+                              className={`text-[10px] px-1 py-0.5 rounded truncate border cursor-pointer hover:opacity-80 ${TYPE_COLORS[event.type] || TYPE_COLORS.appointment}`}
+                              onClick={() => setViewEvent(event)}
+                            >
+                              {formatTime(event.scheduledStart)} {event.attendeeName || event.type}
+                            </div>
+                          ))}
+                          {dayEvents.length > 2 && (
+                            <div className="text-[10px] text-muted-foreground px-1">+{dayEvents.length - 2} more</div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Legend */}
+                <div className="flex items-center gap-4 mt-3 pt-3 border-t">
+                  {Object.entries(TYPE_COLORS).map(([type, cls]) => (
+                    <div key={type} className="flex items-center gap-1.5">
+                      <div className={`w-2.5 h-2.5 rounded-sm border ${cls}`} />
+                      <span className="text-[11px] text-muted-foreground capitalize">{type.replace('_', '-')}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
-        {/* Sidebar - Upcoming */}
+        {/* Sidebar */}
         <div className="space-y-4">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm">Upcoming Events</CardTitle>
+              <CardTitle className="text-sm">Upcoming Appointments</CardTitle>
             </CardHeader>
             <CardContent className="p-3 pt-0 space-y-2">
-              {upcomingEvents.length === 0 && (
-                <p className="text-xs text-muted-foreground py-4 text-center">No upcoming events</p>
-              )}
-              {upcomingEvents.map(([day, dayEvents]) =>
-                dayEvents.map((event, i) => (
-                  <div
-                    key={`${day}-${i}`}
-                    className="flex items-start gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
-                    onClick={() => setViewEvent({ day: Number(day), event })}
-                  >
-                    <div className="text-center min-w-[36px]">
-                      <div className="text-[10px] font-medium text-muted-foreground uppercase">
-                        {new Date(currentYear, currentMonth, Number(day)).toLocaleDateString('en-US', { weekday: 'short' })}
+              {isLoading ? (
+                <div className="space-y-2">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <Skeleton key={i} className="h-14 w-full" />
+                  ))}
+                </div>
+              ) : upcoming.length === 0 ? (
+                <p className="text-xs text-muted-foreground py-4 text-center">No upcoming appointments</p>
+              ) : (
+                upcoming.map((apt) => {
+                  const d = new Date(apt.scheduledStart);
+                  return (
+                    <div
+                      key={apt.id}
+                      className="flex items-start gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
+                      onClick={() => setViewEvent(apt)}
+                    >
+                      <div className="text-center min-w-[36px]">
+                        <div className="text-[10px] font-medium text-muted-foreground uppercase">
+                          {d.toLocaleDateString('en-US', { weekday: 'short' })}
+                        </div>
+                        <div className="text-lg font-bold tabular-nums">{d.getDate()}</div>
                       </div>
-                      <div className="text-lg font-bold tabular-nums">{day}</div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium truncate">{apt.attendeeName || apt.type}</p>
+                        <p className="text-xs text-muted-foreground">{formatTime(apt.scheduledStart)}</p>
+                        {apt.address && <p className="text-xs text-muted-foreground truncate">{apt.address}</p>}
+                      </div>
+                      <div className={`w-2 h-2 rounded-full mt-1.5 border ${TYPE_COLORS[apt.type] || TYPE_COLORS.appointment}`} />
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium truncate">{event.title}</p>
-                      <p className="text-xs text-muted-foreground">{event.time}</p>
-                      {event.address && <p className="text-xs text-muted-foreground truncate">{event.address}</p>}
-                    </div>
-                    <div className={`w-2 h-2 rounded-full mt-1.5 border ${TYPE_COLORS[event.type]}`} />
-                  </div>
-                ))
+                  );
+                })
               )}
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm">Unscheduled Jobs</CardTitle>
+              <CardTitle className="text-sm">Month Summary</CardTitle>
             </CardHeader>
-            <CardContent className="p-3 pt-0 space-y-2">
-              <div className="p-2 rounded-lg border border-dashed cursor-pointer hover:bg-muted/30 transition-colors" onClick={() => openNewEvent()}>
-                <p className="text-sm font-medium">8812 Oak Park Blvd</p>
-                <p className="text-xs text-muted-foreground">New Lead - Needs appointment</p>
-              </div>
-              <div className="p-2 rounded-lg border border-dashed cursor-pointer hover:bg-muted/30 transition-colors" onClick={() => openNewEvent()}>
-                <p className="text-sm font-medium">13790 Marine Dr</p>
-                <p className="text-xs text-muted-foreground">Proposal Signed - Schedule install</p>
-              </div>
+            <CardContent className="p-3 pt-0">
+              {isLoading ? (
+                <Skeleton className="h-20 w-full" />
+              ) : (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Total</span>
+                    <span className="font-medium tabular-nums">{appointments.length}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Scheduled</span>
+                    <span className="font-medium tabular-nums">{appointments.filter(a => a.status === 'scheduled').length}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Completed</span>
+                    <span className="font-medium tabular-nums">{appointments.filter(a => a.status === 'completed').length}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Cancelled</span>
+                    <span className="font-medium tabular-nums">{appointments.filter(a => a.status === 'cancelled').length}</span>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
       </div>
 
-      {/* New Event Dialog */}
-      <Dialog open={showNewDialog} onOpenChange={setShowNewDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>New Event</DialogTitle>
-            <DialogDescription>Add an event to the calendar</DialogDescription>
-          </DialogHeader>
-          <DialogBody className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="event-title">Title *</Label>
-              <Input id="event-title" value={formTitle} onChange={e => setFormTitle(e.target.value)} placeholder="e.g. Roof Inspection" />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Day</Label>
-                <select className="flex h-9 w-full rounded-md border bg-background px-3 py-1 text-sm" value={formDay} onChange={e => setFormDay(Number(e.target.value))}>
-                  {Array.from({ length: daysInMonth }).map((_, i) => (
-                    <option key={i + 1} value={i + 1}>{monthName.split(' ')[0]} {i + 1}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="event-time">Time</Label>
-                <select className="flex h-9 w-full rounded-md border bg-background px-3 py-1 text-sm" value={formTime} onChange={e => setFormTime(e.target.value)}>
-                  {['7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'].map(t => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Type</Label>
-                <select className="flex h-9 w-full rounded-md border bg-background px-3 py-1 text-sm" value={formType} onChange={e => setFormType(e.target.value as EventType)}>
-                  <option value="appointment">Appointment</option>
-                  <option value="inspection">Inspection</option>
-                  <option value="installation">Installation</option>
-                  <option value="follow-up">Follow-up</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="event-address">Address / Contact</Label>
-                <Input id="event-address" value={formAddress} onChange={e => setFormAddress(e.target.value)} placeholder="123 Main St" />
-              </div>
-            </div>
-          </DialogBody>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowNewDialog(false)}>Cancel</Button>
-            <Button onClick={handleCreate}>Create Event</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
       {/* View Event Dialog */}
       <Dialog open={!!viewEvent} onOpenChange={(open) => !open && setViewEvent(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{viewEvent?.event.title}</DialogTitle>
-            <DialogDescription>Event details</DialogDescription>
+            <DialogTitle>{viewEvent?.attendeeName || viewEvent?.type}</DialogTitle>
+            <DialogDescription>Appointment details</DialogDescription>
           </DialogHeader>
           {viewEvent && (
             <DialogBody className="space-y-4">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{new Date(currentYear, currentMonth, viewEvent.day).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} at {viewEvent.event.time}</span>
+                <span className="text-sm">
+                  {new Date(viewEvent.scheduledStart).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} at {formatTime(viewEvent.scheduledStart)} – {formatTime(viewEvent.scheduledEnd)}
+                </span>
               </div>
-              {viewEvent.event.address && (
+              {viewEvent.address && (
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{viewEvent.event.address}</span>
+                  <span className="text-sm">{viewEvent.address}</span>
                 </div>
               )}
               <div className="flex items-center gap-2">
-                <div className={`px-2 py-0.5 rounded text-xs font-medium border ${TYPE_COLORS[viewEvent.event.type]}`}>
-                  {viewEvent.event.type.charAt(0).toUpperCase() + viewEvent.event.type.slice(1)}
+                <div className={`px-2 py-0.5 rounded text-xs font-medium border ${TYPE_COLORS[viewEvent.type] || TYPE_COLORS.appointment}`}>
+                  {viewEvent.type.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                </div>
+                <div className={`px-2 py-0.5 rounded text-xs font-medium border ${
+                  viewEvent.status === 'completed' ? 'bg-green-50 text-green-700 border-green-200' :
+                  viewEvent.status === 'cancelled' ? 'bg-red-50 text-red-700 border-red-200' :
+                  'bg-blue-50 text-blue-700 border-blue-200'
+                }`}>
+                  {viewEvent.status.charAt(0).toUpperCase() + viewEvent.status.slice(1)}
                 </div>
               </div>
+              {viewEvent.attendeeEmail && (
+                <div><p className="text-xs text-muted-foreground">Email</p><p className="text-sm">{viewEvent.attendeeEmail}</p></div>
+              )}
+              {viewEvent.notes && (
+                <div><p className="text-xs text-muted-foreground">Notes</p><p className="text-sm">{viewEvent.notes}</p></div>
+              )}
             </DialogBody>
           )}
           <DialogFooter>
-            <Button
-              variant="outline"
-              className="text-red-600 hover:text-red-700"
-              onClick={() => {
-                if (viewEvent) {
-                  const idx = (events[viewEvent.day] || []).indexOf(viewEvent.event);
-                  if (idx >= 0) handleDeleteEvent(viewEvent.day, idx);
-                }
-              }}
-            >
-              Delete
-            </Button>
             <Button onClick={() => setViewEvent(null)}>Close</Button>
           </DialogFooter>
         </DialogContent>

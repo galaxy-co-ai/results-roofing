@@ -187,6 +187,149 @@ export interface OpsDocument {
 }
 
 // -----------------------------------------------------------------------------
+// Estimates (Quotes)
+// -----------------------------------------------------------------------------
+
+export type QuoteStatus =
+  | 'preliminary'
+  | 'measured'
+  | 'selected'
+  | 'financed'
+  | 'scheduled'
+  | 'signed'
+  | 'converted';
+
+export interface OpsEstimate {
+  id: string;
+  customer: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  sqftTotal: number | null;
+  selectedTier: string | null;
+  totalPrice: number | null;
+  depositAmount: number | null;
+  status: QuoteStatus;
+  createdAt: string;
+  expiresAt: string | null;
+}
+
+// -----------------------------------------------------------------------------
+// Calendar (Appointments)
+// -----------------------------------------------------------------------------
+
+export type AppointmentType = 'installation' | 'inspection' | 'follow_up';
+export type AppointmentStatus =
+  | 'scheduled'
+  | 'confirmed'
+  | 'cancelled'
+  | 'completed'
+  | 'no_show';
+
+export interface OpsAppointment {
+  id: string;
+  orderId: string;
+  type: AppointmentType;
+  scheduledStart: string;
+  scheduledEnd: string;
+  attendeeName: string | null;
+  attendeeEmail: string | null;
+  status: AppointmentStatus;
+  address: string | null;
+  notes: string | null;
+  createdAt: string;
+}
+
+// -----------------------------------------------------------------------------
+// Payments
+// -----------------------------------------------------------------------------
+
+export type PaymentType = 'deposit' | 'balance' | 'refund';
+export type PaymentStatusType =
+  | 'pending'
+  | 'processing'
+  | 'succeeded'
+  | 'failed'
+  | 'refunded';
+
+export interface OpsPayment {
+  id: string;
+  orderId: string;
+  type: PaymentType;
+  amount: number;
+  status: PaymentStatusType;
+  paymentMethod: string | null;
+  cardLast4: string | null;
+  cardBrand: string | null;
+  customerName: string | null;
+  confirmationNumber: string | null;
+  processedAt: string | null;
+  createdAt: string;
+}
+
+// -----------------------------------------------------------------------------
+// Invoices (Orders)
+// -----------------------------------------------------------------------------
+
+export type OrderStatus =
+  | 'pending'
+  | 'deposit_paid'
+  | 'scheduled'
+  | 'in_progress'
+  | 'completed'
+  | 'cancelled'
+  | 'refunded';
+
+export interface OpsInvoice {
+  id: string;
+  confirmationNumber: string;
+  customerName: string | null;
+  customerEmail: string;
+  propertyAddress: string;
+  selectedTier: string;
+  totalPrice: number;
+  depositAmount: number;
+  balanceDue: number;
+  paidAmount: number;
+  status: OrderStatus;
+  financingUsed: string | null;
+  scheduledStartDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// -----------------------------------------------------------------------------
+// Analytics
+// -----------------------------------------------------------------------------
+
+export interface OpsAnalyticsDay {
+  date: string;
+  revenue: number;
+  orders: number;
+  quotes: number;
+}
+
+export interface OpsAnalyticsSummary {
+  totalRevenue: number;
+  totalOrders: number;
+  totalQuotes: number;
+  avgOrderValue: number;
+}
+
+export interface OpsAnalyticsPipelineStage {
+  stage: string;
+  count: number;
+  value: number;
+}
+
+export interface OpsAnalyticsResponse {
+  daily: OpsAnalyticsDay[];
+  summary: OpsAnalyticsSummary;
+  pipeline: OpsAnalyticsPipelineStage[];
+}
+
+// -----------------------------------------------------------------------------
 // Dashboard
 // -----------------------------------------------------------------------------
 

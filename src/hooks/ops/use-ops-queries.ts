@@ -12,6 +12,13 @@ import type {
   OpsDocument,
   HealthStatus,
   DashboardStats,
+  OpsEstimate,
+  QuoteStatus,
+  OpsAppointment,
+  OpsPayment,
+  OpsInvoice,
+  OrderStatus,
+  OpsAnalyticsResponse,
 } from '@/types/ops';
 import type { TicketMessage } from '@/components/features/ops/support';
 
@@ -30,6 +37,16 @@ export const opsKeys = {
   blogPosts: (filters?: { status?: string; search?: string }) =>
     [...opsKeys.all, 'blog-posts', filters] as const,
   documents: (folder?: string | null) => [...opsKeys.all, 'documents', folder] as const,
+  estimates: (filters?: { status?: string; search?: string }) =>
+    [...opsKeys.all, 'estimates', filters] as const,
+  calendar: (filters?: { month?: string; status?: string }) =>
+    [...opsKeys.all, 'calendar', filters] as const,
+  payments: (filters?: { status?: string; method?: string; search?: string }) =>
+    [...opsKeys.all, 'payments', filters] as const,
+  invoices: (filters?: { status?: string; search?: string }) =>
+    [...opsKeys.all, 'invoices', filters] as const,
+  analytics: (filters?: { from?: string; to?: string }) =>
+    [...opsKeys.all, 'analytics', filters] as const,
   tickets: (filters?: { status?: string; search?: string }) =>
     [...opsKeys.all, 'tickets', filters] as const,
   ticketMessages: (ticketId: string) => [...opsKeys.all, 'ticket-messages', ticketId] as const,
@@ -341,6 +358,142 @@ export function usePublishBlogPost() {
         body: JSON.stringify({ status: publish ? 'published' : 'draft', publishedAt: publish ? new Date().toISOString() : null }),
       }),
     onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'blog-posts'] }),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Estimates (Quotes)
+// ---------------------------------------------------------------------------
+
+export function useOpsEstimates(status?: QuoteStatus | 'all', search?: string) {
+  const filters = { status: status !== 'all' ? status : undefined, search: search || undefined };
+  return useQuery({
+    queryKey: opsKeys.estimates(filters),
+    queryFn: () => {
+      const params = new URLSearchParams();
+      if (filters.status) params.set('status', filters.status);
+      if (filters.search) params.set('search', filters.search);
+      return opsFetch<{ estimates: OpsEstimate[]; total: number }>(
+        `/api/ops/estimates?${params}`
+      ).then((d) => d.estimates);
+    },
+  });
+}
+
+export function useUpdateEstimateStatus() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ estimateId, status }: { estimateId: string; status: QuoteStatus }) =>
+      opsMutate(`/api/ops/estimates/${estimateId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'estimates'] }),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Calendar (Appointments)
+// ---------------------------------------------------------------------------
+
+export function useOpsCalendar(month?: string, status?: string) {
+  const filters = { month, status: status || undefined };
+  return useQuery({
+    queryKey: opsKeys.calendar(filters),
+    queryFn: () => {
+      const params = new URLSearchParams();
+      if (filters.month) params.set('month', filters.month);
+      if (filters.status) params.set('status', filters.status);
+      return opsFetch<{ appointments: OpsAppointment[]; total: number }>(
+        `/api/ops/calendar?${params}`
+      ).then((d) => d.appointments);
+    },
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Payments
+// ---------------------------------------------------------------------------
+
+interface PaymentStats {
+  totalReceived: number;
+  pendingAmount: number;
+  failedAmount: number;
+}
+
+export function useOpsPayments(status?: string, method?: string, search?: string) {
+  const filters = {
+    status: status || undefined,
+    method: method || undefined,
+    search: search || undefined,
+  };
+  return useQuery({
+    queryKey: opsKeys.payments(filters),
+    queryFn: () => {
+      const params = new URLSearchParams();
+      if (filters.status) params.set('status', filters.status);
+      if (filters.method) params.set('method', filters.method);
+      if (filters.search) params.set('search', filters.search);
+      return opsFetch<{ payments: OpsPayment[]; total: number; stats: PaymentStats }>(
+        `/api/ops/payments?${params}`
+      );
+    },
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Invoices (Orders)
+// ---------------------------------------------------------------------------
+
+interface InvoiceStats {
+  totalInvoiced: number;
+  outstanding: number;
+  paid: number;
+}
+
+export function useOpsInvoices(status?: OrderStatus | 'all', search?: string) {
+  const filters = { status: status !== 'all' ? status : undefined, search: search || undefined };
+  return useQuery({
+    queryKey: opsKeys.invoices(filters),
+    queryFn: () => {
+      const params = new URLSearchParams();
+      if (filters.status) params.set('status', filters.status);
+      if (filters.search) params.set('search', filters.search);
+      return opsFetch<{ invoices: OpsInvoice[]; total: number; stats: InvoiceStats }>(
+        `/api/ops/invoices?${params}`
+      );
+    },
+  });
+}
+
+export function useUpdateInvoiceStatus() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ invoiceId, status }: { invoiceId: string; status: OrderStatus }) =>
+      opsMutate(`/api/ops/invoices/${invoiceId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'invoices'] }),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Analytics
+// ---------------------------------------------------------------------------
+
+export function useOpsAnalytics(from?: string, to?: string) {
+  const filters = { from, to };
+  return useQuery({
+    queryKey: opsKeys.analytics(filters),
+    queryFn: () => {
+      const params = new URLSearchParams();
+      if (from) params.set('from', from);
+      if (to) params.set('to', to);
+      const qs = params.toString();
+      return opsFetch<OpsAnalyticsResponse>(`/api/ops/analytics${qs ? `?${qs}` : ''}`);
+    },
+    staleTime: 120_000,
   });
 }
 

@@ -1,128 +1,66 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Plus, Search, MoreHorizontal, ArrowUpDown, Eye, Trash2, Send, Copy } from 'lucide-react';
+import { Search, MoreHorizontal, ArrowUpDown, Eye, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table';
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody,
 } from '@/components/ui/dialog';
-import { useToast } from '@/components/ui/Toast';
-
-interface Estimate {
-  id: string;
-  customer: string;
-  address: string;
-  amount: number;
-  status: string;
-  created: string;
-  sent: string | null;
-  signed: string | null;
-}
-
-const INITIAL_ESTIMATES: Estimate[] = [
-  { id: 'EST-1042', customer: 'John Davis', address: '2187 Herndon Ave, Clovis, CA', amount: 18500, status: 'sent', created: 'Feb 8, 2026', sent: 'Feb 9, 2026', signed: null },
-  { id: 'EST-1041', customer: 'Sarah Miller', address: '1 Carriage Dr, Kansas City, MO', amount: 19000, status: 'viewed', created: 'Feb 7, 2026', sent: 'Feb 8, 2026', signed: null },
-  { id: 'EST-1040', customer: 'Mike Torres', address: '2726 Askew Ave, Kansas City, MO', amount: 6000, status: 'signed', created: 'Feb 5, 2026', sent: 'Feb 5, 2026', signed: 'Feb 6, 2026' },
-  { id: 'EST-1039', customer: 'Maria Lopez', address: '9 Sugar Bowl Ln, Gulf Breeze, FL', amount: 27000, status: 'sent', created: 'Feb 3, 2026', sent: 'Feb 4, 2026', signed: null },
-  { id: 'EST-1038', customer: 'Robert Chen', address: '445 Elm Street, Denver, CO', amount: 15000, status: 'signed', created: 'Jan 28, 2026', sent: 'Jan 29, 2026', signed: 'Jan 30, 2026' },
-  { id: 'EST-1037', customer: 'Amanda White', address: '214 N 3rd St, River Falls, WI', amount: 22000, status: 'draft', created: 'Feb 10, 2026', sent: null, signed: null },
-  { id: 'EST-1036', customer: 'James Wilson', address: '1220 Maple Ave, Austin, TX', amount: 18500, status: 'expired', created: 'Jan 15, 2026', sent: 'Jan 16, 2026', signed: null },
-  { id: 'EST-1035', customer: 'Lisa Brown', address: '13790 Marine Dr, White Rock, BC', amount: 17000, status: 'rejected', created: 'Jan 20, 2026', sent: 'Jan 21, 2026', signed: null },
-];
+import { useOpsEstimates } from '@/hooks/ops/use-ops-queries';
+import type { OpsEstimate, QuoteStatus } from '@/types/ops';
 
 const STATUS_STYLES: Record<string, string> = {
-  draft: 'bg-muted text-muted-foreground',
-  sent: 'bg-blue-50 text-blue-700 border-blue-200',
-  viewed: 'bg-purple-50 text-purple-700 border-purple-200',
+  preliminary: 'bg-muted text-muted-foreground',
+  measured: 'bg-blue-50 text-blue-700 border-blue-200',
+  selected: 'bg-purple-50 text-purple-700 border-purple-200',
+  financed: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+  scheduled: 'bg-amber-50 text-amber-700 border-amber-200',
   signed: 'bg-green-50 text-green-700 border-green-200',
-  rejected: 'bg-red-50 text-red-700 border-red-200',
-  expired: 'bg-amber-50 text-amber-700 border-amber-200',
+  converted: 'bg-emerald-50 text-emerald-700 border-emerald-200',
 };
 
-const STATUSES = ['all', 'draft', 'sent', 'viewed', 'signed', 'rejected', 'expired'];
+const STATUSES: (QuoteStatus | 'all')[] = ['all', 'preliminary', 'measured', 'selected', 'financed', 'scheduled', 'signed', 'converted'];
+
+function formatDate(dateStr: string | null | undefined) {
+  if (!dateStr) return '—';
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function formatCurrency(val: number | null | undefined) {
+  if (val == null) return '—';
+  return `$${val.toLocaleString()}`;
+}
 
 export default function EstimatesPage() {
-  const { success } = useToast();
-  const [estimates, setEstimates] = useState(INITIAL_ESTIMATES);
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState<QuoteStatus | 'all'>('all');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
-  const [showNewDialog, setShowNewDialog] = useState(false);
-  const [viewEstimate, setViewEstimate] = useState<Estimate | null>(null);
+  const [viewEstimate, setViewEstimate] = useState<OpsEstimate | null>(null);
 
-  // Form state
-  const [formCustomer, setFormCustomer] = useState('');
-  const [formAddress, setFormAddress] = useState('');
-  const [formAmount, setFormAmount] = useState('');
+  const { data: estimates = [], isLoading, refetch } = useOpsEstimates(statusFilter, search || undefined);
 
-  const filtered = useMemo(() => {
-    let result = estimates;
-    if (search) {
-      const q = search.toLowerCase();
-      result = result.filter(e =>
-        e.id.toLowerCase().includes(q) ||
-        e.customer.toLowerCase().includes(q) ||
-        e.address.toLowerCase().includes(q)
-      );
-    }
-    if (statusFilter !== 'all') {
-      result = result.filter(e => e.status === statusFilter);
-    }
-    result = [...result].sort((a, b) => sortDir === 'asc' ? a.amount - b.amount : b.amount - a.amount);
-    return result;
-  }, [estimates, search, statusFilter, sortDir]);
+  const sorted = useMemo(() => {
+    return [...estimates].sort((a, b) => {
+      const va = a.totalPrice ?? 0;
+      const vb = b.totalPrice ?? 0;
+      return sortDir === 'asc' ? va - vb : vb - va;
+    });
+  }, [estimates, sortDir]);
 
-  const totalAmount = estimates.reduce((s, e) => s + e.amount, 0);
-  const signed = estimates.filter(e => e.status === 'signed');
-  const pending = estimates.filter(e => ['sent', 'viewed'].includes(e.status));
-
-  function handleCreate() {
-    if (!formCustomer.trim() || !formAddress.trim() || !formAmount.trim()) return;
-    const nextNum = Math.max(...estimates.map(e => parseInt(e.id.split('-')[1]))) + 1;
-    const newEst: Estimate = {
-      id: `EST-${nextNum}`,
-      customer: formCustomer.trim(),
-      address: formAddress.trim(),
-      amount: parseInt(formAmount),
-      status: 'draft',
-      created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      sent: null,
-      signed: null,
-    };
-    setEstimates(prev => [newEst, ...prev]);
-    setShowNewDialog(false);
-    setFormCustomer(''); setFormAddress(''); setFormAmount('');
-    success('Estimate created', `${newEst.id} for ${newEst.customer}`);
-  }
-
-  function handleSendEstimate(est: Estimate) {
-    setEstimates(prev => prev.map(e =>
-      e.id === est.id ? { ...e, status: 'sent', sent: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) } : e
-    ));
-    success('Estimate sent', `${est.id} sent to ${est.customer}`);
-  }
-
-  function handleDuplicate(est: Estimate) {
-    const nextNum = Math.max(...estimates.map(e => parseInt(e.id.split('-')[1]))) + 1;
-    const dup: Estimate = { ...est, id: `EST-${nextNum}`, status: 'draft', sent: null, signed: null, created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) };
-    setEstimates(prev => [dup, ...prev]);
-    success('Estimate duplicated', `${dup.id} created from ${est.id}`);
-  }
-
-  function handleDelete(est: Estimate) {
-    setEstimates(prev => prev.filter(e => e.id !== est.id));
-    setViewEstimate(null);
-    success('Estimate deleted', `${est.id} removed`);
-  }
+  const totalValue = estimates.reduce((s, e) => s + (e.totalPrice ?? 0), 0);
+  const signed = estimates.filter(e => e.status === 'signed' || e.status === 'converted');
+  const signedValue = signed.reduce((s, e) => s + (e.totalPrice ?? 0), 0);
+  const active = estimates.filter(e => ['measured', 'selected', 'financed', 'scheduled'].includes(e.status));
+  const activeValue = active.reduce((s, e) => s + (e.totalPrice ?? 0), 0);
 
   return (
     <div className="space-y-6">
@@ -131,32 +69,34 @@ export default function EstimatesPage() {
           <h1 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'var(--ops-font-display)' }}>
             Estimates
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">Proposals and estimates for all jobs</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            {isLoading ? '...' : `${estimates.length} quotes · ${formatCurrency(totalValue)} total`}
+          </p>
         </div>
-        <Button size="sm" className="gap-2" onClick={() => { setFormCustomer(''); setFormAddress(''); setFormAmount(''); setShowNewDialog(true); }}>
-          <Plus className="h-4 w-4" />
-          New Estimate
+        <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
+          <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+          Refresh
         </Button>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card><CardContent className="p-4">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Estimates</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{estimates.length}</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Quotes</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : estimates.length}</p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Value</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">${totalAmount.toLocaleString()}</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : formatCurrency(totalValue)}</p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Signed</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{signed.length}</p>
-          <p className="text-xs text-green-600 mt-0.5">${signed.reduce((s, e) => s + e.amount, 0).toLocaleString()}</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Signed / Converted</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : signed.length}</p>
+          {!isLoading && signedValue > 0 && <p className="text-xs text-green-600 mt-0.5">{formatCurrency(signedValue)}</p>}
         </CardContent></Card>
         <Card><CardContent className="p-4">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Pending</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{pending.length}</p>
-          <p className="text-xs text-blue-600 mt-0.5">${pending.reduce((s, e) => s + e.amount, 0).toLocaleString()}</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Active Pipeline</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : active.length}</p>
+          {!isLoading && activeValue > 0 && <p className="text-xs text-blue-600 mt-0.5">{formatCurrency(activeValue)}</p>}
         </CardContent></Card>
       </div>
 
@@ -182,131 +122,101 @@ export default function EstimatesPage() {
       </div>
 
       <Card>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>#</TableHead>
-              <TableHead>Customer</TableHead>
-              <TableHead>Address</TableHead>
-              <TableHead className="text-right">
-                <button className="flex items-center justify-end gap-1 hover:text-foreground transition-colors" onClick={() => setSortDir(d => d === 'asc' ? 'desc' : 'asc')}>
-                  Amount <ArrowUpDown className="h-3 w-3" />
-                </button>
-              </TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Created</TableHead>
-              <TableHead>Sent</TableHead>
-              <TableHead>Signed</TableHead>
-              <TableHead className="w-10" />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map((e) => (
-              <TableRow key={e.id} className="cursor-pointer" onClick={() => setViewEstimate(e)}>
-                <TableCell className="font-medium text-primary">{e.id}</TableCell>
-                <TableCell className="font-medium">{e.customer}</TableCell>
-                <TableCell className="text-muted-foreground max-w-[200px] truncate">{e.address}</TableCell>
-                <TableCell className="text-right font-medium tabular-nums">${e.amount.toLocaleString()}</TableCell>
-                <TableCell>
-                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[e.status]}`}>
-                    {e.status.charAt(0).toUpperCase() + e.status.slice(1)}
-                  </span>
-                </TableCell>
-                <TableCell className="text-muted-foreground text-xs">{e.created}</TableCell>
-                <TableCell className="text-muted-foreground text-xs">{e.sent || '—'}</TableCell>
-                <TableCell className="text-muted-foreground text-xs">{e.signed || '—'}</TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(ev) => ev.stopPropagation()}>
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); setViewEstimate(e); }}>
-                        <Eye className="h-4 w-4 mr-2" /> View Details
-                      </DropdownMenuItem>
-                      {e.status === 'draft' && (
-                        <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); handleSendEstimate(e); }}>
-                          <Send className="h-4 w-4 mr-2" /> Send to Customer
-                        </DropdownMenuItem>
-                      )}
-                      <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); handleDuplicate(e); }}>
-                        <Copy className="h-4 w-4 mr-2" /> Duplicate
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-red-600" onClick={(ev) => { ev.stopPropagation(); handleDelete(e); }}>
-                        <Trash2 className="h-4 w-4 mr-2" /> Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
+        {isLoading ? (
+          <div className="p-4 space-y-3">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 flex-1" />
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-20" />
+              </div>
             ))}
-            {filtered.length === 0 && (
-              <TableRow><TableCell colSpan={9} className="text-center py-8 text-muted-foreground">No estimates match your search</TableCell></TableRow>
-            )}
-          </TableBody>
-        </Table>
-        <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-muted-foreground">
-          <span>Showing {filtered.length} of {estimates.length}</span>
-        </div>
+          </div>
+        ) : sorted.length === 0 ? (
+          <div className="p-12 text-center text-muted-foreground">
+            <p className="text-sm">{estimates.length === 0 ? 'No quotes yet' : 'No quotes match your filter'}</p>
+          </div>
+        ) : (
+          <>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Customer</TableHead>
+                  <TableHead>Address</TableHead>
+                  <TableHead className="text-right">
+                    <button className="flex items-center justify-end gap-1 hover:text-foreground transition-colors" onClick={() => setSortDir(d => d === 'asc' ? 'desc' : 'asc')}>
+                      Amount <ArrowUpDown className="h-3 w-3" />
+                    </button>
+                  </TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Tier</TableHead>
+                  <TableHead>Created</TableHead>
+                  <TableHead className="w-10" />
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {sorted.map((e) => (
+                  <TableRow key={e.id} className="cursor-pointer" onClick={() => setViewEstimate(e)}>
+                    <TableCell className="font-medium">{e.customer}</TableCell>
+                    <TableCell className="text-muted-foreground max-w-[200px] truncate">{e.address}, {e.city}</TableCell>
+                    <TableCell className="text-right font-medium tabular-nums">{formatCurrency(e.totalPrice)}</TableCell>
+                    <TableCell>
+                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[e.status] || STATUS_STYLES.preliminary}`}>
+                        {e.status.charAt(0).toUpperCase() + e.status.slice(1)}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-xs capitalize">{e.selectedTier || '—'}</TableCell>
+                    <TableCell className="text-muted-foreground text-xs">{formatDate(e.createdAt)}</TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(ev) => ev.stopPropagation()}>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); setViewEstimate(e); }}>
+                            <Eye className="h-4 w-4 mr-2" /> View Details
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-muted-foreground">
+              <span>{sorted.length} of {estimates.length} quotes</span>
+            </div>
+          </>
+        )}
       </Card>
-
-      {/* New Estimate Dialog */}
-      <Dialog open={showNewDialog} onOpenChange={setShowNewDialog}>
-        <DialogContent>
-          <DialogHeader><DialogTitle>New Estimate</DialogTitle></DialogHeader>
-          <DialogBody className="space-y-4">
-            <div className="space-y-2">
-              <Label>Customer Name</Label>
-              <Input value={formCustomer} onChange={e => setFormCustomer(e.target.value)} placeholder="John Davis" />
-            </div>
-            <div className="space-y-2">
-              <Label>Property Address</Label>
-              <Input value={formAddress} onChange={e => setFormAddress(e.target.value)} placeholder="123 Main St, City, ST" />
-            </div>
-            <div className="space-y-2">
-              <Label>Amount ($)</Label>
-              <Input type="number" value={formAmount} onChange={e => setFormAmount(e.target.value)} placeholder="18500" />
-            </div>
-          </DialogBody>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowNewDialog(false)}>Cancel</Button>
-            <Button onClick={handleCreate} disabled={!formCustomer.trim() || !formAddress.trim() || !formAmount.trim()}>Create Estimate</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
       {/* View Estimate Dialog */}
       <Dialog open={!!viewEstimate} onOpenChange={() => setViewEstimate(null)}>
         <DialogContent>
-          <DialogHeader><DialogTitle>Estimate {viewEstimate?.id}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>Quote Details</DialogTitle></DialogHeader>
           {viewEstimate && (
             <DialogBody className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div><p className="text-xs text-muted-foreground">Customer</p><p className="font-medium">{viewEstimate.customer}</p></div>
-                <div><p className="text-xs text-muted-foreground">Amount</p><p className="font-medium tabular-nums">${viewEstimate.amount.toLocaleString()}</p></div>
-                <div className="col-span-2"><p className="text-xs text-muted-foreground">Address</p><p className="font-medium">{viewEstimate.address}</p></div>
-                <div><p className="text-xs text-muted-foreground">Status</p><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[viewEstimate.status]}`}>{viewEstimate.status.charAt(0).toUpperCase() + viewEstimate.status.slice(1)}</span></div>
-                <div><p className="text-xs text-muted-foreground">Created</p><p className="font-medium">{viewEstimate.created}</p></div>
-                <div><p className="text-xs text-muted-foreground">Sent</p><p className="font-medium">{viewEstimate.sent || '—'}</p></div>
-                <div><p className="text-xs text-muted-foreground">Signed</p><p className="font-medium">{viewEstimate.signed || '—'}</p></div>
+                <div><p className="text-xs text-muted-foreground">Amount</p><p className="font-medium tabular-nums">{formatCurrency(viewEstimate.totalPrice)}</p></div>
+                <div className="col-span-2"><p className="text-xs text-muted-foreground">Address</p><p className="font-medium">{viewEstimate.address}, {viewEstimate.city}, {viewEstimate.state} {viewEstimate.zip}</p></div>
+                <div><p className="text-xs text-muted-foreground">Status</p><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[viewEstimate.status] || STATUS_STYLES.preliminary}`}>{viewEstimate.status.charAt(0).toUpperCase() + viewEstimate.status.slice(1)}</span></div>
+                <div><p className="text-xs text-muted-foreground">Tier</p><p className="font-medium capitalize">{viewEstimate.selectedTier || '—'}</p></div>
+                {viewEstimate.sqftTotal && <div><p className="text-xs text-muted-foreground">Sq Ft</p><p className="font-medium tabular-nums">{viewEstimate.sqftTotal.toLocaleString()}</p></div>}
+                {viewEstimate.depositAmount && <div><p className="text-xs text-muted-foreground">Deposit</p><p className="font-medium tabular-nums">{formatCurrency(viewEstimate.depositAmount)}</p></div>}
+                <div><p className="text-xs text-muted-foreground">Created</p><p className="font-medium">{formatDate(viewEstimate.createdAt)}</p></div>
+                <div><p className="text-xs text-muted-foreground">Expires</p><p className="font-medium">{formatDate(viewEstimate.expiresAt)}</p></div>
               </div>
             </DialogBody>
           )}
           <DialogFooter>
-            {viewEstimate?.status === 'draft' && (
-              <Button variant="outline" onClick={() => { handleSendEstimate(viewEstimate!); setViewEstimate(null); }}>
-                <Send className="h-4 w-4 mr-2" /> Send
-              </Button>
-            )}
-            <Button variant="outline" onClick={() => { handleDuplicate(viewEstimate!); setViewEstimate(null); }}>
-              <Copy className="h-4 w-4 mr-2" /> Duplicate
-            </Button>
-            <Button variant="destructive" size="sm" onClick={() => handleDelete(viewEstimate!)}>
-              <Trash2 className="h-4 w-4 mr-2" /> Delete
-            </Button>
+            <Button variant="outline" onClick={() => setViewEstimate(null)}>Close</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

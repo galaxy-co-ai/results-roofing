@@ -1,294 +1,315 @@
 'use client';
 
-import { useState } from 'react';
-import { Plus, Search, LayoutGrid, List } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { Plus, Search, LayoutGrid, Loader2, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, DialogBody,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/Toast';
+import {
+  useOpsPipeline,
+  useMoveOpportunity,
+  useCreateOpportunity,
+  useDeleteOpportunity,
+} from '@/hooks/ops/use-ops-queries';
+import type { Opportunity, PipelineStage } from '@/types/ops';
 
-interface Job {
-  id: string;
-  address: string;
-  city: string;
-  value: number;
-  tasks: [number, number];
-  measured: boolean;
-  proposal: 'none' | 'draft' | 'sent' | 'signed' | 'rejected';
-  assignee: string;
-  timeAgo: string;
-}
-
-const STAGE_LIST = [
-  { name: 'New Lead', color: '#6B7A94' },
-  { name: 'Appt Scheduled', color: '#1E6CFF' },
-  { name: 'Measured', color: '#8B5CF6' },
-  { name: 'Proposal Sent', color: '#F59E0B' },
-  { name: 'Proposal Signed', color: '#10B981' },
-  { name: 'Pre-Production', color: '#06B6D4' },
-  { name: 'In Progress', color: '#EC4899' },
-  { name: 'Complete', color: '#22C55E' },
-];
-
-const INITIAL_JOBS: Record<string, Job[]> = {
-  'New Lead': [
-    { id: '1042', address: '2187 Herndon Ave', city: 'Clovis, CA', value: 0, tasks: [0, 0], measured: false, proposal: 'none', assignee: 'JS', timeAgo: 'just now' },
-    { id: '1041', address: '214 N 3rd St', city: 'River Falls, WI', value: 0, tasks: [2, 2], measured: false, proposal: 'none', assignee: 'AB', timeAgo: '4h ago' },
-    { id: '1040', address: '8812 Oak Park Blvd', city: 'Houston, TX', value: 0, tasks: [0, 0], measured: false, proposal: 'none', assignee: 'TC', timeAgo: '6h ago' },
-  ],
-  'Appt Scheduled': [
-    { id: '1038', address: '1 Carriage Dr', city: 'Kansas City, MO', value: 19000, tasks: [2, 3], measured: true, proposal: 'draft', assignee: 'JS', timeAgo: '3h ago' },
-    { id: '1035', address: '13790 Marine Dr', city: 'White Rock, BC', value: 17000, tasks: [2, 3], measured: true, proposal: 'draft', assignee: 'JS', timeAgo: '3h ago' },
-  ],
-  'Proposal Sent': [
-    { id: '1036', address: '2726 Askew Ave', city: 'Kansas City, MO', value: 6000, tasks: [4, 6], measured: true, proposal: 'sent', assignee: 'TC', timeAgo: '6h ago' },
-    { id: '1034', address: '9 Sugar Bowl Ln', city: 'Gulf Breeze, FL', value: 27000, tasks: [6, 6], measured: true, proposal: 'sent', assignee: 'TC', timeAgo: '3d ago' },
-  ],
-  'Proposal Signed': [
-    { id: '1030', address: '445 Elm Street', city: 'Denver, CO', value: 15000, tasks: [3, 5], measured: true, proposal: 'signed', assignee: 'AB', timeAgo: '1d ago' },
-  ],
-  'In Progress': [
-    { id: '1025', address: '1220 Maple Ave', city: 'Austin, TX', value: 18500, tasks: [5, 8], measured: true, proposal: 'signed', assignee: 'JS', timeAgo: '2d ago' },
-  ],
+const STAGE_COLORS: Record<string, string> = {
+  'New Lead': 'var(--ops-accent-crm)',
+  'Contacted': 'var(--ops-accent-messaging)',
+  'Quote Sent': 'var(--ops-accent-analytics)',
+  'Negotiation': 'var(--ops-accent-negotiation)',
+  'Won': 'var(--ops-accent-pipeline)',
+  'Lost': 'var(--ops-accent-support)',
 };
 
-const ASSIGNEES = ['JS', 'TC', 'AB', 'MJ', 'RK'];
-
-function ProposalBadge({ status }: { status: string }) {
-  const map: Record<string, { label: string; className: string }> = {
-    none: { label: 'No Proposal', className: 'bg-muted text-muted-foreground' },
-    draft: { label: 'Draft', className: 'bg-secondary text-secondary-foreground' },
-    sent: { label: 'Sent', className: 'bg-blue-50 text-blue-700 border-blue-200' },
-    signed: { label: 'Signed', className: 'bg-green-50 text-green-700 border-green-200' },
-    rejected: { label: 'Rejected', className: 'bg-red-50 text-red-700 border-red-200' },
-  };
-  const badge = map[status] || map.none;
-  return <span className={`inline-flex items-center rounded px-1.5 py-0.5 text-[11px] font-medium border ${badge.className}`}>{badge.label}</span>;
+function getStageColor(name: string): string {
+  return STAGE_COLORS[name] || 'var(--ops-accent-crm)';
 }
 
+function timeAgo(dateStr: string | undefined): string {
+  if (!dateStr) return '';
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60_000);
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}d ago`;
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+const STATUS_STYLES: Record<string, string> = {
+  open: 'bg-blue-50 text-blue-700 border-blue-200',
+  won: 'bg-green-50 text-green-700 border-green-200',
+  lost: 'bg-red-50 text-red-700 border-red-200',
+  abandoned: 'bg-muted text-muted-foreground',
+};
+
 export default function JobsPage() {
-  const { success, info } = useToast();
-  const [jobs, setJobs] = useState<Record<string, Job[]>>(INITIAL_JOBS);
+  const { success, error: showError } = useToast();
+  const { data: pipelineData, isLoading, refetch } = useOpsPipeline();
+  const moveOpportunity = useMoveOpportunity();
+  const createOpportunity = useCreateOpportunity();
+  const deleteOpportunity = useDeleteOpportunity();
+
+  const [search, setSearch] = useState('');
   const [showNewDialog, setShowNewDialog] = useState(false);
-  const [viewJob, setViewJob] = useState<{ job: Job; stage: string } | null>(null);
+  const [viewOpp, setViewOpp] = useState<{ opp: Opportunity; stage: PipelineStage } | null>(null);
 
   // Drag state
-  const [dragJob, setDragJob] = useState<{ job: Job; fromStage: string } | null>(null);
-  const [dragOverStage, setDragOverStage] = useState<string | null>(null);
+  const [dragOpp, setDragOpp] = useState<{ opp: Opportunity; fromStageId: string } | null>(null);
+  const [dragOverStageId, setDragOverStageId] = useState<string | null>(null);
 
   // Form state
-  const [formAddress, setFormAddress] = useState('');
-  const [formCity, setFormCity] = useState('');
+  const [formName, setFormName] = useState('');
   const [formValue, setFormValue] = useState('');
-  const [formAssignee, setFormAssignee] = useState('JS');
 
-  function stageCounts(stageName: string) {
-    const stageJobs = jobs[stageName] || [];
-    return {
-      count: stageJobs.length,
-      value: stageJobs.reduce((s, j) => s + j.value, 0),
-    };
-  }
+  const stages = pipelineData?.stages || [];
+  const opportunities = pipelineData?.opportunities || [];
+
+  // Group opportunities by stage
+  const oppsByStage = useMemo(() => {
+    const map: Record<string, Opportunity[]> = {};
+    for (const stage of stages) {
+      map[stage.id] = [];
+    }
+    for (const opp of opportunities) {
+      const q = search.toLowerCase();
+      if (q && !opp.name.toLowerCase().includes(q) && !(opp.contact?.name || '').toLowerCase().includes(q)) continue;
+      if (map[opp.pipelineStageId]) {
+        map[opp.pipelineStageId].push(opp);
+      }
+    }
+    return map;
+  }, [stages, opportunities, search]);
 
   function openNew() {
-    setFormAddress('');
-    setFormCity('');
+    setFormName('');
     setFormValue('');
-    setFormAssignee('JS');
     setShowNewDialog(true);
   }
 
-  function handleCreate() {
-    if (!formAddress.trim()) return;
-    const newJob: Job = {
-      id: String(1043 + Math.floor(Math.random() * 100)),
-      address: formAddress.trim(),
-      city: formCity.trim(),
-      value: Number(formValue) || 0,
-      tasks: [0, 0],
-      measured: false,
-      proposal: 'none',
-      assignee: formAssignee,
-      timeAgo: 'just now',
-    };
-    setJobs(prev => ({
-      ...prev,
-      'New Lead': [newJob, ...(prev['New Lead'] || [])],
-    }));
-    setShowNewDialog(false);
-    success('Job created', `${newJob.address} added to New Lead`);
+  async function handleCreate() {
+    if (!formName.trim()) return;
+    const firstStage = stages[0];
+    if (!firstStage) { showError('Error', 'No pipeline stages configured'); return; }
+    try {
+      await createOpportunity.mutateAsync({
+        name: formName.trim(),
+        pipelineId: firstStage.id.split('-')[0] || firstStage.id, // pipeline ID
+        pipelineStageId: firstStage.id,
+        contactId: '', // will be created without a contact link
+        monetaryValue: Number(formValue) || 0,
+      });
+      setShowNewDialog(false);
+      success('Job created', `${formName.trim()} added to ${firstStage.name}`);
+    } catch (err) {
+      showError('Error', err instanceof Error ? err.message : 'Failed to create job');
+    }
   }
 
   // Drag handlers
-  function handleDragStart(job: Job, fromStage: string) {
-    setDragJob({ job, fromStage });
+  function handleDragStart(opp: Opportunity) {
+    setDragOpp({ opp, fromStageId: opp.pipelineStageId });
   }
 
-  function handleDragOver(e: React.DragEvent, stageName: string) {
+  function handleDragOver(e: React.DragEvent, stageId: string) {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
-    setDragOverStage(stageName);
+    setDragOverStageId(stageId);
   }
 
   function handleDragLeave() {
-    setDragOverStage(null);
+    setDragOverStageId(null);
   }
 
-  function handleDrop(e: React.DragEvent, toStage: string) {
+  async function handleDrop(e: React.DragEvent, toStageId: string) {
     e.preventDefault();
-    setDragOverStage(null);
-    if (!dragJob || dragJob.fromStage === toStage) {
-      setDragJob(null);
+    setDragOverStageId(null);
+    if (!dragOpp || dragOpp.fromStageId === toStageId) {
+      setDragOpp(null);
       return;
     }
-    setJobs(prev => {
-      const fromJobs = (prev[dragJob.fromStage] || []).filter(j => j.id !== dragJob.job.id);
-      const toJobs = [dragJob.job, ...(prev[toStage] || [])];
-      return { ...prev, [dragJob.fromStage]: fromJobs, [toStage]: toJobs };
-    });
-    success('Job moved', `${dragJob.job.address} → ${toStage}`);
-    setDragJob(null);
+    const stageName = stages.find(s => s.id === toStageId)?.name || 'stage';
+    try {
+      await moveOpportunity.mutateAsync({
+        opportunityId: dragOpp.opp.id,
+        stageId: toStageId,
+      });
+      success('Job moved', `${dragOpp.opp.name} → ${stageName}`);
+    } catch (err) {
+      showError('Error', err instanceof Error ? err.message : 'Failed to move job');
+    }
+    setDragOpp(null);
   }
 
   function handleDragEnd() {
-    setDragJob(null);
-    setDragOverStage(null);
+    setDragOpp(null);
+    setDragOverStageId(null);
   }
 
-  function handleDeleteJob(job: Job, stage: string) {
-    setJobs(prev => ({
-      ...prev,
-      [stage]: (prev[stage] || []).filter(j => j.id !== job.id),
-    }));
-    setViewJob(null);
-    success('Job deleted', `${job.address} removed`);
+  async function handleDeleteOpp(opp: Opportunity) {
+    try {
+      await deleteOpportunity.mutateAsync(opp.id);
+      setViewOpp(null);
+      success('Job deleted', `${opp.name} removed`);
+    } catch (err) {
+      showError('Error', err instanceof Error ? err.message : 'Failed to delete job');
+    }
+  }
+
+  async function handleMoveFromDialog(opp: Opportunity, toStageId: string) {
+    const stageName = stages.find(s => s.id === toStageId)?.name || 'stage';
+    try {
+      await moveOpportunity.mutateAsync({ opportunityId: opp.id, stageId: toStageId });
+      success('Job moved', `${opp.name} → ${stageName}`);
+      const newStage = stages.find(s => s.id === toStageId);
+      if (newStage) setViewOpp({ opp: { ...opp, pipelineStageId: toStageId }, stage: newStage });
+    } catch (err) {
+      showError('Error', err instanceof Error ? err.message : 'Failed to move job');
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <Skeleton className="h-8 w-24" />
+            <Skeleton className="h-4 w-48 mt-2" />
+          </div>
+          <Skeleton className="h-9 w-28" />
+        </div>
+        <div className="flex gap-4 overflow-x-auto pb-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex-shrink-0 w-[280px] space-y-2">
+              <Skeleton className="h-6 w-full" />
+              <Skeleton className="h-24 w-full rounded-lg" />
+              <Skeleton className="h-24 w-full rounded-lg" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'var(--ops-font-display)' }}>
             Jobs
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">Manage your roofing pipeline</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            {opportunities.length} jobs across {stages.length} stages
+          </p>
         </div>
-        <Button size="sm" className="gap-2" onClick={openNew}>
-          <Plus className="h-4 w-4" />
-          New Job
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => refetch()}>
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Refresh
+          </Button>
+          <Button size="sm" className="gap-2" onClick={openNew}>
+            <Plus className="h-4 w-4" />
+            New Job
+          </Button>
+        </div>
       </div>
 
-      {/* Toolbar */}
       <div className="flex items-center gap-3">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search addresses or customers..." className="pl-9 h-9" />
+          <Input
+            placeholder="Search jobs..."
+            className="pl-9 h-9"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
         <div className="flex items-center gap-1 border rounded-lg p-0.5">
           <Button variant="secondary" size="sm" className="h-7 gap-1.5 text-xs">
             <LayoutGrid className="h-3.5 w-3.5" />
             Board
           </Button>
-          <Button variant="ghost" size="sm" className="h-7 gap-1.5 text-xs" onClick={() => info('Coming soon', 'List view is under development')}>
-            <List className="h-3.5 w-3.5" />
-            List
-          </Button>
         </div>
       </div>
 
       {/* Kanban Board */}
       <div className="flex gap-4 overflow-x-auto pb-4 -mx-6 px-6">
-        {STAGE_LIST.map((stage) => {
-          const stageJobs = jobs[stage.name] || [];
-          const { count, value } = stageCounts(stage.name);
-          const isDragOver = dragOverStage === stage.name;
+        {stages.map((stage) => {
+          const stageOpps = oppsByStage[stage.id] || [];
+          const totalValue = stageOpps.reduce((s, o) => s + (o.monetaryValue || 0), 0);
+          const isDragOver = dragOverStageId === stage.id;
+          const color = getStageColor(stage.name);
 
           return (
             <div
-              key={stage.name}
+              key={stage.id}
               className={`flex-shrink-0 w-[280px] rounded-lg transition-colors ${isDragOver ? 'bg-blue-50/60 ring-2 ring-primary/30' : ''}`}
-              onDragOver={(e) => handleDragOver(e, stage.name)}
+              onDragOver={(e) => handleDragOver(e, stage.id)}
               onDragLeave={handleDragLeave}
-              onDrop={(e) => handleDrop(e, stage.name)}
+              onDrop={(e) => handleDrop(e, stage.id)}
             >
-              {/* Column Header */}
               <div className="flex items-center justify-between px-2 py-2 mb-2">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: stage.color }} />
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
                   <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     {stage.name}
                   </span>
                   <span className="text-xs text-muted-foreground bg-muted rounded-full px-1.5 py-0.5 tabular-nums">
-                    {count}
+                    {stageOpps.length}
                   </span>
                 </div>
-                {value > 0 && (
+                {totalValue > 0 && (
                   <span className="text-xs text-muted-foreground tabular-nums">
-                    ${(value / 1000).toFixed(0)}k
+                    ${(totalValue / 1000).toFixed(0)}k
                   </span>
                 )}
               </div>
 
-              {/* Cards */}
               <div className="space-y-2 min-h-[60px]">
-                {stageJobs.map((job) => (
+                {stageOpps.map((opp) => (
                   <Card
-                    key={job.id}
+                    key={opp.id}
                     draggable
-                    onDragStart={() => handleDragStart(job, stage.name)}
+                    onDragStart={() => handleDragStart(opp)}
                     onDragEnd={handleDragEnd}
                     className={`p-3 cursor-grab active:cursor-grabbing hover:shadow-md transition-all border-l-[3px] rounded-lg select-none ${
-                      dragJob?.job.id === job.id ? 'opacity-40 scale-95' : ''
+                      dragOpp?.opp.id === opp.id ? 'opacity-40 scale-95' : ''
                     }`}
-                    style={{ borderLeftColor: stage.color }}
-                    onClick={() => setViewJob({ job, stage: stage.name })}
+                    style={{ borderLeftColor: color }}
+                    onClick={() => setViewOpp({ opp, stage })}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
-                        <p className="text-sm font-medium truncate">{job.address}</p>
-                        <p className="text-xs text-muted-foreground">{job.city}</p>
+                        <p className="text-sm font-medium truncate">{opp.name}</p>
+                        {opp.contact?.name && (
+                          <p className="text-xs text-muted-foreground">{opp.contact.name}</p>
+                        )}
                       </div>
-                      {job.value > 0 && (
+                      {(opp.monetaryValue || 0) > 0 && (
                         <span className="text-sm font-semibold tabular-nums whitespace-nowrap">
-                          ${job.value.toLocaleString()}
+                          ${(opp.monetaryValue || 0).toLocaleString()}
                         </span>
                       )}
-                    </div>
-
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-[11px] text-muted-foreground">
-                        Tasks {job.tasks[0]}/{job.tasks[1]}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-1.5 mt-2">
-                      {job.measured && (
-                        <span className="inline-flex items-center rounded px-1.5 py-0.5 text-[11px] font-medium bg-green-50 text-green-700 border border-green-200">
-                          Measured
-                        </span>
-                      )}
-                      <ProposalBadge status={job.proposal} />
                     </div>
 
                     <div className="flex items-center justify-between mt-3 pt-2 border-t">
-                      <span className="text-[11px] text-muted-foreground">{job.timeAgo}</span>
-                      <Avatar className="h-6 w-6">
-                        <AvatarFallback className="text-[10px] bg-primary/10 text-primary">
-                          {job.assignee}
-                        </AvatarFallback>
-                      </Avatar>
+                      <span className="text-[11px] text-muted-foreground">{timeAgo(opp.createdAt)}</span>
+                      <span className={`inline-flex items-center rounded px-1.5 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[opp.status] || STATUS_STYLES.open}`}>
+                        {opp.status.charAt(0).toUpperCase() + opp.status.slice(1)}
+                      </span>
                     </div>
                   </Card>
                 ))}
 
-                {stageJobs.length === 0 && (
+                {stageOpps.length === 0 && (
                   <div className={`border border-dashed rounded-lg p-4 text-center transition-colors ${isDragOver ? 'border-primary bg-blue-50/40' : ''}`}>
                     <p className="text-xs text-muted-foreground">{isDragOver ? 'Drop here' : 'No jobs'}</p>
                   </div>
@@ -308,91 +329,79 @@ export default function JobsPage() {
           </DialogHeader>
           <DialogBody className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="job-address">Address *</Label>
-              <Input id="job-address" value={formAddress} onChange={e => setFormAddress(e.target.value)} placeholder="123 Main St" />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="job-city">City, State</Label>
-                <Input id="job-city" value={formCity} onChange={e => setFormCity(e.target.value)} placeholder="Kansas City, MO" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="job-value">Estimated Value ($)</Label>
-                <Input id="job-value" type="number" value={formValue} onChange={e => setFormValue(e.target.value)} placeholder="0" />
-              </div>
+              <Label htmlFor="job-name">Job Name / Address *</Label>
+              <Input id="job-name" value={formName} onChange={e => setFormName(e.target.value)} placeholder="123 Main St — Roof Replacement" />
             </div>
             <div className="space-y-2">
-              <Label>Assign To</Label>
-              <select className="flex h-9 w-full rounded-md border bg-background px-3 py-1 text-sm" value={formAssignee} onChange={e => setFormAssignee(e.target.value)}>
-                {ASSIGNEES.map(a => <option key={a} value={a}>{a}</option>)}
-              </select>
+              <Label htmlFor="job-value">Estimated Value ($)</Label>
+              <Input id="job-value" type="number" value={formValue} onChange={e => setFormValue(e.target.value)} placeholder="0" />
             </div>
           </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowNewDialog(false)}>Cancel</Button>
-            <Button onClick={handleCreate}>Create Job</Button>
+            <Button onClick={handleCreate} disabled={createOpportunity.isPending}>
+              {createOpportunity.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Create Job
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* View Job Dialog */}
-      <Dialog open={!!viewJob} onOpenChange={(open) => !open && setViewJob(null)}>
+      <Dialog open={!!viewOpp} onOpenChange={(open) => !open && setViewOpp(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Job #{viewJob?.job.id}</DialogTitle>
-            <DialogDescription>{viewJob?.job.address}, {viewJob?.job.city}</DialogDescription>
+            <DialogTitle>{viewOpp?.opp.name}</DialogTitle>
+            <DialogDescription>{viewOpp?.opp.contact?.name || 'No contact linked'}</DialogDescription>
           </DialogHeader>
-          {viewJob && (
+          {viewOpp && (
             <DialogBody className="space-y-4">
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Stage</p>
-                  <p className="text-sm font-medium mt-0.5">{viewJob.stage}</p>
+                  <p className="text-sm font-medium mt-0.5">{viewOpp.stage.name}</p>
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Value</p>
-                  <p className="text-sm font-medium mt-0.5">{viewJob.job.value > 0 ? `$${viewJob.job.value.toLocaleString()}` : '—'}</p>
+                  <p className="text-sm font-medium mt-0.5 tabular-nums">
+                    {(viewOpp.opp.monetaryValue || 0) > 0 ? `$${(viewOpp.opp.monetaryValue || 0).toLocaleString()}` : '—'}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Assignee</p>
-                  <p className="text-sm font-medium mt-0.5">{viewJob.job.assignee}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Status</p>
+                  <span className={`inline-flex items-center rounded px-1.5 py-0.5 text-[11px] font-medium border mt-0.5 ${STATUS_STYLES[viewOpp.opp.status] || STATUS_STYLES.open}`}>
+                    {viewOpp.opp.status.charAt(0).toUpperCase() + viewOpp.opp.status.slice(1)}
+                  </span>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Tasks</p>
-                  <p className="text-sm font-medium mt-0.5">{viewJob.job.tasks[0]}/{viewJob.job.tasks[1]}</p>
+              {viewOpp.opp.contact && (
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider">Contact Email</p>
+                    <p className="text-sm font-medium mt-0.5">{viewOpp.opp.contact.email || '—'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider">Contact Phone</p>
+                    <p className="text-sm font-medium mt-0.5">{viewOpp.opp.contact.phone || '—'}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Measured</p>
-                  <p className="text-sm font-medium mt-0.5">{viewJob.job.measured ? 'Yes' : 'No'}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Proposal</p>
-                  <div className="mt-0.5"><ProposalBadge status={viewJob.job.proposal} /></div>
-                </div>
-              </div>
+              )}
               <div>
                 <Label className="mb-2 block">Move to Stage</Label>
                 <div className="flex flex-wrap gap-1.5">
-                  {STAGE_LIST.map(s => (
+                  {stages.map(s => (
                     <Button
-                      key={s.name}
-                      variant={s.name === viewJob.stage ? 'default' : 'outline'}
+                      key={s.id}
+                      variant={s.id === viewOpp.opp.pipelineStageId ? 'default' : 'outline'}
                       size="sm"
                       className="text-xs h-7"
+                      disabled={moveOpportunity.isPending}
                       onClick={() => {
-                        if (s.name === viewJob.stage) return;
-                        setJobs(prev => {
-                          const from = (prev[viewJob.stage] || []).filter(j => j.id !== viewJob.job.id);
-                          const to = [viewJob.job, ...(prev[s.name] || [])];
-                          return { ...prev, [viewJob.stage]: from, [s.name]: to };
-                        });
-                        success('Job moved', `${viewJob.job.address} → ${s.name}`);
-                        setViewJob({ ...viewJob, stage: s.name });
+                        if (s.id === viewOpp.opp.pipelineStageId) return;
+                        handleMoveFromDialog(viewOpp.opp, s.id);
                       }}
                     >
-                      <div className="w-2 h-2 rounded-full mr-1.5" style={{ backgroundColor: s.color }} />
+                      <div className="w-2 h-2 rounded-full mr-1.5" style={{ backgroundColor: getStageColor(s.name) }} />
                       {s.name}
                     </Button>
                   ))}
@@ -404,11 +413,13 @@ export default function JobsPage() {
             <Button
               variant="outline"
               className="text-red-600 hover:text-red-700"
-              onClick={() => viewJob && handleDeleteJob(viewJob.job, viewJob.stage)}
+              disabled={deleteOpportunity.isPending}
+              onClick={() => viewOpp && handleDeleteOpp(viewOpp.opp)}
             >
+              {deleteOpportunity.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               Delete
             </Button>
-            <Button onClick={() => setViewJob(null)}>Close</Button>
+            <Button onClick={() => setViewOpp(null)}>Close</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

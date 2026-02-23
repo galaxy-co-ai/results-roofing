@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Plus, Search, MoreHorizontal, ArrowUpDown, Pencil, Trash2, Eye } from 'lucide-react';
+import { Plus, Search, MoreHorizontal, ArrowUpDown, Pencil, Trash2, Eye, Loader2, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table';
@@ -17,136 +18,120 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, DialogBody,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/Toast';
+import { useOpsContacts, useCreateContact, useDeleteContact } from '@/hooks/ops/use-ops-queries';
+import type { OpsContact } from '@/types/ops';
 
-interface Customer {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  jobs: number;
-  ltv: number;
-  lastActivity: string;
-  source: string;
-  status: string;
+const SOURCES = ['all', 'Website', 'Referral', 'Google Ads', 'Door Knock', 'Facebook', 'Manual'];
+
+function contactName(c: OpsContact): string {
+  if (c.name) return c.name;
+  return [c.firstName, c.lastName].filter(Boolean).join(' ') || 'Unknown';
 }
 
-const INITIAL_CUSTOMERS: Customer[] = [
-  { id: '1', name: 'John Davis', email: 'john.davis@email.com', phone: '(816) 555-0142', jobs: 2, ltv: 31500, lastActivity: '2 hours ago', source: 'Website', status: 'active' },
-  { id: '2', name: 'Sarah Miller', email: 'sarah.m@email.com', phone: '(913) 555-0198', jobs: 1, ltv: 18200, lastActivity: '15 min ago', source: 'Referral', status: 'active' },
-  { id: '3', name: 'Mike Torres', email: 'mtorres@email.com', phone: '(816) 555-0267', jobs: 1, ltv: 24800, lastActivity: '1 hour ago', source: 'Google Ads', status: 'active' },
-  { id: '4', name: 'Maria Lopez', email: 'maria.l@email.com', phone: '(913) 555-0334', jobs: 3, ltv: 42000, lastActivity: '3 days ago', source: 'Referral', status: 'active' },
-  { id: '5', name: 'Robert Chen', email: 'r.chen@email.com', phone: '(816) 555-0411', jobs: 1, ltv: 15600, lastActivity: '1 week ago', source: 'Website', status: 'lead' },
-  { id: '6', name: 'Amanda White', email: 'a.white@email.com', phone: '(913) 555-0488', jobs: 0, ltv: 0, lastActivity: '2 days ago', source: 'Door Knock', status: 'lead' },
-  { id: '7', name: 'James Wilson', email: 'jwilson@email.com', phone: '(816) 555-0555', jobs: 2, ltv: 38400, lastActivity: '5 days ago', source: 'Website', status: 'past' },
-  { id: '8', name: 'Lisa Brown', email: 'lisa.b@email.com', phone: '(913) 555-0622', jobs: 1, ltv: 22100, lastActivity: '2 weeks ago', source: 'Google Ads', status: 'past' },
-];
-
-const STATUS_STYLES: Record<string, string> = {
-  active: 'bg-green-50 text-green-700 border-green-200',
-  lead: 'bg-blue-50 text-blue-700 border-blue-200',
-  past: 'bg-muted text-muted-foreground',
-};
-
-const STATUSES = ['all', 'active', 'lead', 'past'];
-const SOURCES = ['all', 'Website', 'Referral', 'Google Ads', 'Door Knock', 'Facebook'];
+function timeAgo(dateStr: string | undefined): string {
+  if (!dateStr) return '—';
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60_000);
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}d ago`;
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
 
 export default function CustomersPage() {
-  const { success, error } = useToast();
-  const [customers, setCustomers] = useState<Customer[]>(INITIAL_CUSTOMERS);
+  const { success, error: showError } = useToast();
+  const { data: contacts = [], isLoading, refetch } = useOpsContacts();
+  const createContact = useCreateContact();
+  const deleteContact = useDeleteContact();
+
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
   const [sourceFilter, setSourceFilter] = useState('all');
-  const [sortField, setSortField] = useState<'name' | 'ltv' | null>(null);
+  const [sortField, setSortField] = useState<'name' | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [showNewDialog, setShowNewDialog] = useState(false);
-  const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
-  const [viewCustomer, setViewCustomer] = useState<Customer | null>(null);
+  const [viewContact, setViewContact] = useState<OpsContact | null>(null);
 
   // Form state
-  const [formName, setFormName] = useState('');
+  const [formFirstName, setFormFirstName] = useState('');
+  const [formLastName, setFormLastName] = useState('');
   const [formEmail, setFormEmail] = useState('');
   const [formPhone, setFormPhone] = useState('');
+  const [formCity, setFormCity] = useState('');
+  const [formState, setFormState] = useState('');
   const [formSource, setFormSource] = useState('Website');
-  const [formStatus, setFormStatus] = useState('lead');
 
   const filtered = useMemo(() => {
-    let result = customers.filter((c) => {
+    let result = contacts.filter((c) => {
       const q = search.toLowerCase();
-      const matchesSearch = !q || c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q) || c.phone.includes(q);
-      const matchesStatus = statusFilter === 'all' || c.status === statusFilter;
-      const matchesSource = sourceFilter === 'all' || c.source === sourceFilter;
-      return matchesSearch && matchesStatus && matchesSource;
+      const name = contactName(c).toLowerCase();
+      const matchesSearch = !q || name.includes(q) || (c.email || '').toLowerCase().includes(q) || (c.phone || '').includes(q);
+      const matchesSource = sourceFilter === 'all' || (c.source || '').toLowerCase() === sourceFilter.toLowerCase();
+      return matchesSearch && matchesSource;
     });
-    if (sortField) {
+    if (sortField === 'name') {
       result = [...result].sort((a, b) => {
-        const av = sortField === 'name' ? a.name.toLowerCase() : a.ltv;
-        const bv = sortField === 'name' ? b.name.toLowerCase() : b.ltv;
-        if (av < bv) return sortDir === 'asc' ? -1 : 1;
-        if (av > bv) return sortDir === 'asc' ? 1 : -1;
-        return 0;
+        const av = contactName(a).toLowerCase();
+        const bv = contactName(b).toLowerCase();
+        return sortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
       });
     }
     return result;
-  }, [customers, search, statusFilter, sourceFilter, sortField, sortDir]);
+  }, [contacts, search, sourceFilter, sortField, sortDir]);
 
-  function handleSort(field: 'name' | 'ltv') {
-    if (sortField === field) {
+  function handleSort() {
+    if (sortField === 'name') {
       setSortDir(d => d === 'asc' ? 'desc' : 'asc');
     } else {
-      setSortField(field);
+      setSortField('name');
       setSortDir('asc');
     }
   }
 
   function openNew() {
-    setFormName('');
+    setFormFirstName('');
+    setFormLastName('');
     setFormEmail('');
     setFormPhone('');
+    setFormCity('');
+    setFormState('');
     setFormSource('Website');
-    setFormStatus('lead');
     setShowNewDialog(true);
   }
 
-  function openEdit(c: Customer) {
-    setFormName(c.name);
-    setFormEmail(c.email);
-    setFormPhone(c.phone);
-    setFormSource(c.source);
-    setFormStatus(c.status);
-    setEditCustomer(c);
+  async function handleCreate() {
+    if (!formFirstName.trim() && !formLastName.trim()) { showError('Error', 'Name is required'); return; }
+    try {
+      await createContact.mutateAsync({
+        firstName: formFirstName.trim(),
+        lastName: formLastName.trim(),
+        email: formEmail.trim(),
+        phone: formPhone.trim(),
+        city: formCity.trim(),
+        state: formState.trim(),
+        source: formSource,
+      });
+      setShowNewDialog(false);
+      success('Customer created', `${formFirstName.trim()} ${formLastName.trim()} added`);
+    } catch (err) {
+      showError('Error', err instanceof Error ? err.message : 'Failed to create customer');
+    }
   }
 
-  function handleCreate() {
-    if (!formName.trim()) { error('Error', 'Name is required'); return; }
-    const newCustomer: Customer = {
-      id: String(Date.now()),
-      name: formName.trim(),
-      email: formEmail.trim(),
-      phone: formPhone.trim(),
-      jobs: 0,
-      ltv: 0,
-      lastActivity: 'Just now',
-      source: formSource,
-      status: formStatus,
-    };
-    setCustomers(prev => [newCustomer, ...prev]);
-    setShowNewDialog(false);
-    success('Customer created', `${newCustomer.name} added successfully`);
+  async function handleDelete(c: OpsContact) {
+    try {
+      await deleteContact.mutateAsync(c.id);
+      success('Customer deleted', `${contactName(c)} removed`);
+    } catch (err) {
+      showError('Error', err instanceof Error ? err.message : 'Failed to delete customer');
+    }
   }
 
-  function handleUpdate() {
-    if (!editCustomer || !formName.trim()) return;
-    setCustomers(prev => prev.map(c =>
-      c.id === editCustomer.id ? { ...c, name: formName.trim(), email: formEmail.trim(), phone: formPhone.trim(), source: formSource, status: formStatus } : c
-    ));
-    setEditCustomer(null);
-    success('Customer updated', `${formName.trim()} saved`);
-  }
-
-  function handleDelete(c: Customer) {
-    setCustomers(prev => prev.filter(x => x.id !== c.id));
-    success('Customer deleted', `${c.name} removed`);
-  }
+  const uniqueSources = useMemo(() => {
+    const s = new Set(contacts.map(c => c.source).filter(Boolean));
+    return ['all', ...Array.from(s)];
+  }, [contacts]);
 
   return (
     <div className="space-y-6">
@@ -156,32 +141,38 @@ export default function CustomersPage() {
             Customers
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {customers.length} total customers
+            {isLoading ? '...' : `${contacts.length} total customers`}
           </p>
         </div>
-        <Button size="sm" className="gap-2" onClick={openNew}>
-          <Plus className="h-4 w-4" />
-          New Customer
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
+            <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Button size="sm" className="gap-2" onClick={openNew}>
+            <Plus className="h-4 w-4" />
+            New Customer
+          </Button>
+        </div>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card><CardContent className="p-4">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Customers</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{customers.length}</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Contacts</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : contacts.length}</p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Active</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{customers.filter(c => c.status === 'active').length}</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">With Email</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : contacts.filter(c => c.email).length}</p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Leads</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{customers.filter(c => c.status === 'lead').length}</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">With Phone</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : contacts.filter(c => c.phone).length}</p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Lifetime Revenue</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">${customers.reduce((s, c) => s + c.ltv, 0).toLocaleString()}</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Sources</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : new Set(contacts.map(c => c.source).filter(Boolean)).size}</p>
         </CardContent></Card>
       </div>
 
@@ -199,26 +190,12 @@ export default function CustomersPage() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm">
-              {statusFilter === 'all' ? 'Status' : statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {STATUSES.map(s => (
-              <DropdownMenuItem key={s} onClick={() => setStatusFilter(s)}>
-                {s === 'all' ? 'All Statuses' : s.charAt(0).toUpperCase() + s.slice(1)}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm">
               {sourceFilter === 'all' ? 'Source' : sourceFilter}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {SOURCES.map(s => (
-              <DropdownMenuItem key={s} onClick={() => setSourceFilter(s)}>
+            {uniqueSources.map(s => (
+              <DropdownMenuItem key={s} onClick={() => setSourceFilter(s as string)}>
                 {s === 'all' ? 'All Sources' : s}
               </DropdownMenuItem>
             ))}
@@ -228,71 +205,84 @@ export default function CustomersPage() {
 
       {/* Table */}
       <Card>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="cursor-pointer" onClick={() => handleSort('name')}>
-                <div className="flex items-center gap-1">Name <ArrowUpDown className="h-3 w-3" /></div>
-              </TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead className="text-center">Jobs</TableHead>
-              <TableHead className="text-right cursor-pointer" onClick={() => handleSort('ltv')}>
-                <div className="flex items-center justify-end gap-1">Lifetime Value <ArrowUpDown className="h-3 w-3" /></div>
-              </TableHead>
-              <TableHead>Last Activity</TableHead>
-              <TableHead>Source</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="w-10" />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map((c) => (
-              <TableRow key={c.id} className="cursor-pointer" onClick={() => setViewCustomer(c)}>
-                <TableCell className="font-medium">{c.name}</TableCell>
-                <TableCell className="text-muted-foreground">{c.email}</TableCell>
-                <TableCell className="text-muted-foreground tabular-nums">{c.phone}</TableCell>
-                <TableCell className="text-center tabular-nums">{c.jobs}</TableCell>
-                <TableCell className="text-right font-medium tabular-nums">${c.ltv.toLocaleString()}</TableCell>
-                <TableCell className="text-muted-foreground">{c.lastActivity}</TableCell>
-                <TableCell><Badge variant="outline" className="text-xs font-normal">{c.source}</Badge></TableCell>
-                <TableCell>
-                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[c.status]}`}>
-                    {c.status.charAt(0).toUpperCase() + c.status.slice(1)}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(e) => e.stopPropagation()}>
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setViewCustomer(c); }}>
-                        <Eye className="h-4 w-4 mr-2" /> View Details
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); openEdit(c); }}>
-                        <Pencil className="h-4 w-4 mr-2" /> Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-red-600" onClick={(e) => { e.stopPropagation(); handleDelete(c); }}>
-                        <Trash2 className="h-4 w-4 mr-2" /> Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
+        {isLoading ? (
+          <div className="p-4 space-y-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-4 w-40" />
+                <Skeleton className="h-4 w-28" />
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-16" />
+              </div>
             ))}
-          </TableBody>
-        </Table>
-        <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-muted-foreground">
-          <span>Showing 1-{filtered.length} of {customers.length}</span>
-          <div className="flex items-center gap-1">
-            <Button variant="outline" size="sm" disabled className="h-7 text-xs">Previous</Button>
-            <Button variant="outline" size="sm" disabled className="h-7 text-xs">Next</Button>
           </div>
-        </div>
+        ) : filtered.length === 0 ? (
+          <div className="p-12 text-center text-muted-foreground">
+            <p className="text-sm">{contacts.length === 0 ? 'No customers yet' : 'No customers match your filters'}</p>
+            {contacts.length === 0 && (
+              <Button size="sm" className="mt-3 gap-2" onClick={openNew}>
+                <Plus className="h-4 w-4" />
+                Add your first customer
+              </Button>
+            )}
+          </div>
+        ) : (
+          <>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="cursor-pointer" onClick={handleSort}>
+                    <div className="flex items-center gap-1">Name <ArrowUpDown className="h-3 w-3" /></div>
+                  </TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Location</TableHead>
+                  <TableHead>Added</TableHead>
+                  <TableHead>Source</TableHead>
+                  <TableHead className="w-10" />
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filtered.map((c) => (
+                  <TableRow key={c.id} className="cursor-pointer" onClick={() => setViewContact(c)}>
+                    <TableCell className="font-medium">{contactName(c)}</TableCell>
+                    <TableCell className="text-muted-foreground">{c.email || '—'}</TableCell>
+                    <TableCell className="text-muted-foreground tabular-nums">{c.phone || '—'}</TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {[c.city, c.state].filter(Boolean).join(', ') || '—'}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-xs">{timeAgo(c.dateAdded)}</TableCell>
+                    <TableCell>
+                      {c.source ? <Badge variant="outline" className="text-xs font-normal">{c.source}</Badge> : '—'}
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(e) => e.stopPropagation()}>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setViewContact(c); }}>
+                            <Eye className="h-4 w-4 mr-2" /> View Details
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="text-red-600" onClick={(e) => { e.stopPropagation(); handleDelete(c); }}>
+                            <Trash2 className="h-4 w-4 mr-2" /> Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-muted-foreground">
+              <span>Showing {filtered.length} of {contacts.length}</span>
+            </div>
+          </>
+        )}
       </Card>
 
       {/* New Customer Dialog */}
@@ -303,9 +293,15 @@ export default function CustomersPage() {
             <DialogDescription>Add a new customer to your CRM</DialogDescription>
           </DialogHeader>
           <DialogBody className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name *</Label>
-              <Input id="name" value={formName} onChange={e => setFormName(e.target.value)} placeholder="Full name" />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="firstName">First Name *</Label>
+                <Input id="firstName" value={formFirstName} onChange={e => setFormFirstName(e.target.value)} placeholder="John" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input id="lastName" value={formLastName} onChange={e => setFormLastName(e.target.value)} placeholder="Smith" />
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -317,122 +313,82 @@ export default function CustomersPage() {
                 <Input id="phone" value={formPhone} onChange={e => setFormPhone(e.target.value)} placeholder="(xxx) xxx-xxxx" />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="city">City</Label>
+                <Input id="city" value={formCity} onChange={e => setFormCity(e.target.value)} placeholder="Austin" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="state">State</Label>
+                <Input id="state" value={formState} onChange={e => setFormState(e.target.value)} placeholder="TX" />
+              </div>
               <div className="space-y-2">
                 <Label>Source</Label>
                 <select className="flex h-9 w-full rounded-md border bg-background px-3 py-1 text-sm" value={formSource} onChange={e => setFormSource(e.target.value)}>
                   {SOURCES.filter(s => s !== 'all').map(s => <option key={s} value={s}>{s}</option>)}
-                </select>
-              </div>
-              <div className="space-y-2">
-                <Label>Status</Label>
-                <select className="flex h-9 w-full rounded-md border bg-background px-3 py-1 text-sm" value={formStatus} onChange={e => setFormStatus(e.target.value)}>
-                  {STATUSES.filter(s => s !== 'all').map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
                 </select>
               </div>
             </div>
           </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowNewDialog(false)}>Cancel</Button>
-            <Button onClick={handleCreate}>Create Customer</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Edit Customer Dialog */}
-      <Dialog open={!!editCustomer} onOpenChange={(open) => !open && setEditCustomer(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Customer</DialogTitle>
-            <DialogDescription>Update customer information</DialogDescription>
-          </DialogHeader>
-          <DialogBody className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="edit-name">Name *</Label>
-              <Input id="edit-name" value={formName} onChange={e => setFormName(e.target.value)} />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="edit-email">Email</Label>
-                <Input id="edit-email" type="email" value={formEmail} onChange={e => setFormEmail(e.target.value)} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="edit-phone">Phone</Label>
-                <Input id="edit-phone" value={formPhone} onChange={e => setFormPhone(e.target.value)} />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Source</Label>
-                <select className="flex h-9 w-full rounded-md border bg-background px-3 py-1 text-sm" value={formSource} onChange={e => setFormSource(e.target.value)}>
-                  {SOURCES.filter(s => s !== 'all').map(s => <option key={s} value={s}>{s}</option>)}
-                </select>
-              </div>
-              <div className="space-y-2">
-                <Label>Status</Label>
-                <select className="flex h-9 w-full rounded-md border bg-background px-3 py-1 text-sm" value={formStatus} onChange={e => setFormStatus(e.target.value)}>
-                  {STATUSES.filter(s => s !== 'all').map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
-                </select>
-              </div>
-            </div>
-          </DialogBody>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setEditCustomer(null)}>Cancel</Button>
-            <Button onClick={handleUpdate}>Save Changes</Button>
+            <Button onClick={handleCreate} disabled={createContact.isPending}>
+              {createContact.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Create Customer
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* View Customer Dialog */}
-      <Dialog open={!!viewCustomer} onOpenChange={(open) => !open && setViewCustomer(null)}>
+      <Dialog open={!!viewContact} onOpenChange={(open) => !open && setViewContact(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{viewCustomer?.name}</DialogTitle>
+            <DialogTitle>{viewContact ? contactName(viewContact) : ''}</DialogTitle>
             <DialogDescription>Customer details</DialogDescription>
           </DialogHeader>
-          {viewCustomer && (
+          {viewContact && (
             <DialogBody className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Email</p>
-                  <p className="text-sm font-medium mt-0.5">{viewCustomer.email || '—'}</p>
+                  <p className="text-sm font-medium mt-0.5">{viewContact.email || '—'}</p>
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Phone</p>
-                  <p className="text-sm font-medium mt-0.5">{viewCustomer.phone || '—'}</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Jobs</p>
-                  <p className="text-lg font-bold tabular-nums mt-0.5">{viewCustomer.jobs}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Lifetime Value</p>
-                  <p className="text-lg font-bold tabular-nums mt-0.5">${viewCustomer.ltv.toLocaleString()}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Status</p>
-                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border mt-1 ${STATUS_STYLES[viewCustomer.status]}`}>
-                    {viewCustomer.status.charAt(0).toUpperCase() + viewCustomer.status.slice(1)}
-                  </span>
+                  <p className="text-sm font-medium mt-0.5">{viewContact.phone || '—'}</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Source</p>
-                  <p className="text-sm font-medium mt-0.5">{viewCustomer.source}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Location</p>
+                  <p className="text-sm font-medium mt-0.5">
+                    {[viewContact.city, viewContact.state].filter(Boolean).join(', ') || '—'}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Last Activity</p>
-                  <p className="text-sm font-medium mt-0.5">{viewCustomer.lastActivity}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Source</p>
+                  <p className="text-sm font-medium mt-0.5">{viewContact.source || '—'}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Added</p>
+                  <p className="text-sm font-medium mt-0.5">{timeAgo(viewContact.dateAdded)}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Tags</p>
+                  <div className="flex flex-wrap gap-1 mt-0.5">
+                    {viewContact.tags?.length ? viewContact.tags.map(t => (
+                      <Badge key={t} variant="outline" className="text-xs">{t}</Badge>
+                    )) : <span className="text-sm text-muted-foreground">—</span>}
+                  </div>
                 </div>
               </div>
             </DialogBody>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => { setViewCustomer(null); if (viewCustomer) openEdit(viewCustomer); }}>Edit</Button>
-            <Button onClick={() => setViewCustomer(null)}>Close</Button>
+            <Button onClick={() => setViewContact(null)}>Close</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Plus, Search, MoreHorizontal, ArrowUpDown, Eye, Trash2, Send } from 'lucide-react';
+import { Plus, Search, MoreHorizontal, ArrowUpDown, Eye, Trash2, Send, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,15 +27,6 @@ interface Order {
   delivery: string;
 }
 
-const INITIAL_ORDERS: Order[] = [
-  { id: 'MO-1008', job: '445 Elm St, Denver', supplier: 'ABC Supply Co.', total: 4200, status: 'delivered', ordered: 'Feb 5, 2026', delivery: 'Feb 8, 2026' },
-  { id: 'MO-1007', job: '2726 Askew Ave, KC', supplier: 'SRS Distribution', total: 3800, status: 'confirmed', ordered: 'Feb 7, 2026', delivery: 'Feb 12, 2026' },
-  { id: 'MO-1006', job: '1220 Maple Ave, Austin', supplier: 'ABC Supply Co.', total: 5600, status: 'delivered', ordered: 'Jan 30, 2026', delivery: 'Feb 3, 2026' },
-  { id: 'MO-1005', job: '9 Sugar Bowl Ln, FL', supplier: 'Beacon Roofing', total: 7200, status: 'sent', ordered: 'Feb 9, 2026', delivery: 'TBD' },
-  { id: 'MO-1004', job: '13790 Marine Dr, BC', supplier: 'SRS Distribution', total: 4800, status: 'draft', ordered: '—', delivery: '—' },
-  { id: 'MO-1003', job: '214 N 3rd St, WI', supplier: 'ABC Supply Co.', total: 3200, status: 'cancelled', ordered: 'Jan 22, 2026', delivery: '—' },
-];
-
 const STATUS_STYLES: Record<string, string> = {
   draft: 'bg-muted text-muted-foreground',
   sent: 'bg-blue-50 text-blue-700 border-blue-200',
@@ -49,7 +40,7 @@ const SUPPLIERS = ['all', 'ABC Supply Co.', 'SRS Distribution', 'Beacon Roofing'
 
 export default function MaterialsPage() {
   const { success } = useToast();
-  const [orders, setOrders] = useState(INITIAL_ORDERS);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [supplierFilter, setSupplierFilter] = useState('all');
@@ -83,9 +74,9 @@ export default function MaterialsPage() {
 
   function handleCreate() {
     if (!formJob.trim() || !formSupplier.trim() || !formTotal.trim()) return;
-    const nextNum = Math.max(...orders.map(o => parseInt(o.id.split('-')[1]))) + 1;
+    const maxNum = orders.length > 0 ? Math.max(...orders.map(o => parseInt(o.id.split('-')[1]))) : 1000;
     const newOrder: Order = {
-      id: `MO-${nextNum}`,
+      id: `MO-${maxNum + 1}`,
       job: formJob.trim(),
       supplier: formSupplier.trim(),
       total: parseInt(formTotal),
@@ -142,107 +133,127 @@ export default function MaterialsPage() {
         </CardContent></Card>
       </div>
 
-      <div className="flex items-center gap-3">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search orders..." className="pl-9 h-9" value={search} onChange={e => setSearch(e.target.value)} />
-        </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm">
-              {statusFilter === 'all' ? 'Status' : statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
+      {orders.length === 0 ? (
+        <Card>
+          <div className="py-16 flex flex-col items-center justify-center text-center">
+            <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-4">
+              <Package className="h-6 w-6 text-muted-foreground" />
+            </div>
+            <h3 className="font-semibold text-sm">No material orders yet</h3>
+            <p className="text-xs text-muted-foreground mt-1 max-w-[280px]">
+              Create your first material order to start tracking suppliers and deliveries.
+            </p>
+            <Button size="sm" className="mt-4 gap-2" onClick={() => { setFormJob(''); setFormSupplier(''); setFormTotal(''); setShowNewDialog(true); }}>
+              <Plus className="h-4 w-4" />
+              New Order
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {STATUSES.map(s => (
-              <DropdownMenuItem key={s} onClick={() => setStatusFilter(s)}>
-                {s === 'all' ? 'All Statuses' : s.charAt(0).toUpperCase() + s.slice(1)}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm">
-              {supplierFilter === 'all' ? 'Supplier' : supplierFilter}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {SUPPLIERS.map(s => (
-              <DropdownMenuItem key={s} onClick={() => setSupplierFilter(s)}>
-                {s === 'all' ? 'All Suppliers' : s}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+          </div>
+        </Card>
+      ) : (
+        <>
+          <div className="flex items-center gap-3">
+            <div className="relative flex-1 max-w-sm">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input placeholder="Search orders..." className="pl-9 h-9" value={search} onChange={e => setSearch(e.target.value)} />
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  {statusFilter === 'all' ? 'Status' : statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {STATUSES.map(s => (
+                  <DropdownMenuItem key={s} onClick={() => setStatusFilter(s)}>
+                    {s === 'all' ? 'All Statuses' : s.charAt(0).toUpperCase() + s.slice(1)}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  {supplierFilter === 'all' ? 'Supplier' : supplierFilter}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {SUPPLIERS.map(s => (
+                  <DropdownMenuItem key={s} onClick={() => setSupplierFilter(s)}>
+                    {s === 'all' ? 'All Suppliers' : s}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
 
-      <Card>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Order #</TableHead>
-              <TableHead>Job</TableHead>
-              <TableHead>Supplier</TableHead>
-              <TableHead className="text-right">
-                <button className="flex items-center justify-end gap-1 hover:text-foreground transition-colors" onClick={() => setSortDir(d => d === 'asc' ? 'desc' : 'asc')}>
-                  Total <ArrowUpDown className="h-3 w-3" />
-                </button>
-              </TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Ordered</TableHead>
-              <TableHead>Delivery</TableHead>
-              <TableHead className="w-10" />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map((o) => (
-              <TableRow key={o.id} className="cursor-pointer" onClick={() => setViewOrder(o)}>
-                <TableCell className="font-medium text-primary">{o.id}</TableCell>
-                <TableCell className="max-w-[180px] truncate">{o.job}</TableCell>
-                <TableCell className="text-muted-foreground">{o.supplier}</TableCell>
-                <TableCell className="text-right font-medium tabular-nums">${o.total.toLocaleString()}</TableCell>
-                <TableCell>
-                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[o.status]}`}>
-                    {o.status.charAt(0).toUpperCase() + o.status.slice(1)}
-                  </span>
-                </TableCell>
-                <TableCell className="text-muted-foreground text-xs">{o.ordered}</TableCell>
-                <TableCell className="text-muted-foreground text-xs">{o.delivery}</TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(ev) => ev.stopPropagation()}>
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); setViewOrder(o); }}>
-                        <Eye className="h-4 w-4 mr-2" /> View Details
-                      </DropdownMenuItem>
-                      {o.status === 'draft' && (
-                        <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); handleSendOrder(o); }}>
-                          <Send className="h-4 w-4 mr-2" /> Send to Supplier
-                        </DropdownMenuItem>
-                      )}
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-red-600" onClick={(ev) => { ev.stopPropagation(); handleDelete(o); }}>
-                        <Trash2 className="h-4 w-4 mr-2" /> Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
-            {filtered.length === 0 && (
-              <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No orders match your search</TableCell></TableRow>
-            )}
-          </TableBody>
-        </Table>
-        <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-muted-foreground">
-          <span>Showing {filtered.length} of {orders.length}</span>
-        </div>
-      </Card>
+          <Card>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Order #</TableHead>
+                  <TableHead>Job</TableHead>
+                  <TableHead>Supplier</TableHead>
+                  <TableHead className="text-right">
+                    <button className="flex items-center justify-end gap-1 hover:text-foreground transition-colors" onClick={() => setSortDir(d => d === 'asc' ? 'desc' : 'asc')}>
+                      Total <ArrowUpDown className="h-3 w-3" />
+                    </button>
+                  </TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Ordered</TableHead>
+                  <TableHead>Delivery</TableHead>
+                  <TableHead className="w-10" />
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filtered.map((o) => (
+                  <TableRow key={o.id} className="cursor-pointer" onClick={() => setViewOrder(o)}>
+                    <TableCell className="font-medium text-primary">{o.id}</TableCell>
+                    <TableCell className="max-w-[180px] truncate">{o.job}</TableCell>
+                    <TableCell className="text-muted-foreground">{o.supplier}</TableCell>
+                    <TableCell className="text-right font-medium tabular-nums">${o.total.toLocaleString()}</TableCell>
+                    <TableCell>
+                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[o.status]}`}>
+                        {o.status.charAt(0).toUpperCase() + o.status.slice(1)}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-xs">{o.ordered}</TableCell>
+                    <TableCell className="text-muted-foreground text-xs">{o.delivery}</TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(ev) => ev.stopPropagation()}>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); setViewOrder(o); }}>
+                            <Eye className="h-4 w-4 mr-2" /> View Details
+                          </DropdownMenuItem>
+                          {o.status === 'draft' && (
+                            <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); handleSendOrder(o); }}>
+                              <Send className="h-4 w-4 mr-2" /> Send to Supplier
+                            </DropdownMenuItem>
+                          )}
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="text-red-600" onClick={(ev) => { ev.stopPropagation(); handleDelete(o); }}>
+                            <Trash2 className="h-4 w-4 mr-2" /> Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {filtered.length === 0 && (
+                  <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No orders match your search</TableCell></TableRow>
+                )}
+              </TableBody>
+            </Table>
+            <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-muted-foreground">
+              <span>Showing {filtered.length} of {orders.length}</span>
+            </div>
+          </Card>
+        </>
+      )}
 
       {/* New Order Dialog */}
       <Dialog open={showNewDialog} onOpenChange={setShowNewDialog}>

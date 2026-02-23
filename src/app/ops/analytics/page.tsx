@@ -3,150 +3,78 @@
 import { useState, useMemo } from 'react';
 import { format, subDays, addDays, differenceInDays } from 'date-fns';
 import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
-  Line,
-  LineChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Pie,
-  PieChart,
-  ComposedChart,
+  Area, AreaChart, Bar, BarChart, Line, LineChart, CartesianGrid, XAxis, YAxis,
 } from 'recharts';
 import {
-  CalendarIcon,
-  ChevronLeft,
-  ChevronRight,
-  MoreHorizontal,
-  Download,
-  RefreshCw,
-  Settings,
+  CalendarIcon, ChevronLeft, ChevronRight, RefreshCw, TrendingUp,
 } from 'lucide-react';
 import type { DateRange } from 'react-day-picker';
 
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
 } from '@/components/ui/chart';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { OpsPageHeader } from '@/components/ui/ops';
 import { cn } from '@/lib/utils';
+import { useOpsAnalytics } from '@/hooks/ops/use-ops-queries';
 
-// Seeded random for consistent demo data
-const seededRandom = (seed: number) => {
-  const x = Math.sin(seed) * 10000;
-  return x - Math.floor(x);
-};
-
-// Generate data for date range
-const generateDataForRange = (from: Date, to: Date) => {
-  const data = [];
-  let currentDate = new Date(from);
-
-  while (currentDate <= to) {
-    const seed = currentDate.getTime() / 86400000;
-    const baseRevenue = 8000 + Math.sin(seed / 7) * 2000;
-    const baseCost = 3000 + Math.sin(seed / 7) * 1000;
-
-    data.push({
-      date: new Date(currentDate),
-      dateStr: format(currentDate, 'MMM d'),
-      revenue: Math.floor(baseRevenue + seededRandom(seed * 1) * 1500),
-      cost: Math.floor(baseCost + seededRandom(seed * 2) * 800),
-      profit: Math.floor((baseRevenue - baseCost) + seededRandom(seed * 3) * 700),
-      leads: Math.floor(seededRandom(seed * 4) * 15) + 5,
-      jobs: Math.floor(seededRandom(seed * 5) * 5) + 1,
-      newCustomers: Math.floor(seededRandom(seed * 6) * 8) + 2,
-      returning: Math.floor(seededRandom(seed * 7) * 12) + 3,
-    });
-
-    currentDate = addDays(currentDate, 1);
-  }
-  return data;
-};
-
-// Hourly traffic data
-const hourlyData = Array.from({ length: 24 }, (_, i) => {
-  const seed = i * 1000;
-  return {
-    hour: `${i.toString().padStart(2, '0')}:00`,
-    visitors: Math.floor(seededRandom(seed) * 200) + (i >= 9 && i <= 17 ? 150 : 30),
-    conversions: Math.floor(seededRandom(seed + 1) * 10) + (i >= 9 && i <= 17 ? 5 : 1),
-  };
-});
-
-// Lead source data
-const leadSourceData = [
-  { name: 'Google Ads', value: 42, fill: 'var(--ops-accent-crm)' },
-  { name: 'Referrals', value: 28, fill: 'var(--ops-accent-messaging)' },
-  { name: 'Website', value: 18, fill: 'var(--ops-accent-pipeline)' },
-  { name: 'Other', value: 12, fill: 'var(--admin-gray-500)' },
-];
-
-// Chart configs
 const revenueConfig = {
   revenue: { label: 'Revenue', color: 'hsl(var(--primary))' },
-  cost: { label: 'Cost', color: 'hsl(0 84% 60%)' },
-  profit: { label: 'Profit', color: 'hsl(142 76% 36%)' },
 } satisfies ChartConfig;
 
-const customerConfig = {
-  newCustomers: { label: 'New', color: 'hsl(var(--primary))' },
-  returning: { label: 'Returning', color: 'hsl(217 91% 60%)' },
+const ordersConfig = {
+  orders: { label: 'Orders', color: 'hsl(217 91% 60%)' },
 } satisfies ChartConfig;
 
-const hourlyConfig = {
-  visitors: { label: 'Visitors', color: 'hsl(var(--primary))' },
-  conversions: { label: 'Conversions', color: 'hsl(142 76% 36%)' },
+const quotesConfig = {
+  quotes: { label: 'Quotes', color: 'hsl(142 76% 36%)' },
 } satisfies ChartConfig;
 
-const sourceConfig = {
-  'Google Ads': { label: 'Google Ads', color: 'var(--ops-accent-crm)' },
-  Referrals: { label: 'Referrals', color: 'var(--ops-accent-messaging)' },
-  Website: { label: 'Website', color: 'var(--ops-accent-pipeline)' },
-  Other: { label: 'Other', color: 'var(--admin-gray-500)' },
-} satisfies ChartConfig;
+const STAGE_LABELS: Record<string, string> = {
+  preliminary: 'New',
+  measured: 'Measured',
+  selected: 'Selected',
+  financed: 'Financed',
+  scheduled: 'Scheduled',
+  signed: 'Signed',
+  converted: 'Converted',
+};
 
 export default function AnalyticsPage() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: subDays(new Date(), 29),
     to: new Date(),
   });
-  const [chartView, setChartView] = useState<'revenue' | 'profit' | 'leads'>('revenue');
+  const [chartView, setChartView] = useState<'revenue' | 'orders' | 'quotes'>('revenue');
 
-  const filteredData = useMemo(() => {
-    if (!dateRange?.from) {
-      return generateDataForRange(subDays(new Date(), 29), new Date());
-    }
-    return generateDataForRange(dateRange.from, dateRange.to || dateRange.from);
-  }, [dateRange]);
+  const fromStr = dateRange?.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined;
+  const toStr = dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined;
+  const { data, isLoading, refetch } = useOpsAnalytics(fromStr, toStr);
 
-  const stats = useMemo(() => {
-    const totalRevenue = filteredData.reduce((sum, item) => sum + item.revenue, 0);
-    const totalCost = filteredData.reduce((sum, item) => sum + item.cost, 0);
-    const totalProfit = filteredData.reduce((sum, item) => sum + item.profit, 0);
-    const totalLeads = filteredData.reduce((sum, item) => sum + item.leads, 0);
-    const totalJobs = filteredData.reduce((sum, item) => sum + item.jobs, 0);
-    const profitMargin = totalRevenue > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(1) : '0';
-    return { totalRevenue, totalCost, totalProfit, totalLeads, totalJobs, profitMargin };
-  }, [filteredData]);
+  const chartData = useMemo(() => {
+    if (!data?.daily) return [];
+    return data.daily.map((d) => ({
+      ...d,
+      dateStr: format(new Date(d.date + 'T00:00:00'), 'MMM d'),
+    }));
+  }, [data]);
+
+  const pipelineData = useMemo(() => {
+    if (!data?.pipeline) return [];
+    return data.pipeline.filter((p) => p.count > 0);
+  }, [data]);
+
+  const maxPipelineCount = Math.max(...pipelineData.map((p) => p.count), 1);
+
+  const summary = data?.summary ?? { totalRevenue: 0, totalOrders: 0, totalQuotes: 0, avgOrderValue: 0 };
 
   const daysDiff = dateRange?.from && dateRange?.to
     ? differenceInDays(dateRange.to, dateRange.from) + 1
@@ -179,62 +107,39 @@ export default function AnalyticsPage() {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="center">
-                <Calendar
-                  mode="range"
-                  numberOfMonths={2}
-                  selected={dateRange}
-                  onSelect={setDateRange}
-                />
+                <Calendar mode="range" numberOfMonths={2} selected={dateRange} onSelect={setDateRange} />
               </PopoverContent>
             </Popover>
             <Button variant="ghost" size="icon" className="rounded-l-none" onClick={() => navigateRange('next')}>
               <ChevronRight className="size-4" />
             </Button>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
-                <MoreHorizontal className="size-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem><Download className="mr-2 size-4" /> Export CSV</DropdownMenuItem>
-              <DropdownMenuItem><RefreshCw className="mr-2 size-4" /> Refresh</DropdownMenuItem>
-              <DropdownMenuItem><Settings className="mr-2 size-4" /> Settings</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button variant="outline" size="icon" onClick={() => refetch()} disabled={isLoading}>
+            <RefreshCw className={cn('size-4', isLoading && 'animate-spin')} />
+          </Button>
         </div>
       </div>
 
       {/* Stats Row */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: 'Revenue', value: `$${stats.totalRevenue.toLocaleString()}`, change: 12.5 },
-          { label: 'Cost', value: `$${stats.totalCost.toLocaleString()}`, change: 8.2 },
-          { label: 'Profit', value: `$${stats.totalProfit.toLocaleString()}`, change: 18.3 },
-          { label: 'Leads', value: stats.totalLeads.toLocaleString(), change: 5.7 },
-          { label: 'Profit Margin', value: `${stats.profitMargin}%`, change: 2.1 },
+          { label: 'Revenue', value: `$${summary.totalRevenue.toLocaleString()}` },
+          { label: 'Orders', value: summary.totalOrders.toLocaleString() },
+          { label: 'Quotes', value: summary.totalQuotes.toLocaleString() },
+          { label: 'Avg Order', value: `$${summary.avgOrderValue.toLocaleString()}` },
         ].map((stat) => (
-          <Card key={stat.label} className="rounded-lg border border-border">
+          <Card key={stat.label}>
             <CardContent className="p-4">
               <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{stat.label}</p>
-              <div className="mt-1 flex items-baseline justify-between">
-                <p className="text-2xl font-bold tabular-nums text-foreground">{stat.value}</p>
-                <span className={cn(
-                  'text-xs font-medium tabular-nums',
-                  stat.change >= 0
-                    ? 'text-emerald-600 dark:text-emerald-400'
-                    : 'text-red-600 dark:text-red-400'
-                )}>
-                  {stat.change >= 0 ? '+' : ''}{stat.change}%
-                </span>
-              </div>
+              <p className="text-2xl font-bold tabular-nums mt-1">
+                {isLoading ? '—' : stat.value}
+              </p>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      {/* Main Charts */}
+      {/* Charts */}
       <div className="grid gap-4 lg:grid-cols-3">
         {/* Performance Overview */}
         <Card className="lg:col-span-2">
@@ -242,135 +147,132 @@ export default function AnalyticsPage() {
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <div>
                 <CardTitle className="text-base">Performance Overview</CardTitle>
-                <CardDescription>Revenue, cost, and lead trends</CardDescription>
+                <CardDescription>{daysDiff}-day trend</CardDescription>
               </div>
               <TabsList className="h-8">
                 <TabsTrigger value="revenue" className="text-xs">Revenue</TabsTrigger>
-                <TabsTrigger value="profit" className="text-xs">Profit</TabsTrigger>
-                <TabsTrigger value="leads" className="text-xs">Leads</TabsTrigger>
+                <TabsTrigger value="orders" className="text-xs">Orders</TabsTrigger>
+                <TabsTrigger value="quotes" className="text-xs">Quotes</TabsTrigger>
               </TabsList>
             </CardHeader>
             <CardContent>
-              <TabsContent value="revenue" className="mt-0">
-                <ChartContainer config={revenueConfig} className="h-72 w-full">
-                  <AreaChart data={filteredData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="var(--color-revenue)" stopOpacity={0.3} />
-                        <stop offset="100%" stopColor="var(--color-revenue)" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="dateStr" axisLine={false} tickLine={false} tickMargin={8} fontSize={11} interval="preserveStartEnd" />
-                    <YAxis axisLine={false} tickLine={false} tickMargin={8} fontSize={11} tickFormatter={(v) => `$${v / 1000}k`} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <ChartLegend content={<ChartLegendContent />} />
-                    <Area type="monotone" dataKey="revenue" stroke="var(--color-revenue)" strokeWidth={2} fill="url(#revGrad)" />
-                    <Line type="monotone" dataKey="cost" stroke="var(--color-cost)" strokeWidth={2} dot={false} strokeDasharray="4 4" />
-                  </AreaChart>
-                </ChartContainer>
-              </TabsContent>
-              <TabsContent value="profit" className="mt-0">
-                <ChartContainer config={revenueConfig} className="h-72 w-full">
-                  <BarChart data={filteredData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="dateStr" axisLine={false} tickLine={false} tickMargin={8} fontSize={11} interval="preserveStartEnd" />
-                    <YAxis axisLine={false} tickLine={false} tickMargin={8} fontSize={11} tickFormatter={(v) => `$${v / 1000}k`} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="profit" fill="var(--color-profit)" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ChartContainer>
-              </TabsContent>
-              <TabsContent value="leads" className="mt-0">
-                <ChartContainer config={revenueConfig} className="h-72 w-full">
-                  <LineChart data={filteredData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="dateStr" axisLine={false} tickLine={false} tickMargin={8} fontSize={11} interval="preserveStartEnd" />
-                    <YAxis axisLine={false} tickLine={false} tickMargin={8} fontSize={11} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Line type="monotone" dataKey="leads" stroke="var(--color-revenue)" strokeWidth={2} dot={false} />
-                  </LineChart>
-                </ChartContainer>
-              </TabsContent>
+              {isLoading ? (
+                <Skeleton className="h-72 w-full" />
+              ) : chartData.length === 0 ? (
+                <div className="h-72 flex items-center justify-center text-sm text-muted-foreground">No data for this period</div>
+              ) : (
+                <>
+                  <TabsContent value="revenue" className="mt-0">
+                    <ChartContainer config={revenueConfig} className="h-72 w-full">
+                      <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="var(--color-revenue)" stopOpacity={0.3} />
+                            <stop offset="100%" stopColor="var(--color-revenue)" stopOpacity={0} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="dateStr" axisLine={false} tickLine={false} tickMargin={8} fontSize={11} interval="preserveStartEnd" />
+                        <YAxis axisLine={false} tickLine={false} tickMargin={8} fontSize={11} tickFormatter={(v) => `$${v >= 1000 ? `${v / 1000}k` : v}`} />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Area type="monotone" dataKey="revenue" stroke="var(--color-revenue)" strokeWidth={2} fill="url(#revGrad)" />
+                      </AreaChart>
+                    </ChartContainer>
+                  </TabsContent>
+                  <TabsContent value="orders" className="mt-0">
+                    <ChartContainer config={ordersConfig} className="h-72 w-full">
+                      <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="dateStr" axisLine={false} tickLine={false} tickMargin={8} fontSize={11} interval="preserveStartEnd" />
+                        <YAxis axisLine={false} tickLine={false} tickMargin={8} fontSize={11} allowDecimals={false} />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Bar dataKey="orders" fill="var(--color-orders)" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ChartContainer>
+                  </TabsContent>
+                  <TabsContent value="quotes" className="mt-0">
+                    <ChartContainer config={quotesConfig} className="h-72 w-full">
+                      <LineChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="dateStr" axisLine={false} tickLine={false} tickMargin={8} fontSize={11} interval="preserveStartEnd" />
+                        <YAxis axisLine={false} tickLine={false} tickMargin={8} fontSize={11} allowDecimals={false} />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Line type="monotone" dataKey="quotes" stroke="var(--color-quotes)" strokeWidth={2} dot={false} />
+                      </LineChart>
+                    </ChartContainer>
+                  </TabsContent>
+                </>
+              )}
             </CardContent>
           </Tabs>
         </Card>
 
-        {/* Lead Sources */}
+        {/* Pipeline Breakdown */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Quote Pipeline</CardTitle>
+            <CardDescription>All-time by status</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <Skeleton className="h-48 w-full" />
+            ) : pipelineData.length === 0 ? (
+              <div className="h-48 flex items-center justify-center text-sm text-muted-foreground">No quotes yet</div>
+            ) : (
+              <div className="space-y-3">
+                {pipelineData.map((stage) => (
+                  <div key={stage.stage} className="flex items-center gap-3">
+                    <span className="text-xs text-muted-foreground w-20 text-right">{STAGE_LABELS[stage.stage] || stage.stage}</span>
+                    <div className="flex-1 bg-muted rounded-full h-6 overflow-hidden">
+                      <div
+                        className="h-full bg-primary/80 rounded-full flex items-center justify-end pr-2 transition-all"
+                        style={{ width: `${Math.max((stage.count / maxPipelineCount) * 100, 8)}%` }}
+                      >
+                        {stage.count > 0 && (
+                          <span className="text-[11px] font-medium text-white tabular-nums">{stage.count}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Placeholder: Lead Sources */}
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-base">Lead Sources</CardTitle>
             <CardDescription>Where leads come from</CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col items-center gap-4">
-            <ChartContainer config={sourceConfig} className="mx-auto aspect-square h-40">
-              <PieChart>
-                <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel nameKey="name" />} />
-                <Pie
-                  data={leadSourceData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={50}
-                  outerRadius={70}
-                  paddingAngle={3}
-                  dataKey="value"
-                  nameKey="name"
-                  strokeWidth={0}
-                />
-              </PieChart>
-            </ChartContainer>
-            <div className="w-full space-y-2">
-              {leadSourceData.map((item) => (
-                <div key={item.name} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="size-3 rounded-sm" style={{ backgroundColor: item.fill }} />
-                    <span className="text-sm">{item.name}</span>
-                  </div>
-                  <span className="text-sm font-medium tabular-nums">{item.value}%</span>
+          <CardContent>
+            <div className="h-48 flex items-center justify-center text-muted-foreground text-sm">
+              <div className="text-center">
+                <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-2">
+                  <TrendingUp className="h-5 w-5 text-muted-foreground" />
                 </div>
-              ))}
+                <p className="text-xs">Connect CRM for lead source tracking</p>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Customer Types */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base">Customer Types</CardTitle>
-            <CardDescription>New vs returning customers</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={customerConfig} className="h-48 w-full">
-              <BarChart data={filteredData.slice(-14)} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="dateStr" axisLine={false} tickLine={false} tickMargin={8} fontSize={10} />
-                <YAxis axisLine={false} tickLine={false} tickMargin={8} fontSize={10} />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="newCustomers" stackId="a" fill="var(--color-newCustomers)" radius={[0, 0, 0, 0]} />
-                <Bar dataKey="returning" stackId="a" fill="var(--color-returning)" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-
-        {/* Hourly Traffic */}
+        {/* Placeholder: Traffic */}
         <Card className="lg:col-span-2">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Hourly Traffic</CardTitle>
-            <CardDescription>Website visitors and conversions by hour (today)</CardDescription>
+            <CardTitle className="text-base">Website Traffic</CardTitle>
+            <CardDescription>Visitors and conversions by hour</CardDescription>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={hourlyConfig} className="h-48 w-full">
-              <ComposedChart data={hourlyData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="hour" axisLine={false} tickLine={false} tickMargin={8} fontSize={10} interval={2} />
-                <YAxis yAxisId="left" axisLine={false} tickLine={false} tickMargin={8} fontSize={10} />
-                <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} tickMargin={8} fontSize={10} />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar yAxisId="left" dataKey="visitors" fill="var(--color-visitors)" radius={[2, 2, 0, 0]} opacity={0.8} />
-                <Line yAxisId="right" type="monotone" dataKey="conversions" stroke="var(--color-conversions)" strokeWidth={2} dot={false} />
-              </ComposedChart>
-            </ChartContainer>
+            <div className="h-48 flex items-center justify-center text-muted-foreground text-sm">
+              <div className="text-center">
+                <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-2">
+                  <TrendingUp className="h-5 w-5 text-muted-foreground" />
+                </div>
+                <p className="text-xs">Connect Google Analytics for traffic data</p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
