@@ -1,5 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { isOpsAuthenticated } from '@/lib/ops/auth';
 import { db, schema, eq, desc } from '@/db/index';
 import { sql } from 'drizzle-orm';
 import { logger } from '@/lib/utils';
@@ -9,6 +10,11 @@ import { logger } from '@/lib/utils';
  * List documents, optionally filtered by folder
  */
 export async function GET(request: NextRequest) {
+  const authenticated = await isOpsAuthenticated();
+  if (!authenticated) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const { searchParams } = new URL(request.url);
     const folder = searchParams.get('folder');
@@ -59,6 +65,11 @@ export async function GET(request: NextRequest) {
  * Create a new document record
  */
 export async function POST(request: NextRequest) {
+  const authenticated = await isOpsAuthenticated();
+  if (!authenticated) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const body = await request.json();
 

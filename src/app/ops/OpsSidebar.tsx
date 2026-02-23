@@ -5,9 +5,6 @@ import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
   Users,
-  MessageSquare,
-  Mail,
-  FileText,
   BarChart3,
   LogOut,
   ArrowLeft,
@@ -16,6 +13,15 @@ import {
   Search,
   ChevronRight,
   FolderOpen,
+  CalendarDays,
+  ClipboardList,
+  Receipt,
+  CreditCard,
+  Package,
+  Zap,
+  UserCog,
+  PenSquare,
+  Settings,
   type LucideIcon,
 } from 'lucide-react';
 import {
@@ -56,38 +62,48 @@ interface NavSection {
 
 const NAV_SECTIONS: NavSection[] = [
   {
-    id: 'overview',
-    label: 'General',
+    id: 'manage',
+    label: 'Manage',
     items: [
       { id: 'dashboard', label: 'Dashboard', href: '/ops', icon: LayoutDashboard, exact: true },
-      { id: 'analytics', label: 'Analytics', href: '/ops/analytics', icon: BarChart3 },
+      { id: 'jobs', label: 'Jobs', href: '/ops/jobs', icon: Kanban },
+      { id: 'customers', label: 'Customers', href: '/ops/customers', icon: Users },
+      { id: 'calendar', label: 'Calendar', href: '/ops/calendar', icon: CalendarDays },
     ],
   },
   {
-    id: 'crm',
-    label: 'CRM',
-    collapsible: true,
+    id: 'sales',
+    label: 'Sales',
     items: [
-      { id: 'contacts', label: 'Contacts', href: '/ops/crm/contacts', icon: Users },
-      { id: 'pipeline', label: 'Pipeline', href: '/ops/crm/pipeline', icon: Kanban },
+      { id: 'estimates', label: 'Estimates', href: '/ops/estimates', icon: ClipboardList },
+      { id: 'invoices', label: 'Invoices', href: '/ops/invoices', icon: Receipt },
+      { id: 'payments', label: 'Payments', href: '/ops/payments', icon: CreditCard },
+      { id: 'materials', label: 'Materials', href: '/ops/materials', icon: Package },
     ],
   },
   {
-    id: 'messaging',
-    label: 'Messaging',
-    collapsible: true,
+    id: 'communicate',
+    label: 'Communicate',
     items: [
-      { id: 'sms', label: 'SMS', href: '/ops/messaging/sms', icon: MessageSquare },
-      { id: 'email', label: 'Email', href: '/ops/messaging/email', icon: Mail },
-    ],
-  },
-  {
-    id: 'other',
-    label: 'Other',
-    items: [
+      { id: 'inbox', label: 'Inbox', href: '/ops/inbox', icon: Inbox },
       { id: 'documents', label: 'Documents', href: '/ops/documents', icon: FolderOpen },
-      { id: 'inbox', label: 'Support Inbox', href: '/ops/support', icon: Inbox },
-      { id: 'blog', label: 'Blog Posts', href: '/ops/blog/posts', icon: FileText },
+    ],
+  },
+  {
+    id: 'automate',
+    label: 'Automate',
+    items: [
+      { id: 'automations', label: 'Automations', href: '/ops/automations', icon: Zap },
+      { id: 'reports', label: 'Reports', href: '/ops/reports', icon: BarChart3 },
+    ],
+  },
+  {
+    id: 'admin',
+    label: 'Admin',
+    items: [
+      { id: 'team', label: 'Team', href: '/ops/team', icon: UserCog },
+      { id: 'blog', label: 'Blog', href: '/ops/blog/posts', icon: PenSquare },
+      { id: 'settings', label: 'Settings', href: '/ops/settings', icon: Settings },
     ],
   },
 ];

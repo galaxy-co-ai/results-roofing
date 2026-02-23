@@ -73,6 +73,27 @@ function handleQuoteRouting(req: NextRequest): NextResponse | null {
 }
 
 /**
+ * Protect /api/ops/* routes with ops_session cookie (separate from Clerk).
+ * /api/ops/auth is excluded so the login endpoint remains accessible.
+ */
+function handleOpsApiAuth(req: NextRequest): NextResponse | null {
+  const { pathname } = req.nextUrl;
+
+  if (!pathname.startsWith('/api/ops')) return null;
+  if (pathname.startsWith('/api/ops/auth')) return null;
+
+  const opsToken = req.cookies.get('ops_session')?.value;
+  const expectedToken = process.env.OPS_SESSION_TOKEN;
+
+  if (!opsToken || (expectedToken && opsToken !== expectedToken)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  // Valid ops session — proceed without Clerk
+  return NextResponse.next();
+}
+
+/**
  * Middleware that bypasses Clerk entirely in development
  * or uses Clerk authentication in production
  */
@@ -83,6 +104,12 @@ export default async function middleware(req: NextRequest) {
     return quoteResponse;
   }
 
+  // Protect /api/ops routes with ops_session cookie (not Clerk)
+  const opsResponse = handleOpsApiAuth(req);
+  if (opsResponse) {
+    return opsResponse;
+  }
+
   // In bypass mode, skip all Clerk authentication
   if (BYPASS_AUTH) {
     return NextResponse.next();
@@ -90,7 +117,7 @@ export default async function middleware(req: NextRequest) {
 
   // Dynamic import Clerk middleware only when not bypassing
   const { clerkMiddleware, createRouteMatcher } = await import('@clerk/nextjs/server');
-  
+
   const isProtectedRoute = createRouteMatcher([
     '/portal(.*)',
     '/api/portal(.*)',
