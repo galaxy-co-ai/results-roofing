@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Plus,
   RefreshCw,
@@ -10,48 +12,105 @@ import {
   PipelineBoard,
   type Opportunity,
 } from '@/components/features/ops/crm/PipelineBoard';
+import {
+  OpportunityModal,
+  type OpportunityFormData,
+} from '@/components/features/ops/crm/OpportunityModal';
 import { Button } from '@/components/ui/button';
 import {
   Alert,
   AlertDescription,
 } from '@/components/ui/alert';
 import { OpsPageHeader, OpsStatCard } from '@/components/ui/ops';
-import { useOpsPipeline, useMoveOpportunity } from '@/hooks/ops/use-ops-queries';
+import {
+  useOpsPipeline,
+  useMoveOpportunity,
+  useCreateOpportunity,
+  useUpdateOpportunity,
+  useDeleteOpportunity,
+} from '@/hooks/ops/use-ops-queries';
 import type { PipelineStats } from '@/types/ops';
 
+type ModalMode = 'view' | 'edit' | 'create';
+
 export default function PipelinePage() {
+  const router = useRouter();
   const { data, isLoading: loading, error: queryError, refetch } = useOpsPipeline();
   const moveOpportunity = useMoveOpportunity();
+  const createOpportunity = useCreateOpportunity();
+  const updateOpportunity = useUpdateOpportunity();
+  const deleteOpportunity = useDeleteOpportunity();
 
   const stages = data?.stages || [];
   const opportunities = data?.opportunities || [];
   const error = queryError ? 'Could not load pipeline' : null;
 
+  // Modal state
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<ModalMode>('view');
+  const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
+
+  const pipelineId = stages.length > 0
+    ? (opportunities[0]?.pipelineId || 'pipeline-1')
+    : 'pipeline-1';
+
   const handleMoveOpportunity = (opportunityId: string, newStageId: string) => {
     moveOpportunity.mutate({ opportunityId, stageId: newStageId });
   };
 
-  const handleViewOpportunity = (_opportunity: Opportunity) => {
-    // TODO: Open opportunity detail modal
+  const handleViewOpportunity = (opportunity: Opportunity) => {
+    setSelectedOpportunity(opportunity);
+    setModalMode('view');
+    setModalOpen(true);
   };
 
-  const handleEditOpportunity = (_opportunity: Opportunity) => {
-    // TODO: Open edit modal
+  const handleEditOpportunity = (opportunity: Opportunity) => {
+    setSelectedOpportunity(opportunity);
+    setModalMode('edit');
+    setModalOpen(true);
   };
 
   const handleDeleteOpportunity = async (opportunityId: string) => {
     if (!confirm('Are you sure you want to delete this deal?')) return;
-
-    try {
-      await fetch(`/api/ops/opportunities/${opportunityId}`, { method: 'DELETE' });
-      refetch();
-    } catch {
-      refetch();
-    }
+    deleteOpportunity.mutate(opportunityId);
   };
 
-  const handleMessageContact = (_opportunity: Opportunity) => {
-    // TODO: Navigate to messaging
+  const handleMessageContact = (opportunity: Opportunity) => {
+    const contactId = opportunity.contact?.id || opportunity.contactId;
+    router.push(`/ops/messaging/sms?contact=${encodeURIComponent(contactId)}`);
+  };
+
+  const handleAddDeal = () => {
+    setSelectedOpportunity(null);
+    setModalMode('create');
+    setModalOpen(true);
+  };
+
+  const handleSaveOpportunity = (formData: OpportunityFormData) => {
+    if (modalMode === 'create') {
+      createOpportunity.mutate(
+        {
+          name: formData.name,
+          pipelineId,
+          pipelineStageId: formData.pipelineStageId,
+          contactId: formData.contactId || 'new-contact',
+          monetaryValue: formData.monetaryValue,
+          status: formData.status,
+        },
+        { onSuccess: () => setModalOpen(false) }
+      );
+    } else if (modalMode === 'edit' && selectedOpportunity) {
+      updateOpportunity.mutate(
+        {
+          opportunityId: selectedOpportunity.id,
+          name: formData.name,
+          pipelineStageId: formData.pipelineStageId,
+          monetaryValue: formData.monetaryValue,
+          status: formData.status,
+        },
+        { onSuccess: () => setModalOpen(false) }
+      );
+    }
   };
 
   const stats: PipelineStats = {
@@ -91,6 +150,7 @@ export default function PipelinePage() {
           </Button>
           <Button
             size="sm"
+            onClick={handleAddDeal}
             className="bg-[var(--ops-accent-pipeline)] hover:bg-[color-mix(in_srgb,var(--ops-accent-pipeline)_90%,black)] transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
           >
             <Plus className="mr-2 size-4" />
@@ -141,6 +201,18 @@ export default function PipelinePage() {
         onDeleteOpportunity={handleDeleteOpportunity}
         onMessageContact={handleMessageContact}
         loading={loading}
+      />
+
+      {/* Opportunity Modal */}
+      <OpportunityModal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        mode={modalMode}
+        opportunity={selectedOpportunity}
+        stages={stages}
+        pipelineId={pipelineId}
+        onSave={handleSaveOpportunity}
+        saving={createOpportunity.isPending || updateOpportunity.isPending}
       />
     </div>
   );

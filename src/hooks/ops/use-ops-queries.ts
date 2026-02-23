@@ -176,6 +176,73 @@ export function useMoveOpportunity() {
   });
 }
 
+export function useCreateOpportunity() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: {
+      name: string;
+      pipelineId: string;
+      pipelineStageId: string;
+      contactId: string;
+      status?: string;
+      monetaryValue?: number;
+    }) =>
+      opsMutate<{ opportunity: Opportunity }>('/api/ops/pipelines', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.pipeline() }),
+  });
+}
+
+export function useUpdateOpportunity() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      opportunityId,
+      ...data
+    }: {
+      opportunityId: string;
+      name?: string;
+      pipelineStageId?: string;
+      status?: string;
+      monetaryValue?: number;
+    }) =>
+      opsMutate(`/api/ops/opportunities/${opportunityId}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.pipeline() }),
+  });
+}
+
+export function useDeleteOpportunity() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (opportunityId: string) =>
+      opsMutate<{ success: boolean }>(`/api/ops/opportunities/${opportunityId}`, {
+        method: 'DELETE',
+      }),
+    onMutate: async (opportunityId) => {
+      await qc.cancelQueries({ queryKey: opsKeys.pipeline() });
+      const prev = qc.getQueryData<PipelineData>(opsKeys.pipeline());
+      qc.setQueryData<PipelineData>(opsKeys.pipeline(), (old) =>
+        old
+          ? {
+              ...old,
+              opportunities: old.opportunities.filter((o) => o.id !== opportunityId),
+            }
+          : old
+      );
+      return { prev };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(opsKeys.pipeline(), ctx.prev);
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: opsKeys.pipeline() }),
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Conversations (SMS / Email)
 // ---------------------------------------------------------------------------
