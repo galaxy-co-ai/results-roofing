@@ -80,6 +80,9 @@ pnpm-lock.yaml
 .vercel
 .env*.local
 
+# Git worktrees
+.worktrees/
+
 # Claude Code local settings
 .claude/
 .env.vercel
