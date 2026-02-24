@@ -325,6 +325,75 @@ export function useMarkConversationRead() {
   });
 }
 
+export function useCreateConversation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: {
+      type: 'TYPE_SMS' | 'TYPE_EMAIL';
+      contactId: string;
+      message?: string;
+      subject?: string;
+      html?: string;
+      emailTo?: string;
+    }) =>
+      opsMutate<{ message: Message; mock?: boolean }>('/api/ops/conversations', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: (_data, vars) => {
+      qc.invalidateQueries({ queryKey: opsKeys.conversations(vars.type) });
+    },
+  });
+}
+
+export function useCreateTicket() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: {
+      subject: string;
+      message: string;
+      priority?: 'low' | 'medium' | 'high' | 'urgent';
+      channel?: 'sms' | 'email' | 'phone' | 'web';
+      contact: {
+        name: string;
+        email?: string;
+        phone?: string;
+        id?: string;
+      };
+      tags?: string[];
+    }) =>
+      opsMutate<{ ticket: Ticket }>('/api/ops/support/tickets', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'tickets'] }),
+  });
+}
+
+export function useUpdateContact() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      contactId,
+      ...data
+    }: {
+      contactId: string;
+      firstName?: string;
+      lastName?: string;
+      name?: string;
+      email?: string;
+      phone?: string;
+      city?: string;
+      state?: string;
+    }) =>
+      opsMutate<{ contact: OpsContact }>(`/api/ops/contacts/${contactId}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.contacts() }),
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Blog
 // ---------------------------------------------------------------------------

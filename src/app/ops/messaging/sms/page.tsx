@@ -1,12 +1,15 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   MessageSquare,
   RefreshCw,
   Phone,
   Mail,
   User,
+  Plus,
+  Send,
+  Loader2,
 } from 'lucide-react';
 import {
   ConversationList,
@@ -16,19 +19,50 @@ import {
   type Message,
 } from '@/components/features/ops/messaging';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { OpsPageHeader } from '@/components/ui/ops';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogBody,
+  DialogFooter,
+} from '@/components/ui/dialog';
 import messagingStyles from '@/components/features/ops/messaging/messaging.module.css';
-import { useOpsConversations, useConversationMessages, useMarkConversationRead } from '@/hooks/ops/use-ops-queries';
+import { useOpsConversations, useConversationMessages, useMarkConversationRead, useOpsContacts, useCreateConversation } from '@/hooks/ops/use-ops-queries';
 import { useSearchParam, useFilterParam } from '@/hooks/ops/use-ops-filters';
+import { useToast } from '@/components/ui/Toast';
 import type { OpsContact } from '@/types/ops';
 
 type Contact = OpsContact;
 
 export default function SMSPage() {
+  const { success: showSuccess, error: showError } = useToast();
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [localMessages, setLocalMessages] = useState<Message[]>([]);
   const [searchQuery, setSearchQuery] = useSearchParam('q');
   const [filter, setFilter] = useFilterParam('filter', ['all', 'unread', 'starred'] as const, 'all');
+
+  // New conversation state
+  const [showNewConvo, setShowNewConvo] = useState(false);
+  const [newConvoContactId, setNewConvoContactId] = useState('');
+  const [newConvoBody, setNewConvoBody] = useState('');
+  const [contactSearch, setContactSearch] = useState('');
+  const { data: allContacts = [] } = useOpsContacts();
+  const createConversation = useCreateConversation();
+
+  const filteredContacts = useMemo(() => {
+    if (!contactSearch) return allContacts.slice(0, 10);
+    const q = contactSearch.toLowerCase();
+    return allContacts.filter(c =>
+      (c.name || '').toLowerCase().includes(q) ||
+      (c.firstName || '').toLowerCase().includes(q) ||
+      (c.lastName || '').toLowerCase().includes(q) ||
+      (c.email || '').toLowerCase().includes(q) ||
+      (c.phone || '').includes(q)
+    ).slice(0, 10);
+  }, [allContacts, contactSearch]);
 
   // Wrap nuqs setters for components expecting sync callbacks
   const handleSearchChange = useCallback((v: string) => { setSearchQuery(v); }, [setSearchQuery]);
@@ -128,22 +162,51 @@ export default function SMSPage() {
 
   const contact: Contact | undefined = selectedConversation?.contact;
 
+  async function handleCreateConversation() {
+    if (!newConvoContactId || !newConvoBody.trim()) return;
+    try {
+      await createConversation.mutateAsync({
+        type: 'TYPE_SMS',
+        contactId: newConvoContactId,
+        message: newConvoBody.trim(),
+      });
+      showSuccess('Message sent', 'New SMS conversation started');
+      setShowNewConvo(false);
+      setNewConvoContactId('');
+      setNewConvoBody('');
+      setContactSearch('');
+      refetchConversations();
+    } catch (err) {
+      showError('Error', err instanceof Error ? err.message : 'Failed to send message');
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <OpsPageHeader title="SMS Conversations" />
 
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => refetchConversations()}
-          disabled={loadingList}
-          className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
-        >
-          <RefreshCw className={`mr-2 size-4 ${loadingList ? 'animate-spin' : ''}`} />
-          Refresh
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => refetchConversations()}
+            disabled={loadingList}
+            className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
+          >
+            <RefreshCw className={`mr-2 size-4 ${loadingList ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Button
+            size="sm"
+            onClick={() => setShowNewConvo(true)}
+            className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
+          >
+            <Plus className="mr-2 size-4" />
+            New Conversation
+          </Button>
+        </div>
       </div>
 
       {/* Messaging Interface */}
@@ -234,6 +297,66 @@ export default function SMSPage() {
           )}
         </div>
       </div>
+
+      {/* New Conversation Dialog */}
+      <Dialog open={showNewConvo} onOpenChange={setShowNewConvo}>
+        <DialogContent size="sm">
+          <DialogHeader>
+            <DialogTitle>New SMS Conversation</DialogTitle>
+          </DialogHeader>
+          <DialogBody className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium">To</label>
+              <Input
+                placeholder="Search contacts..."
+                value={contactSearch}
+                onChange={e => { setContactSearch(e.target.value); setNewConvoContactId(''); }}
+              />
+              {contactSearch && !newConvoContactId && (
+                <div className="border rounded-md max-h-40 overflow-y-auto">
+                  {filteredContacts.length === 0 ? (
+                    <p className="p-2 text-xs text-muted-foreground">No contacts found</p>
+                  ) : (
+                    filteredContacts.map(c => (
+                      <button
+                        key={c.id}
+                        className="w-full text-left px-3 py-2 text-sm hover:bg-muted/50 border-b last:border-0"
+                        onClick={() => {
+                          setNewConvoContactId(c.id);
+                          setContactSearch(c.name || `${c.firstName || ''} ${c.lastName || ''}`.trim() || c.phone || '');
+                        }}
+                      >
+                        <span className="font-medium">{c.name || `${c.firstName || ''} ${c.lastName || ''}`.trim()}</span>
+                        {c.phone && <span className="text-xs text-muted-foreground ml-2">{c.phone}</span>}
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
+              {newConvoContactId && <p className="text-xs text-green-600">Contact selected</p>}
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium">Message</label>
+              <textarea
+                className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[100px] resize-y"
+                placeholder="Type your message..."
+                value={newConvoBody}
+                onChange={e => setNewConvoBody(e.target.value)}
+              />
+            </div>
+          </DialogBody>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowNewConvo(false)}>Cancel</Button>
+            <Button
+              onClick={handleCreateConversation}
+              disabled={!newConvoContactId || !newConvoBody.trim() || createConversation.isPending}
+            >
+              {createConversation.isPending ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Send className="mr-2 size-4" />}
+              Send
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -1,16 +1,26 @@
 'use client';
 
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { Search, Mail, MessageSquare, Send, Loader2, RefreshCw } from 'lucide-react';
+import { Search, Mail, MessageSquare, Send, Loader2, RefreshCw, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/components/ui/Toast';
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogBody,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import {
   useOpsConversations,
   useConversationMessages,
   useSendMessage,
   useMarkConversationRead,
+  useOpsContacts,
+  useCreateConversation,
 } from '@/hooks/ops/use-ops-queries';
 import type { Conversation } from '@/types/ops';
 
@@ -35,13 +45,36 @@ function formatMessageTime(dateStr: string | undefined): string {
 }
 
 export default function InboxPage() {
-  const { error: showError } = useToast();
+  const { error: showError, success: showSuccess } = useToast();
 
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<ChannelFilter>('all');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // New conversation dialog state
+  const [showNewConvo, setShowNewConvo] = useState(false);
+  const [newConvoType, setNewConvoType] = useState<'TYPE_SMS' | 'TYPE_EMAIL'>('TYPE_SMS');
+  const [newConvoContactId, setNewConvoContactId] = useState('');
+  const [newConvoBody, setNewConvoBody] = useState('');
+  const [newConvoSubject, setNewConvoSubject] = useState('');
+  const [contactSearch, setContactSearch] = useState('');
+
+  const { data: allContacts = [] } = useOpsContacts();
+  const createConversation = useCreateConversation();
+
+  const filteredContacts = useMemo(() => {
+    if (!contactSearch) return allContacts.slice(0, 10);
+    const q = contactSearch.toLowerCase();
+    return allContacts.filter(c =>
+      (c.name || '').toLowerCase().includes(q) ||
+      (c.firstName || '').toLowerCase().includes(q) ||
+      (c.lastName || '').toLowerCase().includes(q) ||
+      (c.email || '').toLowerCase().includes(q) ||
+      (c.phone || '').includes(q)
+    ).slice(0, 10);
+  }, [allContacts, contactSearch]);
 
   // Fetch both SMS and Email conversations
   const { data: smsConversations = [], isLoading: loadingSms, refetch: refetchSms } = useOpsConversations('TYPE_SMS');
@@ -119,6 +152,30 @@ export default function InboxPage() {
     refetchEmail();
   }
 
+  async function handleCreateConversation() {
+    if (!newConvoContactId || !newConvoBody.trim()) return;
+    const selectedContact = allContacts.find(c => c.id === newConvoContactId);
+    try {
+      await createConversation.mutateAsync({
+        type: newConvoType,
+        contactId: newConvoContactId,
+        message: newConvoType === 'TYPE_SMS' ? newConvoBody.trim() : undefined,
+        subject: newConvoType === 'TYPE_EMAIL' ? newConvoSubject : undefined,
+        html: newConvoType === 'TYPE_EMAIL' ? newConvoBody.trim().replace(/\n/g, '<br/>') : undefined,
+        emailTo: newConvoType === 'TYPE_EMAIL' ? selectedContact?.email : undefined,
+      });
+      showSuccess('Message sent', 'New conversation started');
+      setShowNewConvo(false);
+      setNewConvoContactId('');
+      setNewConvoBody('');
+      setNewConvoSubject('');
+      setContactSearch('');
+      handleRefresh();
+    } catch (err) {
+      showError('Error', err instanceof Error ? err.message : 'Failed to create conversation');
+    }
+  }
+
   const unreadCount = allConversations.reduce((s, c) => s + (c.unreadCount || 0), 0);
 
   return (
@@ -132,10 +189,16 @@ export default function InboxPage() {
             {isLoading ? '...' : `${unreadCount} unread · ${allConversations.length} conversations`}
           </p>
         </div>
-        <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isLoading}>
-          <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-          Refresh
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isLoading}>
+            <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Button size="sm" onClick={() => setShowNewConvo(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            New Message
+          </Button>
+        </div>
       </div>
 
       <div className="flex border rounded-lg overflow-hidden bg-card" style={{ height: 'calc(100vh - 220px)' }}>
@@ -330,6 +393,101 @@ export default function InboxPage() {
           )}
         </div>
       </div>
+
+      {/* New Conversation Dialog */}
+      <Dialog open={showNewConvo} onOpenChange={setShowNewConvo}>
+        <DialogContent size="sm">
+          <DialogHeader>
+            <DialogTitle>New Conversation</DialogTitle>
+          </DialogHeader>
+          <DialogBody className="space-y-4">
+            {/* Channel Selector */}
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium">Channel</label>
+              <div className="flex gap-2">
+                <Button
+                  variant={newConvoType === 'TYPE_SMS' ? 'secondary' : 'outline'}
+                  size="sm"
+                  onClick={() => setNewConvoType('TYPE_SMS')}
+                >
+                  <MessageSquare className="mr-1.5 h-3.5 w-3.5" /> SMS
+                </Button>
+                <Button
+                  variant={newConvoType === 'TYPE_EMAIL' ? 'secondary' : 'outline'}
+                  size="sm"
+                  onClick={() => setNewConvoType('TYPE_EMAIL')}
+                >
+                  <Mail className="mr-1.5 h-3.5 w-3.5" /> Email
+                </Button>
+              </div>
+            </div>
+            {/* Contact Picker */}
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium">To</label>
+              <Input
+                placeholder="Search contacts..."
+                value={contactSearch}
+                onChange={e => { setContactSearch(e.target.value); setNewConvoContactId(''); }}
+              />
+              {contactSearch && !newConvoContactId && (
+                <div className="border rounded-md max-h-40 overflow-y-auto">
+                  {filteredContacts.length === 0 ? (
+                    <p className="p-2 text-xs text-muted-foreground">No contacts found</p>
+                  ) : (
+                    filteredContacts.map(c => (
+                      <button
+                        key={c.id}
+                        className="w-full text-left px-3 py-2 text-sm hover:bg-muted/50 border-b last:border-0"
+                        onClick={() => {
+                          setNewConvoContactId(c.id);
+                          setContactSearch(c.name || `${c.firstName || ''} ${c.lastName || ''}`.trim() || c.email || c.phone || '');
+                        }}
+                      >
+                        <span className="font-medium">{c.name || `${c.firstName || ''} ${c.lastName || ''}`.trim()}</span>
+                        {c.email && <span className="text-xs text-muted-foreground ml-2">{c.email}</span>}
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
+              {newConvoContactId && (
+                <p className="text-xs text-green-600">Contact selected</p>
+              )}
+            </div>
+            {/* Subject (email only) */}
+            {newConvoType === 'TYPE_EMAIL' && (
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium">Subject</label>
+                <Input
+                  placeholder="Email subject..."
+                  value={newConvoSubject}
+                  onChange={e => setNewConvoSubject(e.target.value)}
+                />
+              </div>
+            )}
+            {/* Message */}
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium">Message</label>
+              <textarea
+                className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[100px] resize-y"
+                placeholder="Type your message..."
+                value={newConvoBody}
+                onChange={e => setNewConvoBody(e.target.value)}
+              />
+            </div>
+          </DialogBody>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowNewConvo(false)}>Cancel</Button>
+            <Button
+              onClick={handleCreateConversation}
+              disabled={!newConvoContactId || !newConvoBody.trim() || createConversation.isPending || (newConvoType === 'TYPE_EMAIL' && !newConvoSubject.trim())}
+            >
+              {createConversation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
+              Send
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
