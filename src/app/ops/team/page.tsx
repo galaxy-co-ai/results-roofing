@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Plus, Search, MoreHorizontal, Eye, Pencil, Trash2, Users } from 'lucide-react';
+import { Plus, Search, MoreHorizontal, Eye, Pencil, Trash2, Users, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table';
@@ -17,41 +18,50 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/Toast';
-
-interface TeamMember {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  role: string;
-  activeJobs: number;
-  revenue: string;
-  lastActive: string;
-  avatar: string;
-}
+import {
+  useOpsTeam, useInviteTeamMember, useUpdateTeamMember, useDeleteTeamMember,
+} from '@/hooks/ops/use-ops-queries';
+import type { OpsTeamMember } from '@/types/ops';
 
 const ROLE_STYLES: Record<string, string> = {
-  Admin: 'bg-purple-50 text-purple-700 border-purple-200',
-  Manager: 'bg-blue-50 text-blue-700 border-blue-200',
-  Member: 'bg-muted text-muted-foreground',
+  admin: 'bg-purple-50 text-purple-700 border-purple-200',
+  manager: 'bg-blue-50 text-blue-700 border-blue-200',
+  member: 'bg-muted text-muted-foreground',
 };
 
-const ROLES = ['all', 'Admin', 'Manager', 'Member'];
+const ROLES = ['all', 'admin', 'manager', 'member'];
+
+function getInitials(name: string) {
+  return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+}
+
+function capitalizeRole(role: string) {
+  return role.charAt(0).toUpperCase() + role.slice(1);
+}
+
+function formatDate(dateStr?: string | null) {
+  if (!dateStr) return 'Never';
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
 
 export default function TeamPage() {
   const { success } = useToast();
-  const [team, setTeam] = useState<TeamMember[]>([]);
+  const { data: team = [], isLoading, refetch } = useOpsTeam();
+  const inviteTeamMember = useInviteTeamMember();
+  const updateTeamMember = useUpdateTeamMember();
+  const deleteTeamMember = useDeleteTeamMember();
+
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [showInviteDialog, setShowInviteDialog] = useState(false);
-  const [viewMember, setViewMember] = useState<TeamMember | null>(null);
-  const [editMember, setEditMember] = useState<TeamMember | null>(null);
+  const [viewMember, setViewMember] = useState<OpsTeamMember | null>(null);
+  const [editMember, setEditMember] = useState<OpsTeamMember | null>(null);
 
   // Form state
   const [formName, setFormName] = useState('');
   const [formEmail, setFormEmail] = useState('');
   const [formPhone, setFormPhone] = useState('');
-  const [formRole, setFormRole] = useState('Member');
+  const [formRole, setFormRole] = useState('member');
 
   const filtered = useMemo(() => {
     let result = team;
@@ -66,45 +76,54 @@ export default function TeamPage() {
     return result;
   }, [team, search, roleFilter]);
 
-  function handleInvite() {
+  async function handleInvite() {
     if (!formName.trim() || !formEmail.trim()) return;
-    const initials = formName.trim().split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
-    const newMember: TeamMember = {
-      id: String(Date.now()),
-      name: formName.trim(),
-      email: formEmail.trim(),
-      phone: formPhone.trim() || '—',
-      role: formRole,
-      activeJobs: 0,
-      revenue: '$0',
-      lastActive: 'Invited',
-      avatar: initials,
-    };
-    setTeam(prev => [...prev, newMember]);
-    setShowInviteDialog(false);
-    setFormName(''); setFormEmail(''); setFormPhone(''); setFormRole('Member');
-    success('Member invited', `Invitation sent to ${newMember.email}`);
+    try {
+      await inviteTeamMember.mutateAsync({
+        name: formName.trim(),
+        email: formEmail.trim(),
+        phone: formPhone.trim() || undefined,
+        role: formRole,
+      });
+      setShowInviteDialog(false);
+      setFormName(''); setFormEmail(''); setFormPhone(''); setFormRole('member');
+      success('Member invited', `Invitation sent to ${formEmail.trim()}`);
+    } catch {
+      // Error handled by mutation
+    }
   }
 
-  function handleEdit() {
+  async function handleEdit() {
     if (!editMember || !formName.trim() || !formEmail.trim()) return;
-    setTeam(prev => prev.map(m =>
-      m.id === editMember.id ? { ...m, name: formName.trim(), email: formEmail.trim(), phone: formPhone.trim() || m.phone, role: formRole } : m
-    ));
-    setEditMember(null);
-    success('Member updated', `${formName.trim()} updated`);
+    try {
+      await updateTeamMember.mutateAsync({
+        id: editMember.id,
+        name: formName.trim(),
+        email: formEmail.trim(),
+        phone: formPhone.trim() || null,
+        role: formRole as OpsTeamMember['role'],
+      });
+      setEditMember(null);
+      success('Member updated', `${formName.trim()} updated`);
+    } catch {
+      // Error handled by mutation
+    }
   }
 
-  function handleDelete(member: TeamMember) {
-    setTeam(prev => prev.filter(m => m.id !== member.id));
-    setViewMember(null);
-    success('Member removed', `${member.name} removed from team`);
+  async function handleDelete(member: OpsTeamMember) {
+    try {
+      await deleteTeamMember.mutateAsync(member.id);
+      setViewMember(null);
+      success('Member removed', `${member.name} removed from team`);
+    } catch {
+      // Error handled by mutation
+    }
   }
 
-  function openEdit(member: TeamMember) {
+  function openEdit(member: OpsTeamMember) {
     setFormName(member.name);
     setFormEmail(member.email);
-    setFormPhone(member.phone);
+    setFormPhone(member.phone || '');
     setFormRole(member.role);
     setEditMember(member);
   }
@@ -116,15 +135,40 @@ export default function TeamPage() {
           <h1 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'var(--ops-font-display)' }}>
             Team
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">{team.length} team member{team.length !== 1 ? 's' : ''}</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            {isLoading ? '...' : `${team.length} team member${team.length !== 1 ? 's' : ''}`}
+          </p>
         </div>
-        <Button size="sm" className="gap-2" onClick={() => { setFormName(''); setFormEmail(''); setFormPhone(''); setFormRole('Member'); setShowInviteDialog(true); }}>
-          <Plus className="h-4 w-4" />
-          Invite Member
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
+            <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Button size="sm" className="gap-2" onClick={() => { setFormName(''); setFormEmail(''); setFormPhone(''); setFormRole('member'); setShowInviteDialog(true); }}>
+            <Plus className="h-4 w-4" />
+            Invite Member
+          </Button>
+        </div>
       </div>
 
-      {team.length === 0 ? (
+      {isLoading ? (
+        <Card>
+          <div className="p-4 space-y-3">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Skeleton className="h-7 w-7 rounded-full" />
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-4 flex-1" />
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-12" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-24" />
+              </div>
+            ))}
+          </div>
+        </Card>
+      ) : team.length === 0 ? (
         <Card>
           <div className="py-16 flex flex-col items-center justify-center text-center">
             <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-4">
@@ -134,7 +178,7 @@ export default function TeamPage() {
             <p className="text-xs text-muted-foreground mt-1 max-w-[280px]">
               Invite your first team member to start tracking performance and assigning jobs.
             </p>
-            <Button size="sm" className="mt-4 gap-2" onClick={() => { setFormName(''); setFormEmail(''); setFormPhone(''); setFormRole('Member'); setShowInviteDialog(true); }}>
+            <Button size="sm" className="mt-4 gap-2" onClick={() => { setFormName(''); setFormEmail(''); setFormPhone(''); setFormRole('member'); setShowInviteDialog(true); }}>
               <Plus className="h-4 w-4" />
               Invite Member
             </Button>
@@ -150,14 +194,14 @@ export default function TeamPage() {
                   <div className="flex items-start gap-3">
                     <Avatar className="h-10 w-10">
                       <AvatarFallback className="bg-primary/10 text-primary font-semibold text-sm">
-                        {member.avatar}
+                        {getInitials(member.name)}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <h3 className="font-semibold text-sm">{member.name}</h3>
                         <span className={`inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium border ${ROLE_STYLES[member.role]}`}>
-                          {member.role}
+                          {capitalizeRole(member.role)}
                         </span>
                       </div>
                       <div className="flex items-center gap-3 mt-2">
@@ -167,7 +211,7 @@ export default function TeamPage() {
                         </div>
                         <div>
                           <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Revenue</p>
-                          <p className="text-lg font-bold tabular-nums">{member.revenue}</p>
+                          <p className="text-lg font-bold tabular-nums">${Number(member.revenue).toLocaleString()}</p>
                         </div>
                       </div>
                     </div>
@@ -185,13 +229,13 @@ export default function TeamPage() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm">
-                  {roleFilter === 'all' ? 'Role' : roleFilter}
+                  {roleFilter === 'all' ? 'Role' : capitalizeRole(roleFilter)}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {ROLES.map(r => (
                   <DropdownMenuItem key={r} onClick={() => setRoleFilter(r)}>
-                    {r === 'all' ? 'All Roles' : r}
+                    {r === 'all' ? 'All Roles' : capitalizeRole(r)}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -218,21 +262,21 @@ export default function TeamPage() {
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <Avatar className="h-7 w-7">
-                          <AvatarFallback className="text-[10px] bg-primary/10 text-primary">{m.avatar}</AvatarFallback>
+                          <AvatarFallback className="text-[10px] bg-primary/10 text-primary">{getInitials(m.name)}</AvatarFallback>
                         </Avatar>
                         <span className="font-medium">{m.name}</span>
                       </div>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-xs">{m.email}</TableCell>
-                    <TableCell className="text-muted-foreground text-xs tabular-nums">{m.phone}</TableCell>
+                    <TableCell className="text-muted-foreground text-xs tabular-nums">{m.phone || '—'}</TableCell>
                     <TableCell>
                       <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${ROLE_STYLES[m.role]}`}>
-                        {m.role}
+                        {capitalizeRole(m.role)}
                       </span>
                     </TableCell>
                     <TableCell className="text-center tabular-nums">{m.activeJobs}</TableCell>
-                    <TableCell className="text-right font-medium tabular-nums">{m.revenue}</TableCell>
-                    <TableCell className="text-muted-foreground text-xs">{m.lastActive}</TableCell>
+                    <TableCell className="text-right font-medium tabular-nums">${Number(m.revenue).toLocaleString()}</TableCell>
+                    <TableCell className="text-muted-foreground text-xs">{formatDate(m.lastActiveAt)}</TableCell>
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -286,19 +330,24 @@ export default function TeamPage() {
               <Label>Role</Label>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-full justify-start">{formRole}</Button>
+                  <Button variant="outline" className="w-full justify-start">{capitalizeRole(formRole)}</Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-full">
-                  <DropdownMenuItem onClick={() => setFormRole('Admin')}>Admin</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFormRole('Manager')}>Manager</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFormRole('Member')}>Member</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setFormRole('admin')}>Admin</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setFormRole('manager')}>Manager</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setFormRole('member')}>Member</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
           </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowInviteDialog(false)}>Cancel</Button>
-            <Button onClick={handleInvite} disabled={!formName.trim() || !formEmail.trim()}>Send Invite</Button>
+            <Button
+              onClick={handleInvite}
+              disabled={!formName.trim() || !formEmail.trim() || inviteTeamMember.isPending}
+            >
+              {inviteTeamMember.isPending ? 'Sending...' : 'Send Invite'}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -324,19 +373,24 @@ export default function TeamPage() {
               <Label>Role</Label>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-full justify-start">{formRole}</Button>
+                  <Button variant="outline" className="w-full justify-start">{capitalizeRole(formRole)}</Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-full">
-                  <DropdownMenuItem onClick={() => setFormRole('Admin')}>Admin</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFormRole('Manager')}>Manager</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFormRole('Member')}>Member</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setFormRole('admin')}>Admin</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setFormRole('manager')}>Manager</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setFormRole('member')}>Member</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
           </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditMember(null)}>Cancel</Button>
-            <Button onClick={handleEdit} disabled={!formName.trim() || !formEmail.trim()}>Save Changes</Button>
+            <Button
+              onClick={handleEdit}
+              disabled={!formName.trim() || !formEmail.trim() || updateTeamMember.isPending}
+            >
+              {updateTeamMember.isPending ? 'Saving...' : 'Save Changes'}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -349,19 +403,19 @@ export default function TeamPage() {
             <DialogBody className="space-y-4">
               <div className="flex items-center gap-4">
                 <Avatar className="h-12 w-12">
-                  <AvatarFallback className="bg-primary/10 text-primary font-semibold">{viewMember.avatar}</AvatarFallback>
+                  <AvatarFallback className="bg-primary/10 text-primary font-semibold">{getInitials(viewMember.name)}</AvatarFallback>
                 </Avatar>
                 <div>
                   <h3 className="font-semibold">{viewMember.name}</h3>
-                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${ROLE_STYLES[viewMember.role]}`}>{viewMember.role}</span>
+                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${ROLE_STYLES[viewMember.role]}`}>{capitalizeRole(viewMember.role)}</span>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div><p className="text-xs text-muted-foreground">Email</p><p className="font-medium text-sm">{viewMember.email}</p></div>
-                <div><p className="text-xs text-muted-foreground">Phone</p><p className="font-medium text-sm tabular-nums">{viewMember.phone}</p></div>
+                <div><p className="text-xs text-muted-foreground">Phone</p><p className="font-medium text-sm tabular-nums">{viewMember.phone || '—'}</p></div>
                 <div><p className="text-xs text-muted-foreground">Active Jobs</p><p className="font-medium text-sm tabular-nums">{viewMember.activeJobs}</p></div>
-                <div><p className="text-xs text-muted-foreground">Revenue</p><p className="font-medium text-sm tabular-nums">{viewMember.revenue}</p></div>
-                <div><p className="text-xs text-muted-foreground">Last Active</p><p className="font-medium text-sm">{viewMember.lastActive}</p></div>
+                <div><p className="text-xs text-muted-foreground">Revenue</p><p className="font-medium text-sm tabular-nums">${Number(viewMember.revenue).toLocaleString()}</p></div>
+                <div><p className="text-xs text-muted-foreground">Last Active</p><p className="font-medium text-sm">{formatDate(viewMember.lastActiveAt)}</p></div>
               </div>
             </DialogBody>
           )}

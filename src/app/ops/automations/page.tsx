@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Plus, Search, Zap, MoreHorizontal, Pause, Play, Eye, Trash2 } from 'lucide-react';
+import { Plus, Search, Zap, MoreHorizontal, Pause, Play, Eye, Trash2, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table';
@@ -16,24 +17,22 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/Toast';
-
-interface Automation {
-  id: string;
-  name: string;
-  trigger: string;
-  actions: string;
-  status: 'active' | 'paused';
-  lastTriggered: string;
-  runs: number;
-}
+import {
+  useOpsAutomations, useCreateAutomation, useUpdateAutomation, useDeleteAutomation,
+} from '@/hooks/ops/use-ops-queries';
+import type { OpsAutomation } from '@/types/ops';
 
 export default function AutomationsPage() {
   const { success } = useToast();
-  const [automations, setAutomations] = useState<Automation[]>([]);
+  const { data: automations = [], isLoading, refetch } = useOpsAutomations();
+  const createAutomation = useCreateAutomation();
+  const updateAutomation = useUpdateAutomation();
+  const deleteAutomation = useDeleteAutomation();
+
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'paused'>('all');
   const [showNewDialog, setShowNewDialog] = useState(false);
-  const [viewAutomation, setViewAutomation] = useState<Automation | null>(null);
+  const [viewAutomation, setViewAutomation] = useState<OpsAutomation | null>(null);
 
   // Form state
   const [formName, setFormName] = useState('');
@@ -57,35 +56,48 @@ export default function AutomationsPage() {
   const active = automations.filter(a => a.status === 'active');
   const totalRuns = automations.reduce((s, a) => s + a.runs, 0);
 
-  function handleCreate() {
+  async function handleCreate() {
     if (!formName.trim() || !formTrigger.trim() || !formActions.trim()) return;
-    const newAuto: Automation = {
-      id: String(Date.now()),
-      name: formName.trim(),
-      trigger: formTrigger.trim(),
-      actions: formActions.trim(),
-      status: 'active',
-      lastTriggered: 'Never',
-      runs: 0,
-    };
-    setAutomations(prev => [newAuto, ...prev]);
-    setShowNewDialog(false);
-    setFormName(''); setFormTrigger(''); setFormActions('');
-    success('Automation created', `"${newAuto.name}" is now active`);
+    try {
+      await createAutomation.mutateAsync({
+        name: formName.trim(),
+        trigger: formTrigger.trim(),
+        actions: formActions.trim(),
+      });
+      setShowNewDialog(false);
+      setFormName(''); setFormTrigger(''); setFormActions('');
+      success('Automation created', `"${formName.trim()}" is now active`);
+    } catch {
+      // Error handled by mutation
+    }
   }
 
-  function handleToggle(auto: Automation) {
+  async function handleToggle(auto: OpsAutomation) {
     const newStatus = auto.status === 'active' ? 'paused' : 'active';
-    setAutomations(prev => prev.map(a =>
-      a.id === auto.id ? { ...a, status: newStatus } : a
-    ));
-    success(newStatus === 'active' ? 'Automation activated' : 'Automation paused', `"${auto.name}" is now ${newStatus}`);
+    try {
+      await updateAutomation.mutateAsync({ id: auto.id, status: newStatus });
+      success(
+        newStatus === 'active' ? 'Automation activated' : 'Automation paused',
+        `"${auto.name}" is now ${newStatus}`
+      );
+    } catch {
+      // Error handled by mutation
+    }
   }
 
-  function handleDelete(auto: Automation) {
-    setAutomations(prev => prev.filter(a => a.id !== auto.id));
-    setViewAutomation(null);
-    success('Automation deleted', `"${auto.name}" removed`);
+  async function handleDelete(auto: OpsAutomation) {
+    try {
+      await deleteAutomation.mutateAsync(auto.id);
+      setViewAutomation(null);
+      success('Automation deleted', `"${auto.name}" removed`);
+    } catch {
+      // Error handled by mutation
+    }
+  }
+
+  function formatDate(dateStr?: string | null) {
+    if (!dateStr) return 'Never';
+    return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 
   return (
@@ -95,30 +107,53 @@ export default function AutomationsPage() {
           <h1 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'var(--ops-font-display)' }}>
             Automations
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">Workflow automations to save time</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            {isLoading ? '...' : `${automations.length} automations · ${active.length} active`}
+          </p>
         </div>
-        <Button size="sm" className="gap-2" onClick={() => { setFormName(''); setFormTrigger(''); setFormActions(''); setShowNewDialog(true); }}>
-          <Plus className="h-4 w-4" />
-          New Automation
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
+            <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Button size="sm" className="gap-2" onClick={() => { setFormName(''); setFormTrigger(''); setFormActions(''); setShowNewDialog(true); }}>
+            <Plus className="h-4 w-4" />
+            New Automation
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Active</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{active.length}</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : active.length}</p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Runs</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{totalRuns}</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : totalRuns}</p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Time Saved</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">~{Math.round(totalRuns * 2.5)} min</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : `~${Math.round(totalRuns * 2.5)} min`}</p>
         </CardContent></Card>
       </div>
 
-      {automations.length === 0 ? (
+      {isLoading ? (
+        <Card>
+          <div className="p-4 space-y-3">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Skeleton className="h-4 w-40" />
+                <Skeleton className="h-4 flex-1" />
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-12" />
+                <Skeleton className="h-4 w-24" />
+              </div>
+            ))}
+          </div>
+        </Card>
+      ) : automations.length === 0 ? (
         <Card>
           <div className="py-16 flex flex-col items-center justify-center text-center">
             <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-4">
@@ -188,7 +223,7 @@ export default function AutomationsPage() {
                       </span>
                     </TableCell>
                     <TableCell className="text-right tabular-nums">{a.runs}</TableCell>
-                    <TableCell className="text-muted-foreground text-xs">{a.lastTriggered}</TableCell>
+                    <TableCell className="text-muted-foreground text-xs">{formatDate(a.lastTriggeredAt)}</TableCell>
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -241,7 +276,12 @@ export default function AutomationsPage() {
           </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowNewDialog(false)}>Cancel</Button>
-            <Button onClick={handleCreate} disabled={!formName.trim() || !formTrigger.trim() || !formActions.trim()}>Create Automation</Button>
+            <Button
+              onClick={handleCreate}
+              disabled={!formName.trim() || !formTrigger.trim() || !formActions.trim() || createAutomation.isPending}
+            >
+              {createAutomation.isPending ? 'Creating...' : 'Create Automation'}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -264,7 +304,7 @@ export default function AutomationsPage() {
                 <div><p className="text-xs text-muted-foreground">Total Runs</p><p className="font-medium tabular-nums">{viewAutomation.runs}</p></div>
                 <div className="col-span-2"><p className="text-xs text-muted-foreground">Trigger</p><p className="font-medium">{viewAutomation.trigger}</p></div>
                 <div className="col-span-2"><p className="text-xs text-muted-foreground">Action(s)</p><p className="font-medium">{viewAutomation.actions}</p></div>
-                <div><p className="text-xs text-muted-foreground">Last Triggered</p><p className="font-medium">{viewAutomation.lastTriggered}</p></div>
+                <div><p className="text-xs text-muted-foreground">Last Triggered</p><p className="font-medium">{formatDate(viewAutomation.lastTriggeredAt)}</p></div>
               </div>
             </DialogBody>
           )}

@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Plus, Search, MoreHorizontal, ArrowUpDown, Eye, Trash2, Send, Package } from 'lucide-react';
+import { Plus, Search, MoreHorizontal, ArrowUpDown, Eye, Trash2, Send, Package, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table';
@@ -16,16 +17,10 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/Toast';
-
-interface Order {
-  id: string;
-  job: string;
-  supplier: string;
-  total: number;
-  status: string;
-  ordered: string;
-  delivery: string;
-}
+import {
+  useOpsMaterials, useCreateMaterial, useUpdateMaterial, useDeleteMaterial,
+} from '@/hooks/ops/use-ops-queries';
+import type { MaterialOrder } from '@/types/ops';
 
 const STATUS_STYLES: Record<string, string> = {
   draft: 'bg-muted text-muted-foreground',
@@ -40,13 +35,17 @@ const SUPPLIERS = ['all', 'ABC Supply Co.', 'SRS Distribution', 'Beacon Roofing'
 
 export default function MaterialsPage() {
   const { success } = useToast();
-  const [orders, setOrders] = useState<Order[]>([]);
+  const { data: orders = [], isLoading, refetch } = useOpsMaterials();
+  const createMaterial = useCreateMaterial();
+  const updateMaterial = useUpdateMaterial();
+  const deleteMaterial = useDeleteMaterial();
+
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [supplierFilter, setSupplierFilter] = useState('all');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
   const [showNewDialog, setShowNewDialog] = useState(false);
-  const [viewOrder, setViewOrder] = useState<Order | null>(null);
+  const [viewOrder, setViewOrder] = useState<MaterialOrder | null>(null);
 
   // Form state
   const [formJob, setFormJob] = useState('');
@@ -65,42 +64,55 @@ export default function MaterialsPage() {
     }
     if (statusFilter !== 'all') result = result.filter(o => o.status === statusFilter);
     if (supplierFilter !== 'all') result = result.filter(o => o.supplier === supplierFilter);
-    result = [...result].sort((a, b) => sortDir === 'asc' ? a.total - b.total : b.total - a.total);
+    result = [...result].sort((a, b) => sortDir === 'asc' ? Number(a.total) - Number(b.total) : Number(b.total) - Number(a.total));
     return result;
   }, [orders, search, statusFilter, supplierFilter, sortDir]);
 
-  const totalSpend = orders.filter(o => o.status !== 'cancelled').reduce((s, o) => s + o.total, 0);
+  const totalSpend = orders.filter(o => o.status !== 'cancelled').reduce((s, o) => s + Number(o.total), 0);
   const pendingOrders = orders.filter(o => ['draft', 'sent', 'confirmed'].includes(o.status));
 
-  function handleCreate() {
+  async function handleCreate() {
     if (!formJob.trim() || !formSupplier.trim() || !formTotal.trim()) return;
-    const maxNum = orders.length > 0 ? Math.max(...orders.map(o => parseInt(o.id.split('-')[1]))) : 1000;
-    const newOrder: Order = {
-      id: `MO-${maxNum + 1}`,
-      job: formJob.trim(),
-      supplier: formSupplier.trim(),
-      total: parseInt(formTotal),
-      status: 'draft',
-      ordered: '—',
-      delivery: '—',
-    };
-    setOrders(prev => [newOrder, ...prev]);
-    setShowNewDialog(false);
-    setFormJob(''); setFormSupplier(''); setFormTotal('');
-    success('Order created', `${newOrder.id} for ${newOrder.job}`);
+    try {
+      await createMaterial.mutateAsync({
+        job: formJob.trim(),
+        supplier: formSupplier.trim(),
+        total: formTotal.trim(),
+      });
+      setShowNewDialog(false);
+      setFormJob(''); setFormSupplier(''); setFormTotal('');
+      success('Order created', `Material order for ${formJob.trim()}`);
+    } catch {
+      // Error handled by mutation
+    }
   }
 
-  function handleSendOrder(order: Order) {
-    setOrders(prev => prev.map(o =>
-      o.id === order.id ? { ...o, status: 'sent', ordered: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) } : o
-    ));
-    success('Order sent', `${order.id} sent to ${order.supplier}`);
+  async function handleSendOrder(order: MaterialOrder) {
+    try {
+      await updateMaterial.mutateAsync({
+        id: order.id,
+        status: 'sent',
+        orderedAt: new Date().toISOString(),
+      });
+      success('Order sent', `${order.id.slice(0, 8)} sent to ${order.supplier}`);
+    } catch {
+      // Error handled by mutation
+    }
   }
 
-  function handleDelete(order: Order) {
-    setOrders(prev => prev.filter(o => o.id !== order.id));
-    setViewOrder(null);
-    success('Order deleted', `${order.id} removed`);
+  async function handleDelete(order: MaterialOrder) {
+    try {
+      await deleteMaterial.mutateAsync(order.id);
+      setViewOrder(null);
+      success('Order deleted', `Order removed`);
+    } catch {
+      // Error handled by mutation
+    }
+  }
+
+  function formatDate(dateStr?: string | null) {
+    if (!dateStr) return '—';
+    return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 
   return (
@@ -110,30 +122,54 @@ export default function MaterialsPage() {
           <h1 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'var(--ops-font-display)' }}>
             Materials
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">Material orders and supplier management</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            {isLoading ? '...' : `${orders.length} orders · $${totalSpend.toLocaleString()} total`}
+          </p>
         </div>
-        <Button size="sm" className="gap-2" onClick={() => { setFormJob(''); setFormSupplier(''); setFormTotal(''); setShowNewDialog(true); }}>
-          <Plus className="h-4 w-4" />
-          New Order
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
+            <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Button size="sm" className="gap-2" onClick={() => { setFormJob(''); setFormSupplier(''); setFormTotal(''); setShowNewDialog(true); }}>
+            <Plus className="h-4 w-4" />
+            New Order
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Spend</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">${totalSpend.toLocaleString()}</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : `$${totalSpend.toLocaleString()}`}</p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Pending Orders</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{pendingOrders.length}</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : pendingOrders.length}</p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Delivered</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{orders.filter(o => o.status === 'delivered').length}</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : orders.filter(o => o.status === 'delivered').length}</p>
         </CardContent></Card>
       </div>
 
-      {orders.length === 0 ? (
+      {isLoading ? (
+        <Card>
+          <div className="p-4 space-y-3">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 flex-1" />
+                <Skeleton className="h-4 w-28" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-24" />
+              </div>
+            ))}
+          </div>
+        </Card>
+      ) : orders.length === 0 ? (
         <Card>
           <div className="py-16 flex flex-col items-center justify-center text-center">
             <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-4">
@@ -207,17 +243,17 @@ export default function MaterialsPage() {
               <TableBody>
                 {filtered.map((o) => (
                   <TableRow key={o.id} className="cursor-pointer" onClick={() => setViewOrder(o)}>
-                    <TableCell className="font-medium text-primary">{o.id}</TableCell>
+                    <TableCell className="font-medium text-primary">{o.id.slice(0, 8)}</TableCell>
                     <TableCell className="max-w-[180px] truncate">{o.job}</TableCell>
                     <TableCell className="text-muted-foreground">{o.supplier}</TableCell>
-                    <TableCell className="text-right font-medium tabular-nums">${o.total.toLocaleString()}</TableCell>
+                    <TableCell className="text-right font-medium tabular-nums">${Number(o.total).toLocaleString()}</TableCell>
                     <TableCell>
                       <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[o.status]}`}>
                         {o.status.charAt(0).toUpperCase() + o.status.slice(1)}
                       </span>
                     </TableCell>
-                    <TableCell className="text-muted-foreground text-xs">{o.ordered}</TableCell>
-                    <TableCell className="text-muted-foreground text-xs">{o.delivery}</TableCell>
+                    <TableCell className="text-muted-foreground text-xs">{formatDate(o.orderedAt)}</TableCell>
+                    <TableCell className="text-muted-foreground text-xs">{formatDate(o.deliveryAt)}</TableCell>
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -275,7 +311,12 @@ export default function MaterialsPage() {
           </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowNewDialog(false)}>Cancel</Button>
-            <Button onClick={handleCreate} disabled={!formJob.trim() || !formSupplier.trim() || !formTotal.trim()}>Create Order</Button>
+            <Button
+              onClick={handleCreate}
+              disabled={!formJob.trim() || !formSupplier.trim() || !formTotal.trim() || createMaterial.isPending}
+            >
+              {createMaterial.isPending ? 'Creating...' : 'Create Order'}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -283,16 +324,16 @@ export default function MaterialsPage() {
       {/* View Order Dialog */}
       <Dialog open={!!viewOrder} onOpenChange={() => setViewOrder(null)}>
         <DialogContent>
-          <DialogHeader><DialogTitle>Order {viewOrder?.id}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>Order {viewOrder?.id.slice(0, 8)}</DialogTitle></DialogHeader>
           {viewOrder && (
             <DialogBody className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div><p className="text-xs text-muted-foreground">Job</p><p className="font-medium">{viewOrder.job}</p></div>
                 <div><p className="text-xs text-muted-foreground">Supplier</p><p className="font-medium">{viewOrder.supplier}</p></div>
-                <div><p className="text-xs text-muted-foreground">Total</p><p className="font-medium tabular-nums">${viewOrder.total.toLocaleString()}</p></div>
+                <div><p className="text-xs text-muted-foreground">Total</p><p className="font-medium tabular-nums">${Number(viewOrder.total).toLocaleString()}</p></div>
                 <div><p className="text-xs text-muted-foreground">Status</p><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[viewOrder.status]}`}>{viewOrder.status.charAt(0).toUpperCase() + viewOrder.status.slice(1)}</span></div>
-                <div><p className="text-xs text-muted-foreground">Ordered</p><p className="font-medium">{viewOrder.ordered}</p></div>
-                <div><p className="text-xs text-muted-foreground">Delivery</p><p className="font-medium">{viewOrder.delivery}</p></div>
+                <div><p className="text-xs text-muted-foreground">Ordered</p><p className="font-medium">{formatDate(viewOrder.orderedAt)}</p></div>
+                <div><p className="text-xs text-muted-foreground">Delivery</p><p className="font-medium">{formatDate(viewOrder.deliveryAt)}</p></div>
               </div>
             </DialogBody>
           )}
