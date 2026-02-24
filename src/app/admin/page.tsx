@@ -81,7 +81,7 @@ const PHASES: Phase[] = [
       { name: 'Package selection', status: 'complete' },
       { name: 'Financing options', status: 'pending', note: 'UI only - Enhancify stub' },
       { name: 'Appointment booking', status: 'complete', note: 'Internal scheduling' },
-      { name: 'Contract signing', status: 'pending', note: 'UI only - DocuSeal stub' },
+      { name: 'Contract signing', status: 'complete', note: 'SignatureCapture component' },
       { name: 'Payment (deposit)', status: 'complete', note: 'Stripe integration' },
       { name: 'Confirmation page', status: 'complete' },
       { name: 'Customer portal', status: 'in_progress', note: 'Dashboard done, others pending' },

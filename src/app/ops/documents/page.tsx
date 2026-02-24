@@ -8,7 +8,6 @@ import {
   AlertCircle,
   X,
   ExternalLink,
-  Download,
   ChevronRight,
   Home,
   Clock,
@@ -409,21 +408,6 @@ export default function DocumentsPage() {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-1">
-                          {doc.docusealDocumentUrl && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              asChild
-                            >
-                              <a
-                                href={doc.docusealDocumentUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <Download className="size-4" />
-                              </a>
-                            </Button>
-                          )}
                           {doc.quoteId && (
                             <Button
                               variant="ghost"

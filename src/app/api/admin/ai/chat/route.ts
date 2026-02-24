@@ -5,6 +5,13 @@ import { db } from '@/db';
 import { devTasks, aiMemories } from '@/db/schema';
 import { desc, isNull, or, gt } from 'drizzle-orm';
 
+function verifyAdmin(request: NextRequest): boolean {
+  const adminToken = request.cookies.get('admin_session')?.value;
+  const expectedToken = process.env.ADMIN_SESSION_TOKEN;
+  if (!expectedToken) return !!adminToken;
+  return adminToken === expectedToken;
+}
+
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
@@ -27,6 +34,10 @@ Current project context and memories will be provided with each message.`;
 
 export async function POST(request: NextRequest) {
   try {
+    if (!verifyAdmin(request)) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
     // Check for API key
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json({

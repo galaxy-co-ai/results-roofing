@@ -31,7 +31,7 @@ export const documentStatusEnum = pgEnum('document_status', [
 
 /**
  * Documents table - tracks all documents in the system
- * Integrates with DocuSeal for e-signatures
+ * Note: docuseal_* columns are legacy (kept for migration safety, no longer populated)
  */
 export const documents = pgTable(
   'documents',

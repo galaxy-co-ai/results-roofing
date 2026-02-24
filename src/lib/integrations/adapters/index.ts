@@ -6,7 +6,7 @@
  * ✅ google-solar - Satellite roof measurements via Google Solar API
  * ✅ resend - Email delivery complete (MIGRATING to GHL)
  * ✅ ghl-messaging - Unified SMS + Email + CRM
- * ⚠️ documenso - STUB (awaiting client account)
+ * ✅ signatures - In-house SignatureCapture component (replaced DocuSeal/Documenso)
  * ⚠️ wisetack - STUB → MIGRATING to Enhancify
  * ⚠️ jobnimbus - STUB (awaiting client API access)
  * ⚠️ signalwire - STUB → MIGRATING to GoHighLevel (GHL)
@@ -16,19 +16,8 @@
  * - Cal.com (not using external scheduling)
  */
 
-// E-Signature (DocuSeal - active, Documenso - stub)
-export {
-  docusealAdapter,
-  type CreateSubmissionRequest as DocuSealCreateSubmissionRequest,
-  type SubmissionResponse as DocuSealSubmissionResponse,
-  type SubmissionStatus as DocuSealSubmissionStatus,
-} from './docuseal';
-
-export {
-  documensoAdapter,
-  type CreateDocumentRequest,
-  type DocumentResponse
-} from './documenso';
+// E-Signature: handled in-house via SignatureCapture component
+// DocuSeal and Documenso adapters removed — signatures captured natively
 
 // Financing
 export {

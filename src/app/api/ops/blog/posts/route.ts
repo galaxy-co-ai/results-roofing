@@ -1,7 +1,28 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 import { isOpsAuthenticated } from '@/lib/ops/auth';
 import { listPosts, createPost } from '@/db/queries/blog-posts';
+
+const createPostSchema = z.object({
+  title: z.string().min(1).default('Untitled Post'),
+  slug: z.string().optional(),
+  excerpt: z.string().nullable().optional(),
+  content: z.string().nullable().optional(),
+  featuredImage: z.string().url().nullable().optional(),
+  gradient: z.string().nullable().optional(),
+  icon: z.string().nullable().optional(),
+  status: z.enum(['draft', 'published', 'scheduled', 'archived']).default('draft'),
+  authorName: z.string().default('Dalton Reed'),
+  authorRole: z.string().default('Founder'),
+  category: z.enum(['technology', 'homeowner-tips', 'roofing-101', 'storm-insurance', 'company-news']).nullable().optional(),
+  tags: z.array(z.string()).default([]),
+  readTime: z.number().nullable().optional(),
+  featured: z.boolean().default(false),
+  seoTitle: z.string().nullable().optional(),
+  seoDescription: z.string().nullable().optional(),
+  seoKeywords: z.array(z.string()).default([]),
+});
 
 /**
  * GET /api/ops/blog/posts
@@ -37,25 +58,18 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
+    const validation = createPostSchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.errors[0]?.message || 'Invalid request' },
+        { status: 400 }
+      );
+    }
 
+    const data = validation.data;
     const post = await createPost({
-      title: body.title || 'Untitled Post',
-      slug: body.slug || `post-${Date.now()}`,
-      excerpt: body.excerpt || null,
-      content: body.content || null,
-      featuredImage: body.featuredImage || null,
-      gradient: body.gradient || null,
-      icon: body.icon || null,
-      status: body.status || 'draft',
-      authorName: body.authorName || 'Dalton Reed',
-      authorRole: body.authorRole || 'Founder',
-      category: body.category || null,
-      tags: body.tags || [],
-      readTime: body.readTime || null,
-      featured: body.featured || false,
-      seoTitle: body.seoTitle || null,
-      seoDescription: body.seoDescription || null,
-      seoKeywords: body.seoKeywords || [],
+      ...data,
+      slug: data.slug || `post-${Date.now()}`,
     });
 
     // Bust ISR cache

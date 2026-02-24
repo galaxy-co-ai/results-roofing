@@ -1,6 +1,14 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { isOpsAuthenticated } from '@/lib/ops/auth';
 import { listAutomations, createAutomation } from '@/db/queries/automations';
+
+const createAutomationSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  trigger: z.string().min(1, 'Trigger is required'),
+  actions: z.string().min(1, 'Actions are required'),
+  status: z.enum(['active', 'paused']).default('active'),
+});
 
 /**
  * GET /api/ops/automations
@@ -32,13 +40,15 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
+    const validation = createAutomationSchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.errors[0]?.message || 'Invalid request' },
+        { status: 400 }
+      );
+    }
 
-    const automation = await createAutomation({
-      name: body.name,
-      trigger: body.trigger,
-      actions: body.actions,
-      status: body.status || 'active',
-    });
+    const automation = await createAutomation(validation.data);
 
     return NextResponse.json({ automation });
   } catch {

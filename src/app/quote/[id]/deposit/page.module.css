@@ -518,17 +518,6 @@
   margin: 0;
 }
 
-/* DocuSeal Container */
-.docusealContainer {
-  min-height: 600px;
-  position: relative;
-}
-
-.docusealContainer iframe {
-  width: 100%;
-  min-height: 600px;
-  border: none;
-}
 
 /* Processing Overlay */
 .processingOverlay {

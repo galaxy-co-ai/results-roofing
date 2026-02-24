@@ -85,10 +85,6 @@ export async function POST(request: NextRequest) {
         customerName: body.customerName || null,
         customerEmail: body.customerEmail || null,
         propertyAddress: body.propertyAddress || null,
-        docusealSubmissionId: body.docusealSubmissionId || null,
-        docusealSlug: body.docusealSlug || null,
-        docusealEmbedSrc: body.docusealEmbedSrc || null,
-        docusealDocumentUrl: body.docusealDocumentUrl || null,
         metadata: body.metadata ? JSON.stringify(body.metadata) : null,
       })
       .returning();

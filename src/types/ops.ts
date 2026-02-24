@@ -181,7 +181,6 @@ export interface OpsDocument {
   customerEmail: string | null;
   propertyAddress: string | null;
   quoteId: string | null;
-  docusealDocumentUrl: string | null;
   signedAt: string | null;
   createdAt: string;
 }

@@ -1,13 +1,25 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { db } from '@/db';
 import { devTasks } from '@/db/schema';
+
+function verifyAdmin(request: NextRequest): boolean {
+  const adminToken = request.cookies.get('admin_session')?.value;
+  const expectedToken = process.env.ADMIN_SESSION_TOKEN;
+  if (!expectedToken) return !!adminToken;
+  return adminToken === expectedToken;
+}
 
 /**
  * POST /api/admin/ai/audit
  * Performs a project health audit - analyzes tasks, phases, blockers
  */
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
+    if (!verifyAdmin(request)) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
     // Fetch all tasks
     const tasks = await db.select().from(devTasks);
     
