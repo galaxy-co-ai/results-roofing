@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Search, MoreHorizontal, ArrowUpDown, Eye, RefreshCw } from 'lucide-react';
+import { Search, MoreHorizontal, ArrowUpDown, Eye, RefreshCw, Archive, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,12 +10,13 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table';
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, DialogBody,
 } from '@/components/ui/dialog';
-import { useOpsEstimates } from '@/hooks/ops/use-ops-queries';
+import { useOpsEstimates, useUpdateEstimateStatus, useDeleteEstimate } from '@/hooks/ops/use-ops-queries';
+import { useToast } from '@/components/ui/Toast';
 import type { OpsEstimate, QuoteStatus } from '@/types/ops';
 
 const STATUS_STYLES: Record<string, string> = {
@@ -31,12 +32,12 @@ const STATUS_STYLES: Record<string, string> = {
 const STATUSES: (QuoteStatus | 'all')[] = ['all', 'preliminary', 'measured', 'selected', 'financed', 'scheduled', 'signed', 'converted'];
 
 function formatDate(dateStr: string | null | undefined) {
-  if (!dateStr) return '—';
+  if (!dateStr) return '\u2014';
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 function formatCurrency(val: number | null | undefined) {
-  if (val == null) return '—';
+  if (val == null) return '\u2014';
   return `$${val.toLocaleString()}`;
 }
 
@@ -45,8 +46,12 @@ export default function EstimatesPage() {
   const [statusFilter, setStatusFilter] = useState<QuoteStatus | 'all'>('all');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
   const [viewEstimate, setViewEstimate] = useState<OpsEstimate | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<OpsEstimate | null>(null);
 
   const { data: estimates = [], isLoading, refetch } = useOpsEstimates(statusFilter, search || undefined);
+  const updateStatus = useUpdateEstimateStatus();
+  const deleteEstimate = useDeleteEstimate();
+  const { success, error: toastError } = useToast();
 
   const sorted = useMemo(() => {
     return [...estimates].sort((a, b) => {
@@ -62,6 +67,27 @@ export default function EstimatesPage() {
   const active = estimates.filter(e => ['measured', 'selected', 'financed', 'scheduled'].includes(e.status));
   const activeValue = active.reduce((s, e) => s + (e.totalPrice ?? 0), 0);
 
+  function handleArchive(e: OpsEstimate) {
+    updateStatus.mutate(
+      { estimateId: e.id, status: 'converted' },
+      {
+        onSuccess: () => success('Estimate archived'),
+        onError: (err) => toastError('Failed to archive', err.message),
+      }
+    );
+  }
+
+  function handleDelete() {
+    if (!deleteTarget) return;
+    deleteEstimate.mutate(deleteTarget.id, {
+      onSuccess: () => {
+        success('Estimate deleted');
+        setDeleteTarget(null);
+      },
+      onError: (err) => toastError('Failed to delete', err.message),
+    });
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -70,7 +96,7 @@ export default function EstimatesPage() {
             Estimates
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {isLoading ? '...' : `${estimates.length} quotes · ${formatCurrency(totalValue)} total`}
+            {isLoading ? '...' : `${estimates.length} quotes \u00B7 ${formatCurrency(totalValue)} total`}
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
@@ -82,20 +108,20 @@ export default function EstimatesPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Quotes</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : estimates.length}</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '\u2014' : estimates.length}</p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Value</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : formatCurrency(totalValue)}</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '\u2014' : formatCurrency(totalValue)}</p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Signed / Converted</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : signed.length}</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '\u2014' : signed.length}</p>
           {!isLoading && signedValue > 0 && <p className="text-xs text-green-600 mt-0.5">{formatCurrency(signedValue)}</p>}
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Active Pipeline</p>
-          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '—' : active.length}</p>
+          <p className="text-2xl font-bold tabular-nums mt-1">{isLoading ? '\u2014' : active.length}</p>
           {!isLoading && activeValue > 0 && <p className="text-xs text-blue-600 mt-0.5">{formatCurrency(activeValue)}</p>}
         </CardContent></Card>
       </div>
@@ -169,7 +195,7 @@ export default function EstimatesPage() {
                         {e.status.charAt(0).toUpperCase() + e.status.slice(1)}
                       </span>
                     </TableCell>
-                    <TableCell className="text-muted-foreground text-xs capitalize">{e.selectedTier || '—'}</TableCell>
+                    <TableCell className="text-muted-foreground text-xs capitalize">{e.selectedTier || '\u2014'}</TableCell>
                     <TableCell className="text-muted-foreground text-xs">{formatDate(e.createdAt)}</TableCell>
                     <TableCell>
                       <DropdownMenu>
@@ -181,6 +207,18 @@ export default function EstimatesPage() {
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); setViewEstimate(e); }}>
                             <Eye className="h-4 w-4 mr-2" /> View Details
+                          </DropdownMenuItem>
+                          {e.status !== 'converted' && (
+                            <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); handleArchive(e); }}>
+                              <Archive className="h-4 w-4 mr-2" /> Archive
+                            </DropdownMenuItem>
+                          )}
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            className="text-destructive focus:text-destructive"
+                            onClick={(ev) => { ev.stopPropagation(); setDeleteTarget(e); }}
+                          >
+                            <Trash2 className="h-4 w-4 mr-2" /> Delete
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -207,7 +245,7 @@ export default function EstimatesPage() {
                 <div><p className="text-xs text-muted-foreground">Amount</p><p className="font-medium tabular-nums">{formatCurrency(viewEstimate.totalPrice)}</p></div>
                 <div className="col-span-2"><p className="text-xs text-muted-foreground">Address</p><p className="font-medium">{viewEstimate.address}, {viewEstimate.city}, {viewEstimate.state} {viewEstimate.zip}</p></div>
                 <div><p className="text-xs text-muted-foreground">Status</p><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[viewEstimate.status] || STATUS_STYLES.preliminary}`}>{viewEstimate.status.charAt(0).toUpperCase() + viewEstimate.status.slice(1)}</span></div>
-                <div><p className="text-xs text-muted-foreground">Tier</p><p className="font-medium capitalize">{viewEstimate.selectedTier || '—'}</p></div>
+                <div><p className="text-xs text-muted-foreground">Tier</p><p className="font-medium capitalize">{viewEstimate.selectedTier || '\u2014'}</p></div>
                 {viewEstimate.sqftTotal && <div><p className="text-xs text-muted-foreground">Sq Ft</p><p className="font-medium tabular-nums">{viewEstimate.sqftTotal.toLocaleString()}</p></div>}
                 {viewEstimate.depositAmount && <div><p className="text-xs text-muted-foreground">Deposit</p><p className="font-medium tabular-nums">{formatCurrency(viewEstimate.depositAmount)}</p></div>}
                 <div><p className="text-xs text-muted-foreground">Created</p><p className="font-medium">{formatDate(viewEstimate.createdAt)}</p></div>
@@ -217,6 +255,28 @@ export default function EstimatesPage() {
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setViewEstimate(null)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Estimate</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this estimate for {deleteTarget?.customer}? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteTarget(null)}>Cancel</Button>
+            <Button
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={deleteEstimate.isPending}
+            >
+              {deleteEstimate.isPending ? 'Deleting...' : 'Delete'}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
