@@ -333,6 +333,94 @@ export interface OpsAnalyticsResponse {
 // Dashboard
 // -----------------------------------------------------------------------------
 
+// -----------------------------------------------------------------------------
+// Materials
+// -----------------------------------------------------------------------------
+export type MaterialOrderStatus = 'draft' | 'sent' | 'confirmed' | 'delivered' | 'cancelled';
+
+export interface MaterialOrder {
+  id: string;
+  job: string;
+  supplier: string;
+  total: string; // decimal comes as string from Drizzle
+  status: MaterialOrderStatus;
+  notes?: string | null;
+  orderedAt?: string | null;
+  deliveryAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// -----------------------------------------------------------------------------
+// Automations
+// -----------------------------------------------------------------------------
+export type AutomationStatus = 'active' | 'paused';
+
+export interface OpsAutomation {
+  id: string;
+  name: string;
+  trigger: string;
+  actions: string;
+  status: AutomationStatus;
+  lastTriggeredAt?: string | null;
+  runs: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// -----------------------------------------------------------------------------
+// Team
+// -----------------------------------------------------------------------------
+export type TeamMemberRole = 'admin' | 'manager' | 'member';
+
+export interface OpsTeamMember {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string | null;
+  role: TeamMemberRole;
+  activeJobs: number;
+  revenue: string;
+  lastActiveAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// -----------------------------------------------------------------------------
+// Settings
+// -----------------------------------------------------------------------------
+export interface CompanySettings {
+  id: string;
+  companyName: string;
+  phone?: string | null;
+  address?: string | null;
+  email?: string | null;
+  licenseNumber?: string | null;
+  updatedAt: string;
+}
+
+export interface OpsPipelineStage {
+  id: string;
+  name: string;
+  position: number;
+  color?: string | null;
+  isDefault: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface NotificationPreference {
+  id: string;
+  eventType: string;
+  emailEnabled: boolean;
+  smsEnabled: boolean;
+  updatedAt: string;
+}
+
+// -----------------------------------------------------------------------------
+// Dashboard
+// -----------------------------------------------------------------------------
+
 export interface HealthStatus {
   ghl?: {
     connected: boolean;
