@@ -323,10 +323,16 @@ export interface OpsAnalyticsPipelineStage {
   value: number;
 }
 
+export interface OpsLeadSource {
+  source: string;
+  count: number;
+}
+
 export interface OpsAnalyticsResponse {
   daily: OpsAnalyticsDay[];
   summary: OpsAnalyticsSummary;
   pipeline: OpsAnalyticsPipelineStage[];
+  leadsBySource?: OpsLeadSource[];
 }
 
 // -----------------------------------------------------------------------------

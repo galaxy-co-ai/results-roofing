@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     const orderDate = rawSql`DATE(${schema.orders.createdAt})`;
     const quoteDate = rawSql`DATE(${schema.quotes.createdAt})`;
 
-    const [revenueRows, orderRows, quoteRows, pipelineRows] = await Promise.all([
+    const [revenueRows, orderRows, quoteRows, pipelineRows, leadSourceRows] = await Promise.all([
       // Daily revenue from succeeded payments
       db.select({
         date: rawSql<string>`${paymentDate}::text`,
@@ -66,6 +66,16 @@ export async function GET(request: NextRequest) {
       })
         .from(schema.quotes)
         .groupBy(schema.quotes.status),
+
+      // Leads by source (utm_source) within date range
+      db.select({
+        source: rawSql<string>`COALESCE(${schema.leads.utmSource}, 'direct')`,
+        count: rawSql<number>`COUNT(*)::int`,
+      })
+        .from(schema.leads)
+        .where(rawSql`DATE(${schema.leads.createdAt}) BETWEEN ${startDate} AND ${endDate}`)
+        .groupBy(rawSql`COALESCE(${schema.leads.utmSource}, 'direct')`)
+        .orderBy(rawSql`COUNT(*) DESC`),
     ]);
 
     // Build date-filled daily array
@@ -115,7 +125,13 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    return NextResponse.json({ daily, summary, pipeline });
+    // Lead sources
+    const leadsBySource = leadSourceRows.map(r => ({
+      source: String(r.source),
+      count: Number(r.count) || 0,
+    }));
+
+    return NextResponse.json({ daily, summary, pipeline, leadsBySource });
   } catch (error) {
     console.error('[ops/analytics] Error:', error);
     return NextResponse.json({ error: 'Failed to fetch analytics' }, { status: 500 });
