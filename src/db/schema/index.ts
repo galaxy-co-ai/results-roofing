@@ -33,3 +33,9 @@ export * from './documents';
 
 // Ops Support
 export * from './tickets';
+
+// Ops Dashboard
+export * from './materials';
+export * from './automations';
+export * from './team-members';
+export * from './settings';

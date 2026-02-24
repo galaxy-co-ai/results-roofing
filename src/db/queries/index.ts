@@ -53,3 +53,43 @@ export {
   deletePost,
   incrementViewCount,
 } from './blog-posts';
+
+// Materials
+export {
+  listMaterialOrders,
+  getMaterialOrder,
+  createMaterialOrder,
+  updateMaterialOrder,
+  deleteMaterialOrder,
+} from './materials';
+
+// Automations
+export {
+  listAutomations,
+  getAutomation,
+  createAutomation,
+  updateAutomation,
+  deleteAutomation,
+} from './automations';
+
+// Team Members
+export {
+  listTeamMembers,
+  getTeamMember,
+  createTeamMember,
+  updateTeamMember,
+  deleteTeamMember,
+} from './team-members';
+
+// Settings
+export {
+  getCompanySettings,
+  upsertCompanySettings,
+  listPipelineStages,
+  createPipelineStage,
+  updatePipelineStage,
+  deletePipelineStage,
+  reorderPipelineStages,
+  listNotificationPreferences,
+  updateNotificationPreference,
+} from './settings';
