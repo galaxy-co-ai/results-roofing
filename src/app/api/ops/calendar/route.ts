@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { isOpsAuthenticated } from '@/lib/ops/auth';
 import { db, schema, desc } from '@/db';
+import { logger } from '@/lib/utils';
 
 /**
  * GET /api/ops/calendar
@@ -52,4 +53,64 @@ export async function GET(request: NextRequest) {
   }));
 
   return NextResponse.json({ appointments, total: appointments.length });
+}
+
+/**
+ * POST /api/ops/calendar
+ * Create a new appointment
+ */
+export async function POST(request: NextRequest) {
+  const authenticated = await isOpsAuthenticated();
+  if (!authenticated) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+
+    if (!body.orderId || !body.scheduledStart || !body.scheduledEnd) {
+      return NextResponse.json(
+        { error: 'orderId, scheduledStart, and scheduledEnd are required' },
+        { status: 400 }
+      );
+    }
+
+    const [appointment] = await db
+      .insert(schema.appointments)
+      .values({
+        orderId: body.orderId,
+        type: body.type || 'installation',
+        scheduledStart: new Date(body.scheduledStart),
+        scheduledEnd: new Date(body.scheduledEnd),
+        attendeeName: body.attendeeName || null,
+        attendeeEmail: body.attendeeEmail || null,
+        attendeePhone: body.attendeePhone || null,
+        notes: body.notes || null,
+        status: 'scheduled',
+      })
+      .returning();
+
+    logger.info('Appointment created', { appointmentId: appointment.id, type: appointment.type });
+
+    return NextResponse.json({
+      appointment: {
+        id: appointment.id,
+        orderId: appointment.orderId,
+        type: appointment.type,
+        scheduledStart: appointment.scheduledStart.toISOString(),
+        scheduledEnd: appointment.scheduledEnd.toISOString(),
+        attendeeName: appointment.attendeeName,
+        attendeeEmail: appointment.attendeeEmail,
+        status: appointment.status,
+        notes: appointment.notes,
+        createdAt: appointment.createdAt.toISOString(),
+      },
+    });
+  } catch (error) {
+    logger.error('Failed to create appointment', error);
+    return NextResponse.json(
+      { error: 'Failed to create appointment' },
+      { status: 500 }
+    );
+  }
 }
