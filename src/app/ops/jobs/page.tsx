@@ -70,8 +70,8 @@ export default function JobsPage() {
   const [formName, setFormName] = useState('');
   const [formValue, setFormValue] = useState('');
 
-  const stages = pipelineData?.stages || [];
-  const opportunities = pipelineData?.opportunities || [];
+  const stages = useMemo(() => pipelineData?.stages || [], [pipelineData]);
+  const opportunities = useMemo(() => pipelineData?.opportunities || [], [pipelineData]);
 
   // Group opportunities by stage
   const oppsByStage = useMemo(() => {

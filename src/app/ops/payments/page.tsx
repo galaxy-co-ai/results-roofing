@@ -58,7 +58,7 @@ export default function PaymentsPage() {
   const updateStatus = useUpdatePaymentStatus();
   const { success, error: toastError } = useToast();
 
-  const payments = data?.payments ?? [];
+  const payments = useMemo(() => data?.payments ?? [], [data]);
   const stats = data?.stats ?? { totalReceived: 0, pendingAmount: 0, failedAmount: 0 };
 
   const sorted = useMemo(() => {

@@ -91,7 +91,7 @@ export function ContractFloatingCard({
 
     setSigned(true);
     onSigned();
-  }, [order.id, onSigned]);
+  }, [order.id, order.quoteId, onSigned]);
 
   if (!isOpen) return null;
 

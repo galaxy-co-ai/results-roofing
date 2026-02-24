@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 
 interface AnimatedCounterProps {
   end: number;
@@ -26,6 +26,14 @@ export function AnimatedCounter({
   const ref = useRef<HTMLSpanElement>(null);
   const [display, setDisplay] = useState(`${prefix}0${suffix}`);
   const hasAnimated = useRef(false);
+
+  const formatNumber = useCallback((n: number): string => {
+    const formatted = new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    }).format(decimals > 0 ? n : Math.round(n));
+    return `${prefix}${formatted}${suffix}`;
+  }, [decimals, prefix, suffix]);
 
   useEffect(() => {
     const el = ref.current;
@@ -67,15 +75,7 @@ export function AnimatedCounter({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [end, duration]);
-
-  function formatNumber(n: number): string {
-    const formatted = new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals,
-    }).format(decimals > 0 ? n : Math.round(n));
-    return `${prefix}${formatted}${suffix}`;
-  }
+  }, [end, duration, formatNumber]);
 
   return (
     <span

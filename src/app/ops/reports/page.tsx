@@ -31,8 +31,8 @@ export default function ReportsPage() {
   const today = format(new Date(), 'yyyy-MM-dd');
   const { data, isLoading, refetch } = useOpsAnalytics(monthStart, today);
 
-  const summary = data?.summary ?? { totalRevenue: 0, totalOrders: 0, totalQuotes: 0, avgOrderValue: 0 };
-  const pipeline = data?.pipeline ?? [];
+  const summary = useMemo(() => data?.summary ?? { totalRevenue: 0, totalOrders: 0, totalQuotes: 0, avgOrderValue: 0 }, [data]);
+  const pipeline = useMemo(() => data?.pipeline ?? [], [data]);
   const totalQuotesInPipeline = pipeline.reduce((s, p) => s + p.count, 0);
 
   const kpis = useMemo(() => [

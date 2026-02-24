@@ -51,7 +51,7 @@ const EMPTY_FORM = {
 };
 
 export default function CalendarPage() {
-  const now = new Date();
+  const now = useMemo(() => new Date(), []);
   const [currentMonth, setCurrentMonth] = useState(now.getMonth());
   const [currentYear, setCurrentYear] = useState(now.getFullYear());
   const [viewEvent, setViewEvent] = useState<OpsAppointment | null>(null);

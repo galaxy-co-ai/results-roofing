@@ -53,7 +53,7 @@ export default function InvoicesPage() {
   const updateStatus = useUpdateInvoiceStatus();
   const { success, error: toastError } = useToast();
 
-  const invoices = data?.invoices ?? [];
+  const invoices = useMemo(() => data?.invoices ?? [], [data]);
   const stats = data?.stats ?? { totalInvoiced: 0, outstanding: 0, paid: 0 };
 
   const sorted = useMemo(() => {

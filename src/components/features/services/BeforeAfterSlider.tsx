@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import styles from './BeforeAfterSlider.module.css';
 
 interface BeforeAfterSliderProps {
@@ -23,7 +24,7 @@ export function BeforeAfterSlider({
       {/* After (background) */}
       <div className={styles.afterPanel}>
         {afterSrc ? (
-          <img src={afterSrc} alt={afterAlt} />
+          <Image src={afterSrc} alt={afterAlt} fill sizes="(max-width: 800px) 100vw, 800px" style={{ objectFit: 'cover' }} />
         ) : (
           <div className={`${styles.placeholder} ${styles.placeholderAfter}`}>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -42,7 +43,7 @@ export function BeforeAfterSlider({
         style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
       >
         {beforeSrc ? (
-          <img src={beforeSrc} alt={beforeAlt} />
+          <Image src={beforeSrc} alt={beforeAlt} fill sizes="(max-width: 800px) 100vw, 800px" style={{ objectFit: 'cover' }} />
         ) : (
           <div className={`${styles.placeholder} ${styles.placeholderBefore}`}>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
