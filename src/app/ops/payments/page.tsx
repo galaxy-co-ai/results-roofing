@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Search, MoreHorizontal, ArrowUpDown, Download, Eye, RefreshCw } from 'lucide-react';
+import { Search, MoreHorizontal, ArrowUpDown, Download, Eye, RefreshCw, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,12 +10,13 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table';
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody,
 } from '@/components/ui/dialog';
-import { useOpsPayments } from '@/hooks/ops/use-ops-queries';
+import { useOpsPayments, useUpdatePaymentStatus } from '@/hooks/ops/use-ops-queries';
+import { useToast } from '@/components/ui/Toast';
 import type { OpsPayment } from '@/types/ops';
 
 const STATUS_STYLES: Record<string, string> = {
@@ -24,18 +25,19 @@ const STATUS_STYLES: Record<string, string> = {
   processing: 'bg-blue-50 text-blue-700 border-blue-200',
   failed: 'bg-red-50 text-red-700 border-red-200',
   refunded: 'bg-purple-50 text-purple-700 border-purple-200',
+  reconciled: 'bg-emerald-50 text-emerald-700 border-emerald-200',
 };
 
 const STATUSES = ['all', 'succeeded', 'pending', 'processing', 'failed', 'refunded'];
 const METHODS = ['all', 'card', 'bank_transfer', 'financing'];
 
 function formatDate(dateStr: string | null | undefined) {
-  if (!dateStr) return '—';
+  if (!dateStr) return '\u2014';
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 function methodLabel(m: string | null) {
-  if (!m) return '—';
+  if (!m) return '\u2014';
   const map: Record<string, string> = { card: 'Credit Card', bank_transfer: 'ACH', financing: 'Financing' };
   return map[m] || m;
 }
@@ -53,6 +55,9 @@ export default function PaymentsPage() {
     search || undefined,
   );
 
+  const updateStatus = useUpdatePaymentStatus();
+  const { success, error: toastError } = useToast();
+
   const payments = data?.payments ?? [];
   const stats = data?.stats ?? { totalReceived: 0, pendingAmount: 0, failedAmount: 0 };
 
@@ -65,12 +70,22 @@ export default function PaymentsPage() {
     ? Math.round(stats.totalReceived / succeededPayments.length)
     : 0;
 
+  function handleMarkReconciled(p: OpsPayment) {
+    updateStatus.mutate(
+      { paymentId: p.id, status: 'reconciled' },
+      {
+        onSuccess: () => success('Payment marked as reconciled'),
+        onError: (err) => toastError('Failed to update', err.message),
+      }
+    );
+  }
+
   function handleExportCSV() {
     const headers = ['Date', 'Customer', 'Invoice', 'Amount', 'Method', 'Status', 'Type'];
     const rows = payments.map(p => [
       formatDate(p.processedAt || p.createdAt),
-      p.customerName || '—',
-      p.confirmationNumber || '—',
+      p.customerName || '\u2014',
+      p.confirmationNumber || '\u2014',
       `$${p.amount}`,
       methodLabel(p.paymentMethod),
       p.status,
@@ -111,25 +126,25 @@ export default function PaymentsPage() {
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Received</p>
           <p className="text-2xl font-bold tabular-nums mt-1 text-green-600">
-            {isLoading ? '—' : `$${stats.totalReceived.toLocaleString()}`}
+            {isLoading ? '\u2014' : `$${stats.totalReceived.toLocaleString()}`}
           </p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Pending</p>
           <p className="text-2xl font-bold tabular-nums mt-1">
-            {isLoading ? '—' : `$${stats.pendingAmount.toLocaleString()}`}
+            {isLoading ? '\u2014' : `$${stats.pendingAmount.toLocaleString()}`}
           </p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Failed</p>
           <p className="text-2xl font-bold tabular-nums mt-1 text-red-600">
-            {isLoading ? '—' : `$${stats.failedAmount.toLocaleString()}`}
+            {isLoading ? '\u2014' : `$${stats.failedAmount.toLocaleString()}`}
           </p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Avg Transaction</p>
           <p className="text-2xl font-bold tabular-nums mt-1">
-            {isLoading ? '—' : `$${avgTransaction.toLocaleString()}`}
+            {isLoading ? '\u2014' : `$${avgTransaction.toLocaleString()}`}
           </p>
         </CardContent></Card>
       </div>
@@ -210,8 +225,8 @@ export default function PaymentsPage() {
                 {sorted.map((p) => (
                   <TableRow key={p.id} className="cursor-pointer" onClick={() => setViewPayment(p)}>
                     <TableCell className="text-muted-foreground text-xs">{formatDate(p.processedAt || p.createdAt)}</TableCell>
-                    <TableCell className="font-medium">{p.customerName || '—'}</TableCell>
-                    <TableCell className="text-primary font-medium">{p.confirmationNumber || '—'}</TableCell>
+                    <TableCell className="font-medium">{p.customerName || '\u2014'}</TableCell>
+                    <TableCell className="text-primary font-medium">{p.confirmationNumber || '\u2014'}</TableCell>
                     <TableCell className="text-right font-medium tabular-nums">${p.amount.toLocaleString()}</TableCell>
                     <TableCell className="text-muted-foreground text-xs">{methodLabel(p.paymentMethod)}</TableCell>
                     <TableCell>
@@ -231,6 +246,14 @@ export default function PaymentsPage() {
                           <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); setViewPayment(p); }}>
                             <Eye className="h-4 w-4 mr-2" /> View Details
                           </DropdownMenuItem>
+                          {p.status === 'succeeded' && (
+                            <>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); handleMarkReconciled(p); }}>
+                                <CheckCircle className="h-4 w-4 mr-2" /> Mark Reconciled
+                              </DropdownMenuItem>
+                            </>
+                          )}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
@@ -252,20 +275,29 @@ export default function PaymentsPage() {
           {viewPayment && (
             <DialogBody className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div><p className="text-xs text-muted-foreground">Customer</p><p className="font-medium">{viewPayment.customerName || '—'}</p></div>
-                <div><p className="text-xs text-muted-foreground">Invoice</p><p className="font-medium text-primary">{viewPayment.confirmationNumber || '—'}</p></div>
+                <div><p className="text-xs text-muted-foreground">Customer</p><p className="font-medium">{viewPayment.customerName || '\u2014'}</p></div>
+                <div><p className="text-xs text-muted-foreground">Invoice</p><p className="font-medium text-primary">{viewPayment.confirmationNumber || '\u2014'}</p></div>
                 <div><p className="text-xs text-muted-foreground">Amount</p><p className="font-medium tabular-nums">${viewPayment.amount.toLocaleString()}</p></div>
                 <div><p className="text-xs text-muted-foreground">Date</p><p className="font-medium">{formatDate(viewPayment.processedAt || viewPayment.createdAt)}</p></div>
                 <div><p className="text-xs text-muted-foreground">Method</p><p className="font-medium">{methodLabel(viewPayment.paymentMethod)}</p></div>
                 <div><p className="text-xs text-muted-foreground">Status</p><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[viewPayment.status] || STATUS_STYLES.pending}`}>{viewPayment.status.charAt(0).toUpperCase() + viewPayment.status.slice(1)}</span></div>
                 <div><p className="text-xs text-muted-foreground">Type</p><p className="font-medium capitalize">{viewPayment.type}</p></div>
                 {viewPayment.cardBrand && viewPayment.cardLast4 && (
-                  <div><p className="text-xs text-muted-foreground">Card</p><p className="font-medium">{viewPayment.cardBrand} ···· {viewPayment.cardLast4}</p></div>
+                  <div><p className="text-xs text-muted-foreground">Card</p><p className="font-medium">{viewPayment.cardBrand} .... {viewPayment.cardLast4}</p></div>
                 )}
               </div>
             </DialogBody>
           )}
           <DialogFooter>
+            {viewPayment && viewPayment.status === 'succeeded' && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => { handleMarkReconciled(viewPayment); setViewPayment(null); }}
+              >
+                <CheckCircle className="h-4 w-4 mr-2" /> Mark Reconciled
+              </Button>
+            )}
             <Button variant="outline" onClick={() => setViewPayment(null)}>Close</Button>
           </DialogFooter>
         </DialogContent>

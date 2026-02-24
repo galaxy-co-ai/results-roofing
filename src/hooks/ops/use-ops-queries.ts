@@ -404,6 +404,15 @@ export function useUpdateEstimateStatus() {
   });
 }
 
+export function useDeleteEstimate() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (estimateId: string) =>
+      opsMutate<{ success: boolean }>(`/api/ops/estimates/${estimateId}`, { method: 'DELETE' }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'estimates'] }),
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Calendar (Appointments)
 // ---------------------------------------------------------------------------
@@ -420,6 +429,61 @@ export function useOpsCalendar(month?: string, status?: string) {
         `/api/ops/calendar?${params}`
       ).then((d) => d.appointments);
     },
+  });
+}
+
+export function useCreateAppointment() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: {
+      orderId: string;
+      type: string;
+      scheduledStart: string;
+      scheduledEnd: string;
+      attendeeName?: string;
+      attendeeEmail?: string;
+      attendeePhone?: string;
+      notes?: string;
+    }) =>
+      opsMutate<{ appointment: OpsAppointment }>('/api/ops/calendar', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'calendar'] }),
+  });
+}
+
+export function useUpdateAppointment() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...data }: {
+      id: string;
+      type?: string;
+      scheduledStart?: string;
+      scheduledEnd?: string;
+      attendeeName?: string;
+      attendeeEmail?: string;
+      attendeePhone?: string;
+      notes?: string;
+      status?: string;
+    }) =>
+      opsMutate(`/api/ops/calendar/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'calendar'] }),
+  });
+}
+
+export function useCancelAppointment() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, reason }: { id: string; reason?: string }) =>
+      opsMutate(`/api/ops/calendar/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status: 'cancelled', cancellationReason: reason }),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'calendar'] }),
   });
 }
 
@@ -450,6 +514,18 @@ export function useOpsPayments(status?: string, method?: string, search?: string
         `/api/ops/payments?${params}`
       );
     },
+  });
+}
+
+export function useUpdatePaymentStatus() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ paymentId, status }: { paymentId: string; status: string }) =>
+      opsMutate(`/api/ops/payments/${paymentId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'payments'] }),
   });
 }
 
@@ -520,6 +596,47 @@ export function useOpsDocuments(folder?: string | null) {
       const url = folder ? `/api/ops/documents?folder=${encodeURIComponent(folder)}` : '/api/ops/documents';
       return opsFetch<{ documents: OpsDocument[]; folderStats: Array<{ folder: string; count: number }> }>(url);
     },
+  });
+}
+
+export function useCreateDocument() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: {
+      name: string;
+      type?: string;
+      status?: string;
+      folder?: string;
+      customerName?: string;
+      customerEmail?: string;
+      propertyAddress?: string;
+    }) =>
+      opsMutate<{ document: OpsDocument }>('/api/ops/documents', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'documents'] }),
+  });
+}
+
+export function useUpdateDocument() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...data }: { id: string; name?: string; folder?: string; status?: string }) =>
+      opsMutate(`/api/ops/documents/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'documents'] }),
+  });
+}
+
+export function useDeleteDocument() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) =>
+      opsMutate<{ success: boolean }>(`/api/ops/documents/${id}`, { method: 'DELETE' }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [...opsKeys.all, 'documents'] }),
   });
 }
 
