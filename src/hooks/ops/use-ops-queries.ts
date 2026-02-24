@@ -19,6 +19,12 @@ import type {
   OpsInvoice,
   OrderStatus,
   OpsAnalyticsResponse,
+  MaterialOrder,
+  OpsAutomation,
+  OpsTeamMember,
+  CompanySettings,
+  OpsPipelineStage,
+  NotificationPreference,
 } from '@/types/ops';
 import type { TicketMessage } from '@/components/features/ops/support';
 
@@ -50,6 +56,12 @@ export const opsKeys = {
   tickets: (filters?: { status?: string; search?: string }) =>
     [...opsKeys.all, 'tickets', filters] as const,
   ticketMessages: (ticketId: string) => [...opsKeys.all, 'ticket-messages', ticketId] as const,
+  materials: () => [...opsKeys.all, 'materials'] as const,
+  automations: () => [...opsKeys.all, 'automations'] as const,
+  team: () => [...opsKeys.all, 'team'] as const,
+  settings: () => [...opsKeys.all, 'settings'] as const,
+  pipelineStages: () => [...opsKeys.all, 'pipeline-stages'] as const,
+  notifications: () => [...opsKeys.all, 'notifications'] as const,
 };
 
 // ---------------------------------------------------------------------------
@@ -591,5 +603,236 @@ export function useSendTicketMessage() {
       qc.invalidateQueries({ queryKey: opsKeys.ticketMessages(vars.ticketId) });
       qc.invalidateQueries({ queryKey: [...opsKeys.all, 'tickets'] });
     },
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Materials
+// ---------------------------------------------------------------------------
+
+export function useOpsMaterials() {
+  return useQuery({
+    queryKey: opsKeys.materials(),
+    queryFn: () => opsFetch<{ orders: MaterialOrder[] }>('/api/ops/materials').then((d) => d.orders),
+  });
+}
+
+export function useCreateMaterial() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { job: string; supplier: string; total: string; notes?: string }) =>
+      opsMutate<{ order: MaterialOrder }>('/api/ops/materials', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.materials() }),
+  });
+}
+
+export function useUpdateMaterial() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...data }: { id: string } & Partial<MaterialOrder>) =>
+      opsMutate<{ order: MaterialOrder }>(`/api/ops/materials/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.materials() }),
+  });
+}
+
+export function useDeleteMaterial() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) =>
+      opsMutate(`/api/ops/materials/${id}`, { method: 'DELETE' }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.materials() }),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Automations
+// ---------------------------------------------------------------------------
+
+export function useOpsAutomations() {
+  return useQuery({
+    queryKey: opsKeys.automations(),
+    queryFn: () =>
+      opsFetch<{ automations: OpsAutomation[] }>('/api/ops/automations').then((d) => d.automations),
+  });
+}
+
+export function useCreateAutomation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { name: string; trigger: string; actions: string }) =>
+      opsMutate<{ automation: OpsAutomation }>('/api/ops/automations', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.automations() }),
+  });
+}
+
+export function useUpdateAutomation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...data }: { id: string } & Partial<OpsAutomation>) =>
+      opsMutate<{ automation: OpsAutomation }>(`/api/ops/automations/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.automations() }),
+  });
+}
+
+export function useDeleteAutomation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) =>
+      opsMutate(`/api/ops/automations/${id}`, { method: 'DELETE' }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.automations() }),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Team
+// ---------------------------------------------------------------------------
+
+export function useOpsTeam() {
+  return useQuery({
+    queryKey: opsKeys.team(),
+    queryFn: () => opsFetch<{ members: OpsTeamMember[] }>('/api/ops/team').then((d) => d.members),
+  });
+}
+
+export function useInviteTeamMember() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { name: string; email: string; phone?: string; role?: string }) =>
+      opsMutate<{ member: OpsTeamMember }>('/api/ops/team', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.team() }),
+  });
+}
+
+export function useUpdateTeamMember() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...data }: { id: string } & Partial<OpsTeamMember>) =>
+      opsMutate<{ member: OpsTeamMember }>(`/api/ops/team/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.team() }),
+  });
+}
+
+export function useDeleteTeamMember() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) =>
+      opsMutate(`/api/ops/team/${id}`, { method: 'DELETE' }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.team() }),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Settings
+// ---------------------------------------------------------------------------
+
+export function useCompanySettings() {
+  return useQuery({
+    queryKey: opsKeys.settings(),
+    queryFn: () => opsFetch<{ settings: CompanySettings }>('/api/ops/settings').then((d) => d.settings),
+  });
+}
+
+export function useSaveCompanySettings() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: Partial<CompanySettings>) =>
+      opsMutate<{ settings: CompanySettings }>('/api/ops/settings', {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.settings() }),
+  });
+}
+
+export function usePipelineStages() {
+  return useQuery({
+    queryKey: opsKeys.pipelineStages(),
+    queryFn: () =>
+      opsFetch<{ stages: OpsPipelineStage[] }>('/api/ops/settings/pipeline').then((d) => d.stages),
+  });
+}
+
+export function useCreatePipelineStage() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { name: string; position?: number; color?: string }) =>
+      opsMutate<{ stage: OpsPipelineStage }>('/api/ops/settings/pipeline', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.pipelineStages() }),
+  });
+}
+
+export function useUpdatePipelineStage() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...data }: { id: string } & Partial<OpsPipelineStage>) =>
+      opsMutate<{ stage: OpsPipelineStage }>(`/api/ops/settings/pipeline/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.pipelineStages() }),
+  });
+}
+
+export function useDeletePipelineStage() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) =>
+      opsMutate(`/api/ops/settings/pipeline/${id}`, { method: 'DELETE' }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.pipelineStages() }),
+  });
+}
+
+export function useReorderPipelineStages() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (stages: { id: string; position: number }[]) =>
+      opsMutate('/api/ops/settings/pipeline/reorder', {
+        method: 'PUT',
+        body: JSON.stringify({ stages }),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.pipelineStages() }),
+  });
+}
+
+export function useNotificationPreferences() {
+  return useQuery({
+    queryKey: opsKeys.notifications(),
+    queryFn: () =>
+      opsFetch<{ preferences: NotificationPreference[] }>('/api/ops/settings/notifications').then(
+        (d) => d.preferences
+      ),
+  });
+}
+
+export function useUpdateNotificationPreference() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { eventType: string; emailEnabled?: boolean; smsEnabled?: boolean }) =>
+      opsMutate<{ preference: NotificationPreference }>('/api/ops/settings/notifications', {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: opsKeys.notifications() }),
   });
 }
