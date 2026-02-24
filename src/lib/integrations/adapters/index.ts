@@ -16,7 +16,14 @@
  * - Cal.com (not using external scheduling)
  */
 
-// E-Signature
+// E-Signature (DocuSeal - active, Documenso - stub)
+export {
+  docusealAdapter,
+  type CreateSubmissionRequest as DocuSealCreateSubmissionRequest,
+  type SubmissionResponse as DocuSealSubmissionResponse,
+  type SubmissionStatus as DocuSealSubmissionStatus,
+} from './docuseal';
+
 export {
   documensoAdapter,
   type CreateDocumentRequest,
