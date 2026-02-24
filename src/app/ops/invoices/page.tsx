@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Search, MoreHorizontal, ArrowUpDown, AlertCircle, Eye, Download, RefreshCw } from 'lucide-react';
+import { Search, MoreHorizontal, ArrowUpDown, AlertCircle, Eye, Download, RefreshCw, CheckCircle, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,12 +10,13 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table';
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, DialogBody,
 } from '@/components/ui/dialog';
-import { useOpsInvoices } from '@/hooks/ops/use-ops-queries';
+import { useOpsInvoices, useUpdateInvoiceStatus } from '@/hooks/ops/use-ops-queries';
+import { useToast } from '@/components/ui/Toast';
 import type { OpsInvoice, OrderStatus } from '@/types/ops';
 
 const STATUS_STYLES: Record<string, string> = {
@@ -33,7 +34,7 @@ const STATUSES: (OrderStatus | 'all')[] = [
 ];
 
 function formatDate(dateStr: string | null | undefined) {
-  if (!dateStr) return '—';
+  if (!dateStr) return '\u2014';
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
@@ -46,8 +47,11 @@ export default function InvoicesPage() {
   const [statusFilter, setStatusFilter] = useState<OrderStatus | 'all'>('all');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
   const [viewInvoice, setViewInvoice] = useState<OpsInvoice | null>(null);
+  const [voidTarget, setVoidTarget] = useState<OpsInvoice | null>(null);
 
   const { data, isLoading, refetch } = useOpsInvoices(statusFilter, search || undefined);
+  const updateStatus = useUpdateInvoiceStatus();
+  const { success, error: toastError } = useToast();
 
   const invoices = data?.invoices ?? [];
   const stats = data?.stats ?? { totalInvoiced: 0, outstanding: 0, paid: 0 };
@@ -62,11 +66,35 @@ export default function InvoicesPage() {
     new Date(i.scheduledStartDate) < new Date()
   ).length;
 
+  function handleMarkPaid(inv: OpsInvoice) {
+    updateStatus.mutate(
+      { invoiceId: inv.id, status: 'completed' },
+      {
+        onSuccess: () => success('Invoice marked as paid'),
+        onError: (err) => toastError('Failed to update', err.message),
+      }
+    );
+  }
+
+  function handleVoid() {
+    if (!voidTarget) return;
+    updateStatus.mutate(
+      { invoiceId: voidTarget.id, status: 'cancelled' },
+      {
+        onSuccess: () => {
+          success('Invoice voided');
+          setVoidTarget(null);
+        },
+        onError: (err) => toastError('Failed to void', err.message),
+      }
+    );
+  }
+
   function handleExportCSV() {
     const headers = ['Confirmation #', 'Customer', 'Total', 'Balance Due', 'Status', 'Tier', 'Financing', 'Created'];
     const rows = invoices.map(i => [
       i.confirmationNumber,
-      i.customerName || '—',
+      i.customerName || '\u2014',
       `$${i.totalPrice}`,
       `$${i.balanceDue}`,
       i.status,
@@ -90,7 +118,7 @@ export default function InvoicesPage() {
             Invoices
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {isLoading ? '...' : `${invoices.length} orders · $${stats.totalInvoiced.toLocaleString()} total`}
+            {isLoading ? '...' : `${invoices.length} orders \u00B7 $${stats.totalInvoiced.toLocaleString()} total`}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -108,13 +136,13 @@ export default function InvoicesPage() {
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Invoiced</p>
           <p className="text-2xl font-bold tabular-nums mt-1">
-            {isLoading ? '—' : `$${stats.totalInvoiced.toLocaleString()}`}
+            {isLoading ? '\u2014' : `$${stats.totalInvoiced.toLocaleString()}`}
           </p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Outstanding</p>
           <p className="text-2xl font-bold tabular-nums mt-1">
-            {isLoading ? '—' : `$${stats.outstanding.toLocaleString()}`}
+            {isLoading ? '\u2014' : `$${stats.outstanding.toLocaleString()}`}
           </p>
         </CardContent></Card>
         <Card className={overdueCount > 0 ? 'border-red-200' : ''}><CardContent className="p-4">
@@ -123,13 +151,13 @@ export default function InvoicesPage() {
             Overdue
           </p>
           <p className="text-2xl font-bold tabular-nums mt-1 text-red-600">
-            {isLoading ? '—' : overdueCount}
+            {isLoading ? '\u2014' : overdueCount}
           </p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Paid</p>
           <p className="text-2xl font-bold tabular-nums mt-1 text-green-600">
-            {isLoading ? '—' : `$${stats.paid.toLocaleString()}`}
+            {isLoading ? '\u2014' : `$${stats.paid.toLocaleString()}`}
           </p>
         </CardContent></Card>
       </div>
@@ -193,37 +221,54 @@ export default function InvoicesPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sorted.map((inv) => (
-                  <TableRow key={inv.id} className="cursor-pointer" onClick={() => setViewInvoice(inv)}>
-                    <TableCell className="font-medium text-primary">{inv.confirmationNumber}</TableCell>
-                    <TableCell className="font-medium">{inv.customerName || '—'}</TableCell>
-                    <TableCell className="text-muted-foreground max-w-[200px] truncate">{inv.propertyAddress}</TableCell>
-                    <TableCell className="text-right font-medium tabular-nums">${inv.totalPrice.toLocaleString()}</TableCell>
-                    <TableCell className={`text-right tabular-nums ${inv.balanceDue > 0 ? 'font-medium' : 'text-muted-foreground'}`}>
-                      {inv.balanceDue > 0 ? `$${inv.balanceDue.toLocaleString()}` : '—'}
-                    </TableCell>
-                    <TableCell>
-                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[inv.status] || STATUS_STYLES.pending}`}>
-                        {statusLabel(inv.status)}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground text-xs capitalize">{inv.selectedTier}</TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(ev) => ev.stopPropagation()}>
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); setViewInvoice(inv); }}>
-                            <Eye className="h-4 w-4 mr-2" /> View Details
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {sorted.map((inv) => {
+                  const isTerminal = ['completed', 'cancelled', 'refunded'].includes(inv.status);
+                  return (
+                    <TableRow key={inv.id} className="cursor-pointer" onClick={() => setViewInvoice(inv)}>
+                      <TableCell className="font-medium text-primary">{inv.confirmationNumber}</TableCell>
+                      <TableCell className="font-medium">{inv.customerName || '\u2014'}</TableCell>
+                      <TableCell className="text-muted-foreground max-w-[200px] truncate">{inv.propertyAddress}</TableCell>
+                      <TableCell className="text-right font-medium tabular-nums">${inv.totalPrice.toLocaleString()}</TableCell>
+                      <TableCell className={`text-right tabular-nums ${inv.balanceDue > 0 ? 'font-medium' : 'text-muted-foreground'}`}>
+                        {inv.balanceDue > 0 ? `$${inv.balanceDue.toLocaleString()}` : '\u2014'}
+                      </TableCell>
+                      <TableCell>
+                        <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[inv.status] || STATUS_STYLES.pending}`}>
+                          {statusLabel(inv.status)}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-xs capitalize">{inv.selectedTier}</TableCell>
+                      <TableCell>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(ev) => ev.stopPropagation()}>
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); setViewInvoice(inv); }}>
+                              <Eye className="h-4 w-4 mr-2" /> View Details
+                            </DropdownMenuItem>
+                            {!isTerminal && (
+                              <>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={(ev) => { ev.stopPropagation(); handleMarkPaid(inv); }}>
+                                  <CheckCircle className="h-4 w-4 mr-2" /> Mark Paid
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  className="text-destructive focus:text-destructive"
+                                  onClick={(ev) => { ev.stopPropagation(); setVoidTarget(inv); }}
+                                >
+                                  <XCircle className="h-4 w-4 mr-2" /> Void Invoice
+                                </DropdownMenuItem>
+                              </>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
             <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-muted-foreground">
@@ -240,7 +285,7 @@ export default function InvoicesPage() {
           {viewInvoice && (
             <DialogBody className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div><p className="text-xs text-muted-foreground">Customer</p><p className="font-medium">{viewInvoice.customerName || '—'}</p></div>
+                <div><p className="text-xs text-muted-foreground">Customer</p><p className="font-medium">{viewInvoice.customerName || '\u2014'}</p></div>
                 <div><p className="text-xs text-muted-foreground">Email</p><p className="font-medium">{viewInvoice.customerEmail}</p></div>
                 <div className="col-span-2"><p className="text-xs text-muted-foreground">Property</p><p className="font-medium">{viewInvoice.propertyAddress}</p></div>
                 <div><p className="text-xs text-muted-foreground">Total</p><p className="font-medium tabular-nums">${viewInvoice.totalPrice.toLocaleString()}</p></div>
@@ -257,6 +302,28 @@ export default function InvoicesPage() {
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setViewInvoice(null)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Void Confirmation Dialog */}
+      <Dialog open={!!voidTarget} onOpenChange={() => setVoidTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Void Invoice</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to void invoice {voidTarget?.confirmationNumber}? This will cancel the order.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setVoidTarget(null)}>Cancel</Button>
+            <Button
+              variant="destructive"
+              onClick={handleVoid}
+              disabled={updateStatus.isPending}
+            >
+              {updateStatus.isPending ? 'Voiding...' : 'Void Invoice'}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
