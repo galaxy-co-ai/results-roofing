@@ -12,7 +12,7 @@ import {
   useSendMessage,
   useMarkConversationRead,
 } from '@/hooks/ops/use-ops-queries';
-import type { Conversation, Message } from '@/types/ops';
+import type { Conversation } from '@/types/ops';
 
 type ChannelFilter = 'all' | 'unread' | 'email' | 'sms';
 

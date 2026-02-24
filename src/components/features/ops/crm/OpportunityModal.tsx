@@ -51,7 +51,7 @@ export function OpportunityModal({
   mode,
   opportunity,
   stages,
-  pipelineId,
+  pipelineId: _pipelineId,
   onSave,
   saving = false,
 }: OpportunityModalProps) {
