@@ -29,15 +29,7 @@ import {
   OpsChartSkeleton,
 } from '@/components/ui/ops';
 
-// TODO: Replace with real time-series endpoint when historical data is available
-const activityData = [
-  { month: 'Jan', leads: 45, jobs: 12 },
-  { month: 'Feb', leads: 52, jobs: 18 },
-  { month: 'Mar', leads: 61, jobs: 22 },
-  { month: 'Apr', leads: 48, jobs: 15 },
-  { month: 'May', leads: 73, jobs: 28 },
-  { month: 'Jun', leads: 68, jobs: 24 },
-];
+// activityData now comes from useOpsDashboardStats()
 
 const chartConfig = {
   leads: { label: 'Leads', color: 'hsl(var(--primary))' },
@@ -63,6 +55,11 @@ export default function OpsDashboard() {
 
   const ghlConnected = health?.ghl?.connected ?? null;
   const loading = healthLoading || statsLoading;
+
+  // Derive activity chart data from stats
+  const activityData = useMemo(() => {
+    return stats?.activityData ?? [];
+  }, [stats?.activityData]);
 
   // Derive pipeline chart data from real stats
   const pipelineChartData = useMemo(() => {
@@ -151,7 +148,7 @@ export default function OpsDashboard() {
           <CardContent>
             {loading ? (
               <OpsChartSkeleton className="h-64" />
-            ) : ghlConnected !== false ? (
+            ) : activityData.length > 0 ? (
               <ChartContainer config={chartConfig} className="h-64 w-full">
                 <AreaChart data={activityData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                   <defs>
@@ -171,7 +168,7 @@ export default function OpsDashboard() {
             ) : (
               <OpsEmptyState
                 icon={Inbox}
-                title="Connect GHL to see activity data"
+                title="No activity data yet"
                 className="h-64"
               />
             )}

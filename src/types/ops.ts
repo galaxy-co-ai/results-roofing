@@ -435,10 +435,17 @@ export interface PipelineStageStat {
   value: number;
 }
 
+export interface ActivityDataPoint {
+  month: string;
+  leads: number;
+  jobs: number;
+}
+
 export interface DashboardStats {
   contacts: number;
   conversations: number;
   pipelineValue: number;
   pipelineByStage: PipelineStageStat[];
+  activityData?: ActivityDataPoint[];
   mock: boolean;
 }
