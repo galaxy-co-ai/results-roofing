@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
     // Handle specific events
     switch (event.type) {
       case 'payment_intent.succeeded':
-        await handlePaymentSuccess(event.data.object as Stripe.PaymentIntent);
+        await handlePaymentSuccess(stripe, event.data.object as Stripe.PaymentIntent);
         break;
 
       case 'payment_intent.payment_failed':
@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
 /**
  * Handle successful payment
  */
-async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
+async function handlePaymentSuccess(stripe: Stripe, paymentIntent: Stripe.PaymentIntent) {
   logger.info('[WEBHOOK] handlePaymentSuccess called', {
     paymentIntentId: paymentIntent.id,
     amount: paymentIntent.amount,
@@ -249,16 +249,44 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     depositAmount: order.depositAmount,
   });
 
+  // Retrieve card details from the charge's payment method
+  let cardLast4: string | null = null;
+  let cardBrand: string | null = null;
+  const chargeId = paymentIntent.latest_charge as string | null;
+
+  if (chargeId) {
+    try {
+      const charge = await stripe.charges.retrieve(chargeId, {
+        expand: ['payment_method'],
+      });
+      // payment_method is expanded to a full object (not just string ID)
+      const pm = charge.payment_method as Stripe.PaymentMethod | null;
+      if (pm?.card) {
+        cardLast4 = pm.card.last4 || null;
+        cardBrand = pm.card.brand || null;
+      }
+    } catch (err) {
+      logger.error('[WEBHOOK] Failed to retrieve card details from charge', err);
+    }
+  }
+
+  // Determine payment type from metadata
+  const paymentType = (paymentIntent.metadata.payment_type === 'balance' || paymentIntent.metadata.payment_type === 'full')
+    ? 'balance'
+    : 'deposit';
+
   // Create the payment record
   await db.insert(schema.payments).values({
     orderId: order.id,
-    type: 'deposit',
+    type: paymentType,
     amount: depositAmount.toString(),
     currency: 'usd',
     stripePaymentIntentId: paymentIntent.id,
-    stripeChargeId: paymentIntent.latest_charge as string || null,
+    stripeChargeId: chargeId,
     status: 'succeeded',
     paymentMethod: 'card',
+    cardLast4,
+    cardBrand,
     processedAt: new Date(),
   });
 

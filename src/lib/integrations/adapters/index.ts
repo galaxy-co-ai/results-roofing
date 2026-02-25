@@ -61,3 +61,9 @@ export {
   type SolarMeasurementError,
   type SolarMeasurementOutcome,
 } from './google-solar';
+
+// Stripe Customer Management
+export {
+  getStripeClient,
+  getOrCreateStripeCustomer,
+} from './stripe';

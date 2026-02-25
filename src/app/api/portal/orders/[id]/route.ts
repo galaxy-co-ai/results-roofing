@@ -90,6 +90,8 @@ export async function GET(
         status: p.status,
         type: p.type,
         processedAt: p.processedAt,
+        cardBrand: p.cardBrand,
+        cardLast4: p.cardLast4,
       })),
       appointments: appointments.map((a) => ({
         id: a.id,

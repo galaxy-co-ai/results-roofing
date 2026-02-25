@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/sheet';
 import { PaymentForm } from './PaymentForm';
 
-export type PaymentType = 'deposit' | 'balance';
+export type PaymentType = 'deposit' | 'balance' | 'full';
 
 interface PaymentDrawerProps {
   open: boolean;
@@ -37,9 +37,13 @@ export function PaymentDrawer({
   amount,
   onPaymentSuccess,
 }: PaymentDrawerProps) {
-  const title = paymentType === 'deposit' ? 'Pay Deposit' : 'Pay Remaining Balance';
+  const title = paymentType === 'deposit' ? 'Pay Deposit'
+    : paymentType === 'full' ? 'Pay in Full'
+    : 'Pay Remaining Balance';
   const description = paymentType === 'deposit'
     ? 'Secure your installation date with a deposit payment.'
+    : paymentType === 'full'
+    ? 'Pay your entire project balance now.'
     : 'Pay your remaining project balance in full.';
 
   function handleSuccess() {
@@ -65,6 +69,7 @@ export function PaymentDrawer({
           depositAmount={amount}
           redirectOnSuccess={false}
           useFixedAmount={true}
+          paymentType={paymentType}
           onSuccess={handleSuccess}
         />
       </SheetContent>

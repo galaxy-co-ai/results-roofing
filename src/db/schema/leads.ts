@@ -28,6 +28,8 @@ export const leads = pgTable(
     clerkUserId: text('clerk_user_id'),
     // CRM integration
     jobnimbusContactId: text('jobnimbus_contact_id'),
+    // Stripe integration
+    stripeCustomerId: text('stripe_customer_id'),
     // Timestamps
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),

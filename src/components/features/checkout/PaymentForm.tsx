@@ -24,12 +24,14 @@ interface PaymentFormProps {
   redirectOnSuccess?: boolean;
   /** Use fixed amount instead of quote's depositAmount */
   useFixedAmount?: boolean;
+  /** Payment type passed to create-intent for metadata */
+  paymentType?: 'deposit' | 'balance' | 'full';
 }
 
 /**
  * Wrapper component that provides Stripe Elements context
  */
-export function PaymentForm({ quoteId, depositAmount, onSuccess, onError, redirectOnSuccess = true, useFixedAmount = false }: PaymentFormProps) {
+export function PaymentForm({ quoteId, depositAmount, onSuccess, onError, redirectOnSuccess = true, useFixedAmount = false, paymentType }: PaymentFormProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -46,6 +48,7 @@ export function PaymentForm({ quoteId, depositAmount, onSuccess, onError, redire
           body: JSON.stringify({
             quoteId,
             ...(useFixedAmount && { fixedAmount: depositAmount }),
+            ...(paymentType && { paymentType }),
           }),
         });
 

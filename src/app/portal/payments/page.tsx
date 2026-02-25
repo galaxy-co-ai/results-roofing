@@ -3,103 +3,55 @@
 import { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useQueryClient } from '@tanstack/react-query';
-import {
-  CreditCard,
-  CheckCircle,
-  Clock,
-  DollarSign,
-  Download,
-  Wallet,
-  CalendarClock,
-  AlertCircle,
-  ChevronRight
-} from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { useOrders, useOrderDetails } from '@/hooks';
-import { Skeleton } from '@/components/ui';
 import { PaymentDrawer, type PaymentType } from '@/components/features/checkout/PaymentDrawer';
+import { PaymentProgressCard, PaymentProgressCardSkeleton } from '@/components/features/portal/PaymentProgressCard';
+import { PaymentOptionCard, PaymentOptionCardSkeleton } from '@/components/features/portal/PaymentOptionCard';
+import { PaymentHistoryTable, PaymentHistoryTableSkeleton } from '@/components/features/portal/PaymentHistoryTable';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
-import styles from './page.module.css';
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
-
-function formatDate(dateString: string | Date | null): string {
-  if (!dateString) return 'N/A';
-  const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
-  return date.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  });
-}
 
 function PaymentsSkeleton() {
   return (
-    <div className={styles.paymentsPage}>
-      <header className={styles.header}>
-        <Skeleton variant="text" width="40%" height={32} />
-        <Skeleton variant="text" width="60%" height={20} />
+    <div className="max-w-[1100px] mx-auto">
+      <header className="mb-8">
+        <div className="h-8 w-40 bg-[var(--rr-color-bg-tertiary)] rounded animate-pulse mb-2" />
+        <div className="h-5 w-72 bg-[var(--rr-color-bg-tertiary)] rounded animate-pulse" />
       </header>
-      <section className={styles.summaryCard}>
-        <Skeleton variant="rounded" width="100%" height={200} />
-      </section>
-      <div className={styles.twoColumn}>
-        <Skeleton variant="rounded" width="100%" height={250} />
-        <Skeleton variant="rounded" width="100%" height={250} />
+      <PaymentProgressCardSkeleton />
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
+        <PaymentOptionCardSkeleton />
+        <PaymentOptionCardSkeleton />
+        <PaymentOptionCardSkeleton />
       </div>
+      <PaymentHistoryTableSkeleton />
     </div>
   );
 }
 
-function PaymentsError() {
+function NoOrderState() {
   return (
-    <div className={styles.paymentsPage}>
-      <div className={styles.errorState} role="alert">
-        <AlertCircle size={48} />
-        <h2>Unable to load payment information</h2>
-        <p>Please try refreshing the page.</p>
-      </div>
-    </div>
-  );
-}
-
-function PaymentsPendingState() {
-  return (
-    <div className={styles.paymentsPage}>
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <h1 className={styles.title}><span className={styles.titleAccent}>Payments</span></h1>
-          <p className={styles.subtitle}>
-            Your payment history will appear here after your deposit is confirmed
-          </p>
-        </div>
-      </header>
-      <div className={styles.emptyHistory} style={{ padding: '3rem 1.5rem' }}>
-        <CreditCard size={32} className={styles.emptyIcon} />
-        <p className={styles.emptyText}>No payments yet</p>
-        <p style={{ fontSize: '0.875rem', color: 'var(--gray-500)', marginTop: '0.5rem' }}>
-          Complete your deposit from the dashboard to get started.
+    <div className="max-w-[1100px] mx-auto">
+      <header className="mb-8">
+        <h1 className="text-2xl font-bold text-[var(--rr-color-text-primary)]">Payments</h1>
+        <p className="text-[var(--rr-color-text-secondary)] mt-1">
+          Manage your project payments and view transaction history
         </p>
+      </header>
+      <div className="flex flex-col items-center justify-center py-16 text-center rounded-xl border border-[var(--rr-color-border-default)] bg-[var(--rr-color-white)]">
+        <AlertCircle size={48} className="text-[var(--rr-color-text-tertiary)] mb-3" />
+        <p className="text-base font-medium text-[var(--rr-color-text-secondary)]">
+          Complete your quote to see payment options
+        </p>
+        <a
+          href="/quote/new"
+          className="mt-4 inline-flex items-center rounded-lg bg-[var(--rr-color-blue)] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1D4ED8] transition-colors"
+        >
+          Start a quote
+        </a>
       </div>
     </div>
   );
-}
-
-function ClerkPayments() {
-  const { user, isLoaded } = useUser();
-  const userEmail = user?.primaryEmailAddress?.emailAddress ?? null;
-  return <PaymentsContent userEmail={userEmail} userLoaded={isLoaded} />;
-}
-
-function DevPayments() {
-  const userEmail = MOCK_USER.primaryEmailAddress.emailAddress;
-  return <PaymentsContent userEmail={userEmail} userLoaded={true} />;
 }
 
 function PaymentsContent({ userEmail, userLoaded }: { userEmail: string | null; userLoaded: boolean }) {
@@ -119,8 +71,13 @@ function PaymentsContent({ userEmail, userLoaded }: { userEmail: string | null; 
   }
 
   function handlePaymentSuccess() {
+    setDrawerOpen(false);
     queryClient.invalidateQueries({ queryKey: ['orders'] });
     queryClient.invalidateQueries({ queryKey: ['order', currentOrderId] });
+  }
+
+  function handleDownloadReceipt(paymentId: string) {
+    window.open(`/api/portal/receipts/${paymentId}`, '_blank');
   }
 
   if (!userLoaded || ordersLoading || (currentOrderId && detailsLoading)) {
@@ -128,207 +85,110 @@ function PaymentsContent({ userEmail, userLoaded }: { userEmail: string | null; 
   }
 
   if (ordersError || detailsError) {
-    return <PaymentsError />;
+    return (
+      <div className="max-w-[1100px] mx-auto">
+        <div className="flex flex-col items-center justify-center py-16 text-center" role="alert">
+          <AlertCircle size={48} className="text-[var(--rr-color-text-tertiary)] mb-3" />
+          <h2 className="text-lg font-semibold text-[var(--rr-color-text-primary)]">Unable to load payment information</h2>
+          <p className="text-sm text-[var(--rr-color-text-secondary)] mt-1">Please try refreshing the page.</p>
+        </div>
+      </div>
+    );
   }
 
   if (!currentOrderId || !orderDetails) {
-    return <PaymentsPendingState />;
+    return <NoOrderState />;
   }
 
   const { order, payments } = orderDetails;
-  const percentPaid = (order.totalPaid / order.totalPrice) * 100;
 
-  // Get payment method display from most recent payment
-  const lastPayment = payments[0];
-  const paymentMethodDisplay = lastPayment?.type === 'deposit'
-    ? `${lastPayment.type === 'deposit' ? 'Card' : 'Card'} ending in ${order.customerPhone?.slice(-4) || '****'}`
-    : 'No payment method on file';
+  // Smart state logic
+  const hasDeposit = payments.some(
+    (p: { type: string; status: string }) => p.type === 'deposit' && p.status === 'succeeded'
+  );
+  const isPaidInFull = order.totalPaid >= order.totalPrice;
 
-  const PAYMENT_OPTIONS = [
-    {
-      id: 'pay-deposit',
-      title: 'Pay Deposit',
-      amount: null,
-      description: 'Secure your installation date',
-      icon: CalendarClock,
-      primary: true,
-    },
-    {
-      id: 'pay-balance',
-      title: 'Pay Balance in Full',
-      amount: order.balance,
-      description: 'Pay the remaining balance now',
-      icon: DollarSign,
-      primary: false,
-    },
-    {
-      id: 'financing',
-      title: 'Apply for Financing',
-      amount: null,
-      description: 'Get approved in 60 seconds with Wisetack',
-      icon: Wallet,
-      primary: false,
-    },
-  ];
+  // Find most recent succeeded payment for card display
+  const lastSucceeded = payments.find((p: { status: string }) => p.status === 'succeeded');
+
+  // Deposit amount is 5% of total
+  const depositAmount = order.depositAmount || Math.round(order.totalPrice * 0.05);
+
+  // Card details from the order details payments (need to check if they're returned)
+  // The API currently returns id, amount, status, type, processedAt
+  // We need cardBrand and cardLast4 — for now use what we have
+  const cardBrand = (lastSucceeded as { cardBrand?: string })?.cardBrand || null;
+  const cardLast4 = (lastSucceeded as { cardLast4?: string })?.cardLast4 || null;
 
   return (
-    <div className={styles.paymentsPage}>
+    <div className="max-w-[1100px] mx-auto">
       {/* Header */}
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <h1 className={styles.title}><span className={styles.titleAccent}>Payments</span></h1>
-          <p className={styles.subtitle}>
-            Manage payments and view transaction history
-          </p>
-        </div>
+      <header className="mb-8">
+        <h1 className="text-2xl font-bold text-[var(--rr-color-text-primary)]">Payments</h1>
+        <p className="text-[var(--rr-color-text-secondary)] mt-1">
+          Manage your project payments and view transaction history
+        </p>
       </header>
 
-      {/* Payment Summary Card */}
-      <section className={styles.summaryCard}>
-        <div className={styles.summaryHeader}>
-          <h2 className={styles.summaryTitle}>Payment Summary</h2>
-          <span className={styles.paymentMethod}>
-            <CreditCard size={16} />
-            {paymentMethodDisplay}
-          </span>
-        </div>
+      {/* Progress Card */}
+      <PaymentProgressCard
+        totalPrice={order.totalPrice}
+        totalPaid={order.totalPaid}
+        balance={order.balance}
+        cardBrand={cardBrand}
+        cardLast4={cardLast4}
+      />
 
-        <div className={styles.summaryGrid}>
-          <div className={styles.summaryItem}>
-            <span className={styles.summaryLabel}>Total Project</span>
-            <span className={styles.summaryValue}>
-              {formatCurrency(order.totalPrice)}
-            </span>
-          </div>
-          <div className={styles.summaryItem}>
-            <span className={styles.summaryLabel}>Amount Paid</span>
-            <span className={`${styles.summaryValue} ${styles.summarySuccess}`}>
-              {formatCurrency(order.totalPaid)}
-            </span>
-          </div>
-          <div className={styles.summaryItem}>
-            <span className={styles.summaryLabel}>Balance Due</span>
-            <span className={`${styles.summaryValue} ${styles.summaryPrimary}`}>
-              {formatCurrency(order.balance)}
-            </span>
-          </div>
-          <div className={styles.summaryItem}>
-            <span className={styles.summaryLabel}>Payment Due</span>
-            <span className={styles.summaryValue}>
-              Upon completion
-            </span>
-          </div>
-        </div>
-
-        {/* Progress Bar */}
-        <div className={styles.progressContainer}>
-          <div className={styles.progressHeader}>
-            <span className={styles.progressLabel}>Payment Progress</span>
-            <span className={styles.progressPercent}>{percentPaid.toFixed(0)}% paid</span>
-          </div>
-          <div className={styles.progressBar}>
-            <div
-              className={styles.progressFill}
-              style={{ width: `${percentPaid}%` }}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Two Column Layout */}
-      <div className={styles.twoColumn}>
-        {/* Payment Options */}
-        <section className={styles.optionsCard}>
-          <h2 className={styles.sectionTitle}>Make a Payment</h2>
-          <div className={styles.optionsList}>
-            {PAYMENT_OPTIONS.map((option) => (
-              <button
-                key={option.id}
-                className={`${styles.optionButton} ${option.primary ? styles.optionPrimary : ''}`}
-                onClick={() => {
-                  if (option.id === 'pay-deposit') {
-                    handlePaymentClick('deposit', order.depositAmount);
-                  } else if (option.id === 'pay-balance') {
-                    handlePaymentClick('balance', order.balance);
-                  }
-                }}
-              >
-                <div className={styles.optionIcon}>
-                  <option.icon size={22} />
-                </div>
-                <div className={styles.optionContent}>
-                  <span className={styles.optionTitle}>{option.title}</span>
-                  <span className={styles.optionDescription}>{option.description}</span>
-                </div>
-                {option.amount && option.amount > 0 && (
-                  <span className={styles.optionAmount}>{formatCurrency(option.amount)}</span>
-                )}
-                <ChevronRight size={18} className={styles.optionArrow} />
-              </button>
-            ))}
-          </div>
-
-        </section>
-
-        {/* Payment History */}
-        <section className={styles.historyCard}>
-          <h2 className={styles.sectionTitle}>Payment History</h2>
-          {payments.length > 0 ? (
-            <div className={styles.historyList}>
-              {payments.map((payment) => (
-                <article key={payment.id} className={styles.historyItem}>
-                  <div className={styles.historyIcon}>
-                    {payment.status === 'succeeded' ? (
-                      <CheckCircle size={20} />
-                    ) : (
-                      <Clock size={20} />
-                    )}
-                  </div>
-                  <div className={styles.historyContent}>
-                    <div className={styles.historyHeader}>
-                      <span className={styles.historyType}>
-                        {payment.type.charAt(0).toUpperCase() + payment.type.slice(1)}
-                      </span>
-                      <span className={styles.historyAmount}>
-                        {formatCurrency(payment.amount)}
-                      </span>
-                    </div>
-                    <div className={styles.historyMeta}>
-                      <span>{payment.processedAt ? formatDate(payment.processedAt) : 'Processing'}</span>
-                      <span className={styles.historyDot}>•</span>
-                      <span>{payment.status === 'succeeded' ? 'Completed' : payment.status}</span>
-                    </div>
-                    <div className={styles.historyConfirmation}>
-                      Confirmation: {order.confirmationNumber}
-                    </div>
-                  </div>
-                  <button className={styles.downloadButton} aria-label="Download receipt">
-                    <Download size={16} />
-                  </button>
-                </article>
-              ))}
-            </div>
-          ) : (
-            <div className={styles.emptyHistory}>
-              <Clock size={32} className={styles.emptyIcon} />
-              <p className={styles.emptyText}>No payments yet</p>
-            </div>
+      {/* Payment Options — 3 column grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
+        <PaymentOptionCard
+          type="deposit"
+          label="Deposit"
+          amount={depositAmount}
+          description="Secure your installation date"
+          isPaid={hasDeposit}
+          paidDate={hasDeposit ? (payments.find((p: { type: string; status: string }) => p.type === 'deposit' && p.status === 'succeeded') as { processedAt?: string })?.processedAt || null : null}
+          variant={!hasDeposit && !isPaidInFull ? 'primary' : 'outline'}
+          onPay={() => handlePaymentClick('deposit', depositAmount)}
+          onDownloadReceipt={() => {
+            const depositPayment = payments.find((p: { type: string; status: string }) => p.type === 'deposit' && p.status === 'succeeded');
+            if (depositPayment) handleDownloadReceipt(depositPayment.id);
+          }}
+        />
+        <PaymentOptionCard
+          type="balance"
+          label="Pay in full"
+          amount={hasDeposit ? order.balance : order.totalPrice}
+          description={hasDeposit ? 'Pay remaining balance' : 'Pay your entire balance'}
+          isPaid={isPaidInFull}
+          paidDate={isPaidInFull ? (payments.find((p: { type: string; status: string }) => p.type === 'balance' && p.status === 'succeeded') as { processedAt?: string })?.processedAt || null : null}
+          variant={hasDeposit && !isPaidInFull ? 'primary' : 'outline'}
+          onPay={() => handlePaymentClick(
+            hasDeposit ? 'balance' : 'full',
+            hasDeposit ? order.balance : order.totalPrice
           )}
-        </section>
+          onDownloadReceipt={() => {
+            const balancePayment = payments.find((p: { type: string; status: string }) => p.type === 'balance' && p.status === 'succeeded');
+            if (balancePayment) handleDownloadReceipt(balancePayment.id);
+          }}
+        />
+        <PaymentOptionCard
+          type="financing"
+          label="Financing"
+          amount={null}
+          description="Flexible payment plans through Wisetack"
+          isPaid={false}
+          variant="outline"
+          disabled
+          badge="Coming soon"
+        />
       </div>
 
-      {/* Info Note */}
-      <div className={styles.infoNote}>
-        <AlertCircle size={18} className={styles.infoIcon} />
-        <div className={styles.infoContent}>
-          <p className={styles.infoTitle}>Payment Terms</p>
-          <p className={styles.infoText}>
-            Your remaining balance of {formatCurrency(order.balance)} is due upon
-            completion of your roofing project. We accept all major credit cards, bank transfers,
-            and financing through Wisetack.
-          </p>
-        </div>
-      </div>
+      {/* Payment History */}
+      <PaymentHistoryTable
+        payments={payments}
+        onDownloadReceipt={handleDownloadReceipt}
+      />
 
       {/* Payment Drawer */}
       {order.quoteId && (
@@ -343,6 +203,17 @@ function PaymentsContent({ userEmail, userLoaded }: { userEmail: string | null; 
       )}
     </div>
   );
+}
+
+function ClerkPayments() {
+  const { user, isLoaded } = useUser();
+  const userEmail = user?.primaryEmailAddress?.emailAddress ?? null;
+  return <PaymentsContent userEmail={userEmail} userLoaded={isLoaded} />;
+}
+
+function DevPayments() {
+  const userEmail = MOCK_USER.primaryEmailAddress.emailAddress;
+  return <PaymentsContent userEmail={userEmail} userLoaded={true} />;
 }
 
 export default function PaymentsPage() {
