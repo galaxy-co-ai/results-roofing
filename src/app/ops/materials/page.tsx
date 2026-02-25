@@ -34,7 +34,7 @@ const STATUSES = ['all', 'draft', 'sent', 'confirmed', 'delivered', 'cancelled']
 const SUPPLIERS = ['all', 'ABC Supply Co.', 'SRS Distribution', 'Beacon Roofing'];
 
 export default function MaterialsPage() {
-  const { success } = useToast();
+  const { success, error: showError } = useToast();
   const { data: orders = [], isLoading, refetch } = useOpsMaterials();
   const createMaterial = useCreateMaterial();
   const updateMaterial = useUpdateMaterial();
@@ -51,6 +51,15 @@ export default function MaterialsPage() {
   const [formJob, setFormJob] = useState('');
   const [formSupplier, setFormSupplier] = useState('');
   const [formTotal, setFormTotal] = useState('');
+
+  async function handleRefresh() {
+    try {
+      await refetch();
+      success('Refreshed');
+    } catch {
+      showError('Failed to refresh');
+    }
+  }
 
   const filtered = useMemo(() => {
     let result = orders;
@@ -127,7 +136,7 @@ export default function MaterialsPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
+          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isLoading}>
             <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>

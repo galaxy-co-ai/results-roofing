@@ -91,6 +91,8 @@ export interface Message {
 export interface Conversation {
   id: string;
   contactId: string;
+  contactName?: string;  // GHL returns this at top level
+  fullName?: string;     // GHL returns this at top level
   contact?: {
     id: string;
     name?: string;

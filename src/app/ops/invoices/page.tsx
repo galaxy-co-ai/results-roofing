@@ -53,6 +53,15 @@ export default function InvoicesPage() {
   const updateStatus = useUpdateInvoiceStatus();
   const { success, error: toastError } = useToast();
 
+  async function handleRefresh() {
+    try {
+      await refetch();
+      success('Refreshed');
+    } catch {
+      toastError('Failed to refresh');
+    }
+  }
+
   const invoices = useMemo(() => data?.invoices ?? [], [data]);
   const stats = data?.stats ?? { totalInvoiced: 0, outstanding: 0, paid: 0 };
 
@@ -125,7 +134,7 @@ export default function InvoicesPage() {
           <Button variant="outline" size="sm" className="gap-2" onClick={handleExportCSV} disabled={isLoading || invoices.length === 0}>
             <Download className="h-4 w-4" /> Export CSV
           </Button>
-          <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
+          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isLoading}>
             <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>

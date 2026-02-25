@@ -53,6 +53,15 @@ export default function EstimatesPage() {
   const deleteEstimate = useDeleteEstimate();
   const { success, error: toastError } = useToast();
 
+  async function handleRefresh() {
+    try {
+      await refetch();
+      success('Refreshed');
+    } catch {
+      toastError('Failed to refresh');
+    }
+  }
+
   const sorted = useMemo(() => {
     return [...estimates].sort((a, b) => {
       const va = a.totalPrice ?? 0;
@@ -99,7 +108,7 @@ export default function EstimatesPage() {
             {isLoading ? '...' : `${estimates.length} quotes \u00B7 ${formatCurrency(totalValue)} total`}
           </p>
         </div>
-        <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
+        <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isLoading}>
           <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
           Refresh
         </Button>

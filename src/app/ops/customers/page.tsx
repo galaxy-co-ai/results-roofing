@@ -28,6 +28,14 @@ function contactName(c: OpsContact): string {
   return [c.firstName, c.lastName].filter(Boolean).join(' ') || 'Unknown';
 }
 
+function formatPhone(phone: string | null | undefined): string {
+  if (!phone) return '—';
+  const digits = phone.replace(/\D/g, '');
+  const d = digits.length === 11 && digits.startsWith('1') ? digits.slice(1) : digits;
+  if (d.length === 10) return `${d.slice(0, 3)}-${d.slice(3, 6)}-${d.slice(6)}`;
+  return phone;
+}
+
 function timeAgo(dateStr: string | undefined): string {
   if (!dateStr) return '—';
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -128,6 +136,15 @@ export default function CustomersPage() {
     }
   }
 
+  async function handleRefresh() {
+    try {
+      await refetch();
+      success('Refreshed');
+    } catch {
+      showError('Failed to refresh');
+    }
+  }
+
   const uniqueSources = useMemo(() => {
     const s = new Set(contacts.map(c => c.source).filter(Boolean));
     return ['all', ...Array.from(s)];
@@ -145,7 +162,7 @@ export default function CustomersPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
+          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isLoading}>
             <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
@@ -232,14 +249,14 @@ export default function CustomersPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="cursor-pointer" onClick={handleSort}>
+                  <TableHead className="w-[200px] cursor-pointer" onClick={handleSort}>
                     <div className="flex items-center gap-1">Name <ArrowUpDown className="h-3 w-3" /></div>
                   </TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Added</TableHead>
-                  <TableHead>Source</TableHead>
+                  <TableHead className="w-[200px]">Email</TableHead>
+                  <TableHead className="w-[130px]">Phone</TableHead>
+                  <TableHead className="w-[140px]">Location</TableHead>
+                  <TableHead className="w-[100px]">Added</TableHead>
+                  <TableHead className="w-[80px]">Source</TableHead>
                   <TableHead className="w-10" />
                 </TableRow>
               </TableHeader>
@@ -247,8 +264,8 @@ export default function CustomersPage() {
                 {filtered.map((c) => (
                   <TableRow key={c.id} className="cursor-pointer" onClick={() => setViewContact(c)}>
                     <TableCell className="font-medium">{contactName(c)}</TableCell>
-                    <TableCell className="text-muted-foreground">{c.email || '—'}</TableCell>
-                    <TableCell className="text-muted-foreground tabular-nums">{c.phone || '—'}</TableCell>
+                    <TableCell className="text-muted-foreground truncate max-w-[200px]">{c.email || '—'}</TableCell>
+                    <TableCell className="text-muted-foreground tabular-nums">{formatPhone(c.phone)}</TableCell>
                     <TableCell className="text-muted-foreground">
                       {[c.city, c.state].filter(Boolean).join(', ') || '—'}
                     </TableCell>
@@ -356,7 +373,7 @@ export default function CustomersPage() {
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Phone</p>
-                  <p className="text-sm font-medium mt-0.5">{viewContact.phone || '—'}</p>
+                  <p className="text-sm font-medium mt-0.5">{formatPhone(viewContact.phone)}</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">

@@ -25,6 +25,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { OpsPageHeader } from '@/components/ui/ops';
 import { cn } from '@/lib/utils';
 import { useOpsAnalytics } from '@/hooks/ops/use-ops-queries';
+import { useToast } from '@/components/ui/Toast';
 
 const revenueConfig = {
   revenue: { label: 'Revenue', color: 'hsl(var(--primary))' },
@@ -55,9 +56,20 @@ export default function AnalyticsPage() {
   });
   const [chartView, setChartView] = useState<'revenue' | 'orders' | 'quotes'>('revenue');
 
+  const { success, error: showError } = useToast();
+
   const fromStr = dateRange?.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined;
   const toStr = dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined;
   const { data, isLoading, refetch } = useOpsAnalytics(fromStr, toStr);
+
+  async function handleRefresh() {
+    try {
+      await refetch();
+      success('Refreshed');
+    } catch {
+      showError('Failed to refresh');
+    }
+  }
 
   const chartData = useMemo(() => {
     if (!data?.daily) return [];
@@ -114,7 +126,7 @@ export default function AnalyticsPage() {
               <ChevronRight className="size-4" />
             </Button>
           </div>
-          <Button variant="outline" size="icon" onClick={() => refetch()} disabled={isLoading}>
+          <Button variant="outline" size="icon" onClick={handleRefresh} disabled={isLoading}>
             <RefreshCw className={cn('size-4', isLoading && 'animate-spin')} />
           </Button>
         </div>

@@ -99,7 +99,7 @@ export default function InboxPage() {
       // Search filter
       if (search) {
         const q = search.toLowerCase();
-        const name = (c.contact?.name || '').toLowerCase();
+        const name = (c.contactName || c.fullName || c.contact?.name || '').toLowerCase();
         const body = (c.lastMessageBody || '').toLowerCase();
         if (!name.includes(q) && !body.includes(q)) return false;
       }
@@ -147,9 +147,17 @@ export default function InboxPage() {
     }
   }
 
-  function handleRefresh() {
-    refetchSms();
-    refetchEmail();
+  async function handleRefresh() {
+    try {
+      await Promise.all([refetchSms(), refetchEmail()]);
+      showSuccess('Refreshed');
+    } catch {
+      showError('Failed to refresh');
+    }
+  }
+
+  function getConversationName(conv: Conversation): string {
+    return conv.contactName || conv.fullName || conv.contact?.name || 'Unknown';
   }
 
   async function handleCreateConversation() {
@@ -266,7 +274,7 @@ export default function InboxPage() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
                           <span className={`text-sm truncate ${hasUnread ? 'font-semibold' : 'font-medium'}`}>
-                            {conv.contact?.name || 'Unknown'}
+                            {getConversationName(conv)}
                           </span>
                           <span className="text-[11px] text-muted-foreground shrink-0 tabular-nums">{timeAgo(conv.lastMessageDate)}</span>
                         </div>
@@ -297,7 +305,7 @@ export default function InboxPage() {
               <div className="p-4 border-b">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="text-lg font-semibold">{selected.contact?.name || 'Unknown'}</h2>
+                    <h2 className="text-lg font-semibold">{getConversationName(selected)}</h2>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       {selected.contact?.email && <span>{selected.contact.email}</span>}
                       {selected.contact?.phone && <span>{selected.contact.phone}</span>}

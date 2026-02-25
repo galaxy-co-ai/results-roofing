@@ -23,7 +23,7 @@ import {
 import type { OpsAutomation } from '@/types/ops';
 
 export default function AutomationsPage() {
-  const { success } = useToast();
+  const { success, error: showError } = useToast();
   const { data: automations = [], isLoading, refetch } = useOpsAutomations();
   const createAutomation = useCreateAutomation();
   const updateAutomation = useUpdateAutomation();
@@ -38,6 +38,15 @@ export default function AutomationsPage() {
   const [formName, setFormName] = useState('');
   const [formTrigger, setFormTrigger] = useState('');
   const [formActions, setFormActions] = useState('');
+
+  async function handleRefresh() {
+    try {
+      await refetch();
+      success('Refreshed');
+    } catch {
+      showError('Failed to refresh');
+    }
+  }
 
   const filtered = useMemo(() => {
     let result = automations;
@@ -112,7 +121,7 @@ export default function AutomationsPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
+          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isLoading}>
             <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>

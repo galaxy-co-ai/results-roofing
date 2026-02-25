@@ -122,6 +122,15 @@ export default function DocumentsPage() {
   const [moveFolder, setMoveFolder] = useState('general');
   const [deleteTarget, setDeleteTarget] = useState<OpsDocument | null>(null);
 
+  async function handleRefresh() {
+    try {
+      await refetch();
+      success('Refreshed');
+    } catch {
+      toastError('Failed to refresh');
+    }
+  }
+
   const handleFolderClick = useCallback((folder: string | null) => {
     setSelectedFolder(folder);
   }, [setSelectedFolder]);
@@ -230,7 +239,7 @@ export default function DocumentsPage() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => refetch()}
+            onClick={handleRefresh}
             disabled={loading}
             className="transition-all duration-[var(--admin-duration-hover)] ease-[var(--admin-ease-out)] active:scale-[var(--admin-scale-press)]"
           >
