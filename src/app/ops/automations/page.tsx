@@ -39,15 +39,11 @@ const CATEGORY_STYLES: Record<string, string> = {
   proactive: 'bg-cyan-50 text-cyan-700 border-cyan-200',
 };
 
-const CATEGORY_ICONS: Record<string, React.ElementType> = {
-  leads: Users,
-  scheduling: Clock,
-  sales: DollarSign,
-  reputation: Star,
-  billing: DollarSign,
-  operations: Wrench,
-  proactive: Cloud,
-};
+// TODO: wire up category icons when template cards render per-category icons
+// const CATEGORY_ICONS: Record<string, React.ElementType> = {
+//   leads: Users, scheduling: Clock, sales: DollarSign, reputation: Star,
+//   billing: DollarSign, operations: Wrench, proactive: Cloud,
+// };
 
 const AUTOMATION_TEMPLATES: AutomationTemplate[] = [
   {
