@@ -129,7 +129,7 @@ export default function MaterialsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'var(--ops-font-display)' }}>
-            Materials
+            Material Orders
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
             {isLoading ? '...' : `${orders.length} orders · $${totalSpend.toLocaleString()} total`}

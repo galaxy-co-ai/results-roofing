@@ -11,6 +11,7 @@ import {
   Receipt,
   CreditCard,
   Package,
+  BookOpen,
   Inbox,
   FolderOpen,
   Zap,
@@ -74,7 +75,8 @@ const NAV_GROUPS: NavGroup[] = [
       { id: 'estimates', label: 'Estimates', href: '/ops/estimates', icon: FileText },
       { id: 'invoices', label: 'Invoices', href: '/ops/invoices', icon: Receipt },
       { id: 'payments', label: 'Payments', href: '/ops/payments', icon: CreditCard },
-      { id: 'materials', label: 'Materials', href: '/ops/materials', icon: Package },
+      { id: 'materials', label: 'Material Orders', href: '/ops/materials', icon: Package },
+      { id: 'catalogue', label: 'Material Catalogue', href: '/ops/materials/catalogue', icon: BookOpen },
     ],
   },
   {
