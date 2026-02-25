@@ -116,7 +116,7 @@ export async function listConversations(
   const client = getGHLClient();
   const locationId = client.getLocationId();
 
-  const response = await client.get<ConversationsListResponse>('/conversations/', {
+  const response = await client.get<ConversationsListResponse>('/conversations/search', {
     locationId,
     limit: params.limit ?? 20,
     startAfter: params.startAfter,
@@ -287,7 +287,7 @@ export async function getOrCreateConversation(contactId: string): Promise<GHLCon
   const locationId = client.getLocationId();
 
   // Try to find existing conversation
-  const response = await client.get<ConversationsListResponse>('/conversations/', {
+  const response = await client.get<ConversationsListResponse>('/conversations/search', {
     locationId,
     contactId,
     limit: 1,
