@@ -45,7 +45,7 @@ function NoOrderState() {
         </p>
         <a
           href="/quote/new"
-          className="mt-4 inline-flex items-center rounded-lg bg-[var(--rr-color-blue)] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1D4ED8] transition-colors"
+          className="mt-4 inline-flex items-center rounded-lg bg-[var(--rr-color-blue)] px-4 py-2.5 text-sm font-semibold text-white hover-hover:hover:bg-[var(--rr-color-brand-primary-active)] active:scale-[0.97] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--rr-color-blue)]"
         >
           Start a quote
         </a>
@@ -131,16 +131,18 @@ function PaymentsContent({ userEmail, userLoaded }: { userEmail: string | null; 
       </header>
 
       {/* Progress Card */}
-      <PaymentProgressCard
-        totalPrice={order.totalPrice}
-        totalPaid={order.totalPaid}
-        balance={order.balance}
-        cardBrand={cardBrand}
-        cardLast4={cardLast4}
-      />
+      <section aria-label="Payment progress">
+        <PaymentProgressCard
+          totalPrice={order.totalPrice}
+          totalPaid={order.totalPaid}
+          balance={order.balance}
+          cardBrand={cardBrand}
+          cardLast4={cardLast4}
+        />
+      </section>
 
       {/* Payment Options — 3 column grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
+      <section aria-label="Payment options" className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
         <PaymentOptionCard
           type="deposit"
           label="Deposit"
@@ -182,13 +184,15 @@ function PaymentsContent({ userEmail, userLoaded }: { userEmail: string | null; 
           disabled
           badge="Coming soon"
         />
-      </div>
+      </section>
 
       {/* Payment History */}
-      <PaymentHistoryTable
+      <section aria-label="Payment history">
+        <PaymentHistoryTable
         payments={payments}
-        onDownloadReceipt={handleDownloadReceipt}
-      />
+          onDownloadReceipt={handleDownloadReceipt}
+        />
+      </section>
 
       {/* Payment Drawer */}
       {order.quoteId && (

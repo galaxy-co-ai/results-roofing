@@ -113,7 +113,7 @@ export function PaymentHistoryTable({ payments, onDownloadReceipt }: PaymentHist
             {payments.map((payment) => (
               <tr
                 key={payment.id}
-                className="border-b border-[var(--rr-color-border-default)] last:border-b-0 group"
+                className="border-b border-[var(--rr-color-border-default)] last:border-b-0 group hover-hover:hover:bg-[var(--rr-color-surface-hover)] transition-colors"
               >
                 <td className="py-3 text-[var(--rr-color-text-primary)]">
                   {formatDate(payment.processedAt)}
@@ -131,7 +131,7 @@ export function PaymentHistoryTable({ payments, onDownloadReceipt }: PaymentHist
                   {payment.status === 'succeeded' && (
                     <button
                       onClick={() => onDownloadReceipt(payment.id)}
-                      className="inline-flex items-center justify-center w-8 h-8 rounded-md text-[var(--rr-color-text-secondary)] hover:bg-[var(--rr-color-bg-tertiary)] hover:text-[var(--rr-color-blue)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rr-color-blue)]"
+                      className="inline-flex items-center justify-center w-11 h-11 rounded-md text-[var(--rr-color-text-secondary)] hover-hover:hover:bg-[var(--rr-color-bg-tertiary)] hover-hover:hover:text-[var(--rr-color-blue)] active:scale-[0.97] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rr-color-blue)]"
                       aria-label="Download receipt"
                     >
                       <Download size={16} />

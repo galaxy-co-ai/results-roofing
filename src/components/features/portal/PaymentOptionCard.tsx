@@ -93,7 +93,7 @@ export function PaymentOptionCard({
           {onDownloadReceipt && (
             <button
               onClick={onDownloadReceipt}
-              className="inline-flex items-center gap-1.5 text-sm text-[var(--rr-color-blue)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rr-color-blue)] rounded"
+              className="inline-flex items-center gap-1.5 text-sm text-[var(--rr-color-blue)] hover-hover:hover:underline active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rr-color-blue)] rounded"
             >
               <Download size={14} />
               Download receipt
@@ -105,10 +105,10 @@ export function PaymentOptionCard({
           {!disabled ? (
             <button
               onClick={onPay}
-              className={`w-full rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
+              className={`w-full rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
                 variant === 'primary'
-                  ? 'bg-[var(--rr-color-blue)] text-white hover:bg-[#1D4ED8] focus-visible:ring-[var(--rr-color-blue)]'
-                  : 'border border-[var(--rr-color-border-default)] bg-[var(--rr-color-white)] text-[var(--rr-color-text-primary)] hover:bg-[var(--rr-color-bg-tertiary)] focus-visible:ring-[var(--rr-color-blue)]'
+                  ? 'bg-[var(--rr-color-blue)] text-white hover-hover:hover:bg-[var(--rr-color-brand-primary-active)] focus-visible:ring-[var(--rr-color-blue)]'
+                  : 'border border-[var(--rr-color-border-default)] bg-[var(--rr-color-white)] text-[var(--rr-color-text-primary)] hover-hover:hover:bg-[var(--rr-color-bg-tertiary)] focus-visible:ring-[var(--rr-color-blue)]'
               }`}
             >
               {label === 'Deposit' ? 'Pay deposit' : 'Pay balance'}

@@ -69,7 +69,7 @@ export function PaymentProgressCard({
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm text-[var(--rr-color-text-secondary)]">Payment progress</span>
-          <span className="text-sm font-semibold text-[var(--rr-color-blue)]">{percentPaid.toFixed(0)}%</span>
+          <span className="text-sm font-semibold tabular-nums text-[var(--rr-color-blue)]">{percentPaid.toFixed(0)}%</span>
         </div>
         <div className="h-2 rounded-full bg-[var(--rr-color-bg-secondary)] overflow-hidden">
           <div
