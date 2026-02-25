@@ -366,6 +366,7 @@ export type AutomationStatus = 'active' | 'paused';
 export interface OpsAutomation {
   id: string;
   name: string;
+  templateId?: string;
   trigger: string;
   actions: string;
   status: AutomationStatus;

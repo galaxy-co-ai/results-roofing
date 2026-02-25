@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/dialog';
 import { useOpsInvoices, useUpdateInvoiceStatus } from '@/hooks/ops/use-ops-queries';
 import { useToast } from '@/components/ui/Toast';
+import { DocumentPreview } from '@/components/features/ops/DocumentPreview';
 import type { OpsInvoice, OrderStatus } from '@/types/ops';
 
 const STATUS_STYLES: Record<string, string> = {
@@ -287,31 +288,30 @@ export default function InvoicesPage() {
         )}
       </Card>
 
-      {/* View Invoice Dialog */}
+      {/* Invoice Document Preview */}
       <Dialog open={!!viewInvoice} onOpenChange={() => setViewInvoice(null)}>
-        <DialogContent>
-          <DialogHeader><DialogTitle>Order {viewInvoice?.confirmationNumber}</DialogTitle></DialogHeader>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0">
           {viewInvoice && (
-            <DialogBody className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div><p className="text-xs text-muted-foreground">Customer</p><p className="font-medium">{viewInvoice.customerName || '\u2014'}</p></div>
-                <div><p className="text-xs text-muted-foreground">Email</p><p className="font-medium">{viewInvoice.customerEmail}</p></div>
-                <div className="col-span-2"><p className="text-xs text-muted-foreground">Property</p><p className="font-medium">{viewInvoice.propertyAddress}</p></div>
-                <div><p className="text-xs text-muted-foreground">Total</p><p className="font-medium tabular-nums">${viewInvoice.totalPrice.toLocaleString()}</p></div>
-                <div><p className="text-xs text-muted-foreground">Deposit</p><p className="font-medium tabular-nums">${viewInvoice.depositAmount.toLocaleString()}</p></div>
-                <div><p className="text-xs text-muted-foreground">Balance Due</p><p className="font-medium tabular-nums">${viewInvoice.balanceDue.toLocaleString()}</p></div>
-                <div><p className="text-xs text-muted-foreground">Paid</p><p className="font-medium tabular-nums text-green-600">${viewInvoice.paidAmount.toLocaleString()}</p></div>
-                <div><p className="text-xs text-muted-foreground">Status</p><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[viewInvoice.status] || STATUS_STYLES.pending}`}>{statusLabel(viewInvoice.status)}</span></div>
-                <div><p className="text-xs text-muted-foreground">Tier</p><p className="font-medium capitalize">{viewInvoice.selectedTier}</p></div>
-                <div><p className="text-xs text-muted-foreground">Financing</p><p className="font-medium">{viewInvoice.financingUsed || 'None'}</p></div>
-                <div><p className="text-xs text-muted-foreground">Scheduled</p><p className="font-medium">{formatDate(viewInvoice.scheduledStartDate)}</p></div>
-                <div><p className="text-xs text-muted-foreground">Created</p><p className="font-medium">{formatDate(viewInvoice.createdAt)}</p></div>
-              </div>
-            </DialogBody>
+            <DocumentPreview
+              type="invoice"
+              data={{
+                id: viewInvoice.id,
+                confirmationNumber: viewInvoice.confirmationNumber,
+                customerName: viewInvoice.customerName,
+                customerEmail: viewInvoice.customerEmail,
+                propertyAddress: viewInvoice.propertyAddress,
+                selectedTier: viewInvoice.selectedTier,
+                totalPrice: viewInvoice.totalPrice,
+                depositAmount: viewInvoice.depositAmount,
+                balanceDue: viewInvoice.balanceDue,
+                paidAmount: viewInvoice.paidAmount,
+                financingUsed: viewInvoice.financingUsed,
+                scheduledStartDate: viewInvoice.scheduledStartDate,
+                status: viewInvoice.status,
+                createdAt: viewInvoice.createdAt,
+              }}
+            />
           )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setViewInvoice(null)}>Close</Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
 

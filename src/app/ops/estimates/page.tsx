@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/dialog';
 import { useOpsEstimates, useUpdateEstimateStatus, useDeleteEstimate } from '@/hooks/ops/use-ops-queries';
 import { useToast } from '@/components/ui/Toast';
+import { DocumentPreview } from '@/components/features/ops/DocumentPreview';
 import type { OpsEstimate, QuoteStatus } from '@/types/ops';
 
 const STATUS_STYLES: Record<string, string> = {
@@ -243,28 +244,29 @@ export default function EstimatesPage() {
         )}
       </Card>
 
-      {/* View Estimate Dialog */}
+      {/* Estimate Document Preview */}
       <Dialog open={!!viewEstimate} onOpenChange={() => setViewEstimate(null)}>
-        <DialogContent>
-          <DialogHeader><DialogTitle>Quote Details</DialogTitle></DialogHeader>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0">
           {viewEstimate && (
-            <DialogBody className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div><p className="text-xs text-muted-foreground">Customer</p><p className="font-medium">{viewEstimate.customer}</p></div>
-                <div><p className="text-xs text-muted-foreground">Amount</p><p className="font-medium tabular-nums">{formatCurrency(viewEstimate.totalPrice)}</p></div>
-                <div className="col-span-2"><p className="text-xs text-muted-foreground">Address</p><p className="font-medium">{viewEstimate.address}, {viewEstimate.city}, {viewEstimate.state} {viewEstimate.zip}</p></div>
-                <div><p className="text-xs text-muted-foreground">Status</p><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border ${STATUS_STYLES[viewEstimate.status] || STATUS_STYLES.preliminary}`}>{viewEstimate.status.charAt(0).toUpperCase() + viewEstimate.status.slice(1)}</span></div>
-                <div><p className="text-xs text-muted-foreground">Tier</p><p className="font-medium capitalize">{viewEstimate.selectedTier || '\u2014'}</p></div>
-                {viewEstimate.sqftTotal && <div><p className="text-xs text-muted-foreground">Sq Ft</p><p className="font-medium tabular-nums">{viewEstimate.sqftTotal.toLocaleString()}</p></div>}
-                {viewEstimate.depositAmount && <div><p className="text-xs text-muted-foreground">Deposit</p><p className="font-medium tabular-nums">{formatCurrency(viewEstimate.depositAmount)}</p></div>}
-                <div><p className="text-xs text-muted-foreground">Created</p><p className="font-medium">{formatDate(viewEstimate.createdAt)}</p></div>
-                <div><p className="text-xs text-muted-foreground">Expires</p><p className="font-medium">{formatDate(viewEstimate.expiresAt)}</p></div>
-              </div>
-            </DialogBody>
+            <DocumentPreview
+              type="estimate"
+              data={{
+                id: viewEstimate.id,
+                customer: viewEstimate.customer,
+                propertyAddress: viewEstimate.address,
+                city: viewEstimate.city,
+                state: viewEstimate.state,
+                zip: viewEstimate.zip,
+                sqftTotal: viewEstimate.sqftTotal,
+                selectedTier2: viewEstimate.selectedTier,
+                totalPrice: viewEstimate.totalPrice ?? 0,
+                depositAmount: viewEstimate.depositAmount ?? undefined,
+                expiresAt: viewEstimate.expiresAt,
+                status: viewEstimate.status,
+                createdAt: viewEstimate.createdAt,
+              }}
+            />
           )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setViewEstimate(null)}>Close</Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
 

@@ -851,7 +851,7 @@ export function useOpsAutomations() {
 export function useCreateAutomation() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: { name: string; trigger: string; actions: string }) =>
+    mutationFn: (data: { name: string; trigger: string; actions: string; templateId?: string }) =>
       opsMutate<{ automation: OpsAutomation }>('/api/ops/automations', {
         method: 'POST',
         body: JSON.stringify(data),

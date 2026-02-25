@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, Search, MoreHorizontal, ArrowUpDown, Eye, Trash2, Pencil, Loader2 } from 'lucide-react';
+import { Plus, Search, MoreHorizontal, ArrowUpDown, Eye, Trash2, Pencil, Loader2, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -39,8 +39,10 @@ export default function BlogPage() {
   // Form state
   const [formTitle, setFormTitle] = useState('');
   const [formExcerpt, setFormExcerpt] = useState('');
+  const [formContent, setFormContent] = useState('');
   const [formAuthor, setFormAuthor] = useState('');
   const [formStatus, setFormStatus] = useState<PostStatus>('draft');
+  const [showPreview, setShowPreview] = useState(false);
 
   const { data: posts = [], isLoading } = useOpsBlogPosts(statusFilter, search || undefined);
   const saveBlogPost = useSaveBlogPost();
@@ -53,16 +55,20 @@ export default function BlogPage() {
   function openNew() {
     setFormTitle('');
     setFormExcerpt('');
+    setFormContent('');
     setFormAuthor('');
     setFormStatus('draft');
+    setShowPreview(false);
     setShowNewDialog(true);
   }
 
   function openEdit(post: BlogPost) {
     setFormTitle(post.title);
     setFormExcerpt(post.excerpt || '');
+    setFormContent(post.content || '');
     setFormAuthor(post.authorName);
     setFormStatus(post.status);
+    setShowPreview(false);
     setEditPost(post);
   }
 
@@ -72,6 +78,7 @@ export default function BlogPage() {
       await saveBlogPost.mutateAsync({
         title: formTitle.trim(),
         excerpt: formExcerpt.trim() || null,
+        content: formContent.trim() || null,
         authorName: formAuthor.trim() || 'Staff',
         status: formStatus,
         slug: formTitle.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
@@ -90,6 +97,7 @@ export default function BlogPage() {
         id: editPost.id,
         title: formTitle.trim(),
         excerpt: formExcerpt.trim() || null,
+        content: formContent.trim() || null,
         authorName: formAuthor.trim() || editPost.authorName,
         status: formStatus,
       });
@@ -294,23 +302,28 @@ export default function BlogPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Edit Post Dialog */}
+      {/* Full Content Editor */}
       <Dialog open={!!editPost} onOpenChange={(open) => !open && setEditPost(null)}>
-        <DialogContent>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Edit Post</DialogTitle>
-            <DialogDescription>Update post details</DialogDescription>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5" />
+              Edit Post
+            </DialogTitle>
+            <DialogDescription>
+              {editPost?.slug ? `/${editPost.slug}` : 'Update post details and content'}
+            </DialogDescription>
           </DialogHeader>
           <DialogBody className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="edit-title">Title *</Label>
-              <Input id="edit-title" value={formTitle} onChange={e => setFormTitle(e.target.value)} />
+              <Input id="edit-title" value={formTitle} onChange={e => setFormTitle(e.target.value)} className="text-lg font-semibold" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="edit-excerpt">Excerpt</Label>
-              <Input id="edit-excerpt" value={formExcerpt} onChange={e => setFormExcerpt(e.target.value)} />
+              <Input id="edit-excerpt" value={formExcerpt} onChange={e => setFormExcerpt(e.target.value)} placeholder="Brief summary for SEO and previews..." />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="edit-author">Author</Label>
                 <Input id="edit-author" value={formAuthor} onChange={e => setFormAuthor(e.target.value)} />
@@ -321,7 +334,48 @@ export default function BlogPage() {
                   {STATUS_OPTIONS.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
                 </select>
               </div>
+              <div className="space-y-2">
+                <Label>Category</Label>
+                <Input value={editPost?.category || ''} disabled className="text-muted-foreground" />
+              </div>
             </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label>Content</Label>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 text-xs"
+                  onClick={() => setShowPreview(!showPreview)}
+                >
+                  {showPreview ? 'Edit' : 'Preview'}
+                </Button>
+              </div>
+              {showPreview ? (
+                <div className="min-h-[400px] rounded-md border bg-muted/30 p-4 prose prose-sm max-w-none">
+                  {formContent ? (
+                    <div className="whitespace-pre-wrap">{formContent}</div>
+                  ) : (
+                    <p className="text-muted-foreground italic">No content yet</p>
+                  )}
+                </div>
+              ) : (
+                <textarea
+                  value={formContent}
+                  onChange={(e) => setFormContent(e.target.value)}
+                  placeholder="Write your blog post content here..."
+                  className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[400px] font-mono resize-y"
+                />
+              )}
+            </div>
+            {editPost && (
+              <div className="flex items-center gap-4 text-xs text-muted-foreground border-t pt-3">
+                <span>Created: {formatDate(editPost.createdAt)}</span>
+                {editPost.publishedAt && <span>Published: {formatDate(editPost.publishedAt)}</span>}
+                {editPost.viewCount ? <span>{editPost.viewCount.toLocaleString()} views</span> : null}
+              </div>
+            )}
           </DialogBody>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditPost(null)}>Cancel</Button>
