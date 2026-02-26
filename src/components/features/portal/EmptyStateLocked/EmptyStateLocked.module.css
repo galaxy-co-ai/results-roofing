@@ -1,0 +1,88 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 400px;
+  margin: 80px auto 0;
+  padding: 0 16px;
+}
+
+.iconCircle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--rr-color-bg-tertiary);
+  color: var(--rr-color-text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--rr-color-text-primary);
+  margin: 0 0 8px;
+}
+
+.description {
+  font-size: 14px;
+  color: var(--rr-color-text-secondary);
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+
+.progress {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--rr-color-blue);
+  margin-bottom: 24px;
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 24px;
+  opacity: 0.4;
+}
+
+.skeletonBar {
+  height: 12px;
+  background: var(--rr-color-border-default);
+  border-radius: 6px;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  background: var(--rr-color-blue);
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 150ms;
+}
+
+.cta:focus-visible {
+  outline: 2px solid var(--rr-color-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .cta:hover {
+    background: var(--rr-color-blue-light);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin-top: 48px;
+  }
+}
