@@ -1,10 +1,12 @@
 'use client';
 
+import { useState, useCallback } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { PortalHeader } from '@/components/features/portal/PortalHeader/PortalHeader';
 import { ProjectTimeline } from '@/components/features/portal/ProjectTimeline/ProjectTimeline';
 import { Checklist } from '@/components/features/portal/Checklist/Checklist';
 import { QuoteSummaryCard } from '@/components/features/portal/QuoteSummaryCard/QuoteSummaryCard';
+import { QuoteWizard } from '@/components/features/portal/QuoteWizard/QuoteWizard';
 import { usePortalPhase } from '@/hooks/usePortalPhase';
 import { PortalPhase } from '@/lib/portal/phases';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
@@ -20,15 +22,26 @@ function MyProjectSkeleton() {
   );
 }
 
-function Phase1Content() {
+function Phase1Content({ email }: { email: string }) {
+  const [wizardOpen, setWizardOpen] = useState(false);
+
+  const handleWizardComplete = useCallback(() => {
+    setWizardOpen(false);
+  }, []);
+
   return (
     <>
       <p className={styles.subtitle}>Complete these steps to get started with your roof replacement</p>
       <ProjectTimeline currentStage={1} />
       <Checklist
         activeStep={1}
-        stepCtas={{ 1: { label: 'Start Quote →', href: '/quote/new' } }}
+        stepCtas={wizardOpen ? undefined : {
+          1: { label: 'Start Quote →', onClick: () => setWizardOpen(true) },
+        }}
       />
+      {wizardOpen && (
+        <QuoteWizard email={email} onComplete={handleWizardComplete} />
+      )}
     </>
   );
 }
@@ -92,7 +105,7 @@ function MyProjectContent({ email }: { email: string | null }) {
   return (
     <div className={styles.page}>
       <PortalHeader title="My Project" />
-      {phase?.phase === PortalPhase.PRE_QUOTE && <Phase1Content />}
+      {phase?.phase === PortalPhase.PRE_QUOTE && <Phase1Content email={email!} />}
       {phase?.phase === PortalPhase.QUOTED && <Phase2Content quote={quote} order={order} />}
       {phase?.phase === PortalPhase.CONTRACTED && <Phase3Content order={order} />}
       {(phase?.phase === PortalPhase.IN_PROGRESS || phase?.phase === PortalPhase.COMPLETE) && (

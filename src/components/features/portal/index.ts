@@ -22,3 +22,4 @@ export { ChecklistStep } from './Checklist/ChecklistStep';
 export { EmptyStateLocked } from './EmptyStateLocked/EmptyStateLocked';
 export { QuoteSummaryCard } from './QuoteSummaryCard/QuoteSummaryCard';
 export { PhaseShell } from './PhaseShell/PhaseShell';
+export { QuoteWizard } from './QuoteWizard/QuoteWizard';

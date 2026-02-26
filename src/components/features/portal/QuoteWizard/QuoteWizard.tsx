@@ -3,6 +3,11 @@
 import { useState, useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import styles from './QuoteWizard.module.css';
+import { AddressStep } from './steps/AddressStep';
+import { ConfirmStep } from './steps/ConfirmStep';
+import { PackageStep } from './steps/PackageStep';
+import { ScheduleStep } from './steps/ScheduleStep';
+import { ContactStep } from './steps/ContactStep';
 
 type WizardStep = 'ADDRESS' | 'CONFIRM' | 'PACKAGE' | 'SCHEDULE' | 'CONTACT' | 'COMPLETE';
 
@@ -97,11 +102,40 @@ export function QuoteWizard({ email, onComplete }: QuoteWizardProps) {
 
       <div className={styles.stepContent} key={state.step}>
         <div className={styles.stepTransition}>
-          {state.step === 'ADDRESS' && <div>AddressStep placeholder</div>}
-          {state.step === 'CONFIRM' && <div>ConfirmStep placeholder</div>}
-          {state.step === 'PACKAGE' && <div>PackageStep placeholder</div>}
-          {state.step === 'SCHEDULE' && <div>ScheduleStep placeholder</div>}
-          {state.step === 'CONTACT' && <div>ContactStep placeholder</div>}
+          {state.step === 'ADDRESS' && (
+            <AddressStep
+              onNext={({ quoteId, address, estimate }) => {
+                goTo('CONFIRM', { quoteId, address, estimate });
+              }}
+            />
+          )}
+          {state.step === 'CONFIRM' && state.address && (
+            <ConfirmStep
+              address={state.address}
+              onConfirm={() => goTo('PACKAGE')}
+              onRetry={() => goTo('ADDRESS')}
+            />
+          )}
+          {state.step === 'PACKAGE' && state.quoteId && (
+            <PackageStep
+              quoteId={state.quoteId}
+              estimate={state.estimate}
+              onNext={() => goTo('SCHEDULE')}
+            />
+          )}
+          {state.step === 'SCHEDULE' && state.quoteId && (
+            <ScheduleStep
+              quoteId={state.quoteId}
+              onNext={() => goTo('CONTACT')}
+            />
+          )}
+          {state.step === 'CONTACT' && state.quoteId && (
+            <ContactStep
+              quoteId={state.quoteId}
+              email={email}
+              onComplete={handleComplete}
+            />
+          )}
         </div>
       </div>
 
