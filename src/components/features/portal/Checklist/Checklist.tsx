@@ -13,7 +13,7 @@ const CHECKLIST_STEPS = [
 
 interface ChecklistProps {
   activeStep: number; // 1-5
-  stepCtas?: Record<number, { label: string; href: string }>;
+  stepCtas?: Record<number, { label: string; href?: string; onClick?: () => void }>;
 }
 
 export function Checklist({ activeStep, stepCtas = {} }: ChecklistProps) {
@@ -47,6 +47,7 @@ export function Checklist({ activeStep, stepCtas = {} }: ChecklistProps) {
               status={status}
               ctaLabel={cta?.label}
               ctaHref={cta?.href}
+              onClickCta={cta?.onClick}
               dependencyText={status === 'locked' ? `Complete step ${activeStep} first` : undefined}
             />
           );

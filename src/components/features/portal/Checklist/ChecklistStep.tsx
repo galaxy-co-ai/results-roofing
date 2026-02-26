@@ -11,6 +11,7 @@ interface ChecklistStepProps {
   status: 'active' | 'completed' | 'locked';
   ctaLabel?: string;
   ctaHref?: string;
+  onClickCta?: () => void;
   dependencyText?: string;
 }
 
@@ -21,6 +22,7 @@ export function ChecklistStep({
   status,
   ctaLabel,
   ctaHref,
+  onClickCta,
   dependencyText,
 }: ChecklistStepProps) {
   if (status === 'completed') {
@@ -63,6 +65,11 @@ export function ChecklistStep({
         <Link href={ctaHref} className={styles.stepActiveCta}>
           {ctaLabel}
         </Link>
+      )}
+      {ctaLabel && !ctaHref && onClickCta && (
+        <button type="button" onClick={onClickCta} className={styles.stepActiveCta}>
+          {ctaLabel}
+        </button>
       )}
     </div>
   );
