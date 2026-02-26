@@ -61,6 +61,7 @@
   align-items: center;
   justify-content: center;
   padding: 10px 24px;
+  min-height: 44px;
   background: var(--rr-color-blue);
   color: white;
   border-radius: 6px;

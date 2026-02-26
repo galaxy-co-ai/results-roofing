@@ -16,8 +16,8 @@
 }
 
 .logo {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,6 +27,11 @@
   font-size: 14px;
   color: var(--rr-color-blue);
   border-radius: 8px;
+}
+
+.logo:focus-visible {
+  outline: 2px solid var(--rr-color-focus-ring);
+  outline-offset: 2px;
 }
 
 .nav {

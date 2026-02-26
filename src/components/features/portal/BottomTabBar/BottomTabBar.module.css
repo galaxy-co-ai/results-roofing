@@ -24,6 +24,7 @@
   gap: 2px;
   padding: 4px 8px;
   min-width: 64px;
+  min-height: 44px;
   text-decoration: none;
   color: var(--rr-color-text-tertiary);
   font-size: 10px;

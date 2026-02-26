@@ -83,6 +83,9 @@
   text-decoration: none;
   white-space: nowrap;
   flex-shrink: 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .stepActiveCta:focus-visible {
