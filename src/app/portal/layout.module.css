@@ -1,54 +1,18 @@
-/* =================================================
-   PORTAL LAYOUT STYLES
-   ================================================= */
-
 .portalLayout {
-  display: flex;
   min-height: 100vh;
   background: var(--rr-color-bg-primary);
 }
 
-/* ========================================
-   MAIN CONTENT
-   ======================================== */
-
 .mainContent {
-  flex: 1;
-  margin-left: 240px;
-  padding: 2rem 2.5rem;
-  min-height: 100vh;
-  transition: margin-left 0.2s ease;
-  /* Subtle dot grid - visual continuity with landing page */
-  background-image: radial-gradient(circle, rgba(37, 99, 235, 0.05) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-/* When sidebar is collapsed, shrink margin to match */
-:global([data-sidebar="collapsed"]) .mainContent {
   margin-left: 72px;
+  padding: 32px 40px;
+  min-height: 100vh;
 }
 
-/* ========================================
-   RESPONSIVE
-   ======================================== */
-
-/* Tablet: Sidebar is collapsed (72px wide) */
-@media (min-width: 769px) and (max-width: 1023px) {
-  .mainContent {
-    margin-left: 72px;
-  }
-}
-
-/* Mobile: Bottom navigation */
 @media (max-width: 768px) {
-  .portalLayout {
-    flex-direction: column;
-  }
-
   .mainContent {
     margin-left: 0;
-    padding: 1rem;
-    padding-bottom: 5rem; /* Space for bottom nav */
-    min-height: calc(100vh - 80px);
+    padding: 16px;
+    padding-bottom: 80px;
   }
 }

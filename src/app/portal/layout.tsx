@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
-import { PortalSidebar } from '@/components/features/portal';
+import { PortalSidebarV2 } from '@/components/features/portal/PortalSidebarV2/PortalSidebarV2';
+import { BottomTabBar } from '@/components/features/portal/BottomTabBar/BottomTabBar';
 import styles from './layout.module.css';
 
 /**
@@ -11,7 +12,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Customer Portal',
+    default: 'My Project',
     template: '%s | Results Roofing Portal',
   },
   description: 'Manage your roofing project, documents, payments, and schedule.',
@@ -28,14 +29,12 @@ export default function PortalLayout({
   children: React.ReactNode;
 }) {
   const content = (
-    <div className={styles.portalLayout} data-portal-layout>
-      {/* Collapsible Sidebar */}
-      <PortalSidebar />
-
-      {/* Main Content */}
+    <div className={styles.portalLayout}>
+      <PortalSidebarV2 />
       <main className={styles.mainContent} id="main-content">
         {children}
       </main>
+      <BottomTabBar />
     </div>
   );
 
