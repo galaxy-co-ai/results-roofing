@@ -1,0 +1,31 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 900px;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: var(--rr-color-text-secondary);
+  margin: 0;
+}
+
+.skeletonBlock {
+  background: var(--rr-color-bg-tertiary);
+  border-radius: 6px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.shellPlaceholder {
+  padding: 48px;
+  text-align: center;
+  color: var(--rr-color-text-tertiary);
+  border: 1px dashed var(--rr-color-border-default);
+  border-radius: 6px;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
