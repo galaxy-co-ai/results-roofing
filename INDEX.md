@@ -36,14 +36,15 @@
 | `/quote-v2` | `src/app/quote-v2/page.tsx` | V2 entry point |
 | `/quote-v2/[id]` | `src/app/quote-v2/[id]/page.tsx` | V2 wizard shell |
 
-### Portal (authenticated)
+### Portal (authenticated, redesigned)
 | Route | File | Purpose |
 |-------|------|---------|
-| `/portal` | `src/app/portal/page.tsx` | Portal home |
-| `/portal/dashboard` | `src/app/portal/dashboard/page.tsx` | Customer dashboard |
-| `/portal/documents` | `src/app/portal/documents/page.tsx` | Documents |
-| `/portal/payments` | `src/app/portal/payments/page.tsx` | Payment history |
-| `/portal/schedule` | `src/app/portal/schedule/page.tsx` | Schedule management |
+| `/portal` | `src/app/portal/page.tsx` | My Project — phase-adaptive content (was redirect to `/portal/dashboard`) |
+| `/portal/documents` | `src/app/portal/documents/page.tsx` | Documents (locked → icon-action rows) |
+| `/portal/payments` | `src/app/portal/payments/page.tsx` | Payments (locked → ledger) |
+| `/portal/schedule` | `src/app/portal/schedule/page.tsx` | Schedule (locked → install details) |
+
+Portal is phase-aware with 5 lifecycle phases. `/portal/dashboard` has been removed (merged into `/portal`).
 
 ### Ops Dashboard (internal)
 | Route | File | Purpose |
@@ -183,6 +184,7 @@ All in `src/hooks/`:
 | `useQuoteDraft` | `useQuoteDraft.ts` | Draft state management |
 | `usePricingTiers` | `usePricingTiers.ts` | Pricing tier data |
 | `useOrders` | `useOrders.ts` | Order management |
+| `usePortalPhase` | `usePortalPhase.ts` | Phase detection (useOrders + useOrderDetails + detectPhase) |
 | `useAnalytics` | `useAnalytics.ts` | Analytics tracking |
 | `useDevUser` | `useDevUser.ts` | Dev user bypass |
 | `useMobile` | `use-mobile.tsx` | Responsive detection |
@@ -201,7 +203,7 @@ src/components/
 │   ├── landing/        # Hero form, how-it-works, reviews, scroll CTA
 │   ├── ops/            # Ops dashboard components (analytics, blog, CRM, etc.)
 │   ├── payment/        # Inline confirmation
-│   ├── portal/         # Sidebar, user card, quick actions, timeline
+│   ├── portal/         # SidebarV2, Header, BottomTabBar, ProjectTimeline, Checklist, PhaseShell
 │   ├── quote/          # V1 wizard stages + shared components
 │   ├── quote-v2/       # V2 XState wizard (WizardShell, steps, machine)
 │   └── support/        # Chat widget + contextual support
@@ -214,6 +216,7 @@ src/components/
 
 | Feature | Key Files |
 |---------|-----------|
+| Portal redesign | Phase-aware portal with 5 lifecycle phases, new layout (SidebarV2/BottomTabBar), removed `/portal/dashboard` |
 | Portal payments rebuild | `app/portal/payments/page.tsx`, `components/features/portal/Payment*.tsx` |
 | PDF receipts | `lib/pdf/receipt-template.tsx`, `app/api/portal/receipts/[paymentId]/route.ts` |
 | Stripe customer mgmt | `lib/integrations/adapters/stripe.ts` |

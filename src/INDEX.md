@@ -2,18 +2,49 @@
 
 Quick-reference for finding code by feature. Updated 2026-02-26.
 
-## Portal (Customer Dashboard)
+## Portal (Redesigned)
 
+Phase-aware customer portal with 5 lifecycle phases. `/portal/dashboard` removed — merged into `/portal`.
+
+### Phase Detection
 | Feature | Key Files |
 |---------|-----------|
-| Layout + sidebar | `app/portal/layout.tsx`, `components/features/portal/PortalSidebar/` |
-| Dashboard | `app/portal/dashboard/page.tsx` |
-| Payments page | `app/portal/payments/page.tsx` |
+| Phase enum + logic | `lib/portal/phases.ts` — Phase enum, detection logic, PhaseContext interface |
+| Phase tests | `lib/portal/phases.test.ts` — 6 tests covering all phase transitions |
+| Phase hook | `hooks/usePortalPhase.ts` — React hook composing useOrders + useOrderDetails + detectPhase |
+
+### Layout
+| Feature | Key Files |
+|---------|-----------|
+| Portal shell | `app/portal/layout.tsx` — SidebarV2 + BottomTabBar |
+| Layout styles | `app/portal/layout.module.css` — 72px margin-left desktop, 0 mobile |
+
+### Components
+| Feature | Key Files |
+|---------|-----------|
+| Sidebar | `components/features/portal/PortalSidebarV2/` — Fixed 72px icon-only sidebar |
+| Header | `components/features/portal/PortalHeader/` — Page header with title, help, avatar |
+| Bottom tabs | `components/features/portal/BottomTabBar/` — Mobile bottom nav (≤768px) |
+| Timeline | `components/features/portal/ProjectTimeline/` — 6-stage horizontal tracker |
+| Checklist | `components/features/portal/Checklist/` — 5-step onboarding checklist |
+| Empty state | `components/features/portal/EmptyStateLocked/` — Skeleton + lock empty state |
+| Quote card | `components/features/portal/QuoteSummaryCard/` — Address + metadata card |
+| Phase shell | `components/features/portal/PhaseShell/` — Phase 4-5 placeholders |
 | Payment progress | `components/features/portal/PaymentProgressCard.tsx` |
 | Payment options | `components/features/portal/PaymentOptionCard.tsx` |
 | Payment history | `components/features/portal/PaymentHistoryTable.tsx` |
-| Documents | `app/portal/documents/page.tsx` |
-| Schedule | `app/portal/schedule/page.tsx` |
+
+### Pages
+| Feature | Key Files |
+|---------|-----------|
+| My Project | `app/portal/page.tsx` — Phase-adaptive content |
+| Payments | `app/portal/payments/page.tsx` — Locked → ledger |
+| Documents | `app/portal/documents/page.tsx` — Locked → icon-action rows |
+| Schedule | `app/portal/schedule/page.tsx` — Locked → install details |
+
+### APIs
+| Feature | Key Files |
+|---------|-----------|
 | Order details API | `app/api/portal/orders/[id]/route.ts` |
 | Receipt PDF API | `app/api/portal/receipts/[paymentId]/route.ts` |
 | Receipt template | `lib/pdf/receipt-template.tsx` |
