@@ -1,0 +1,48 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 64px 24px;
+  border: 1px dashed var(--rr-color-border-default);
+  border-radius: 6px;
+  background: var(--rr-color-bg-secondary);
+}
+
+.iconCircle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--rr-color-bg-tertiary);
+  color: var(--rr-color-text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--rr-color-text-primary);
+  margin: 0 0 8px;
+}
+
+.description {
+  font-size: 14px;
+  color: var(--rr-color-text-secondary);
+  margin: 0 0 16px;
+  max-width: 400px;
+  line-height: 1.5;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--rr-color-text-tertiary);
+  background: var(--rr-color-bg-tertiary);
+  padding: 4px 12px;
+  border-radius: 9999px;
+}
