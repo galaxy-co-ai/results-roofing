@@ -91,11 +91,22 @@
 | `POST /api/quotes/[id]/select-tier` | `.../select-tier/route.ts` | Select pricing tier |
 | `POST /api/quotes/[id]/share` | `.../share/route.ts` | Share quote |
 
+### Portal APIs
+| Endpoint | Purpose |
+|----------|---------|
+| `GET /api/portal/orders` | List customer orders |
+| `GET /api/portal/orders/[id]` | Order details (payments, appointments, contracts) |
+| `GET /api/portal/receipts/[paymentId]` | PDF receipt download |
+
+### Payment APIs
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /api/payments/create-intent` | Stripe payment intent (attaches customer, paymentType) |
+| `POST /api/payments/webhook` | Stripe webhook (card details, payment type) |
+
 ### Other APIs
 | Endpoint | Purpose |
 |----------|---------|
-| `/api/payments/create-intent` | Stripe payment intent |
-| `/api/payments/webhook` | Stripe webhook |
 | `/api/contracts/` | Contract CRUD |
 | `/api/pricing-tiers` | Pricing tier data |
 | `/api/leads/out-of-area` | Out-of-area lead capture |
@@ -140,7 +151,8 @@ All in `src/lib/integrations/adapters/`:
 
 | Adapter | File | Status |
 |---------|------|--------|
-| **Google Solar** | `google-solar.ts` | **Active** - satellite roof measurement via Google Solar API |
+| **Google Solar** | `google-solar.ts` | **Active** — satellite roof measurement |
+| **Stripe** | `stripe.ts` | **Active** — customer management, payment intents |
 | Documenso | `documenso.ts` | E-signatures |
 | Docuseal | `docuseal.ts` | E-signatures (alt) |
 | GHL Messaging | `ghl-messaging.ts` | GoHighLevel SMS/email |
@@ -198,12 +210,14 @@ src/components/
 └── ui/                 # Primitives (button, card, dialog, etc.)
 ```
 
-## Key Files Added This Session
+## Recent Additions
 
-| File | Status | Description |
-|------|--------|-------------|
-| `src/lib/integrations/adapters/google-solar.ts` | NEW | Google Solar API adapter for satellite roof measurement |
-| `src/lib/pricing/estimate-sqft.ts` | REPLACED | Two-tier estimation: satellite data when available, address heuristic fallback |
-| `src/app/api/quotes/[id]/satellite-measurement/route.ts` | NEW | API route triggering satellite measurement for a quote |
-| `src/hooks/useSatelliteMeasurement.ts` | NEW | React hook wrapping satellite measurement API |
-| `src/db/schema/measurements.ts` | MODIFIED | Added `confidence`, `imageryQuality`, `imageryDate` columns |
+| Feature | Key Files |
+|---------|-----------|
+| Portal payments rebuild | `app/portal/payments/page.tsx`, `components/features/portal/Payment*.tsx` |
+| PDF receipts | `lib/pdf/receipt-template.tsx`, `app/api/portal/receipts/[paymentId]/route.ts` |
+| Stripe customer mgmt | `lib/integrations/adapters/stripe.ts` |
+| Satellite measurement | `lib/integrations/adapters/google-solar.ts`, `hooks/useSatelliteMeasurement.ts` |
+| Hover-hover variant | `tailwind.config.ts` — `@media (hover: hover)` guard |
+
+See `src/INDEX.md` for complete feature → file mapping.
