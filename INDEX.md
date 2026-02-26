@@ -46,6 +46,8 @@
 
 Portal is phase-aware with 5 lifecycle phases. `/portal/dashboard` has been removed (merged into `/portal`).
 
+- **Embedded QuoteWizard** — 5-step in-portal quote wizard (`src/components/features/portal/QuoteWizard/`): Address → Confirm → Package → Schedule → Contact. Replaces redirect to `/quote/new` for Phase 1 users.
+
 ### Ops Dashboard (internal)
 | Route | File | Purpose |
 |-------|------|---------|

@@ -34,6 +34,14 @@ Phase-aware customer portal with 5 lifecycle phases. `/portal/dashboard` removed
 | Payment options | `components/features/portal/PaymentOptionCard.tsx` |
 | Payment history | `components/features/portal/PaymentHistoryTable.tsx` |
 
+### QuoteWizard
+- `src/components/features/portal/QuoteWizard/QuoteWizard.tsx` — Wizard orchestrator (step state, completion)
+- `src/components/features/portal/QuoteWizard/steps/AddressStep.tsx` — Address entry via AddressAutocomplete
+- `src/components/features/portal/QuoteWizard/steps/ConfirmStep.tsx` — Satellite map property confirmation
+- `src/components/features/portal/QuoteWizard/steps/PackageStep.tsx` — Good/Better/Best tier selection
+- `src/components/features/portal/QuoteWizard/steps/ScheduleStep.tsx` — Date + time slot picker
+- `src/components/features/portal/QuoteWizard/steps/ContactStep.tsx` — Name/phone/email + SMS consent
+
 ### Pages
 | Feature | Key Files |
 |---------|-----------|
