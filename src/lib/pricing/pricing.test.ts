@@ -30,14 +30,14 @@ describe('Pricing Engine', () => {
       const result = estimateRoofSqft('NC');
       expect(result.sqftEstimate).toBe(2400);
       expect(result.sqftMin).toBe(1500);
-      expect(result.sqftMax).toBe(3800);
+      expect(result.sqftMax).toBe(4000);
     });
 
     it('should return Arizona regional average for AZ', () => {
       const result = estimateRoofSqft('AZ');
       expect(result.sqftEstimate).toBe(2500);
-      expect(result.sqftMin).toBe(1600);
-      expect(result.sqftMax).toBe(4000);
+      expect(result.sqftMin).toBe(1500);
+      expect(result.sqftMax).toBe(4200);
     });
 
     it('should handle lowercase state codes', () => {
@@ -49,7 +49,7 @@ describe('Pricing Engine', () => {
       const result = estimateRoofSqft('XX');
       expect(result.sqftEstimate).toBe(2500);
       expect(result.sqftMin).toBe(1500);
-      expect(result.sqftMax).toBe(4000);
+      expect(result.sqftMax).toBe(4200);
     });
   });
 
