@@ -1,6 +1,6 @@
 'use client';
 
-import { useUser } from '@clerk/nextjs';
+import { UserButton } from '@clerk/nextjs';
 import { MessageCircle } from 'lucide-react';
 import styles from './PortalHeader.module.css';
 
@@ -8,16 +8,7 @@ interface PortalHeaderProps {
   title: string;
 }
 
-function getInitials(firstName?: string | null, lastName?: string | null): string {
-  const first = firstName?.charAt(0)?.toUpperCase() ?? '';
-  const last = lastName?.charAt(0)?.toUpperCase() ?? '';
-  return first + last || '?';
-}
-
 export function PortalHeader({ title }: PortalHeaderProps) {
-  const { user } = useUser();
-  const initials = getInitials(user?.firstName, user?.lastName);
-
   return (
     <header className={styles.header}>
       <h1 className={styles.title}>{title}</h1>
@@ -28,9 +19,13 @@ export function PortalHeader({ title }: PortalHeaderProps) {
           <span>Help</span>
         </button>
 
-        <div className={styles.avatar} aria-label={`User avatar: ${initials}`}>
-          {initials}
-        </div>
+        <UserButton
+          appearance={{
+            elements: {
+              avatarBox: { width: 32, height: 32 },
+            },
+          }}
+        />
       </div>
     </header>
   );

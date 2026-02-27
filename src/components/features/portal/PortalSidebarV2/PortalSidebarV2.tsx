@@ -18,7 +18,7 @@ export function PortalSidebarV2() {
   return (
     <aside className={styles.sidebar} aria-label="Portal navigation">
       {/* Logo */}
-      <Link href="/portal" className={styles.logo} aria-label="Results Roofing Portal Home">
+      <Link href="/" className={styles.logo} aria-label="Results Roofing Home">
         RR
       </Link>
 
