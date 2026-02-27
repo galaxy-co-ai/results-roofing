@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { db, schema, eq, and } from '@/db/index';
 import { logger } from '@/lib/utils';
-import { resendAdapter } from '@/lib/integrations/adapters';
+import { resendAdapter, ghlMessagingAdapter } from '@/lib/integrations/adapters';
 
 // Request validation schema
 const depositAuthSchema = z.object({
@@ -171,6 +171,78 @@ export async function POST(
     } catch (docError) {
       logger.error('Failed to update document status', docError);
       // Non-critical, continue
+    }
+
+    // Generate deposit invoice if order already exists
+    try {
+      const existingOrder = await db.query.orders.findFirst({
+        where: eq(schema.orders.quoteId, quoteId),
+      });
+
+      if (existingOrder) {
+        const { createInvoice, updateInvoiceStatus } = await import('@/lib/invoicing');
+
+        const depositAmount = parseFloat(existingOrder.depositAmount);
+        const invoice = await createInvoice({
+          orderId: existingOrder.id,
+          type: 'deposit',
+          amount: depositAmount,
+          dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+          notes: `Deposit for ${existingOrder.selectedTier} tier roof replacement`,
+        });
+
+        // Mark as sent (we're about to email it)
+        await updateInvoiceStatus(invoice.id, 'sent', { sentAt: new Date() });
+
+        // Send invoice email
+        const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://app.resultsroofing.com'}/portal/payments`;
+        const formattedAmount = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        }).format(depositAmount);
+
+        await resendAdapter.sendInvoiceReady(email, {
+          customerName: fullName || email,
+          invoiceNumber: invoice.invoiceNumber,
+          amountFormatted: formattedAmount,
+          description: `Your deposit of ${formattedAmount} is due to secure your installation date.`,
+          portalUrl,
+        });
+
+        // Sync to GHL pipeline
+        const crmResult = await ghlMessagingAdapter.syncCustomerToCRM({
+          email,
+          firstName: firstName || undefined,
+          lastName: lastName || undefined,
+          tags: ['contract-signed', 'results-roofing'],
+          source: 'results-roofing-contract',
+        });
+
+        if (crmResult.success && crmResult.contactId) {
+          const ghlResult = await ghlMessagingAdapter.syncInvoiceToGHL({
+            contactId: crmResult.contactId,
+            invoiceNumber: invoice.invoiceNumber,
+            amount: depositAmount,
+            type: 'deposit',
+            status: 'sent',
+          });
+
+          if (ghlResult.success) {
+            await db.update(schema.invoices).set({
+              ghlContactId: crmResult.contactId,
+              ghlOpportunityId: ghlResult.opportunityId,
+              updatedAt: new Date(),
+            }).where(eq(schema.invoices.id, invoice.id));
+          }
+        }
+
+        logger.info(`[Deposit Auth] Invoice ${invoice.invoiceNumber} generated and sent for quote ${quoteId}`);
+      } else {
+        logger.info(`[Deposit Auth] No order exists yet for quote ${quoteId} — invoice will be created on payment`);
+      }
+    } catch (invoiceError) {
+      // Non-critical — don't fail contract signing if invoicing fails
+      logger.error('[Deposit Auth] Invoice generation failed', invoiceError);
     }
 
     logger.info(`Deposit authorization saved for quote ${quoteId}`, {
