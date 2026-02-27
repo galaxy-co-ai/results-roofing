@@ -10,6 +10,7 @@ export * from './measurements';
 export * from './contracts';
 export * from './orders';
 export * from './payments';
+export * from './invoices';
 export * from './appointments';
 export * from './sms-consents';
 export * from './quote-shares';

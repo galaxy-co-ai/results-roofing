@@ -12,6 +12,7 @@ import { contracts } from './contracts';
 import { orders } from './orders';
 import { payments } from './payments';
 import { appointments } from './appointments';
+import { invoices } from './invoices';
 import { tickets, ticketMessages } from './tickets';
 
 /**
@@ -79,6 +80,7 @@ export const ordersRelations = relations(orders, ({ one, many }) => ({
     references: [contracts.id],
   }),
   payments: many(payments),
+  invoices: many(invoices),
   appointments: many(appointments),
 }));
 
@@ -89,6 +91,21 @@ export const paymentsRelations = relations(payments, ({ one }) => ({
   order: one(orders, {
     fields: [payments.orderId],
     references: [orders.id],
+  }),
+  invoice: one(invoices),
+}));
+
+/**
+ * Invoice relations
+ */
+export const invoicesRelations = relations(invoices, ({ one }) => ({
+  order: one(orders, {
+    fields: [invoices.orderId],
+    references: [orders.id],
+  }),
+  payment: one(payments, {
+    fields: [invoices.paymentId],
+    references: [payments.id],
   }),
 }));
 
