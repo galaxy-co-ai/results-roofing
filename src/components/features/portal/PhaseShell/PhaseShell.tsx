@@ -19,7 +19,7 @@ const PHASE_CONFIG = {
   },
 };
 
-export function PhaseShell({ phase, page }: PhaseShellProps) {
+export function PhaseShell({ phase, page: _page }: PhaseShellProps) {
   const config = PHASE_CONFIG[phase];
   const Icon = config.icon;
 

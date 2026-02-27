@@ -20,7 +20,8 @@ interface PackageStepProps {
 
 export function PackageStep({ quoteId, estimate, onNext }: PackageStepProps) {
   const [selectedTier, setSelectedTier] = useState<PackageTier | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const { data: pricingTiers, isLoading: tiersLoading } = usePricingTiers();

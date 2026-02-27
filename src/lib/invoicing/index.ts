@@ -1,6 +1,5 @@
 import { db, schema, eq, desc } from '@/db/index';
 import { logger } from '@/lib/utils';
-import type { NewInvoice } from '@/db/schema/invoices';
 
 /**
  * Generate next sequential invoice number: RR-INV-000001
