@@ -11,6 +11,7 @@ export { PortalSidebar } from './PortalSidebar';
 export { PaymentProgressCard, PaymentProgressCardSkeleton } from './PaymentProgressCard';
 export { PaymentOptionCard, PaymentOptionCardSkeleton } from './PaymentOptionCard';
 export { PaymentHistoryTable, PaymentHistoryTableSkeleton } from './PaymentHistoryTable';
+export { InvoiceCard } from './InvoiceCard';
 
 // Redesign components
 export { PortalSidebarV2 } from './PortalSidebarV2/PortalSidebarV2';
