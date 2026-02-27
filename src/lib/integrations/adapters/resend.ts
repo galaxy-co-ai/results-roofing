@@ -36,7 +36,8 @@ export type EmailTemplate =
   | 'booking_confirmation'
   | 'booking_reminder'
   | 'project_update'
-  | 'feedback_notification';
+  | 'feedback_notification'
+  | 'invoice_ready';
 
 /**
  * Email response
@@ -286,6 +287,35 @@ function renderTemplate(template: EmailTemplate, data: Record<string, unknown>):
       </body>
       </html>
     `,
+
+    invoice_ready: `
+      <!DOCTYPE html>
+      <html>
+      <head><style>${baseStyles}</style></head>
+      <body>
+        <div class="header">
+          <h1>Invoice from Results Roofing</h1>
+        </div>
+        <div class="content">
+          <p>Hi ${data.customerName},</p>
+          <div class="highlight" style="text-align: center;">
+            <p style="margin: 0; color: #64748b; font-size: 14px;">Amount Due</p>
+            <p class="amount">${data.amountFormatted}</p>
+            <p style="margin: 4px 0 0; color: #64748b; font-size: 14px;">Invoice #${data.invoiceNumber}</p>
+          </div>
+          <p>${data.description || 'Your invoice is ready for payment.'}</p>
+          <div style="text-align: center;">
+            <a href="${data.portalUrl}" class="button">View & Pay</a>
+          </div>
+          <p style="color: #64748b; font-size: 14px;">You can also download the PDF from your customer portal.</p>
+        </div>
+        <div class="footer">
+          <p>Results Roofing</p>
+          <p>Questions? Reply to this email or call us.</p>
+        </div>
+      </body>
+      </html>
+    `,
   };
 
   return templates[template] || templates.project_update;
@@ -448,6 +478,27 @@ export const resendAdapter = {
       to: email,
       subject: 'Project Update - Results Roofing',
       template: 'project_update',
+      data,
+    });
+  },
+
+  /**
+   * Send invoice ready notification
+   */
+  async sendInvoiceReady(
+    to: string,
+    data: {
+      customerName: string;
+      invoiceNumber: string;
+      amountFormatted: string;
+      description?: string;
+      portalUrl: string;
+    }
+  ): Promise<EmailResponse> {
+    return this.send({
+      to,
+      subject: `Invoice ${data.invoiceNumber} from Results Roofing`,
+      template: 'invoice_ready',
       data,
     });
   },
