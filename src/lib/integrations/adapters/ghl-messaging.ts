@@ -260,6 +260,104 @@ export const ghlMessagingAdapter = {
   },
 
   /**
+   * Send invoice ready SMS
+   */
+  async sendInvoiceReadySms(
+    phone: string,
+    invoiceNumber: string,
+    amount: string
+  ): Promise<GHLMessageResponse> {
+    return this.sendSmsByPhone(
+      phone,
+      `Invoice ${invoiceNumber} for ${amount} is ready. View and pay in your portal: ${process.env.NEXT_PUBLIC_APP_URL || 'https://app.resultsroofing.com'}/portal/payments - Results Roofing`
+    );
+  },
+
+  /**
+   * Sync an invoice to GHL as a pipeline opportunity
+   */
+  async syncInvoiceToGHL(params: {
+    contactId: string;
+    invoiceNumber: string;
+    amount: number;
+    type: 'deposit' | 'balance' | 'full';
+    status: 'sent' | 'paid';
+    existingOpportunityId?: string;
+  }): Promise<{ opportunityId: string; success: boolean; error?: string }> {
+    if (!isConfigured()) {
+      logger.warn('[GHL Messaging] GHL not configured - invoice sync skipped');
+      return { opportunityId: '', success: false, error: 'GHL not configured' };
+    }
+
+    try {
+      const { createOpportunity, updateOpportunity, listPipelines } = await import('@/lib/ghl/api/pipelines');
+
+      // Get the first pipeline (Results Roofing sales pipeline)
+      const { pipelines } = await listPipelines();
+      if (!pipelines.length) {
+        logger.warn('[GHL Messaging] No pipelines found in GHL');
+        return { opportunityId: '', success: false, error: 'No pipelines found' };
+      }
+
+      const pipeline = pipelines[0];
+      const stages = pipeline.stages || [];
+
+      // Map invoice status to stage name
+      const targetStageName = params.status === 'paid'
+        ? (params.type === 'balance' || params.type === 'full' ? 'Paid in Full' : 'Deposit Paid')
+        : 'Invoice Sent';
+
+      // Find matching stage or use last stage as fallback
+      const targetStage = stages.find(s =>
+        s.name.toLowerCase().includes(targetStageName.toLowerCase())
+      ) || stages[stages.length - 1];
+
+      if (!targetStage) {
+        logger.warn('[GHL Messaging] No matching pipeline stage found', { targetStageName });
+        return { opportunityId: '', success: false, error: 'No matching stage' };
+      }
+
+      if (params.existingOpportunityId) {
+        // Update existing opportunity
+        const opp = await updateOpportunity({
+          id: params.existingOpportunityId,
+          pipelineStageId: targetStage.id,
+          monetaryValue: params.amount,
+          status: params.status === 'paid' && params.type !== 'deposit' ? 'won' : 'open',
+        });
+
+        logger.info('[GHL Messaging] Invoice opportunity updated', {
+          opportunityId: opp.id,
+          stage: targetStage.name,
+        });
+
+        return { opportunityId: opp.id, success: true };
+      } else {
+        // Create new opportunity
+        const opp = await createOpportunity({
+          name: `${params.invoiceNumber} - Roof Replacement`,
+          pipelineId: pipeline.id,
+          pipelineStageId: targetStage.id,
+          contactId: params.contactId,
+          monetaryValue: params.amount,
+          status: 'open',
+        });
+
+        logger.info('[GHL Messaging] Invoice opportunity created', {
+          opportunityId: opp.id,
+          stage: targetStage.name,
+        });
+
+        return { opportunityId: opp.id, success: true };
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('[GHL Messaging] Invoice sync failed', { error: errorMessage });
+      return { opportunityId: '', success: false, error: errorMessage };
+    }
+  },
+
+  /**
    * Sync a customer to GHL CRM
    */
   async syncCustomerToCRM(params: {
