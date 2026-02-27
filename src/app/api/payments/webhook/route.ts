@@ -4,6 +4,7 @@ import Stripe from 'stripe';
 import { db, schema, eq } from '@/db/index';
 import { logger } from '@/lib/utils';
 import { resendAdapter, ghlMessagingAdapter } from '@/lib/integrations/adapters';
+import { createInvoice, updateInvoiceStatus, linkPaymentToInvoice, getInvoicesByOrder } from '@/lib/invoicing';
 
 // Check for Stripe configuration
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
@@ -276,7 +277,7 @@ async function handlePaymentSuccess(stripe: Stripe, paymentIntent: Stripe.Paymen
     : 'deposit';
 
   // Create the payment record
-  await db.insert(schema.payments).values({
+  const [payment] = await db.insert(schema.payments).values({
     orderId: order.id,
     type: paymentType,
     amount: depositAmount.toString(),
@@ -288,13 +289,124 @@ async function handlePaymentSuccess(stripe: Stripe, paymentIntent: Stripe.Paymen
     cardLast4,
     cardBrand,
     processedAt: new Date(),
-  });
+  }).returning();
 
   logger.info(`[WEBHOOK] Payment record created`, {
     orderId: order.id,
+    paymentId: payment.id,
     confirmationNumber: order.confirmationNumber,
     amount: depositAmount,
   });
+
+  // Invoice handling
+  try {
+    const orderInvoices = await getInvoicesByOrder(order.id);
+
+    if (paymentType === 'deposit') {
+      // Find existing deposit invoice (created on contract sign) and mark paid
+      const depositInvoice = orderInvoices.find(inv => inv.type === 'deposit' && inv.status !== 'paid');
+      if (depositInvoice) {
+        await linkPaymentToInvoice(depositInvoice.id, payment.id);
+        logger.info('[WEBHOOK] Deposit invoice marked paid', { invoiceId: depositInvoice.id });
+
+        // Update GHL opportunity if tracked
+        if (depositInvoice.ghlContactId && depositInvoice.ghlOpportunityId) {
+          await ghlMessagingAdapter.syncInvoiceToGHL({
+            contactId: depositInvoice.ghlContactId,
+            invoiceNumber: depositInvoice.invoiceNumber,
+            amount: parseFloat(depositInvoice.amount),
+            type: 'deposit',
+            status: 'paid',
+            existingOpportunityId: depositInvoice.ghlOpportunityId,
+          });
+        }
+      }
+
+      // If balance is due, auto-generate balance invoice
+      const balanceDueAmount = parseFloat(order.balanceDue);
+      if (balanceDueAmount > 0) {
+        const balanceInvoice = await createInvoice({
+          orderId: order.id,
+          type: 'balance',
+          amount: balanceDueAmount,
+          dueDate: order.scheduledStartDate
+            ? new Date(new Date(order.scheduledStartDate).getTime() - 3 * 24 * 60 * 60 * 1000)
+            : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+          notes: `Remaining balance for ${order.selectedTier} tier roof replacement`,
+        });
+
+        await updateInvoiceStatus(balanceInvoice.id, 'sent', { sentAt: new Date() });
+
+        // Send balance invoice email
+        if (order.customerEmail) {
+          const formattedBalance = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          }).format(balanceDueAmount);
+
+          const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://app.resultsroofing.com'}/portal/payments`;
+
+          await resendAdapter.sendInvoiceReady(order.customerEmail, {
+            customerName: order.customerName || 'Valued Customer',
+            invoiceNumber: balanceInvoice.invoiceNumber,
+            amountFormatted: formattedBalance,
+            description: `Your deposit has been received. The remaining balance of ${formattedBalance} is due before your installation date.`,
+            portalUrl,
+          });
+        }
+
+        // Sync balance invoice to GHL
+        const depositInvoiceForGHL = orderInvoices.find(inv => inv.ghlContactId);
+        if (depositInvoiceForGHL?.ghlContactId) {
+          const ghlResult = await ghlMessagingAdapter.syncInvoiceToGHL({
+            contactId: depositInvoiceForGHL.ghlContactId,
+            invoiceNumber: balanceInvoice.invoiceNumber,
+            amount: balanceDueAmount,
+            type: 'balance',
+            status: 'sent',
+          });
+
+          if (ghlResult.success) {
+            await db.update(schema.invoices).set({
+              ghlContactId: depositInvoiceForGHL.ghlContactId,
+              ghlOpportunityId: ghlResult.opportunityId,
+              updatedAt: new Date(),
+            }).where(eq(schema.invoices.id, balanceInvoice.id));
+          }
+        }
+
+        logger.info('[WEBHOOK] Balance invoice generated and sent', {
+          invoiceId: balanceInvoice.id,
+          invoiceNumber: balanceInvoice.invoiceNumber,
+          amount: balanceDueAmount,
+        });
+      }
+    } else {
+      // Balance or full payment — find and mark balance invoice paid
+      const balanceInvoice = orderInvoices.find(inv =>
+        (inv.type === 'balance' || inv.type === 'full') && inv.status !== 'paid'
+      );
+      if (balanceInvoice) {
+        await linkPaymentToInvoice(balanceInvoice.id, payment.id);
+        logger.info('[WEBHOOK] Balance invoice marked paid', { invoiceId: balanceInvoice.id });
+
+        // Update GHL opportunity to "won"
+        if (balanceInvoice.ghlContactId && balanceInvoice.ghlOpportunityId) {
+          await ghlMessagingAdapter.syncInvoiceToGHL({
+            contactId: balanceInvoice.ghlContactId,
+            invoiceNumber: balanceInvoice.invoiceNumber,
+            amount: parseFloat(balanceInvoice.amount),
+            type: 'balance',
+            status: 'paid',
+            existingOpportunityId: balanceInvoice.ghlOpportunityId,
+          });
+        }
+      }
+    }
+  } catch (invoiceError) {
+    // Non-critical — don't fail the webhook if invoicing fails
+    logger.error('[WEBHOOK] Invoice handling failed', invoiceError);
+  }
 
   // Update quote status to 'converted'
   await db
