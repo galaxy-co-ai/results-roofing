@@ -133,6 +133,11 @@ function HouseBody() {
     return new THREE.ShapeGeometry(shape);
   }, []);
 
+  // Dispose ShapeGeometry on unmount (imperative geo isn't auto-managed by R3F)
+  useEffect(() => {
+    return () => gableGeo.dispose();
+  }, [gableGeo]);
+
   useFrame(() => {
     if (!groupRef.current) return;
     const appear = easeOutCubic(remap(scroll.progress, 0.02, ACT1_END));
@@ -157,7 +162,7 @@ function HouseBody() {
           key={side}
           geometry={gableGeo}
           position={[0, WALL_H, side * (HOUSE_D / 2)]}
-          rotation={[side === 1 ? 0 : Math.PI, side === 1 ? 0 : 0, 0]}
+          rotation={[side === 1 ? 0 : Math.PI, 0, 0]}
         >
           <meshStandardMaterial color="#D4CBC0" roughness={0.92} transparent opacity={0} />
         </mesh>
