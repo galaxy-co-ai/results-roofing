@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment, ContactShadows } from '@react-three/drei';
 import { gsap } from 'gsap';
@@ -9,392 +9,580 @@ import * as THREE from 'three';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ─── Types ────────────────────────────────────────────────────── */
+/* ================================================================
+   SCROLL STATE — shared mutable ref between DOM and R3F
+   ================================================================ */
 
-interface LayerData {
-  name: string;
-  color: string;
-  description: string;
-  detail: string;
-  yOffset: number;
-  thickness: number;
-}
+const scroll = { progress: 0 };
 
-/* ─── Layer Config ─────────────────────────────────────────────── */
+/* ================================================================
+   CONSTANTS
+   ================================================================ */
 
-const LAYERS: LayerData[] = [
-  {
-    name: 'Roof Decking',
-    color: '#C4A882',
-    description: 'The structural foundation',
-    detail: '½" plywood sheathing nailed to the rafters. This is what everything else sits on.',
-    yOffset: 0,
-    thickness: 0.06,
-  },
-  {
-    name: 'Ice & Water Shield',
-    color: '#2D3748',
-    description: 'The first line of defense',
-    detail: 'Self-adhering membrane along eaves, valleys, and penetrations. Prevents ice dam leaks.',
-    yOffset: 0.07,
-    thickness: 0.02,
-  },
-  {
-    name: 'Synthetic Underlayment',
-    color: '#718096',
-    description: 'The moisture barrier',
-    detail: 'Covers the entire deck. If a shingle fails, this layer keeps water out.',
-    yOffset: 0.1,
-    thickness: 0.02,
-  },
-  {
-    name: 'Starter Strip',
-    color: '#1A202C',
-    description: 'The seal at the edge',
-    detail: 'Adhesive-backed strip along the eaves. Seals the first row of shingles against wind uplift.',
-    yOffset: 0.13,
-    thickness: 0.02,
-  },
-  {
-    name: 'Shingles',
-    color: '#4A5568',
-    description: 'The weather shield',
-    detail: 'Architectural laminated shingles. 130mph wind rating, 25-year algae resistance.',
-    yOffset: 0.16,
-    thickness: 0.04,
-  },
-  {
-    name: 'Ridge Vent & Cap',
-    color: '#2B6CB0',
-    description: 'The finishing touch',
-    detail: 'Continuous ridge ventilation with matching cap shingles. Balances attic airflow.',
-    yOffset: 0.21,
-    thickness: 0.03,
-  },
+const DARK = '#0B0E13';
+const WARM = '#1A1610';
+const BLUE = '#2563EB';
+
+// Act boundaries (0-1 scroll range)
+const ACT1_END = 0.15; // House emerges
+const ACT2_START = 0.15;
+const ACT2_END = 0.82; // Build complete
+const ACT3_START = 0.82;
+
+// Layer data
+const LAYERS = [
+  { name: 'Roof Decking', color: '#C4A882', y: 0, thickness: 0.06, text: 'Plywood sheathing. The structural base everything sits on.' },
+  { name: 'Ice & Water Shield', color: '#2D3748', y: 0.07, thickness: 0.02, text: 'Self-adhering membrane at eaves and valleys. Stops ice dam leaks.' },
+  { name: 'Underlayment', color: '#718096', y: 0.10, thickness: 0.02, text: 'Synthetic barrier covering the full deck. Your backup if a shingle fails.' },
+  { name: 'Starter Strip', color: '#1A202C', y: 0.13, thickness: 0.02, text: 'Adhesive-backed edge seal. Locks the first row against wind uplift.' },
+  { name: 'Shingles', color: '#4A5568', y: 0.16, thickness: 0.04, text: 'Architectural laminated shingles. 130 mph wind rating.' },
+  { name: 'Ridge Vent & Cap', color: '#5A6577', y: 0.21, thickness: 0.03, text: 'Continuous ridge ventilation. Balances attic airflow year-round.' },
 ];
 
-/* ─── Scroll State (shared between DOM + 3D) ──────────────────── */
+/* ================================================================
+   EASING
+   ================================================================ */
 
-const scrollState = {
-  progress: 0,
-  activeLayer: -1,
-};
+function easeOutCubic(t: number) { return 1 - Math.pow(1 - t, 3); }
+function easeInOutCubic(t: number) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+function clamp01(t: number) { return Math.max(0, Math.min(1, t)); }
+function remap(value: number, inMin: number, inMax: number) { return clamp01((value - inMin) / (inMax - inMin)); }
 
-/* ─── 3D Roof Layer Mesh ───────────────────────────────────────── */
+/* ================================================================
+   3D: ROOF LAYER
+   ================================================================ */
 
-function RoofLayer({
-  layer,
-  index,
-}: {
-  layer: LayerData;
-  index: number;
+function RoofLayer({ index, color, y, thickness, totalLayers }: {
+  index: number; color: string; y: number; thickness: number; totalLayers: number;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<THREE.MeshStandardMaterial>(null);
+  const matRef = useRef<THREE.MeshStandardMaterial>(null);
 
-  // Roof panel dimensions (pitched roof shape using a simple box for now)
-  const width = 4;
-  const depth = 3;
+  // Each layer occupies a slice of Act 2
+  const layerDuration = (ACT2_END - ACT2_START) / totalLayers;
+  const layerStart = ACT2_START + index * layerDuration;
+  const layerEnd = layerStart + layerDuration;
 
   useFrame(() => {
-    if (!meshRef.current || !materialRef.current) return;
+    if (!meshRef.current || !matRef.current) return;
+    const t = easeOutCubic(remap(scroll.progress, layerStart, layerEnd));
 
-    const layerProgress = index / LAYERS.length;
-    const layerEnd = (index + 1) / LAYERS.length;
-    const current = scrollState.progress;
-
-    // Layer appears when scroll reaches its threshold
-    const appear = Math.max(0, Math.min(1, (current - layerProgress) / (layerEnd - layerProgress)));
-
-    // Animate Y position: starts 2 units above, drops to final position
-    const targetY = layer.yOffset;
-    const startY = targetY + 2;
-    meshRef.current.position.y = THREE.MathUtils.lerp(startY, targetY, easeOutCubic(appear));
+    // Drop from above
+    meshRef.current.position.y = THREE.MathUtils.lerp(y + 1.8, y, t);
 
     // Opacity
-    materialRef.current.opacity = appear;
-    materialRef.current.transparent = true;
+    matRef.current.opacity = t;
   });
 
   return (
-    <mesh ref={meshRef} position={[0, layer.yOffset + 2, 0]}>
-      <boxGeometry args={[width, layer.thickness, depth]} />
+    <mesh ref={meshRef} position={[0, y + 1.8, 0]}>
+      <boxGeometry args={[4, thickness, 3]} />
       <meshStandardMaterial
-        ref={materialRef}
-        color={layer.color}
-        opacity={0}
+        ref={matRef}
+        color={color}
         transparent
-        roughness={0.8}
-        metalness={0.1}
+        opacity={0}
+        roughness={0.85}
+        metalness={0.05}
       />
     </mesh>
   );
 }
 
-/* ─── House Body (static) ──────────────────────────────────────── */
+/* ================================================================
+   3D: HOUSE BODY
+   ================================================================ */
 
 function HouseBody() {
+  const groupRef = useRef<THREE.Group>(null);
+
+  useFrame(() => {
+    if (!groupRef.current) return;
+    // Fade in during Act 1
+    const appear = easeOutCubic(remap(scroll.progress, 0.02, ACT1_END));
+    groupRef.current.children.forEach((child) => {
+      if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
+        child.material.opacity = appear;
+      }
+    });
+  });
+
   return (
-    <group position={[0, -1.2, 0]}>
-      {/* Main walls */}
+    <group ref={groupRef} position={[0, -1.2, 0]}>
       <mesh position={[0, 0.6, 0]}>
         <boxGeometry args={[3.8, 1.2, 2.8]} />
-        <meshStandardMaterial color="#E8E0D4" roughness={0.9} />
+        <meshStandardMaterial color="#D4CBC0" roughness={0.92} transparent opacity={0} />
       </mesh>
-
-      {/* Front door */}
       <mesh position={[0, 0.35, 1.41]}>
         <boxGeometry args={[0.5, 0.7, 0.02]} />
-        <meshStandardMaterial color="#5D4E37" roughness={0.7} />
+        <meshStandardMaterial color="#4A3C2E" roughness={0.7} transparent opacity={0} />
       </mesh>
-
-      {/* Windows */}
       {[-1, 1].map((x) => (
         <mesh key={x} position={[x, 0.7, 1.41]}>
           <boxGeometry args={[0.5, 0.4, 0.02]} />
-          <meshStandardMaterial color="#A7C7E7" roughness={0.3} metalness={0.1} />
+          <meshStandardMaterial color="#8FB4D9" roughness={0.3} metalness={0.1} transparent opacity={0} />
         </mesh>
       ))}
-
-      {/* Foundation */}
       <mesh position={[0, -0.05, 0]}>
         <boxGeometry args={[4.2, 0.1, 3.2]} />
-        <meshStandardMaterial color="#9E9E9E" roughness={1} />
+        <meshStandardMaterial color="#808080" roughness={1} transparent opacity={0} />
       </mesh>
     </group>
   );
 }
 
-/* ─── Rafters (visible before decking) ─────────────────────────── */
+/* ================================================================
+   3D: RAFTERS
+   ================================================================ */
 
 function Rafters() {
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame(() => {
     if (!groupRef.current) return;
-    // Fade rafters as first layer appears
-    const fadeOut = Math.max(0, 1 - scrollState.progress * LAYERS.length * 0.8);
+    // Visible during Act 1, fades as first layer drops
+    const appear = easeOutCubic(remap(scroll.progress, 0.04, ACT1_END));
+    const fade = 1 - easeOutCubic(remap(scroll.progress, ACT2_START, ACT2_START + 0.08));
+    const opacity = appear * fade;
+
     groupRef.current.children.forEach((child) => {
       if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
-        child.material.opacity = fadeOut;
-        child.material.transparent = true;
+        child.material.opacity = opacity;
       }
     });
   });
 
-  const rafterPositions = [-1.5, -1, -0.5, 0, 0.5, 1, 1.5];
-
   return (
     <group ref={groupRef} position={[0, -0.05, 0]}>
-      {rafterPositions.map((x) => (
+      {[-1.5, -1, -0.5, 0, 0.5, 1, 1.5].map((x) => (
         <mesh key={x} position={[x, 0, 0]}>
           <boxGeometry args={[0.08, 0.12, 3]} />
-          <meshStandardMaterial color="#B8956A" roughness={0.9} transparent />
+          <meshStandardMaterial color="#9E7E5A" roughness={0.9} transparent opacity={0} />
         </mesh>
       ))}
-      {/* Ridge beam */}
       <mesh position={[0, 0.06, 0]}>
         <boxGeometry args={[4, 0.08, 0.1]} />
-        <meshStandardMaterial color="#A07850" roughness={0.9} transparent />
+        <meshStandardMaterial color="#8A6B48" roughness={0.9} transparent opacity={0} />
       </mesh>
     </group>
   );
 }
 
-/* ─── Camera Controller ────────────────────────────────────────── */
+/* ================================================================
+   3D: RAIN PARTICLES (Act 3)
+   ================================================================ */
 
-function CameraController() {
+function Rain({ count = 1200 }: { count?: number }) {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+
+  // Random positions and speeds
+  const particles = useMemo(() => {
+    return Array.from({ length: count }, () => ({
+      x: (Math.random() - 0.5) * 12,
+      z: (Math.random() - 0.5) * 8,
+      speed: 0.04 + Math.random() * 0.06,
+      offset: Math.random() * 6,
+    }));
+  }, [count]);
+
+  useFrame(({ clock }) => {
+    if (!meshRef.current) return;
+
+    const rainOpacity = easeOutCubic(remap(scroll.progress, ACT3_START + 0.04, 1.0));
+    if (rainOpacity < 0.01) {
+      meshRef.current.visible = false;
+      return;
+    }
+    meshRef.current.visible = true;
+
+    const time = clock.getElapsedTime();
+
+    for (let i = 0; i < count; i++) {
+      const p = particles[i];
+      const y = ((p.offset + time * p.speed * 30) % 6) - 1;
+
+      dummy.position.set(p.x, 4 - y, p.z);
+      dummy.scale.set(0.02, 0.25 + p.speed * 2, 0.02);
+      dummy.updateMatrix();
+      meshRef.current.setMatrixAt(i, dummy.matrix);
+    }
+    meshRef.current.instanceMatrix.needsUpdate = true;
+
+    // Fade material
+    const mat = meshRef.current.material as THREE.MeshBasicMaterial;
+    mat.opacity = rainOpacity * 0.8;
+  });
+
+  return (
+    <instancedMesh ref={meshRef} args={[undefined, undefined, count]} visible={false}>
+      <cylinderGeometry args={[0.012, 0.008, 1, 4]} />
+      <meshBasicMaterial color="#A8C4E0" transparent opacity={0} />
+    </instancedMesh>
+  );
+}
+
+/* ================================================================
+   3D: CAMERA + LIGHTING
+   ================================================================ */
+
+function CinematicCamera() {
   const { camera } = useThree();
 
   useFrame(() => {
-    const p = scrollState.progress;
+    const p = scroll.progress;
 
-    // Orbit camera gently as user scrolls
-    const angle = -Math.PI / 6 + p * Math.PI * 0.35;
-    const radius = 6;
-    const height = 2.5 + p * 1.5;
+    // Act 1: Start far + high, push in as house reveals
+    // Act 2: Slow orbit during build
+    // Act 3: Pull back to hero shot
+
+    let radius: number, height: number, angle: number, lookY: number;
+
+    if (p < ACT1_END) {
+      // Zooming in from above
+      const t = easeInOutCubic(remap(p, 0, ACT1_END));
+      radius = THREE.MathUtils.lerp(10, 6, t);
+      height = THREE.MathUtils.lerp(5, 2.8, t);
+      angle = THREE.MathUtils.lerp(-0.3, -0.5, t);
+      lookY = THREE.MathUtils.lerp(0.5, 0, t);
+    } else if (p < ACT2_END) {
+      // Slow orbit during build
+      const t = easeInOutCubic(remap(p, ACT2_START, ACT2_END));
+      radius = 6;
+      height = THREE.MathUtils.lerp(2.8, 3.2, t);
+      angle = THREE.MathUtils.lerp(-0.5, -0.5 + Math.PI * 0.4, t);
+      lookY = THREE.MathUtils.lerp(0, 0.1, t);
+    } else {
+      // Pull back for hero shot
+      const t = easeOutCubic(remap(p, ACT3_START, 1));
+      radius = THREE.MathUtils.lerp(6, 8, t);
+      height = THREE.MathUtils.lerp(3.2, 3.5, t);
+      angle = THREE.MathUtils.lerp(-0.5 + Math.PI * 0.4, -0.5 + Math.PI * 0.5, t);
+      lookY = THREE.MathUtils.lerp(0.1, -0.2, t);
+    }
 
     camera.position.x = Math.sin(angle) * radius;
     camera.position.z = Math.cos(angle) * radius;
     camera.position.y = height;
-    camera.lookAt(0, 0, 0);
+    camera.lookAt(0, lookY, 0);
   });
 
   return null;
 }
 
-/* ─── Scene ────────────────────────────────────────────────────── */
+function AtmosphericLighting() {
+  const mainRef = useRef<THREE.DirectionalLight>(null);
+  const fillRef = useRef<THREE.DirectionalLight>(null);
+  const ambientRef = useRef<THREE.AmbientLight>(null);
+
+  useFrame(() => {
+    const p = scroll.progress;
+
+    // Act 1: Very dim, cold
+    // Act 2: Gradually warming
+    // Act 3: Warm, brighter — sense of completion
+    const warmth = easeInOutCubic(remap(p, ACT2_START, ACT3_START));
+    const brightness = THREE.MathUtils.lerp(0.15, 0.5, warmth);
+    const mainIntensity = THREE.MathUtils.lerp(0.4, 1.2, warmth);
+
+    if (ambientRef.current) ambientRef.current.intensity = brightness;
+    if (mainRef.current) {
+      mainRef.current.intensity = mainIntensity;
+      // Shift from cool to warm
+      mainRef.current.color.lerpColors(
+        new THREE.Color('#6B8EC2'),
+        new THREE.Color('#FFF4E6'),
+        warmth
+      );
+    }
+    if (fillRef.current) {
+      fillRef.current.intensity = THREE.MathUtils.lerp(0.1, 0.3, warmth);
+    }
+  });
+
+  return (
+    <>
+      <ambientLight ref={ambientRef} intensity={0.15} />
+      <directionalLight ref={mainRef} position={[5, 8, 5]} intensity={0.4} color="#6B8EC2" />
+      <directionalLight ref={fillRef} position={[-3, 4, -2]} intensity={0.1} color="#FFE8CC" />
+    </>
+  );
+}
+
+/* ================================================================
+   3D: SCENE
+   ================================================================ */
 
 function Scene() {
   return (
     <>
-      <CameraController />
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[5, 8, 5]} intensity={1} castShadow />
-      <directionalLight position={[-3, 4, -2]} intensity={0.3} />
+      <CinematicCamera />
+      <AtmosphericLighting />
+      <fog attach="fog" args={['#0B0E13', 8, 20]} />
 
       <HouseBody />
       <Rafters />
 
       {LAYERS.map((layer, i) => (
-        <RoofLayer key={layer.name} layer={layer} index={i} />
+        <RoofLayer
+          key={layer.name}
+          index={i}
+          color={layer.color}
+          y={layer.y}
+          thickness={layer.thickness}
+          totalLayers={LAYERS.length}
+        />
       ))}
+
+      <Rain />
 
       <ContactShadows
         position={[0, -1.25, 0]}
-        opacity={0.4}
-        scale={10}
-        blur={2}
+        opacity={0.3}
+        scale={12}
+        blur={2.5}
         far={4}
       />
-      <Environment preset="city" />
+      <Environment preset="night" />
     </>
   );
 }
 
-/* ─── Easing ───────────────────────────────────────────────────── */
+/* ================================================================
+   DOM: CINEMATIC TEXT OVERLAYS
+   ================================================================ */
 
-function easeOutCubic(t: number): number {
-  return 1 - Math.pow(1 - t, 3);
-}
+function CinematicText({ progress }: { progress: number }) {
+  // Act 1 text
+  const act1Opacity = easeOutCubic(remap(progress, 0.04, 0.08)) *
+    (1 - easeOutCubic(remap(progress, ACT1_END - 0.02, ACT1_END + 0.02)));
 
-/* ─── Layer Info Panel ─────────────────────────────────────────── */
+  // Act 2: show layer name during each layer's installation
+  const layerDuration = (ACT2_END - ACT2_START) / LAYERS.length;
+  const activeLayerIndex = Math.floor(remap(progress, ACT2_START, ACT2_END) * LAYERS.length);
+  const clampedIndex = Math.max(0, Math.min(LAYERS.length - 1, activeLayerIndex));
+  const layerStart = ACT2_START + clampedIndex * layerDuration;
+  const layerMid = layerStart + layerDuration * 0.5;
+  const layerEnd = layerStart + layerDuration;
 
-function LayerInfoPanel({ activeLayer }: { activeLayer: number }) {
-  if (activeLayer < 0 || activeLayer >= LAYERS.length) return null;
+  const layerTextIn = easeOutCubic(remap(progress, layerStart + 0.01, layerMid));
+  const layerTextOut = 1 - easeOutCubic(remap(progress, layerEnd - 0.03, layerEnd));
+  const layerOpacity = progress >= ACT2_START && progress < ACT2_END
+    ? layerTextIn * layerTextOut
+    : 0;
 
-  const layer = LAYERS[activeLayer];
-  const layerNumber = activeLayer + 1;
+  // Act 3 text
+  const act3Opacity = easeOutCubic(remap(progress, ACT3_START + 0.04, ACT3_START + 0.12));
+
+  // CTA
+  const ctaOpacity = easeOutCubic(remap(progress, 0.92, 0.98));
+
+  const layer = LAYERS[clampedIndex];
 
   return (
-    <div
-      style={{
-        position: 'absolute',
-        left: 48,
-        top: '50%',
-        transform: 'translateY(-50%)',
-        maxWidth: 340,
-        zIndex: 10,
-        pointerEvents: 'none',
-      }}
-    >
+    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 10 }}>
+
+      {/* Act 1: The Bare Bones */}
       <div
         style={{
-          background: 'rgba(255,255,255,0.95)',
-          backdropFilter: 'blur(12px)',
-          borderRadius: 12,
-          padding: '28px 32px',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-          border: '1px solid rgba(0,0,0,0.06)',
+          position: 'absolute',
+          bottom: '15%',
+          left: 0,
+          right: 0,
+          textAlign: 'center',
+          opacity: act1Opacity,
+          transform: `translateY(${(1 - act1Opacity) * 20}px)`,
+          transition: 'none',
         }}
       >
-        <div
-          style={{
-            fontSize: 12,
+        <p style={{
+          fontSize: 14,
+          fontWeight: 500,
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: 'rgba(148,163,184,0.7)',
+          marginBottom: 12,
+        }}>
+          Results Roofing
+        </p>
+        <h1 style={{
+          fontSize: 'clamp(28px, 4vw, 48px)',
+          fontWeight: 700,
+          color: 'rgba(255,255,255,0.9)',
+          margin: 0,
+          lineHeight: 1.2,
+          letterSpacing: '-0.02em',
+        }}>
+          This is what&apos;s between
+          <br />
+          you and the sky.
+        </h1>
+      </div>
+
+      {/* Act 2: Layer name + description */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '12%',
+          left: 48,
+          maxWidth: 380,
+          opacity: layerOpacity,
+          transform: `translateY(${(1 - layerOpacity) * 16}px)`,
+        }}
+      >
+        <div style={{
+          background: 'rgba(11,14,19,0.7)',
+          backdropFilter: 'blur(16px)',
+          borderRadius: 8,
+          padding: '20px 24px',
+          border: '1px solid rgba(255,255,255,0.06)',
+        }}>
+          <p style={{
+            fontSize: 11,
             fontWeight: 600,
-            letterSpacing: '0.08em',
+            letterSpacing: '0.12em',
             textTransform: 'uppercase',
-            color: '#2563EB',
-            marginBottom: 8,
-          }}
-        >
-          Layer {layerNumber} of {LAYERS.length}
-        </div>
-        <h2
-          style={{
-            fontSize: 24,
+            color: BLUE,
+            marginBottom: 6,
+          }}>
+            Layer {clampedIndex + 1} of {LAYERS.length}
+          </p>
+          <h2 style={{
+            fontSize: 20,
             fontWeight: 700,
-            color: '#1E2329',
-            margin: '0 0 8px 0',
+            color: 'rgba(255,255,255,0.92)',
+            margin: '0 0 6px 0',
             lineHeight: 1.2,
-          }}
-        >
-          {layer.name}
-        </h2>
-        <p
-          style={{
-            fontSize: 16,
-            fontWeight: 500,
-            color: '#4A5568',
-            margin: '0 0 12px 0',
-          }}
-        >
-          {layer.description}
-        </p>
-        <p
-          style={{
+          }}>
+            {layer.name}
+          </h2>
+          <p style={{
             fontSize: 14,
-            color: '#6B7280',
+            color: 'rgba(148,163,184,0.8)',
             margin: 0,
-            lineHeight: 1.6,
+            lineHeight: 1.5,
+          }}>
+            {layer.text}
+          </p>
+        </div>
+      </div>
+
+      {/* Act 3: Protected */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '18%',
+          left: 0,
+          right: 0,
+          textAlign: 'center',
+          opacity: act3Opacity,
+          transform: `translateY(${(1 - act3Opacity) * 24}px)`,
+        }}
+      >
+        <h2 style={{
+          fontSize: 'clamp(24px, 3.5vw, 42px)',
+          fontWeight: 700,
+          color: 'rgba(255,255,255,0.92)',
+          margin: '0 0 8px 0',
+          lineHeight: 1.2,
+          letterSpacing: '-0.01em',
+        }}>
+          See your price in under 3 minutes.
+        </h2>
+        <p style={{
+          fontSize: 16,
+          color: 'rgba(148,163,184,0.8)',
+          margin: 0,
+        }}>
+          No phone call. No salesperson. Just your address and an honest number.
+        </p>
+      </div>
+
+      {/* CTA */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '8%',
+          left: 0,
+          right: 0,
+          textAlign: 'center',
+          opacity: ctaOpacity,
+          transform: `translateY(${(1 - ctaOpacity) * 12}px)`,
+          pointerEvents: ctaOpacity > 0.5 ? 'auto' : 'none',
+        }}
+      >
+        <a
+          href="/quote/new"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '14px 36px',
+            background: BLUE,
+            color: '#fff',
+            fontSize: 15,
+            fontWeight: 600,
+            borderRadius: 6,
+            textDecoration: 'none',
+            boxShadow: '0 4px 24px rgba(37,99,235,0.35)',
+            transition: 'background 200ms',
           }}
         >
-          {layer.detail}
-        </p>
+          Get My Free Quote
+          <span style={{ fontSize: 18 }}>&rarr;</span>
+        </a>
       </div>
     </div>
   );
 }
 
-/* ─── Scroll Progress Bar ──────────────────────────────────────── */
+/* ================================================================
+   DOM: SCROLL HINT
+   ================================================================ */
 
-function ScrollProgressBar({ progress }: { progress: number }) {
+function ScrollHint({ progress }: { progress: number }) {
+  const opacity = 1 - easeOutCubic(remap(progress, 0.02, 0.06));
+  if (opacity < 0.01) return null;
+
   return (
-    <div
-      style={{
-        position: 'absolute',
-        right: 32,
-        top: '50%',
-        transform: 'translateY(-50%)',
-        width: 4,
-        height: 200,
-        background: 'rgba(0,0,0,0.08)',
-        borderRadius: 2,
-        zIndex: 10,
-      }}
-    >
-      {/* Track markers for each layer */}
-      {LAYERS.map((_, i) => (
-        <div
-          key={i}
-          style={{
-            position: 'absolute',
-            left: -3,
-            top: `${(i / LAYERS.length) * 100}%`,
-            width: 10,
-            height: 10,
-            borderRadius: '50%',
-            background: progress >= i / LAYERS.length ? '#2563EB' : 'rgba(0,0,0,0.15)',
-            transition: 'background 300ms',
-          }}
-        />
-      ))}
-
-      {/* Fill */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: '100%',
-          height: `${progress * 100}%`,
-          background: '#2563EB',
-          borderRadius: 2,
-          transformOrigin: 'bottom',
-          transition: 'height 100ms',
-        }}
-      />
+    <div style={{
+      position: 'absolute',
+      bottom: 36,
+      left: '50%',
+      transform: 'translateX(-50%)',
+      zIndex: 10,
+      textAlign: 'center',
+      opacity,
+      pointerEvents: 'none',
+    }}>
+      <p style={{
+        fontSize: 12,
+        fontWeight: 500,
+        color: 'rgba(148,163,184,0.5)',
+        marginBottom: 10,
+        letterSpacing: '0.08em',
+        textTransform: 'uppercase',
+      }}>
+        Scroll to begin
+      </p>
+      <div style={{
+        width: 1,
+        height: 32,
+        margin: '0 auto',
+        background: 'linear-gradient(to bottom, rgba(148,163,184,0.4), transparent)',
+        animation: 'pulse 2s ease-in-out infinite',
+      }} />
     </div>
   );
 }
 
-/* ─── Main Experience ──────────────────────────────────────────── */
+/* ================================================================
+   MAIN EXPERIENCE
+   ================================================================ */
 
 export default function RoofBuildExperience() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const stickyRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
-  const [activeLayer, setActiveLayer] = useState(-1);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -403,180 +591,60 @@ export default function RoofBuildExperience() {
       trigger: containerRef.current,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 1,
+      scrub: 1.2,
       onUpdate: (self) => {
-        scrollState.progress = self.progress;
-        scrollState.activeLayer = Math.floor(self.progress * LAYERS.length);
+        scroll.progress = self.progress;
         setProgress(self.progress);
-        setActiveLayer(Math.floor(self.progress * LAYERS.length));
       },
     });
 
-    return () => {
-      trigger.kill();
-    };
+    return () => trigger.kill();
   }, []);
+
+  // Background color shifts: cold dark → slightly warm
+  const bgColor = useMemo(() => {
+    const warmth = easeInOutCubic(remap(progress, ACT2_START, ACT3_START));
+    const r = Math.round(THREE.MathUtils.lerp(11, 22, warmth));
+    const g = Math.round(THREE.MathUtils.lerp(14, 18, warmth));
+    const b = Math.round(THREE.MathUtils.lerp(19, 15, warmth));
+    return `rgb(${r},${g},${b})`;
+  }, [progress]);
 
   return (
     <>
-      {/* Scroll container — height determines scroll duration */}
       <div
         ref={containerRef}
-        style={{
-          height: `${(LAYERS.length + 1) * 100}vh`,
-          position: 'relative',
-        }}
+        style={{ height: '800vh', position: 'relative' }}
       >
-        {/* Sticky viewport */}
-        <div
-          ref={stickyRef}
-          style={{
-            position: 'sticky',
-            top: 0,
-            height: '100vh',
-            width: '100%',
-            overflow: 'hidden',
-            background: '#F7F9FC',
-          }}
-        >
-          {/* 3D Canvas */}
+        <div style={{
+          position: 'sticky',
+          top: 0,
+          height: '100vh',
+          width: '100%',
+          overflow: 'hidden',
+          background: bgColor,
+        }}>
           <Canvas
-            camera={{ position: [4, 3, 5], fov: 40 }}
+            camera={{ position: [0, 5, 10], fov: 35 }}
+            dpr={[1, 1.5]}
             style={{ width: '100%', height: '100%' }}
-            dpr={[1, 2]}
+            gl={{ antialias: true, alpha: false }}
           >
+            <color attach="background" args={[DARK]} />
             <Scene />
           </Canvas>
 
-          {/* Layer info overlay */}
-          <LayerInfoPanel activeLayer={activeLayer} />
-
-          {/* Progress indicator */}
-          <ScrollProgressBar progress={progress} />
-
-          {/* Title overlay */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 32,
-              left: 48,
-              zIndex: 10,
-              pointerEvents: 'none',
-            }}
-          >
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: 600,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#2563EB',
-                marginBottom: 6,
-              }}
-            >
-              Results Roofing
-            </div>
-            <h1
-              style={{
-                fontSize: 32,
-                fontWeight: 700,
-                color: '#1E2329',
-                margin: 0,
-                lineHeight: 1.15,
-              }}
-            >
-              What&apos;s Inside
-              <br />
-              Your Roof
-            </h1>
-          </div>
-
-          {/* Scroll hint */}
-          {progress < 0.05 && (
-            <div
-              style={{
-                position: 'absolute',
-                bottom: 40,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                zIndex: 10,
-                textAlign: 'center',
-                color: '#6B7280',
-                fontSize: 13,
-                fontWeight: 500,
-                opacity: 1 - progress * 20,
-                transition: 'opacity 300ms',
-                pointerEvents: 'none',
-              }}
-            >
-              <div style={{ marginBottom: 8 }}>Scroll to build</div>
-              <div
-                style={{
-                  width: 20,
-                  height: 32,
-                  border: '2px solid #6B7280',
-                  borderRadius: 10,
-                  margin: '0 auto',
-                  position: 'relative',
-                }}
-              >
-                <div
-                  style={{
-                    width: 4,
-                    height: 8,
-                    background: '#6B7280',
-                    borderRadius: 2,
-                    position: 'absolute',
-                    left: '50%',
-                    top: 6,
-                    transform: 'translateX(-50%)',
-                    animation: 'scrollPulse 2s ease-in-out infinite',
-                  }}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Completion state */}
-          {progress > 0.95 && (
-            <div
-              style={{
-                position: 'absolute',
-                bottom: 48,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                zIndex: 10,
-                textAlign: 'center',
-                pointerEvents: 'auto',
-              }}
-            >
-              <div
-                style={{
-                  background: '#2563EB',
-                  color: '#fff',
-                  padding: '14px 32px',
-                  borderRadius: 8,
-                  fontSize: 15,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  boxShadow: '0 4px 16px rgba(37,99,235,0.3)',
-                }}
-              >
-                Get Your Instant Quote &rarr;
-              </div>
-            </div>
-          )}
+          <CinematicText progress={progress} />
+          <ScrollHint progress={progress} />
         </div>
       </div>
 
-      {/* CSS keyframes */}
       <style>{`
-        @keyframes scrollPulse {
-          0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
-          50% { transform: translateX(-50%) translateY(8px); opacity: 0.4; }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; transform: scaleY(1); }
+          50% { opacity: 0.3; transform: scaleY(0.6); }
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        html, body { margin: 0; padding: 0; background: ${DARK}; }
       `}</style>
     </>
   );
