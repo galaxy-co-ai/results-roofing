@@ -67,14 +67,13 @@ function RoofLayer({ index, color, y, thickness, totalLayers }: {
   index: number; color: string; y: number; thickness: number; totalLayers: number;
 }) {
   const groupRef = useRef<THREE.Group>(null);
-  const matRef = useRef<THREE.MeshStandardMaterial>(null);
 
   const layerDuration = (ACT2_END - ACT2_START) / totalLayers;
   const layerStart = ACT2_START + index * layerDuration;
   const layerEnd = layerStart + layerDuration;
 
   useFrame(() => {
-    if (!groupRef.current || !matRef.current) return;
+    if (!groupRef.current) return;
     const t = easeOutCubic(remap(scroll.progress, layerStart, layerEnd));
 
     // Drop from above
@@ -95,7 +94,6 @@ function RoofLayer({ index, color, y, thickness, totalLayers }: {
       <mesh position={[-HALF_ROOF / 2, ROOF_PEAK / 2, 0]} rotation={[0, 0, PITCH]}>
         <boxGeometry args={[SLOPE_LEN, thickness, HOUSE_D + ROOF_OVERHANG]} />
         <meshStandardMaterial
-          ref={matRef}
           color={color}
           transparent
           opacity={0}
@@ -351,14 +349,14 @@ function CinematicCamera() {
       radius = 6;
       height = THREE.MathUtils.lerp(2.8, 3.2, t);
       angle = THREE.MathUtils.lerp(-0.5, -0.5 + Math.PI * 0.4, t);
-      lookY = THREE.MathUtils.lerp(0, 0.1, t);
+      lookY = THREE.MathUtils.lerp(0, 0.3, t);
     } else {
       // Pull back for hero shot
       const t = easeOutCubic(remap(p, ACT3_START, 1));
       radius = THREE.MathUtils.lerp(6, 8, t);
       height = THREE.MathUtils.lerp(3.2, 3.5, t);
       angle = THREE.MathUtils.lerp(-0.5 + Math.PI * 0.4, -0.5 + Math.PI * 0.5, t);
-      lookY = THREE.MathUtils.lerp(0.1, -0.2, t);
+      lookY = THREE.MathUtils.lerp(0.3, 0, t);
     }
 
     camera.position.x = Math.sin(angle) * radius;
