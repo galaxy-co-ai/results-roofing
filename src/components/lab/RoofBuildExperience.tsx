@@ -125,11 +125,20 @@ function RoofLayer({ index, color, y, thickness, totalLayers }: {
 function HouseBody() {
   const groupRef = useRef<THREE.Group>(null);
 
+  // Gable end triangle geometry
+  const gableGeo = useMemo(() => {
+    const shape = new THREE.Shape();
+    shape.moveTo(-HOUSE_W / 2, 0);
+    shape.lineTo(0, ROOF_PEAK);
+    shape.lineTo(HOUSE_W / 2, 0);
+    shape.closePath();
+    return new THREE.ShapeGeometry(shape);
+  }, []);
+
   useFrame(() => {
     if (!groupRef.current) return;
-    // Fade in during Act 1
     const appear = easeOutCubic(remap(scroll.progress, 0.02, ACT1_END));
-    groupRef.current.children.forEach((child) => {
+    groupRef.current.traverse((child) => {
       if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
         child.material.opacity = appear;
       }
@@ -137,24 +146,71 @@ function HouseBody() {
   });
 
   return (
-    <group ref={groupRef} position={[0, -1.2, 0]}>
-      <mesh position={[0, 0.6, 0]}>
-        <boxGeometry args={[3.8, 1.2, 2.8]} />
+    <group ref={groupRef} position={[0, HOUSE_Y, 0]}>
+      {/* Main walls */}
+      <mesh position={[0, WALL_H / 2, 0]}>
+        <boxGeometry args={[HOUSE_W, WALL_H, HOUSE_D]} />
         <meshStandardMaterial color="#D4CBC0" roughness={0.92} transparent opacity={0} />
       </mesh>
-      <mesh position={[0, 0.35, 1.41]}>
+
+      {/* Gable ends (front + back) */}
+      {[1, -1].map((side) => (
+        <mesh
+          key={side}
+          geometry={gableGeo}
+          position={[0, WALL_H, side * (HOUSE_D / 2)]}
+          rotation={[side === 1 ? 0 : Math.PI, side === 1 ? 0 : 0, 0]}
+        >
+          <meshStandardMaterial color="#D4CBC0" roughness={0.92} transparent opacity={0} />
+        </mesh>
+      ))}
+
+      {/* Front door */}
+      <mesh position={[0, 0.35, HOUSE_D / 2 + 0.01]}>
         <boxGeometry args={[0.5, 0.7, 0.02]} />
         <meshStandardMaterial color="#4A3C2E" roughness={0.7} transparent opacity={0} />
       </mesh>
-      {[-1, 1].map((x) => (
-        <mesh key={x} position={[x, 0.7, 1.41]}>
-          <boxGeometry args={[0.5, 0.4, 0.02]} />
-          <meshStandardMaterial color="#8FB4D9" roughness={0.3} metalness={0.1} transparent opacity={0} />
-        </mesh>
-      ))}
-      <mesh position={[0, -0.05, 0]}>
-        <boxGeometry args={[4.2, 0.1, 3.2]} />
+      {/* Door frame */}
+      <mesh position={[0, 0.35, HOUSE_D / 2 + 0.015]}>
+        <boxGeometry args={[0.58, 0.78, 0.01]} />
+        <meshStandardMaterial color="#3A2C1E" roughness={0.8} transparent opacity={0} />
+      </mesh>
+      {/* Door step */}
+      <mesh position={[0, -0.02, HOUSE_D / 2 + 0.1]}>
+        <boxGeometry args={[0.7, 0.04, 0.2]} />
         <meshStandardMaterial color="#808080" roughness={1} transparent opacity={0} />
+      </mesh>
+
+      {/* Windows (front face, flanking the door) */}
+      {[-1, 1].map((x) => (
+        <group key={x} position={[x * 1.1, 0.7, HOUSE_D / 2]}>
+          {/* Window frame (dark wood) */}
+          <mesh position={[0, 0, 0.015]}>
+            <boxGeometry args={[0.56, 0.46, 0.01]} />
+            <meshStandardMaterial color="#3A2C1E" roughness={0.8} transparent opacity={0} />
+          </mesh>
+          {/* Glass pane */}
+          <mesh position={[0, 0, 0.02]}>
+            <boxGeometry args={[0.48, 0.38, 0.01]} />
+            <meshStandardMaterial color="#8FB4D9" roughness={0.3} metalness={0.1} transparent opacity={0} />
+          </mesh>
+          {/* Vertical mullion */}
+          <mesh position={[0, 0, 0.025]}>
+            <boxGeometry args={[0.03, 0.38, 0.01]} />
+            <meshStandardMaterial color="#3A2C1E" roughness={0.8} transparent opacity={0} />
+          </mesh>
+          {/* Horizontal mullion */}
+          <mesh position={[0, 0, 0.025]}>
+            <boxGeometry args={[0.48, 0.03, 0.01]} />
+            <meshStandardMaterial color="#3A2C1E" roughness={0.8} transparent opacity={0} />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Foundation strip */}
+      <mesh position={[0, -0.05, 0]}>
+        <boxGeometry args={[HOUSE_W + 0.4, 0.1, HOUSE_D + 0.4]} />
+        <meshStandardMaterial color="#606060" roughness={1} transparent opacity={0} />
       </mesh>
     </group>
   );
