@@ -20,7 +20,6 @@ const scroll = { progress: 0 };
    ================================================================ */
 
 const DARK = '#0B0E13';
-const WARM = '#1A1610';
 const BLUE = '#2563EB';
 
 // Act boundaries (0-1 scroll range)
@@ -38,6 +37,18 @@ const LAYERS = [
   { name: 'Shingles', color: '#4A5568', y: 0.16, thickness: 0.04, text: 'Architectural laminated shingles. 130 mph wind rating.' },
   { name: 'Ridge Vent & Cap', color: '#5A6577', y: 0.21, thickness: 0.03, text: 'Continuous ridge ventilation. Balances attic airflow year-round.' },
 ];
+
+// House dimensions
+const HOUSE_W = 3.8;        // Wall width (x-axis)
+const HOUSE_D = 2.8;        // Wall depth (z-axis)
+const WALL_H = 1.2;         // Wall height
+const ROOF_PEAK = 1.0;      // Ridge height above wall top
+const ROOF_OVERHANG = 0.25; // Eave overhang past walls
+const ROOF_W = HOUSE_W + ROOF_OVERHANG * 2; // Total roof span
+const HALF_ROOF = ROOF_W / 2;
+const SLOPE_LEN = Math.sqrt(HALF_ROOF ** 2 + ROOF_PEAK ** 2);
+const PITCH = Math.atan2(ROOF_PEAK, HALF_ROOF); // ~25°
+const HOUSE_Y = -1.2;       // Vertical offset of house group
 
 /* ================================================================
    EASING
