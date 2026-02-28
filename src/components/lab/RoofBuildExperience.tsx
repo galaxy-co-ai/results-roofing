@@ -174,7 +174,7 @@ function Rafters() {
     const fade = 1 - easeOutCubic(remap(scroll.progress, ACT2_START, ACT2_START + 0.08));
     const opacity = appear * fade;
 
-    groupRef.current.children.forEach((child) => {
+    groupRef.current.traverse((child) => {
       if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
         child.material.opacity = opacity;
       }
@@ -183,14 +183,29 @@ function Rafters() {
 
   return (
     <group ref={groupRef} position={[0, -0.05, 0]}>
-      {[-1.5, -1, -0.5, 0, 0.5, 1, 1.5].map((x) => (
-        <mesh key={x} position={[x, 0, 0]}>
-          <boxGeometry args={[0.08, 0.12, 3]} />
-          <meshStandardMaterial color="#9E7E5A" roughness={0.9} transparent opacity={0} />
-        </mesh>
+      {/* 5 trusses along depth */}
+      {[-1.2, -0.6, 0, 0.6, 1.2].map((z) => (
+        <group key={z} position={[0, 0, z]}>
+          {/* Left rafter */}
+          <mesh position={[-HALF_ROOF / 2 + 0.1, ROOF_PEAK / 2, 0]} rotation={[0, 0, PITCH]}>
+            <boxGeometry args={[SLOPE_LEN * 0.9, 0.12, 0.06]} />
+            <meshStandardMaterial color="#9E7E5A" roughness={0.9} transparent opacity={0} />
+          </mesh>
+          {/* Right rafter */}
+          <mesh position={[HALF_ROOF / 2 - 0.1, ROOF_PEAK / 2, 0]} rotation={[0, 0, -PITCH]}>
+            <boxGeometry args={[SLOPE_LEN * 0.9, 0.12, 0.06]} />
+            <meshStandardMaterial color="#9E7E5A" roughness={0.9} transparent opacity={0} />
+          </mesh>
+          {/* Collar tie */}
+          <mesh position={[0, ROOF_PEAK * 0.35, 0]}>
+            <boxGeometry args={[HOUSE_W * 0.5, 0.06, 0.06]} />
+            <meshStandardMaterial color="#8A6B48" roughness={0.9} transparent opacity={0} />
+          </mesh>
+        </group>
       ))}
-      <mesh position={[0, 0.06, 0]}>
-        <boxGeometry args={[4, 0.08, 0.1]} />
+      {/* Ridge board */}
+      <mesh position={[0, ROOF_PEAK, 0]}>
+        <boxGeometry args={[0.08, 0.14, HOUSE_D + 0.1]} />
         <meshStandardMaterial color="#8A6B48" roughness={0.9} transparent opacity={0} />
       </mesh>
     </group>
