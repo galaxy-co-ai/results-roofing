@@ -66,37 +66,55 @@ function remap(value: number, inMin: number, inMax: number) { return clamp01((va
 function RoofLayer({ index, color, y, thickness, totalLayers }: {
   index: number; color: string; y: number; thickness: number; totalLayers: number;
 }) {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
   const matRef = useRef<THREE.MeshStandardMaterial>(null);
 
-  // Each layer occupies a slice of Act 2
   const layerDuration = (ACT2_END - ACT2_START) / totalLayers;
   const layerStart = ACT2_START + index * layerDuration;
   const layerEnd = layerStart + layerDuration;
 
   useFrame(() => {
-    if (!meshRef.current || !matRef.current) return;
+    if (!groupRef.current || !matRef.current) return;
     const t = easeOutCubic(remap(scroll.progress, layerStart, layerEnd));
 
     // Drop from above
-    meshRef.current.position.y = THREE.MathUtils.lerp(y + 1.8, y, t);
+    groupRef.current.position.y = THREE.MathUtils.lerp(y + 1.8, y, t);
 
-    // Opacity
-    matRef.current.opacity = t;
+    // Opacity — sync both slopes
+    const opacity = t;
+    groupRef.current.traverse((child) => {
+      if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
+        child.material.opacity = opacity;
+      }
+    });
   });
 
   return (
-    <mesh ref={meshRef} position={[0, y + 1.8, 0]}>
-      <boxGeometry args={[4, thickness, 3]} />
-      <meshStandardMaterial
-        ref={matRef}
-        color={color}
-        transparent
-        opacity={0}
-        roughness={0.85}
-        metalness={0.05}
-      />
-    </mesh>
+    <group ref={groupRef} position={[0, y + 1.8, 0]}>
+      {/* Left slope */}
+      <mesh position={[-HALF_ROOF / 2, ROOF_PEAK / 2, 0]} rotation={[0, 0, PITCH]}>
+        <boxGeometry args={[SLOPE_LEN, thickness, HOUSE_D + ROOF_OVERHANG]} />
+        <meshStandardMaterial
+          ref={matRef}
+          color={color}
+          transparent
+          opacity={0}
+          roughness={0.85}
+          metalness={0.05}
+        />
+      </mesh>
+      {/* Right slope */}
+      <mesh position={[HALF_ROOF / 2, ROOF_PEAK / 2, 0]} rotation={[0, 0, -PITCH]}>
+        <boxGeometry args={[SLOPE_LEN, thickness, HOUSE_D + ROOF_OVERHANG]} />
+        <meshStandardMaterial
+          color={color}
+          transparent
+          opacity={0}
+          roughness={0.85}
+          metalness={0.05}
+        />
+      </mesh>
+    </group>
   );
 }
 
