@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { db, schema, eq } from '@/db';
+import { db, schema, eq, and } from '@/db';
 import { logger } from '@/lib/utils';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 
@@ -18,7 +18,7 @@ interface DocumentResponse {
   name: string;
   type: string;
   url: string | null;
-  source: 'gaf' | 'manual';
+  source: 'gaf' | 'manual' | 'generated';
   status?: string;
   createdAt: string;
 }
@@ -102,6 +102,49 @@ export async function GET(request: NextRequest) {
         source: 'manual',
         status: doc.status,
         createdAt: doc.createdAt.toISOString(),
+      });
+    }
+
+    // 3. Inject synthetic (generated-on-the-fly) branded documents
+    // Quote summary — always present once an order exists
+    documents.push({
+      id: `quote-${orderId}`,
+      name: 'Roof Replacement Estimate',
+      type: 'quote',
+      url: null,
+      source: 'generated',
+      createdAt: order.createdAt.toISOString(),
+    });
+
+    // Material order — only if measurement is complete
+    if (measurement?.status === 'completed') {
+      documents.push({
+        id: `materials-${orderId}`,
+        name: 'Material Order',
+        type: 'materials',
+        url: null,
+        source: 'generated',
+        createdAt: order.createdAt.toISOString(),
+      });
+    }
+
+    // Deposit authorization — only if a deposit payment exists
+    const depositPayment = await db.query.payments.findFirst({
+      where: and(
+        eq(schema.payments.orderId, orderId),
+        eq(schema.payments.type, 'deposit'),
+      ),
+    });
+
+    if (depositPayment) {
+      documents.push({
+        id: `deposit-auth-${orderId}`,
+        name: 'Deposit Authorization',
+        type: 'deposit_authorization',
+        url: null,
+        source: 'generated',
+        status: 'signed',
+        createdAt: depositPayment.processedAt?.toISOString() ?? order.createdAt.toISOString(),
       });
     }
 
