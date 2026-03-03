@@ -12,6 +12,10 @@ const DOCUMENT_ICONS: Record<DocumentType, typeof FileText> = {
   permit: FileCheck,
   materials: Package,
   scope: ClipboardList,
+  invoice: Receipt,
+  deposit_authorization: FileCheck,
+  quote: ClipboardList,
+  measurement: Package,
 };
 
 const STATUS_LABELS: Record<string, string> = {

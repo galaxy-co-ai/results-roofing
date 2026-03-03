@@ -12,13 +12,17 @@ import {
   Ruler,
   Loader2,
   FileQuestion,
+  ClipboardList,
 } from 'lucide-react';
 import { PortalHeader } from '@/components/features/portal/PortalHeader/PortalHeader';
 import { EmptyStateLocked } from '@/components/features/portal/EmptyStateLocked/EmptyStateLocked';
+import { DocumentProvider, useDocument } from '@/components/features/documents/DocumentContext';
+import { DocumentViewer } from '@/components/features/documents/DocumentViewer';
 import { usePortalPhase } from '@/hooks/usePortalPhase';
 import { PortalPhase } from '@/lib/portal/phases';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import type { LucideIcon } from 'lucide-react';
+import type { DocumentType } from '@/components/features/documents/DocumentContext';
 import styles from './page.module.css';
 
 // ---------------------------------------------------------------------------
@@ -30,7 +34,7 @@ interface PortalDocument {
   name: string;
   type: string;
   url: string | null;
-  source: 'gaf' | 'manual';
+  source: 'gaf' | 'manual' | 'generated';
   status?: string;
   createdAt: string;
 }
@@ -59,9 +63,36 @@ function getDocumentMeta(doc: PortalDocument): { icon: LucideIcon; iconBg: strin
     case 'invoice':
     case 'receipt':
       return { icon: FileText, iconBg: 'var(--rr-color-status-warning-bg)' };
+    case 'quote':
+      return { icon: ClipboardList, iconBg: 'var(--rr-color-status-info-bg)' };
+    case 'materials':
+      return { icon: Package, iconBg: 'var(--rr-color-status-info-bg)' };
     default:
       return { icon: Package, iconBg: 'var(--rr-color-status-warning-bg)' };
   }
+}
+
+/** Map portal API document type string to DocumentType for the viewer */
+function toDocumentType(type: string): DocumentType {
+  const typeMap: Record<string, DocumentType> = {
+    contract: 'contract',
+    deposit_authorization: 'deposit_authorization',
+    receipt: 'receipt',
+    invoice: 'invoice',
+    quote: 'quote',
+    materials: 'materials',
+    measurement: 'measurement',
+    warranty: 'warranty',
+  };
+  return typeMap[type] || 'scope';
+}
+
+/** Map portal document status to viewer status */
+function toViewerStatus(status?: string): 'signed' | 'active' | 'paid' | 'pending' | 'approved' {
+  if (status === 'signed' || status === 'completed') return 'signed';
+  if (status === 'paid') return 'paid';
+  if (status === 'approved') return 'approved';
+  return 'active';
 }
 
 // ---------------------------------------------------------------------------
@@ -73,24 +104,54 @@ interface DocumentRowProps {
 }
 
 function DocumentRow({ doc }: DocumentRowProps) {
+  const { openDocument } = useDocument();
   const { icon: Icon, iconBg } = getDocumentMeta(doc);
   const isSigned = doc.status === 'signed' || doc.status === 'completed';
 
   function handleView() {
-    if (doc.url) window.open(doc.url, '_blank', 'noopener');
+    // GAF assets open in new tab (external PDFs)
+    if (doc.source === 'gaf' && doc.url) {
+      window.open(doc.url, '_blank', 'noopener');
+      return;
+    }
+    // All other docs open in the preview modal
+    openDocument({
+      id: doc.id,
+      type: toDocumentType(doc.type),
+      title: doc.name,
+      status: toViewerStatus(doc.status),
+      date: doc.createdAt,
+    });
   }
 
-  function handleDownload() {
-    if (!doc.url) return;
-    const a = document.createElement('a');
-    a.href = doc.url;
-    a.download = doc.name;
-    a.click();
+  async function handleDownload() {
+    // GAF assets download directly from URL
+    if (doc.source === 'gaf' && doc.url) {
+      const a = window.document.createElement('a');
+      a.href = doc.url;
+      a.download = doc.name;
+      a.click();
+      return;
+    }
+    // All other docs download via PDF API
+    try {
+      const res = await fetch(`/api/portal/documents/${doc.id}/pdf`);
+      if (!res.ok) throw new Error('Download failed');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = window.document.createElement('a');
+      a.href = url;
+      a.download = `${doc.name}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('PDF download error:', err);
+    }
   }
 
   return (
     <div className={styles.documentRow}>
-      <div className={styles.documentInfo}>
+      <div className={styles.documentInfo} onClick={handleView} style={{ cursor: 'pointer' }}>
         <div className={styles.documentIcon} style={{ background: iconBg }}>
           <Icon size={18} />
         </div>
@@ -108,7 +169,6 @@ function DocumentRow({ doc }: DocumentRowProps) {
           aria-label="View document"
           title="View"
           onClick={handleView}
-          disabled={!doc.url}
         >
           <Eye size={16} />
         </button>
@@ -117,7 +177,6 @@ function DocumentRow({ doc }: DocumentRowProps) {
           aria-label="Download document"
           title="Download"
           onClick={handleDownload}
-          disabled={!doc.url}
         >
           <Download size={16} />
         </button>
@@ -204,20 +263,23 @@ function DocumentsContent({ email }: { email: string | null }) {
   const isLocked = !phase || phase.phase <= PortalPhase.QUOTED;
 
   return (
-    <div className={styles.page}>
-      <PortalHeader title="Documents" />
-      {isLocked ? (
-        <EmptyStateLocked
-          title="No Documents Yet"
-          description="Your documents will appear after your contract is signed."
-          currentStep={phase?.checklistStep ?? 1}
-          ctaLabel="Start Your Quote"
-          ctaHref="/portal"
-        />
-      ) : (
-        order && <DocumentsList orderId={order.id} />
-      )}
-    </div>
+    <DocumentProvider>
+      <div className={styles.page}>
+        <PortalHeader title="Documents" />
+        {isLocked ? (
+          <EmptyStateLocked
+            title="No Documents Yet"
+            description="Your documents will appear after your contract is signed."
+            currentStep={phase?.checklistStep ?? 1}
+            ctaLabel="Start Your Quote"
+            ctaHref="/portal"
+          />
+        ) : (
+          order && <DocumentsList orderId={order.id} />
+        )}
+      </div>
+      <DocumentViewer />
+    </DocumentProvider>
   );
 }
 

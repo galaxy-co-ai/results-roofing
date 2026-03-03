@@ -27,7 +27,11 @@ function getDocumentComponent(doc: DocumentData) {
     case 'materials':
       return <MaterialsDocument {...props} />;
     case 'scope':
+    case 'quote':
       return <ScopeDocument {...props} />;
+    case 'invoice':
+    case 'deposit_authorization':
+      return <ReceiptDocument {...props} />;
     default:
       return null;
   }
@@ -66,9 +70,21 @@ export function DocumentViewer() {
     window.print();
   };
 
-  const handleDownload = () => {
-    // In production, this would generate a PDF
-    alert('PDF download would be triggered here');
+  const handleDownload = async () => {
+    if (!currentDocument) return;
+    try {
+      const res = await fetch(`/api/portal/documents/${currentDocument.id}/pdf`);
+      if (!res.ok) throw new Error('Download failed');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = window.document.createElement('a');
+      a.href = url;
+      a.download = `${currentDocument.title}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('PDF download error:', err);
+    }
   };
 
   const handleShare = async () => {

@@ -3,13 +3,17 @@
 import { createContext, useContext, useState, useCallback } from 'react';
 import type { ReactNode } from 'react';
 
-export type DocumentType = 
+export type DocumentType =
   | 'contract'
   | 'warranty'
   | 'receipt'
   | 'permit'
   | 'materials'
-  | 'scope';
+  | 'scope'
+  | 'invoice'
+  | 'deposit_authorization'
+  | 'quote'
+  | 'measurement';
 
 export interface DocumentData {
   id: string;
