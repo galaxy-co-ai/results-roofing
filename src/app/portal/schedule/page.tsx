@@ -48,14 +48,14 @@ function InstallationDetails({ order }: { order: any }) {
             <Clock size={14} />
             Time Window
           </div>
-          <div className={styles.detailValue}>7:00 AM — 5:00 PM</div>
+          <div className={styles.detailValue}>Standard installation window: 7:00 AM — 5:00 PM</div>
         </div>
         <div className={styles.detailItem}>
           <div className={styles.detailLabel}>
             <Users size={14} />
             Crew
           </div>
-          <div className={styles.detailValue}>Team Alpha — 4 person crew</div>
+          <div className={styles.detailValue}>Your installation team details will be confirmed closer to your scheduled date.</div>
         </div>
       </div>
     </div>

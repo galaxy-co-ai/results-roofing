@@ -7,6 +7,7 @@ import { ProjectTimeline } from '@/components/features/portal/ProjectTimeline/Pr
 import { Checklist } from '@/components/features/portal/Checklist/Checklist';
 import { QuoteSummaryCard } from '@/components/features/portal/QuoteSummaryCard/QuoteSummaryCard';
 import { QuoteWizard } from '@/components/features/portal/QuoteWizard/QuoteWizard';
+import { PhaseShell } from '@/components/features/portal/PhaseShell/PhaseShell';
 import { usePortalPhase } from '@/hooks/usePortalPhase';
 import { PortalPhase } from '@/lib/portal/phases';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
@@ -108,10 +109,11 @@ function MyProjectContent({ email }: { email: string | null }) {
       {phase?.phase === PortalPhase.PRE_QUOTE && <Phase1Content email={email!} />}
       {phase?.phase === PortalPhase.QUOTED && <Phase2Content quote={quote} order={order} />}
       {phase?.phase === PortalPhase.CONTRACTED && <Phase3Content order={order} />}
-      {(phase?.phase === PortalPhase.IN_PROGRESS || phase?.phase === PortalPhase.COMPLETE) && (
-        <div className={styles.shellPlaceholder}>
-          <p>Phase {phase.phase} content coming soon.</p>
-        </div>
+      {phase?.phase === PortalPhase.IN_PROGRESS && (
+        <PhaseShell phase="in-progress" page="project" />
+      )}
+      {phase?.phase === PortalPhase.COMPLETE && (
+        <PhaseShell phase="complete" page="project" />
       )}
     </div>
   );

@@ -169,7 +169,7 @@ function PaymentsLedger({ email }: { email: string }) {
           type="financing"
           label="Financing"
           amount={null}
-          description="Flexible payment plans through Wisetack"
+          description="Flexible payment plans — coming soon"
           isPaid={false}
           variant="outline"
           disabled

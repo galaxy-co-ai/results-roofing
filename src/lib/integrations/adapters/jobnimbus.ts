@@ -14,6 +14,11 @@
 
 import { logger } from '@/lib/utils';
 import { ghlMessagingAdapter } from './ghl-messaging';
+import {
+  createOpportunity,
+  updateOpportunity,
+  moveOpportunityToStage,
+} from '@/lib/ghl/api/pipelines';
 
 // Check if legacy JobNimbus is still configured
 const JOBNIMBUS_API_KEY = process.env.JOBNIMBUS_API_KEY || '';
@@ -126,19 +131,36 @@ export const jobnimbusAdapter = {
       return { id: `mock-job-${Date.now()}`, success: true };
     }
 
-    // GHL opportunities should be created via the pipeline API
-    // For now, we log the intent and return mock
-    // Full implementation would use ghl/api/pipelines.ts
-    logger.info('Job creation requested', {
-      quoteId: request.quoteId,
-      title: request.title,
-      status: request.status,
-      totalPrice: request.totalPrice,
-    });
+    const pipelineId = process.env.GHL_PIPELINE_ID;
+    const stageId = process.env.GHL_QUOTE_STAGE_ID;
 
-    // When GHL opportunity API is fully integrated, implement here
-    // For now, the contact sync handles tagging which can trigger GHL automations
-    return { id: `ghl-opp-${request.quoteId}-${Date.now()}`, success: true };
+    if (!pipelineId || !stageId) {
+      logger.warn('GHL pipeline/stage IDs not configured, skipping job creation');
+      return { id: `mock-job-${Date.now()}`, success: true };
+    }
+
+    try {
+      const opp = await createOpportunity({
+        name: request.title,
+        pipelineId,
+        pipelineStageId: stageId,
+        contactId: request.contactId,
+        status: 'open',
+        monetaryValue: request.totalPrice,
+      });
+
+      logger.info('GHL opportunity created', {
+        opportunityId: opp.id,
+        quoteId: request.quoteId,
+        totalPrice: request.totalPrice,
+      });
+
+      return { id: opp.id, success: true };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('GHL opportunity creation failed', { error: errorMessage });
+      return { id: '', success: false, error: errorMessage };
+    }
   },
 
   /**
@@ -150,9 +172,36 @@ export const jobnimbusAdapter = {
       return { id: jobId, success: true };
     }
 
-    logger.info('Job status update requested', { jobId, status });
-    // When implemented, this would update GHL opportunity stage
-    return { id: jobId, success: true };
+    // Map status strings to GHL stage env vars
+    const stageEnvMap: Record<string, string> = {
+      quote: 'GHL_QUOTE_STAGE_ID',
+      scheduled: 'GHL_SCHEDULED_STAGE_ID',
+      in_progress: 'GHL_IN_PROGRESS_STAGE_ID',
+      completed: 'GHL_COMPLETED_STAGE_ID',
+      cancelled: 'GHL_CANCELLED_STAGE_ID',
+    };
+
+    const envKey = stageEnvMap[status];
+    const stageId = envKey ? process.env[envKey] : undefined;
+
+    if (!stageId) {
+      logger.warn('No GHL stage ID mapped for status, skipping move', { status, envKey });
+      return { id: jobId, success: true };
+    }
+
+    try {
+      const opp = await moveOpportunityToStage(jobId, stageId);
+      logger.info('GHL opportunity moved to stage', {
+        opportunityId: opp.id,
+        status,
+        stageId,
+      });
+      return { id: opp.id, success: true };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('GHL opportunity stage move failed', { error: errorMessage, jobId, status });
+      return { id: jobId, success: false, error: errorMessage };
+    }
   },
 
   /**
@@ -165,21 +214,34 @@ export const jobnimbusAdapter = {
       return { id: `mock-sync-${quoteId}`, success: true };
     }
 
-    // Build tags based on quote status
-    const tags = ['results-roofing', `quote-${data.status || 'new'}`];
-    if (data.packageTier) {
-      tags.push(`tier-${data.packageTier}`);
+    // If we have an opportunity ID (quoteId maps to it), update monetary value
+    // The quoteId here is expected to be the GHL opportunity ID when syncing
+    try {
+      const opp = await updateOpportunity({
+        id: quoteId,
+        ...(data.totalPrice !== undefined && { monetaryValue: data.totalPrice }),
+        ...(data.status && {
+          status: data.status === 'cancelled' || data.status === 'lost'
+            ? 'lost' as const
+            : data.status === 'completed' || data.status === 'won'
+              ? 'won' as const
+              : 'open' as const,
+        }),
+      });
+
+      logger.info('GHL opportunity synced with quote data', {
+        opportunityId: opp.id,
+        quoteId,
+        totalPrice: data.totalPrice,
+        status: data.status,
+      });
+
+      return { id: opp.id, success: true };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('GHL quote sync failed', { error: errorMessage, quoteId });
+      return { id: quoteId, success: false, error: errorMessage };
     }
-
-    logger.info('Quote sync to CRM', {
-      quoteId,
-      status: data.status,
-      totalPrice: data.totalPrice,
-      tags,
-    });
-
-    // Full quote sync would update GHL contact custom fields and opportunity
-    return { id: `sync-${quoteId}`, success: true };
   },
 };
 
