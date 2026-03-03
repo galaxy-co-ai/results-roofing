@@ -48,6 +48,14 @@ export async function GET(
       );
     }
 
+    // Ownership check — return 404 (not 403) to avoid leaking order existence
+    if (order.clerkUserId !== userId) {
+      return NextResponse.json(
+        { error: 'Order not found' },
+        { status: 404 }
+      );
+    }
+
     // Get related data
     const [payments, appointments, contracts, totalPaid] = await Promise.all([
       getPaymentsByOrderId(id),

@@ -86,3 +86,6 @@ pnpm-lock.yaml
 # Claude Code local settings
 .claude/
 .env.vercel
+
+.vercel
+.env*.local

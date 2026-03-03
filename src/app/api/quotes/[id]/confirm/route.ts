@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { clerkClient } from '@clerk/nextjs/server';
 import { db, schema, eq } from '@/db/index';
 import { logger } from '@/lib/utils';
 
@@ -82,6 +83,40 @@ export async function POST(
             updatedAt: timestamp,
           })
           .where(eq(schema.leads.id, quote.leadId));
+      }
+    }
+
+    // Create Clerk account so user can access portal
+    if (quote.leadId) {
+      try {
+        const clerk = await clerkClient();
+
+        // Check if user already exists by email
+        const existingUsers = await clerk.users.getUserList({
+          emailAddress: [email],
+        });
+
+        let clerkUserId: string;
+
+        if (existingUsers.data.length > 0) {
+          clerkUserId = existingUsers.data[0].id;
+        } else {
+          const newUser = await clerk.users.createUser({
+            emailAddress: [email],
+            firstName: firstName || undefined,
+            lastName: lastName || undefined,
+          });
+          clerkUserId = newUser.id;
+        }
+
+        // Link Clerk user to lead
+        await db
+          .update(schema.leads)
+          .set({ clerkUserId })
+          .where(eq(schema.leads.id, quote.leadId));
+      } catch (clerkError) {
+        // Log but don't block — user can still sign up manually
+        logger.error('Clerk account creation failed:', clerkError);
       }
     }
 

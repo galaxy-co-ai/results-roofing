@@ -165,9 +165,9 @@ export interface ReceiptData {
 
 const COMPANY = {
   name: 'Results Roofing',
-  phone: '(512) 555-0199',
-  email: 'info@resultsroofing.com',
-  license: 'TX License #XXXXXX',
+  phone: process.env.COMPANY_PHONE || '(512) 555-0199',
+  email: process.env.COMPANY_EMAIL || 'info@resultsroofing.com',
+  license: process.env.COMPANY_LICENSE || 'TX License #XXXXXX',
 };
 
 function formatCurrency(amount: number): string {

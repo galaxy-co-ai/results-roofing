@@ -18,7 +18,7 @@ Instant roof replacement quote platform for self-pay homeowners.
 |-----|-------|
 | Stack | Next.js 14, TypeScript, Drizzle, Neon, Clerk, Stripe |
 | Status | MVP ~75% complete |
-| Design | `designs/results-roofing/brand.md` |
+| Design | `designs/brand.md` (local to project) |
 
 ---
 
