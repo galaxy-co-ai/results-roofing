@@ -36,6 +36,9 @@ export const measurements = pgTable(
     // Google Solar specific
     imageryQuality: varchar('imagery_quality', { length: 10 }), // HIGH, MEDIUM, BASE
     imageryDate: varchar('imagery_date', { length: 10 }), // YYYY-MM-DD
+    // GAF QuickMeasure specific
+    gafOrderNumber: text('gaf_order_number'),
+    gafAssets: jsonb('gaf_assets').$type<Record<string, string>>(), // { filename: blobUrl }
     // Raw vendor response
     rawResponse: jsonb('raw_response'),
     errorMessage: text('error_message'),

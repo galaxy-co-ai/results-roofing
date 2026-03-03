@@ -4,6 +4,7 @@
  *
  * Status (Updated 2026-03-03):
  * ✅ google-solar - Satellite roof measurements via Google Solar API
+ * ✅ gaf - GAF QuickMeasure async roof reports via Digital Design API
  * ✅ resend - Email delivery complete (MIGRATING to GHL)
  * ✅ ghl-messaging - Unified SMS + Email + CRM
  * ✅ signatures - In-house SignatureCapture component (replaced DocuSeal/Documenso)
@@ -57,6 +58,13 @@ export {
   type SolarMeasurementError,
   type SolarMeasurementOutcome,
 } from './google-solar';
+
+// GAF QuickMeasure (Digital Design API)
+export {
+  gafAdapter,
+  type GAFPlaceOrderInput,
+  type GAFOrderResponse,
+} from './gaf';
 
 // Stripe Customer Management
 export {

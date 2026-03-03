@@ -4,6 +4,7 @@ import { db, schema, eq } from '@/db/index';
 import { estimateRoofSqft, calculatePriceRanges } from '@/lib/pricing';
 import { estimateSqftFromSatellite } from '@/lib/pricing/estimate-sqft';
 import { calculateQuotePricing } from '@/lib/pricing/calculate-quote';
+import { gafAdapter } from '@/lib/integrations/adapters/gaf';
 import { logger } from '@/lib/utils';
 
 const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ', 'OK'];
@@ -272,6 +273,57 @@ export async function POST(request: NextRequest) {
         })
         .catch((err) => {
           logger.warn('[QuoteCreate] Background satellite measurement failed', {
+            quoteId: quote.id,
+            error: err instanceof Error ? err.message : 'Unknown error',
+          });
+        });
+    }
+
+    // Fire-and-forget: place GAF QuickMeasure order in background
+    // Results arrive ~1hr later via webhook at /api/webhooks/gaf
+    if (lat && lng && gafAdapter.isConfigured()) {
+      gafAdapter
+        .placeOrder({
+          quoteId: quote.id,
+          address1: addressData.address,
+          city: addressData.city,
+          state: addressData.state,
+          zip: addressData.zip,
+          lat: Number(lat),
+          lng: Number(lng),
+          fullAddress: `${addressData.address}, ${addressData.city}, ${addressData.state} ${addressData.zip}`,
+        })
+        .then(async (result) => {
+          // Store the GAF order number on the measurement record
+          // (measurement may or may not exist yet from Google Solar)
+          const existing = await db.query.measurements.findFirst({
+            where: eq(schema.measurements.quoteId, quote.id),
+          });
+
+          if (existing) {
+            await db
+              .update(schema.measurements)
+              .set({
+                gafOrderNumber: String(result.OrderNumber || result.orderId || ''),
+              })
+              .where(eq(schema.measurements.id, existing.id));
+          } else {
+            // Google Solar hasn't completed yet — create a pending measurement
+            await db.insert(schema.measurements).values({
+              quoteId: quote.id,
+              vendor: 'google_solar', // primary vendor stays google_solar
+              gafOrderNumber: String(result.OrderNumber || result.orderId || ''),
+              status: 'processing',
+            });
+          }
+
+          logger.info('[QuoteCreate] GAF QuickMeasure order placed', {
+            quoteId: quote.id,
+            gafOrderNumber: result.OrderNumber || result.orderId,
+          });
+        })
+        .catch((err) => {
+          logger.warn('[QuoteCreate] Background GAF order failed', {
             quoteId: quote.id,
             error: err instanceof Error ? err.message : 'Unknown error',
           });
