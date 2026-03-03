@@ -89,3 +89,6 @@ pnpm-lock.yaml
 
 .vercel
 .env*.local
+
+# GAF report samples (customer data, do not commit)
+docs/gaf-reports/
