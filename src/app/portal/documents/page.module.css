@@ -115,6 +115,55 @@
   50% { opacity: 0.5; }
 }
 
+.actionButton:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Empty / processing states */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  background: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: 6px;
+  gap: 8px;
+}
+
+.emptyIcon {
+  color: var(--rr-color-text-tertiary);
+  margin-bottom: 4px;
+}
+
+.spinnerIcon {
+  color: var(--rr-color-text-tertiary);
+  margin-bottom: 4px;
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.emptyTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0;
+}
+
+.emptyText {
+  font-size: 13px;
+  color: var(--rr-color-text-secondary);
+  max-width: 360px;
+  margin: 0;
+}
+
 @media (max-width: 768px) {
   .documentRow {
     flex-direction: column;

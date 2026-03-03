@@ -1,7 +1,18 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import { Eye, Download, Share2, Printer, FileCheck, ShieldCheck, Package } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import {
+  Eye,
+  Download,
+  FileCheck,
+  ShieldCheck,
+  Package,
+  FileText,
+  Ruler,
+  Loader2,
+  FileQuestion,
+} from 'lucide-react';
 import { PortalHeader } from '@/components/features/portal/PortalHeader/PortalHeader';
 import { EmptyStateLocked } from '@/components/features/portal/EmptyStateLocked/EmptyStateLocked';
 import { usePortalPhase } from '@/hooks/usePortalPhase';
@@ -10,15 +21,73 @@ import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import type { LucideIcon } from 'lucide-react';
 import styles from './page.module.css';
 
-interface DocumentRowProps {
-  title: string;
-  subtitle: string;
-  icon: LucideIcon;
-  iconBg: string;
-  status?: 'signed' | 'pending';
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+interface PortalDocument {
+  id: string;
+  name: string;
+  type: string;
+  url: string | null;
+  source: 'gaf' | 'manual';
+  status?: string;
+  createdAt: string;
 }
 
-function DocumentRow({ title, subtitle, icon: Icon, iconBg, status }: DocumentRowProps) {
+interface DocumentsResponse {
+  documents: PortalDocument[];
+  measurementStatus: string | null;
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+/** Pick an icon + background colour based on document type / source */
+function getDocumentMeta(doc: PortalDocument): { icon: LucideIcon; iconBg: string } {
+  if (doc.source === 'gaf') {
+    return { icon: Ruler, iconBg: 'var(--rr-color-status-info-bg)' };
+  }
+
+  switch (doc.type) {
+    case 'contract':
+    case 'deposit_authorization':
+      return { icon: FileCheck, iconBg: 'var(--rr-color-status-info-bg)' };
+    case 'warranty':
+      return { icon: ShieldCheck, iconBg: 'var(--rr-color-status-success-bg)' };
+    case 'invoice':
+    case 'receipt':
+      return { icon: FileText, iconBg: 'var(--rr-color-status-warning-bg)' };
+    default:
+      return { icon: Package, iconBg: 'var(--rr-color-status-warning-bg)' };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Row component
+// ---------------------------------------------------------------------------
+
+interface DocumentRowProps {
+  doc: PortalDocument;
+}
+
+function DocumentRow({ doc }: DocumentRowProps) {
+  const { icon: Icon, iconBg } = getDocumentMeta(doc);
+  const isSigned = doc.status === 'signed' || doc.status === 'completed';
+
+  function handleView() {
+    if (doc.url) window.open(doc.url, '_blank', 'noopener');
+  }
+
+  function handleDownload() {
+    if (!doc.url) return;
+    const a = document.createElement('a');
+    a.href = doc.url;
+    a.download = doc.name;
+    a.click();
+  }
+
   return (
     <div className={styles.documentRow}>
       <div className={styles.documentInfo}>
@@ -26,59 +95,102 @@ function DocumentRow({ title, subtitle, icon: Icon, iconBg, status }: DocumentRo
           <Icon size={18} />
         </div>
         <div className={styles.documentText}>
-          <span className={styles.documentTitle}>{title}</span>
-          <span className={styles.documentSubtitle}>{subtitle}</span>
+          <span className={styles.documentTitle}>{doc.name}</span>
+          <span className={styles.documentSubtitle}>
+            {doc.source === 'gaf' ? 'GAF QuickMeasure' : doc.type.replace(/_/g, ' ')}
+          </span>
         </div>
-        {status === 'signed' && (
-          <span className={styles.signedBadge}>Signed</span>
-        )}
+        {isSigned && <span className={styles.signedBadge}>Signed</span>}
       </div>
       <div className={styles.documentActions}>
-        <button className={styles.actionButton} aria-label="View document" title="View">
+        <button
+          className={styles.actionButton}
+          aria-label="View document"
+          title="View"
+          onClick={handleView}
+          disabled={!doc.url}
+        >
           <Eye size={16} />
         </button>
-        <button className={styles.actionButton} aria-label="Download document" title="Download">
+        <button
+          className={styles.actionButton}
+          aria-label="Download document"
+          title="Download"
+          onClick={handleDownload}
+          disabled={!doc.url}
+        >
           <Download size={16} />
-        </button>
-        <button className={styles.actionButton} aria-label="Share document" title="Share">
-          <Share2 size={16} />
-        </button>
-        <button className={styles.actionButton} aria-label="Print document" title="Print">
-          <Printer size={16} />
         </button>
       </div>
     </div>
   );
 }
 
-function DocumentsList() {
+// ---------------------------------------------------------------------------
+// Documents list
+// ---------------------------------------------------------------------------
+
+function DocumentsList({ orderId }: { orderId: string }) {
+  const { data, isLoading } = useQuery<DocumentsResponse>({
+    queryKey: ['documents', orderId],
+    queryFn: async () => {
+      const res = await fetch(`/api/portal/documents?orderId=${orderId}`);
+      if (!res.ok) throw new Error('Failed to fetch documents');
+      return res.json();
+    },
+    enabled: !!orderId,
+    staleTime: 30 * 1000,
+  });
+
+  if (isLoading) {
+    return <div className={styles.skeletonBlock} style={{ height: 200 }} />;
+  }
+
+  const documents = data?.documents ?? [];
+  const measurementStatus = data?.measurementStatus ?? null;
+
+  // GAF measurement is still processing — show a friendly state
+  if (measurementStatus === 'processing' && documents.length === 0) {
+    return (
+      <div className={styles.emptyState}>
+        <Loader2 size={32} className={styles.spinnerIcon} />
+        <p className={styles.emptyTitle}>Measurement in Progress</p>
+        <p className={styles.emptyText}>
+          Your GAF roof measurement is being processed. Documents will appear here once
+          it&apos;s complete.
+        </p>
+      </div>
+    );
+  }
+
+  if (documents.length === 0) {
+    return (
+      <div className={styles.emptyState}>
+        <FileQuestion size={32} className={styles.emptyIcon} />
+        <p className={styles.emptyTitle}>No Documents Yet</p>
+        <p className={styles.emptyText}>
+          Documents like measurement reports, contracts, and warranties will appear here as
+          your project progresses.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.documentsList}>
-      <DocumentRow
-        title="Roofing Contract"
-        subtitle="Full replacement agreement"
-        icon={FileCheck}
-        iconBg="var(--rr-color-status-info-bg)"
-        status="signed"
-      />
-      <DocumentRow
-        title="Warranty Certificate"
-        subtitle="30-year GAF Golden Pledge"
-        icon={ShieldCheck}
-        iconBg="var(--rr-color-status-success-bg)"
-      />
-      <DocumentRow
-        title="Materials Specification"
-        subtitle="GAF Timberline HDZ specifications"
-        icon={Package}
-        iconBg="var(--rr-color-status-warning-bg)"
-      />
+      {documents.map((doc) => (
+        <DocumentRow key={doc.id} doc={doc} />
+      ))}
     </div>
   );
 }
 
+// ---------------------------------------------------------------------------
+// Page wrapper
+// ---------------------------------------------------------------------------
+
 function DocumentsContent({ email }: { email: string | null }) {
-  const { phase, isLoading } = usePortalPhase(email);
+  const { phase, isLoading, order } = usePortalPhase(email);
 
   if (isLoading) {
     return (
@@ -103,7 +215,7 @@ function DocumentsContent({ email }: { email: string | null }) {
           ctaHref="/portal"
         />
       ) : (
-        <DocumentsList />
+        order && <DocumentsList orderId={order.id} />
       )}
     </div>
   );
