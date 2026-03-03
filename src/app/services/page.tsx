@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+// import Image from 'next/image'; // TODO: restore with project gallery
 import Link from 'next/link';
 import { Header, Footer } from '@/components/layout';
 import { ScrollReveal } from '@/components/features/services';
@@ -135,29 +136,9 @@ const timelineSteps = [
   { step: 8, icon: BadgeCheck, title: 'Warranty Registered', who: 'done', detail: 'GAF warranty filed. You\'re protected.' },
 ];
 
-const projects = [
-  {
-    tag: 'Storm Damage',
-    tagColor: 'bg-blue-50 text-blue-600',
-    title: 'Insurance Claim in Fort Worth, TX',
-    description: 'Hail-damaged 3-tab replaced with architectural shingles. Insurance covered full replacement.',
-    phases: ['Before', 'During', 'After'],
-  },
-  {
-    tag: 'Full Replacement',
-    tagColor: 'bg-emerald-50 text-emerald-600',
-    title: 'Aging Roof in Dallas, TX',
-    description: '22-year-old roof with multiple leak points. Complete tear-off and GAF system install.',
-    phases: ['Before', 'During', 'After'],
-  },
-  {
-    tag: 'Premium Upgrade',
-    tagColor: 'bg-amber-50 text-amber-600',
-    title: 'Designer Shingles in Plano, TX',
-    description: 'Homeowner upgraded from basic 3-tab to premium designer system for resale value.',
-    phases: ['Before', 'During', 'After'],
-  },
-];
+// TODO: Replace with real before/after project photos
+// TODO: Restore project gallery when real before/after photos are available
+// const projects = [ ... ];
 
 const paymentOptions = [
   {
@@ -482,50 +463,7 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* ─── 6. REAL PROJECTS (Light Gray) ───────────────────── */}
-        <section className="bg-[#F7F9FC] py-20 px-6 md:py-24">
-          <div className="max-w-6xl mx-auto">
-            <ScrollReveal animation="fadeUp">
-              <p className="text-xs font-semibold tracking-[0.15em] uppercase text-blue-600 text-center mb-3">
-                See the work
-              </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1E2329] text-center tracking-tight mb-14">
-                Real Projects, Real Results
-              </h2>
-            </ScrollReveal>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {projects.map((project, i) => (
-                <ScrollReveal key={project.title} animation="fadeUp" delay={i * 100}>
-                  <div className="bg-white rounded-md overflow-hidden border border-[#E8EDF5] h-full">
-                    {/* Image placeholder */}
-                    <div className="w-full h-[180px] bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-                      <Home size={32} className="text-slate-300" />
-                    </div>
-
-                    <div className="p-5">
-                      <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-semibold mb-3 ${project.tagColor}`}>
-                        {project.tag}
-                      </span>
-                      <h3 className="text-base font-semibold text-[#1E2329] mb-2">{project.title}</h3>
-                      <p className="text-sm text-[#6B7280] leading-relaxed mb-4">{project.description}</p>
-                      <div className="flex gap-2">
-                        {project.phases.map((phase) => (
-                          <span
-                            key={phase}
-                            className="text-xs font-medium px-2.5 py-1 rounded-full bg-[#F7F9FC] text-[#6B7280] border border-[#E8EDF5]"
-                          >
-                            {phase}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* ─── 6. REAL PROJECTS — hidden until real before/after photos are ready ─── */}
 
         {/* ─── 7. PAYMENT OPTIONS (White) ──────────────────────── */}
         <section className="bg-white py-20 px-6 md:py-24">
