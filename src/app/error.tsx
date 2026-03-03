@@ -1,5 +1,6 @@
 'use client';
 
+import * as Sentry from '@sentry/nextjs';
 import { useEffect } from 'react';
 import styles from './error.module.css';
 
@@ -14,10 +15,7 @@ interface ErrorPageProps {
  */
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
   useEffect(() => {
-    // Log error to monitoring service in production
-    if (process.env.NODE_ENV !== 'production') {
-      console.error('Page error:', error);
-    }
+    Sentry.captureException(error);
   }, [error]);
 
   return (

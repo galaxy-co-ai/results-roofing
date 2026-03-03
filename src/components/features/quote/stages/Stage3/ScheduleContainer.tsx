@@ -312,14 +312,15 @@ export function ScheduleContainer({ quoteId, quoteData }: ScheduleContainerProps
                     <Phone />
                   </div>
                   <div>
-                    <h2 className={styles.sectionTitle}>Phone Number</h2>
+                    <h2 id="phone-section-heading" className={styles.sectionTitle}>Phone Number</h2>
                     <p className={styles.sectionSubtitle}>For confirmation & updates</p>
                   </div>
                 </div>
 
                 <div className={styles.inputGroup}>
+                  <label htmlFor="schedule-phone" className="sr-only">Phone Number</label>
                   <input
-                    id="phone"
+                    id="schedule-phone"
                     type="tel"
                     className={styles.input}
                     placeholder="(555) 555-5555"
@@ -328,6 +329,8 @@ export function ScheduleContainer({ quoteId, quoteData }: ScheduleContainerProps
                     maxLength={14}
                     required
                     autoFocus
+                    autoComplete="tel"
+                    aria-describedby="phone-section-heading"
                   />
                 </div>
 

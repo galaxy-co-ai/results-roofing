@@ -21,7 +21,14 @@ export function Checklist({ activeStep, stepCtas = {} }: ChecklistProps) {
 
   return (
     <div className={styles.checklist}>
-      <div className={styles.progressBarTrack}>
+      <div
+        className={styles.progressBarTrack}
+        role="progressbar"
+        aria-valuenow={progressPercent}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={`Project progress: step ${activeStep} of ${CHECKLIST_STEPS.length}`}
+      >
         <div
           className={styles.progressBarFill}
           style={{ width: `${progressPercent}%` }}

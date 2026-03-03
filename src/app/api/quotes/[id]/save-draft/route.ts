@@ -10,6 +10,7 @@ import {
 } from '@/lib/quote-resume';
 import { resendAdapter } from '@/lib/integrations/adapters/resend';
 import type { QuoteDraftState } from '@/types';
+import { rateLimiters, getRequestIdentifier, rateLimitHeaders } from '@/lib/api/rate-limit';
 
 /**
  * Zod schema for save draft request
@@ -49,6 +50,16 @@ interface RouteParams {
  */
 export async function POST(request: NextRequest, { params }: RouteParams) {
   try {
+    // Rate limit: 10 per minute per IP
+    const identifier = getRequestIdentifier(request);
+    const rateLimitResult = rateLimiters.quoteOperations.check(identifier);
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429, headers: rateLimitHeaders(rateLimitResult) }
+      );
+    }
+
     const { id: quoteId } = await params;
     const body = await request.json();
 

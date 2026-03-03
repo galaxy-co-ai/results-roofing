@@ -2,9 +2,20 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { db, schema } from '@/db/index';
 import { logger } from '@/lib/utils';
+import { rateLimiters, getRequestIdentifier, rateLimitHeaders } from '@/lib/api/rate-limit';
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit: 5 per minute per IP
+    const identifier = getRequestIdentifier(request);
+    const rateLimitResult = rateLimiters.leadCapture.check(identifier);
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429, headers: rateLimitHeaders(rateLimitResult) }
+      );
+    }
+
     const body = await request.json();
     const { email, zip, state } = body;
 

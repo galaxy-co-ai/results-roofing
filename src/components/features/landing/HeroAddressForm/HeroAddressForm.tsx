@@ -95,10 +95,11 @@ export function HeroAddressForm({ className = '' }: HeroAddressFormProps) {
                   <span className={styles.addressText}>{selectedAddress.formattedAddress}</span>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={handleEditAddress}
                 className={styles.editLink}
                 type="button"
+                aria-label="Edit address"
               >
                 Edit
               </button>

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { db, schema, eq } from '@/db/index';
 import { Header } from '@/components/layout';
 import { TrustBar } from '@/components/ui';
+import { ConfirmationTracker } from '@/components/features/quote/ConfirmationTracker';
 import { CheckCircle2, Calendar, Phone, Mail, FileText, CreditCard, Check, ArrowRight } from 'lucide-react';
 import styles from './page.module.css';
 
@@ -53,11 +54,24 @@ export default async function SuccessPage({ params }: SuccessPageProps) {
     return `${dateStr} @ ${time}`;
   };
 
+  // Fetch order for this quote (if deposit has been paid)
+  const order = await db.query.orders.findFirst({
+    where: eq(schema.orders.quoteId, quoteId),
+  });
+
   // Calculate deposit amount (10% of total)
   const depositAmount = Math.round(totalPrice * 0.1);
 
   return (
     <>
+      <ConfirmationTracker
+        quoteId={quoteId}
+        orderId={order?.id ?? null}
+        confirmationNumber={order?.confirmationNumber ?? 'Pending'}
+        depositAmount={depositAmount}
+        totalPrice={totalPrice}
+        tier={(quote.selectedTier as 'good' | 'better' | 'best') ?? 'good'}
+      />
       <Header />
       <main className={styles.main}>
         <div className={styles.container}>

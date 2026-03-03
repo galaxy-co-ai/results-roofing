@@ -321,6 +321,7 @@ export function AddressAutocomplete({
           id="address-suggestions-listbox"
           className={styles.suggestions}
           role="listbox"
+          aria-label="Address suggestions"
         >
           {suggestions.map((feature, index) => (
             <button

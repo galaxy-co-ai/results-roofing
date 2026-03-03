@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { db, schema, eq, and } from '@/db/index';
 import { logger } from '@/lib/utils';
 import { resendAdapter, ghlMessagingAdapter } from '@/lib/integrations/adapters';
+import { rateLimiters, getRequestIdentifier, rateLimitHeaders } from '@/lib/api/rate-limit';
 
 // Request validation schema
 const depositAuthSchema = z.object({
@@ -25,6 +26,16 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Rate limit: 10 per minute per IP
+    const identifier = getRequestIdentifier(request);
+    const rateLimitResult = rateLimiters.quoteOperations.check(identifier);
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429, headers: rateLimitHeaders(rateLimitResult) }
+      );
+    }
+
     const { id: quoteId } = await params;
 
     // Validate request body

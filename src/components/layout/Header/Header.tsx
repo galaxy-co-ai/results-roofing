@@ -84,7 +84,7 @@ export function Header({ transparent = false }: HeaderProps) {
 
       {/* Mobile Nav */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-slate-200/60 bg-white px-6 py-4 space-y-1">
+        <nav className="md:hidden border-t border-slate-200/60 bg-white px-6 py-4 space-y-1" aria-label="Mobile navigation">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
@@ -113,7 +113,7 @@ export function Header({ transparent = false }: HeaderProps) {
               <ArrowRight size={14} />
             </Link>
           </div>
-        </div>
+        </nav>
       )}
     </header>
   );

@@ -167,6 +167,11 @@
   background: var(--rr-color-bg-tertiary, var(--rr-color-gray-50));
 }
 
+.suggestionItem:focus-visible {
+  outline: 2px solid var(--rr-color-blue);
+  outline-offset: -2px;
+}
+
 .suggestionIcon {
   color: var(--rr-color-text-tertiary);
   flex-shrink: 0;

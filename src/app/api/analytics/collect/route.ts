@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { processServerEvent, type ServerEventPayload } from '@/lib/analytics';
 import { logger } from '@/lib/utils';
+import { rateLimiters, getRequestIdentifier } from '@/lib/api/rate-limit';
 
 /**
  * Schema for analytics event payload
@@ -20,8 +21,15 @@ const eventPayloadSchema = z.object({
  */
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit: 100 per minute per IP
+    const identifier = getRequestIdentifier(request);
+    const rateLimitResult = rateLimiters.analytics.check(identifier);
+    if (!rateLimitResult.success) {
+      return new NextResponse(null, { status: 429 });
+    }
+
     const body = await request.json();
-    
+
     // Validate payload
     const parsed = eventPayloadSchema.safeParse(body);
     

@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { clerkClient } from '@clerk/nextjs/server';
 import { db, schema, eq } from '@/db/index';
 import { logger } from '@/lib/utils';
+import { rateLimiters, getRequestIdentifier, rateLimitHeaders } from '@/lib/api/rate-limit';
 
 const confirmSchema = z.object({
   fullName: z.string().min(2, 'Name must be at least 2 characters'),
@@ -20,6 +21,16 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Rate limit: 10 per minute per IP
+    const identifier = getRequestIdentifier(request);
+    const rateLimitResult = rateLimiters.quoteOperations.check(identifier);
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429, headers: rateLimitHeaders(rateLimitResult) }
+      );
+    }
+
     const { id: quoteId } = await params;
 
     const body = await request.json();

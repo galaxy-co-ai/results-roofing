@@ -30,6 +30,9 @@ export default function PortalLayout({
 }) {
   const content = (
     <div className={styles.portalLayout}>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-3 focus:bg-white focus:text-blue-600 focus:font-semibold focus:shadow-lg focus:rounded-lg focus:top-2 focus:left-2">
+        Skip to main content
+      </a>
       <PortalSidebarV2 />
       <main className={styles.mainContent} id="main-content">
         {children}

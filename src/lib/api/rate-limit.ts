@@ -141,10 +141,22 @@ export function createRateLimiter(config: RateLimitConfig) {
 export const rateLimiters = {
   /** Quote creation: 10 per minute per IP */
   quoteCreation: createRateLimiter({ windowMs: 60_000, maxRequests: 10 }),
-  
+
+  /** Quote operations (confirm, deposit-auth, save-draft): 10 per minute per IP */
+  quoteOperations: createRateLimiter({ windowMs: 60_000, maxRequests: 10 }),
+
+  /** Lead capture: 5 per minute per IP */
+  leadCapture: createRateLimiter({ windowMs: 60_000, maxRequests: 5 }),
+
+  /** Analytics collection: 100 per minute per IP */
+  analytics: createRateLimiter({ windowMs: 60_000, maxRequests: 100 }),
+
+  /** Blog views: 30 per minute per IP */
+  blogViews: createRateLimiter({ windowMs: 60_000, maxRequests: 30 }),
+
   /** API general: 100 per minute per IP */
   apiGeneral: createRateLimiter({ windowMs: 60_000, maxRequests: 100 }),
-  
+
   /** Webhook (no limit, but track for monitoring) */
   webhook: createRateLimiter({ windowMs: 60_000, maxRequests: 1000 }),
 };
