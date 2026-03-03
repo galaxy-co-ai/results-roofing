@@ -1,5 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { BRAND, formatCurrency, formatDate, capitalize, tierLabel } from './shared';
 
 const styles = StyleSheet.create({
   page: {
@@ -179,41 +180,7 @@ export interface InvoiceData {
   portalUrl?: string;
 }
 
-const COMPANY = {
-  name: 'Results Roofing',
-  phone: '(512) 555-0199',
-  email: 'info@resultsroofing.com',
-  license: 'TX License #XXXXXX',
-};
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  }).format(amount);
-}
-
-function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(date);
-}
-
-function capitalize(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
-function tierLabel(tier: string): string {
-  const labels: Record<string, string> = {
-    good: 'Standard Package',
-    better: 'Preferred Package',
-    best: 'Premium Package',
-  };
-  return labels[tier] || capitalize(tier) + ' Package';
-}
+const COMPANY = BRAND;
 
 function invoiceTypeLabel(type: string): string {
   const labels: Record<string, string> = {

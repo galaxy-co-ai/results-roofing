@@ -1,5 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { BRAND, formatCurrency, formatDate, capitalize, tierLabel, cardDisplay } from './shared';
 
 const styles = StyleSheet.create({
   page: {
@@ -163,47 +164,7 @@ export interface ReceiptData {
   customerEmail: string;
 }
 
-const COMPANY = {
-  name: 'Results Roofing',
-  phone: process.env.COMPANY_PHONE || '(512) 555-0199',
-  email: process.env.COMPANY_EMAIL || 'info@resultsroofing.com',
-  license: process.env.COMPANY_LICENSE || 'TX License #XXXXXX',
-};
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  }).format(amount);
-}
-
-function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(date);
-}
-
-function capitalize(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
-function tierLabel(tier: string): string {
-  const labels: Record<string, string> = {
-    good: 'Standard Package',
-    better: 'Preferred Package',
-    best: 'Premium Package',
-  };
-  return labels[tier] || capitalize(tier) + ' Package';
-}
-
-function cardDisplay(brand: string | null, last4: string | null): string {
-  if (!brand && !last4) return 'Card';
-  const brandName = brand ? capitalize(brand) : 'Card';
-  return last4 ? `${brandName} ending in ${last4}` : brandName;
-}
+const COMPANY = BRAND;
 
 export function ReceiptDocument({ data }: { data: ReceiptData }) {
   const typeLabel = data.paymentType === 'balance' ? 'Balance payment' : 'Deposit';
