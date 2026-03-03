@@ -168,6 +168,10 @@ export const funnelTracker = {
     trackEvent('package_selected', params);
   },
 
+  quoteCompleted(params: { quoteId: string; tier: 'good' | 'better' | 'best'; totalPrice: number }) {
+    trackEvent('quote_completed', params);
+  },
+
   financingStarted(params: { quoteId: string }) {
     trackEvent('financing_started', params);
   },
@@ -185,6 +189,10 @@ export const funnelTracker = {
   },
 
   depositPaid: trackConversion,
+
+  paymentMade(params: { quoteId: string; paymentType: 'deposit' | 'balance' | 'full'; amount: number }) {
+    trackEvent('payment_made', { ...params, currency: 'USD' });
+  },
 };
 
 /**

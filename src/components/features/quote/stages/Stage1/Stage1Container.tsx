@@ -9,6 +9,7 @@ import { PropertyConfirm } from './PropertyConfirm';
 import { OutOfAreaCapture } from '@/components/features/address';
 import type { ParsedAddress } from '@/components/features/address';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { funnelTracker } from '@/lib/analytics';
 import styles from './Stage1.module.css';
 
 interface Stage1ContainerProps {
@@ -86,6 +87,9 @@ export function Stage1Container({ initialAddress = '' }: Stage1ContainerProps) {
       setOutOfAreaState(null); // Clear any previous out-of-area state
       setAddress(address);
       goToSubStep('property-confirm');
+
+      // Analytics: quote funnel entry point
+      funnelTracker.quoteStarted({ source: 'quote_flow' });
     },
     [setAddress, goToSubStep]
   );
@@ -103,6 +107,9 @@ export function Stage1Container({ initialAddress = '' }: Stage1ContainerProps) {
 
     setLoading(true);
     setError(null);
+
+    // Analytics: measurement is kicked off when quote is created
+    funnelTracker.measurementRequested({ quoteId: 'pending' });
 
     try {
       const response = await fetch('/api/quotes', {
@@ -127,6 +134,9 @@ export function Stage1Container({ initialAddress = '' }: Stage1ContainerProps) {
 
       confirmProperty();
       setQuoteId(data.id);
+
+      // Analytics: measurement results returned with quote
+      funnelTracker.measurementCompleted({ quoteId: data.id, source: 'satellite' });
 
       // Go directly to package selection, skipping price preview
       router.push(`/quote/${data.id}/customize`);

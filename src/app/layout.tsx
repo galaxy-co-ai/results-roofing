@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import { Sora, Inter, JetBrains_Mono } from 'next/font/google';
 import { Providers } from '@/components/providers/Providers';
 import { ChatProvider, ChatWidget } from '@/components/features/support';
@@ -81,6 +82,8 @@ export const viewport: Viewport = {
   themeColor: '#2563EB',
 };
 
+const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+
 /**
  * Root Layout
  *
@@ -98,7 +101,24 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {gtmId && (
+          <Script id="gtm-init" strategy="afterInteractive">
+            {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`}
+          </Script>
+        )}
+      </head>
       <body className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable} font-[family-name:var(--font-inter)]`}>
+        {gtmId && (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            />
+          </noscript>
+        )}
         {/* Skip to main content link for accessibility */}
         <a
           href="#main-content"

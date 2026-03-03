@@ -8,6 +8,7 @@ import { ScheduleSelection } from './ScheduleSelection';
 import { ReassuranceModal } from '../../ReassuranceModal';
 // Financing selection skipped - users handle financing in dashboard after deposit
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { funnelTracker } from '@/lib/analytics';
 import styles from './Stage2.module.css';
 
 interface Stage2ContainerProps {
@@ -108,6 +109,15 @@ export function Stage2Container({ quoteId, quoteData }: Stage2ContainerProps) {
         }
 
         selectTier(tier);
+
+        // Analytics: user selected a package — quote funnel complete
+        const selectedTierData = quoteData.tiers.find(t => t.tier === tier);
+        funnelTracker.quoteCompleted({
+          quoteId,
+          tier,
+          totalPrice: selectedTierData?.totalPrice ?? 0,
+        });
+
         // Show reassurance modal before navigating to schedule
         setPendingTier(tier);
         setShowReassurance(true);

@@ -6,6 +6,7 @@ import { estimateSqftFromSatellite } from '@/lib/pricing/estimate-sqft';
 import { calculateQuotePricing } from '@/lib/pricing/calculate-quote';
 import { gafAdapter } from '@/lib/integrations/adapters/gaf';
 import { logger } from '@/lib/utils';
+import { rateLimiters, getRequestIdentifier, rateLimitHeaders } from '@/lib/api/rate-limit';
 
 const SERVICE_STATES = ['TX', 'GA', 'NC', 'AZ', 'OK'];
 
@@ -81,6 +82,17 @@ function isStructuredAddress(body: unknown): body is StructuredAddress {
 }
 
 export async function POST(request: NextRequest) {
+  // Rate limiting: 10 requests per minute per IP
+  const identifier = getRequestIdentifier(request);
+  const rateLimitResult = rateLimiters.quoteCreation.check(identifier);
+
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: rateLimitHeaders(rateLimitResult) }
+    );
+  }
+
   try {
     const body = await request.json();
 

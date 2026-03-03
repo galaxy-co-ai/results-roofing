@@ -13,6 +13,7 @@ import { PaymentProgressCard, PaymentProgressCardSkeleton } from '@/components/f
 import { PaymentOptionCard, PaymentOptionCardSkeleton } from '@/components/features/portal/PaymentOptionCard';
 import { PaymentHistoryTable, PaymentHistoryTableSkeleton } from '@/components/features/portal/PaymentHistoryTable';
 import { InvoiceCard } from '@/components/features/portal/InvoiceCard';
+import { funnelTracker } from '@/lib/analytics';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import styles from './page.module.css';
 
@@ -82,6 +83,13 @@ function PaymentsLedger({ email }: { email: string }) {
   }
 
   function handlePaymentSuccess() {
+    // Analytics: portal payment succeeded
+    funnelTracker.paymentMade({
+      quoteId: orderDetail.quoteId || '',
+      paymentType: selectedPaymentType,
+      amount: selectedAmount,
+    });
+
     setDrawerOpen(false);
     queryClient.invalidateQueries({ queryKey: ['orders'] });
     queryClient.invalidateQueries({ queryKey: ['order', orderId] });

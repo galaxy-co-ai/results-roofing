@@ -29,6 +29,7 @@ export type QuoteFunnelEvent =
   | 'measurement_manual_entry'
   | 'package_viewed'
   | 'package_selected'
+  | 'quote_completed'
   | 'financing_started'
   | 'financing_completed'
   | 'financing_declined'
@@ -49,7 +50,8 @@ export type PortalEvent =
   | 'portal_documents_viewed'
   | 'portal_payments_viewed'
   | 'portal_schedule_viewed'
-  | 'portal_document_downloaded';
+  | 'portal_document_downloaded'
+  | 'payment_made';
 
 /**
  * General website event names
@@ -109,6 +111,25 @@ export interface PackageSelectedParams extends BaseEventParams {
   totalPrice: number;
   depositAmount: number;
   sqft?: number;
+}
+
+/**
+ * Quote Completed event (user finishes selecting a package)
+ */
+export interface QuoteCompletedParams extends BaseEventParams {
+  quoteId: string;
+  tier: 'good' | 'better' | 'best';
+  totalPrice: number;
+}
+
+/**
+ * Payment Made event (portal payment succeeds)
+ */
+export interface PaymentMadeParams extends BaseEventParams {
+  quoteId: string;
+  paymentType: 'deposit' | 'balance' | 'full';
+  amount: number;
+  currency?: string;
 }
 
 /**
@@ -193,6 +214,7 @@ export type EventParamsMap = {
   measurement_manual_entry: MeasurementParams;
   package_viewed: BaseEventParams & { quoteId: string };
   package_selected: PackageSelectedParams;
+  quote_completed: QuoteCompletedParams;
   financing_started: FinancingParams;
   financing_completed: FinancingParams;
   financing_declined: FinancingParams;
@@ -209,6 +231,7 @@ export type EventParamsMap = {
   portal_payments_viewed: BaseEventParams & { orderId?: string };
   portal_schedule_viewed: BaseEventParams & { orderId?: string };
   portal_document_downloaded: BaseEventParams & { documentType: string };
+  payment_made: PaymentMadeParams;
   page_view: PageViewParams;
   cta_clicked: CtaClickedParams;
   form_started: BaseEventParams & { formId: string };

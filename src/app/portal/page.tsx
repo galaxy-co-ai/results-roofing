@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { PortalHeader } from '@/components/features/portal/PortalHeader/PortalHeader';
 import { ProjectTimeline } from '@/components/features/portal/ProjectTimeline/ProjectTimeline';
@@ -10,6 +10,7 @@ import { QuoteWizard } from '@/components/features/portal/QuoteWizard/QuoteWizar
 import { PhaseShell } from '@/components/features/portal/PhaseShell/PhaseShell';
 import { usePortalPhase } from '@/hooks/usePortalPhase';
 import { PortalPhase } from '@/lib/portal/phases';
+import { trackEvent } from '@/lib/analytics';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import styles from './page.module.css';
 
@@ -100,6 +101,15 @@ function Phase3Content({ order }: { order: any }) {
 
 function MyProjectContent({ email }: { email: string | null }) {
   const { phase, isLoading, order, quote } = usePortalPhase(email);
+  const hasTrackedLogin = useRef(false);
+
+  // Analytics: track portal login once per mount
+  useEffect(() => {
+    if (!isLoading && email && !hasTrackedLogin.current) {
+      hasTrackedLogin.current = true;
+      trackEvent('portal_login', {});
+    }
+  }, [isLoading, email]);
 
   if (isLoading) return <MyProjectSkeleton />;
 

@@ -34,7 +34,7 @@ export function getDataLayer(): DataLayerItem[] {
 }
 
 /**
- * Push an event to the dataLayer
+ * Push an event to the dataLayer and also fire via gtag() for direct GA4 tracking
  */
 export function pushToDataLayer<T extends AnalyticsEventName>(
   eventName: T,
@@ -43,7 +43,7 @@ export function pushToDataLayer<T extends AnalyticsEventName>(
   if (!isBrowser()) return;
 
   const dataLayer = getDataLayer();
-  
+
   const event: DataLayerItem = {
     event: eventName,
     ...params,
@@ -52,7 +52,10 @@ export function pushToDataLayer<T extends AnalyticsEventName>(
 
   dataLayer.push(event);
 
-  // Development logging handled by tracker debug mode
+  // Also fire via gtag() for direct GA4 tracking (client-side)
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', eventName, params);
+  }
 }
 
 /**

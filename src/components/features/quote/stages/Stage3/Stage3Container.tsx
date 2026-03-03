@@ -10,6 +10,7 @@ import { ContractSection } from './ContractSection';
 import { SignatureSection } from './SignatureSection';
 import { PaymentSection } from './PaymentSection';
 import { OrderSummarySidebar } from '../../OrderSummarySidebar';
+import { trackEvent } from '@/lib/analytics';
 import styles from './Stage3.module.css';
 
 interface Stage3ContainerProps {
@@ -154,11 +155,24 @@ export function Stage3Container({ quoteId, quoteData }: Stage3ContainerProps) {
   const handlePaymentSuccess = useCallback(() => {
     setSectionsComplete((prev) => ({ ...prev, payment: true }));
     setPaymentSuccess(true);
+
+    // Analytics: deposit payment succeeded
+    trackEvent('deposit_paid', {
+      quoteId,
+      orderId: quoteId,
+      confirmationNumber: quoteId,
+      depositAmount: quoteData.selectedTier.depositAmount,
+      totalPrice: quoteData.selectedTier.totalPrice,
+      tier: quoteData.selectedTier.tier as 'good' | 'better' | 'best',
+      value: quoteData.selectedTier.depositAmount,
+      currency: 'USD',
+    });
+
     // Redirect to confirmation after short delay
     setTimeout(() => {
       router.push(`/quote/${quoteId}/confirmation`);
     }, 2000);
-  }, [quoteId, router]);
+  }, [quoteId, quoteData.selectedTier, router]);
 
   const handlePaymentError = useCallback(
     (error: string) => {
