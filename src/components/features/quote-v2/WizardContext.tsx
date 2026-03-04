@@ -12,6 +12,7 @@ import {
   type TierPriceRange,
 } from './WizardMachine';
 import type { ParsedAddress } from '@/components/features/address';
+import { funnelTracker, trackEvent } from '@/lib/analytics/tracker';
 
 /**
  * Values exposed through context
@@ -231,6 +232,79 @@ export function WizardProvider({
         clearTimeout(saveTimeoutRef.current);
       }
     };
+  }, [stateValue, snapshot.context]);
+
+  // Track funnel analytics on state transitions
+  const analyticsStateRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (analyticsStateRef.current === stateValue) return;
+    const prev = analyticsStateRef.current;
+    analyticsStateRef.current = stateValue;
+
+    const ctx = snapshot.context;
+    const quoteId = ctx.quoteId || '';
+    const tierData = ctx.priceRanges?.find(r => r.tier === (ctx.selectedTier || 'better'));
+
+    switch (stateValue) {
+      case 'address':
+        if (!prev) {
+          funnelTracker.quoteStarted({ source: 'quote_v2' });
+        }
+        break;
+      case 'creatingQuote':
+        if (ctx.address) {
+          funnelTracker.addressEntered({
+            quoteId,
+            state: ctx.address.state,
+            city: ctx.address.city,
+          });
+          funnelTracker.measurementRequested({ quoteId });
+        }
+        break;
+      case 'confirm':
+        if (prev === 'creatingQuote') {
+          funnelTracker.measurementCompleted({ quoteId, source: 'satellite' });
+        }
+        trackEvent('package_viewed', { quoteId });
+        break;
+      case 'schedule':
+        if (ctx.selectedTier && tierData) {
+          funnelTracker.packageSelected({
+            quoteId,
+            tier: ctx.selectedTier,
+            totalPrice: tierData.priceEstimate,
+            depositAmount: tierData.priceEstimate * 0.1,
+          });
+        }
+        break;
+      case 'contact':
+        if (ctx.scheduledDate) {
+          funnelTracker.appointmentBooked({
+            quoteId,
+            appointmentDate: ctx.scheduledDate.toISOString(),
+          });
+        }
+        break;
+      case 'payment':
+        funnelTracker.quoteCompleted({
+          quoteId,
+          tier: ctx.selectedTier || 'better',
+          totalPrice: tierData?.priceEstimate ?? 0,
+        });
+        break;
+      case 'success':
+        funnelTracker.depositPaid({
+          quoteId,
+          orderId: quoteId,
+          confirmationNumber: '',
+          depositAmount: (tierData?.priceEstimate ?? 0) * 0.1,
+          totalPrice: tierData?.priceEstimate ?? 0,
+          tier: ctx.selectedTier || 'better',
+        });
+        trackEvent('confirmation_viewed', { quoteId, orderId: quoteId });
+        break;
+    }
   }, [stateValue, snapshot.context]);
 
   const value = useMemo<WizardContextValue>(() => ({

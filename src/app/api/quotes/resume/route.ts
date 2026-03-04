@@ -114,8 +114,13 @@ export async function GET(request: NextRequest) {
  */
 function getResumeRedirectUrl(
   quoteId: string,
-  draftState: { currentStage: number; selectedTier?: string }
+  draftState: { version?: string; currentStage: number; selectedTier?: string }
 ): string {
+  // V2 quotes resume in the single-page wizard
+  if (draftState.version === 'v2') {
+    return `/quote-v2/${quoteId}`;
+  }
+
   const baseUrl = `/quote/${quoteId}`;
 
   // If user has selected a tier, go to checkout

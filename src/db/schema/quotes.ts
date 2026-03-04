@@ -58,6 +58,8 @@ export const quotes = pgTable(
     clerkUserId: text('clerk_user_id'),
     // CRM integration
     jobnimbusJobId: text('jobnimbus_job_id'),
+    // V2 wizard checkpoint (XState snapshot for resume)
+    wizardCheckpoint: jsonb('wizard_checkpoint'),
     // Expiration
     expiresAt: timestamp('expires_at', { withTimezone: true }),
     // Timestamps

@@ -40,8 +40,6 @@ export async function POST(request: NextRequest) {
     const firstName = nameParts[0];
     const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
 
-    // Store as lead — serviceType and message go into UTM fields for now
-    // TODO: Add dedicated serviceType and notes columns to leads table
     const [lead] = await db
       .insert(schema.leads)
       .values({
@@ -53,9 +51,9 @@ export async function POST(request: NextRequest) {
         city: city.trim(),
         state: state.trim().toUpperCase(),
         zip: zip.trim(),
+        serviceType,
+        notes: message?.trim() || null,
         utmSource: 'contact_form',
-        utmMedium: serviceType,
-        utmContent: message?.trim() || null,
       })
       .returning();
 

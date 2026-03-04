@@ -124,6 +124,7 @@ export async function POST(request: NextRequest) {
     await db
       .update(schema.measurements)
       .set({
+        status: 'failed',
         errorMessage: `GAF error ${payload.ProblemCode}: ${payload.ProblemDescription || 'Unknown error'}`,
         rawResponse: {
           ...(existingMeasurement.rawResponse as Record<string, unknown> || {}),
@@ -208,6 +209,9 @@ export async function POST(request: NextRequest) {
       ...(roof?.HipLength !== undefined
         ? { hipLengthFt: roof.HipLength.toString() }
         : {}),
+      status: 'complete',
+      vendor: 'gaf',
+      confidence: 'high',
       rawResponse: {
         ...(existingMeasurement.rawResponse as Record<string, unknown> || {}),
         gafCallback: payload,
@@ -215,6 +219,25 @@ export async function POST(request: NextRequest) {
       completedAt: new Date(),
     })
     .where(eq(schema.measurements.id, existingMeasurement.id));
+
+  // 9. Update quote sqft with GAF measurement (more accurate than estimate)
+  if (totalAreaSqft) {
+    await db
+      .update(schema.quotes)
+      .set({
+        sqftTotal: totalAreaSqft.toString(),
+        updatedAt: new Date(),
+      })
+      .where(eq(schema.quotes.id, quoteId));
+
+    logger.info('[GAF Webhook] Quote sqft updated', { quoteId, sqftTotal: totalAreaSqft });
+  }
+
+  // Mark webhook event as processed
+  await db
+    .update(schema.webhookEvents)
+    .set({ processed: true, processedAt: new Date() })
+    .where(eq(schema.webhookEvents.eventId, `gaf-${gafOrderNumber || subscriberOrderNumber}-${Date.now()}`));
 
   logger.info('[GAF Webhook] Measurement updated with GAF data', {
     quoteId,

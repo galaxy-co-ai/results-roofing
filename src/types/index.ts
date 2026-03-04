@@ -93,18 +93,19 @@ export interface QuoteDraftState {
   // Stage 1 data
   address?: Address;
   propertyConfirmed?: boolean;
-  
+
   // Stage 2 data (customize)
   selectedTier?: PackageTier;
   scheduledDate?: string; // ISO date string
   timeSlot?: 'morning' | 'afternoon';
   financingTerm?: 'pay-full' | '12' | '24';
-  
+
   // Stage 3 data (checkout)
   phone?: string;
   smsConsent?: boolean;
-  
+
   // Flow metadata
+  version?: 'v1' | 'v2';
   currentStage: 1 | 2 | 3;
   currentStep: number;
   lastUpdatedAt: string; // ISO date string

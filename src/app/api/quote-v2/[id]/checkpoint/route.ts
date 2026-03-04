@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { db, schema, eq } from '@/db/index';
 
 /**
  * Checkpoint schema for validation
@@ -42,12 +43,6 @@ const checkpointSchema = z.object({
 });
 
 /**
- * In-memory storage for development
- * In production, this would be stored in Redis or the database
- */
-const checkpoints = new Map<string, { state: string; context: Record<string, unknown>; timestamp: Date }>();
-
-/**
  * GET /api/quote-v2/[id]/checkpoint
  * Retrieve saved wizard state for a quote
  */
@@ -57,20 +52,25 @@ export async function GET(
 ) {
   const quoteId = params.id;
 
-  const checkpoint = checkpoints.get(quoteId);
+  const quote = await db.query.quotes.findFirst({
+    where: eq(schema.quotes.id, quoteId),
+    columns: { wizardCheckpoint: true },
+  });
 
-  if (!checkpoint) {
+  if (!quote?.wizardCheckpoint) {
     return NextResponse.json(
       { error: 'Checkpoint not found' },
       { status: 404 }
     );
   }
 
+  const checkpoint = quote.wizardCheckpoint as { state: string; context: Record<string, unknown>; timestamp: string };
+
   return NextResponse.json({
     quoteId,
     state: checkpoint.state,
     context: checkpoint.context,
-    savedAt: checkpoint.timestamp.toISOString(),
+    savedAt: checkpoint.timestamp,
   });
 }
 
@@ -99,12 +99,18 @@ export async function POST(
 
     const { state, context } = result.data;
 
-    // Save checkpoint
-    checkpoints.set(quoteId, {
-      state,
-      context: context as Record<string, unknown>,
-      timestamp: new Date(),
-    });
+    // Save checkpoint to quotes table
+    await db
+      .update(schema.quotes)
+      .set({
+        wizardCheckpoint: {
+          state,
+          context,
+          timestamp: new Date().toISOString(),
+        },
+        updatedAt: new Date(),
+      })
+      .where(eq(schema.quotes.id, quoteId));
 
     return NextResponse.json({
       success: true,
@@ -130,11 +136,16 @@ export async function DELETE(
 ) {
   const quoteId = params.id;
 
-  const existed = checkpoints.has(quoteId);
-  checkpoints.delete(quoteId);
+  await db
+    .update(schema.quotes)
+    .set({
+      wizardCheckpoint: null,
+      updatedAt: new Date(),
+    })
+    .where(eq(schema.quotes.id, quoteId));
 
   return NextResponse.json({
     success: true,
-    deleted: existed,
+    deleted: true,
   });
 }

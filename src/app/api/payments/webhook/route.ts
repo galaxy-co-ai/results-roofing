@@ -533,6 +533,32 @@ async function handlePaymentFailure(paymentIntent: Stripe.PaymentIntent) {
 
   // Note: We don't change quote status on failure - user can retry
   // The frontend will show the error from Stripe Elements
+
+  // Send failure notification email so the customer knows to retry
+  const quote = await db.query.quotes.findFirst({
+    where: eq(schema.quotes.id, quoteId),
+    with: { lead: true },
+  });
+
+  const customerEmail = quote?.lead?.email;
+  if (customerEmail) {
+    try {
+      const customerName = quote.lead?.firstName
+        ? `${quote.lead.firstName} ${quote.lead.lastName || ''}`.trim()
+        : 'Valued Customer';
+
+      const quoteUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://app.resultsroofing.com'}/quote/${quoteId}/checkout`;
+
+      await resendAdapter.sendProjectUpdate(customerEmail, {
+        customerName,
+        message: `We weren't able to process your payment. This can happen if your card was declined or if there was a temporary issue with your bank. No charges were made to your account.\n\nYou can try again anytime by visiting your quote: ${quoteUrl}\n\nIf you continue to have trouble, please contact us and we'll be happy to help.`,
+      });
+
+      logger.info('[WEBHOOK] Payment failure email sent', { to: customerEmail, quoteId });
+    } catch (emailError) {
+      logger.error('[WEBHOOK] Exception sending payment failure email', emailError);
+    }
+  }
 }
 
 /**

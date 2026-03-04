@@ -26,6 +26,9 @@ export const leads = pgTable(
     utmTerm: text('utm_term'),
     // User identity (linked when user signs into portal)
     clerkUserId: text('clerk_user_id'),
+    // Contact form fields
+    serviceType: text('service_type'),
+    notes: text('notes'),
     // CRM integration
     jobnimbusContactId: text('jobnimbus_contact_id'),
     // Stripe integration
