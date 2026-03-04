@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db, schema, rawSql } from '@/db';
+import { db, rawSql } from '@/db';
 
 /**
  * GET /api/health/synthetic

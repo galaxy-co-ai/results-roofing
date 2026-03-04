@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { renderToBuffer } from '@react-pdf/renderer';
 import React from 'react';
-import { db, schema, eq, and } from '@/db/index';
+import { db, schema, eq } from '@/db/index';
 import { logger } from '@/lib/utils';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import { formatDate } from '@/lib/pdf/shared';

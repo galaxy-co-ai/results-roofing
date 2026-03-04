@@ -1,6 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
-import { BRAND, formatCurrency, formatDate, capitalize, tierLabel } from './shared';
+import { BRAND, formatCurrency, formatDate, tierLabel } from './shared';
 
 const styles = StyleSheet.create({
   page: {
