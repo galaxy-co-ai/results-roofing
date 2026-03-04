@@ -164,7 +164,7 @@ function NoOrdersState() {
         <Home size={48} aria-hidden="true" />
         <h2>No Projects Yet</h2>
         <p>Start your roofing journey by getting a free quote.</p>
-        <Link href="/quote/new" className={styles.ctaButton}>
+        <Link href="/quote-v2" className={styles.ctaButton}>
           Get Your Free Quote
         </Link>
       </div>

@@ -104,7 +104,7 @@ export function ServiceTierCard({
       </ul>
 
       {/* CTA */}
-      <Link href="/quote/new" className={`${ctaStyles[tier]} mt-8`}>
+      <Link href="/quote-v2" className={`${ctaStyles[tier]} mt-8`}>
         Get a Quote
         <ArrowRight size={16} />
       </Link>

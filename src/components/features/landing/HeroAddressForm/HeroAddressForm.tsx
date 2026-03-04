@@ -57,7 +57,7 @@ export function HeroAddressForm({ className = '' }: HeroAddressFormProps) {
       sessionStorage.setItem('pendingAddress', JSON.stringify(selectedAddress));
 
       // Navigate to quote wizard with prefilled flag - shows property confirmation step
-      router.push('/quote/new?prefilled=true');
+      router.push('/quote-v2?prefilled=true');
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to start quote';
       setError(errorMessage);

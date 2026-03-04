@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapPin, ArrowRight, AlertCircle } from 'lucide-react';
 import { AddressAutocomplete, type ParsedAddress } from '@/components/features/address';
 import { Button } from '@/components/ui/button';
@@ -9,12 +9,32 @@ import styles from './PropertyAddress.module.css';
 
 /**
  * Step 1a: Address entry
- * User enters their property address using the autocomplete
+ * User enters their property address using the autocomplete.
+ * Picks up prefilled address from sessionStorage (set by HeroAddressForm).
  */
 export function PropertyAddress() {
   const { setAddress, confirmProperty, context, error: wizardError } = useWizard();
   const [localAddress, setLocalAddress] = useState<ParsedAddress | null>(context.address);
   const [outOfArea, setOutOfArea] = useState(false);
+  const hasCheckedStorage = useRef(false);
+
+  // Pick up prefilled address from hero form (sessionStorage)
+  useEffect(() => {
+    if (hasCheckedStorage.current || context.address) return;
+    hasCheckedStorage.current = true;
+
+    try {
+      const pending = sessionStorage.getItem('pendingAddress');
+      if (pending) {
+        const parsed = JSON.parse(pending) as ParsedAddress;
+        setLocalAddress(parsed);
+        setAddress(parsed);
+        sessionStorage.removeItem('pendingAddress');
+      }
+    } catch {
+      // Silent — sessionStorage may not be available
+    }
+  }, [context.address, setAddress]);
 
   const handleAddressSelect = (address: ParsedAddress) => {
     setLocalAddress(address);

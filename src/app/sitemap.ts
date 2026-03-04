@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${BASE_URL}/quote/new`,
+      url: `${BASE_URL}/quote-v2`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.95,

@@ -615,7 +615,7 @@ function CinematicText({ progress }: { progress: number }) {
         }}
       >
         <a
-          href="/quote/new"
+          href="/quote-v2"
           style={{
             display: 'inline-flex',
             alignItems: 'center',

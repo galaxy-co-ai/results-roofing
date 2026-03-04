@@ -409,7 +409,7 @@ export default function AboutPage() {
             <ScrollReveal animation="fadeUp" delay={160}>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
-                  href="/quote/new"
+                  href="/quote-v2"
                   className="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-600 font-bold rounded-md hover:bg-blue-50 transition-colors shadow-lg text-base"
                 >
                   Get My Free Quote
