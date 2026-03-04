@@ -2,140 +2,192 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Header, Footer } from '@/components/layout';
 import { ScrollReveal } from '@/components/features/services';
+import { ServiceRequestForm } from '@/components/features/contact';
+import { InlineFAQ } from '@/components/features/faq/InlineFAQ';
 import {
   Phone,
   Mail,
-  MapPin,
   Clock,
   Shield,
   Award,
+  Star,
   Zap,
   ArrowRight,
-  MessageCircle,
+  MapPin,
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Contact Us',
+  title: 'Contact Us | Results Roofing',
   description:
-    'Contact Results Roofing for questions about your roof replacement. Service areas include TX, GA, NC, AZ, and OK.',
+    'Get in touch with Results Roofing. Request a free quote, ask about our services, or reach us by phone and email. Serving the DFW metro area.',
 };
 
-/* ============================================================
+/* ================================================================
    DATA
-   ============================================================ */
+   ================================================================ */
 
 const trustBadges = [
+  { icon: Shield, title: 'GAF Certified', subtitle: 'Factory-Trained' },
+  { icon: Award, title: 'Fully Insured', subtitle: 'Licensed Contractor' },
+  { icon: Zap, title: '24hr Response', subtitle: 'Guaranteed' },
+  { icon: Star, title: '4.9★ Google', subtitle: '500+ Reviews' },
+];
+
+const contactMethods = [
   {
-    icon: Shield,
-    title: 'GAF Certified',
-    description: 'Factory-Trained Installers',
+    icon: Phone,
+    label: 'Phone',
+    value: '1-800-RESULTS',
+    detail: 'Mon–Fri 8am–6pm, Sat 9am–2pm',
+    href: 'tel:+18007378587',
   },
   {
-    icon: Award,
-    title: 'Licensed & Insured',
-    description: 'Full Coverage in All States',
+    icon: Mail,
+    label: 'Email',
+    value: 'hello@resultsroofing.com',
+    detail: 'We respond within 24 hours',
+    href: 'mailto:hello@resultsroofing.com',
   },
   {
-    icon: Zap,
-    title: '24hr Response',
-    description: 'Guaranteed',
+    icon: Clock,
+    label: 'Business Hours',
+    value: 'Mon–Fri 8am–6pm',
+    detail: 'Saturday 9am–2pm · Sunday Closed',
+    href: null,
   },
 ];
 
-const serviceAreas = [
+const faqItems = [
   {
-    state: 'Texas',
-    abbr: 'TX',
-    cities: ['Dallas', 'Houston', 'Austin', 'San Antonio'],
+    question: 'How quickly can I get a quote?',
+    answer:
+      'Our instant quote system uses satellite measurement to give you pricing in under 3 minutes. Just enter your address and choose your preferred package. No appointment needed.',
   },
   {
-    state: 'Georgia',
-    abbr: 'GA',
-    cities: ['Atlanta', 'Savannah', 'Augusta'],
+    question: 'Do you offer free inspections?',
+    answer:
+      'Yes. If you suspect storm damage or want a professional assessment, we offer free roof inspections for homeowners in the DFW metro area.',
   },
   {
-    state: 'North Carolina',
-    abbr: 'NC',
-    cities: ['Charlotte', 'Raleigh', 'Durham'],
+    question: 'What payment options do you accept?',
+    answer:
+      'We accept credit/debit cards and ACH payments. We also offer financing through our lending partners — check your rate with no impact to your credit score.',
   },
   {
-    state: 'Arizona',
-    abbr: 'AZ',
-    cities: ['Phoenix', 'Tucson', 'Mesa'],
+    question: 'How long does a typical roof replacement take?',
+    answer:
+      'Most residential roof replacements are completed in 1–2 days, weather permitting. We handle everything from permits to cleanup.',
   },
   {
-    state: 'Oklahoma',
-    abbr: 'OK',
-    cities: ['Oklahoma City', 'Tulsa', 'Norman'],
+    question: 'Are you licensed and insured?',
+    answer:
+      'Absolutely. Results Roofing is a fully licensed Texas contractor with comprehensive liability and workers\' comp insurance. We\'re also GAF Certified.',
+  },
+  {
+    question: 'What warranty do I get?',
+    answer:
+      'All installations include manufacturer warranty coverage. Our premium packages qualify for GAF\'s Golden Pledge warranty — the best in the industry.',
   },
 ];
 
-/* ============================================================
+const serviceAreaCities = [
+  'Dallas',
+  'Fort Worth',
+  'Plano',
+  'Frisco',
+  'Arlington',
+  'McKinney',
+  'Denton',
+  'Irving',
+  'Richardson',
+  'Garland',
+  'Grand Prairie',
+  'Mesquite',
+];
+
+/* ================================================================
    PAGE
-   ============================================================ */
+   ================================================================ */
 
 export default function ContactPage() {
   return (
     <>
       <Header />
       <main className="min-h-screen" id="main-content">
-
-        {/* ─── 1. HERO (Dark) ─── */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 to-slate-800 py-24 px-6 md:py-32">
+        {/* ─── 1. HERO (Dark) + Service Request Form ─── */}
+        <section className="relative overflow-hidden bg-[#1E2329] py-20 px-6 md:py-28">
           <div
-            className="absolute inset-0 opacity-[0.04]"
+            className="absolute inset-0 opacity-[0.03]"
             style={{
-              backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
+              backgroundImage:
+                'radial-gradient(circle, #ffffff 1px, transparent 1px)',
               backgroundSize: '24px 24px',
             }}
             aria-hidden="true"
           />
 
-          <div className="relative max-w-4xl mx-auto text-center">
-            <ScrollReveal animation="fadeUp">
-              <h1 className="font-[family-name:var(--font-sora)] text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-                <span className="text-white">Let&apos;s</span>{' '}
-                <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
-                  Talk
-                </span>
-              </h1>
-            </ScrollReveal>
+          <div className="relative max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+              {/* Left: Copy */}
+              <div className="lg:pt-6">
+                <ScrollReveal animation="fadeUp">
+                  <span className="inline-block px-3 py-1 bg-blue-600/20 text-blue-400 text-xs font-semibold tracking-wider uppercase rounded-full mb-5">
+                    Contact Us
+                  </span>
+                </ScrollReveal>
 
-            <ScrollReveal animation="fadeUp" delay={100}>
-              <p className="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed mb-10">
-                Questions about your quote, our services, or coverage areas?
-                We&apos;re here to help — and we respond within 24 hours.
-              </p>
-            </ScrollReveal>
+                <ScrollReveal animation="fadeUp" delay={80}>
+                  <h1 className="font-[family-name:var(--font-sora)] text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight mb-5">
+                    Get In Touch
+                  </h1>
+                </ScrollReveal>
 
-            <ScrollReveal animation="fadeUp" delay={200}>
-              <Link
-                href="/quote/new"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-500 transition-colors shadow-lg shadow-blue-600/25 text-lg"
-              >
-                Get My Free Quote
-                <ArrowRight size={18} />
-              </Link>
-            </ScrollReveal>
+                <ScrollReveal animation="fadeUp" delay={160}>
+                  <p className="text-lg text-slate-400 leading-relaxed mb-8 max-w-lg">
+                    Questions about your roof, our services, or ready to get started?
+                    Fill out the form and we&apos;ll get back to you within 24 hours.
+                  </p>
+                </ScrollReveal>
+
+                <ScrollReveal animation="fadeUp" delay={240}>
+                  <p className="text-sm text-slate-500">
+                    Or call us directly:{' '}
+                    <a
+                      href="tel:+18007378587"
+                      className="text-blue-400 font-semibold hover:text-blue-300 transition-colors"
+                    >
+                      1-800-RESULTS
+                    </a>
+                  </p>
+                </ScrollReveal>
+              </div>
+
+              {/* Right: Form */}
+              <ScrollReveal animation="fadeUp" delay={200}>
+                <ServiceRequestForm />
+              </ScrollReveal>
+            </div>
           </div>
         </section>
 
-        {/* ─── 2. TRUST STRIP (Light) ─── */}
-        <section className="bg-slate-50 py-16 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-10">
+        {/* ─── 2. TRUST STRIP ─── */}
+        <section className="bg-[#F7F9FC] py-10 px-6 border-y border-[#E8EDF5]">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               {trustBadges.map((badge, i) => {
                 const Icon = badge.icon;
                 return (
-                  <ScrollReveal key={badge.title} animation="fadeUp" delay={i * 100}>
-                    <div className="text-center">
-                      <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-md shadow-blue-600/20">
-                        <Icon className="w-6 h-6 text-white" />
+                  <ScrollReveal key={badge.title} animation="fadeUp" delay={i * 80}>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Icon className="w-5 h-5 text-white" />
                       </div>
-                      <h2 className="font-[family-name:var(--font-sora)] font-semibold text-slate-900 text-lg">
-                        {badge.title}
-                      </h2>
-                      <p className="text-sm text-slate-500 mt-1">{badge.description}</p>
+                      <div>
+                        <p className="text-sm font-semibold text-slate-900">
+                          {badge.title}
+                        </p>
+                        <p className="text-xs text-slate-500">{badge.subtitle}</p>
+                      </div>
                     </div>
                   </ScrollReveal>
                 );
@@ -144,234 +196,150 @@ export default function ContactPage() {
           </div>
         </section>
 
-        {/* ─── 3. CONTACT BENTO GRID (White) ─── */}
-        <section className="bg-white py-20 px-6">
+        {/* ─── 3. REACH OUT DIRECTLY ─── */}
+        <section className="bg-white py-20 px-6 md:py-24">
           <div className="max-w-4xl mx-auto">
             <ScrollReveal animation="fadeUp">
-              <div className="text-center mb-14">
-                <h2 className="font-[family-name:var(--font-sora)] text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-4">
-                  Reach Us Directly
+              <div className="text-center mb-12">
+                <span className="text-xs font-semibold tracking-[0.15em] uppercase text-blue-600 block mb-3">
+                  Direct contact
+                </span>
+                <h2 className="font-[family-name:var(--font-sora)] text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-3">
+                  Reach Out Directly
                 </h2>
-              </div>
-            </ScrollReveal>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Card 1: Phone */}
-              <ScrollReveal animation="fadeUp" delay={0}>
-                <a
-                  href="tel:+18007378587"
-                  className="block rounded-2xl border border-slate-200 p-8 hover:shadow-xl hover:bg-gradient-to-br hover:from-blue-50/50 hover:to-transparent transition-all group"
-                >
-                  <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center mb-5 shadow-md shadow-blue-600/20 group-hover:shadow-lg group-hover:shadow-blue-600/30 transition-shadow">
-                    <Phone className="w-6 h-6 text-white" />
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                    Phone
-                  </span>
-                  <p className="font-[family-name:var(--font-sora)] font-bold text-slate-900 text-xl mt-1">
-                    1-800-RESULTS
-                  </p>
-                  <p className="text-sm text-slate-500 mt-2">
-                    Mon-Fri 8am-6pm, Sat 9am-2pm
-                  </p>
-                </a>
-              </ScrollReveal>
-
-              {/* Card 2: Email */}
-              <ScrollReveal animation="fadeUp" delay={120}>
-                <a
-                  href="mailto:hello@resultsroofing.com"
-                  className="block rounded-2xl border border-slate-200 p-8 hover:shadow-xl hover:bg-gradient-to-br hover:from-blue-50/50 hover:to-transparent transition-all group"
-                >
-                  <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center mb-5 shadow-md shadow-blue-600/20 group-hover:shadow-lg group-hover:shadow-blue-600/30 transition-shadow">
-                    <Mail className="w-6 h-6 text-white" />
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                    Email
-                  </span>
-                  <p className="font-[family-name:var(--font-sora)] font-bold text-slate-900 text-xl mt-1">
-                    hello@resultsroofing.com
-                  </p>
-                  <p className="text-sm text-slate-500 mt-2">
-                    We respond within 24 hours
-                  </p>
-                </a>
-              </ScrollReveal>
-
-              {/* Card 3: Business Hours */}
-              <ScrollReveal animation="fadeUp" delay={240}>
-                <div className="rounded-2xl border border-slate-200 p-8">
-                  <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center mb-5 shadow-md shadow-blue-600/20">
-                    <Clock className="w-6 h-6 text-white" />
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                    Business Hours
-                  </span>
-                  <div className="grid grid-cols-3 gap-3 mt-4">
-                    <div className="bg-white rounded-xl p-5 border border-slate-200/60">
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
-                        Mon-Fri
-                      </h3>
-                      <p className="font-[family-name:var(--font-sora)] font-semibold text-slate-900 text-sm">
-                        8am – 6pm
-                      </p>
-                    </div>
-                    <div className="bg-white rounded-xl p-5 border border-slate-200/60">
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
-                        Saturday
-                      </h3>
-                      <p className="font-[family-name:var(--font-sora)] font-semibold text-slate-900 text-sm">
-                        9am – 2pm
-                      </p>
-                    </div>
-                    <div className="bg-white rounded-xl p-5 border border-slate-200/60">
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
-                        Sunday
-                      </h3>
-                      <p className="font-[family-name:var(--font-sora)] font-semibold text-slate-900 text-sm">
-                        Closed
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-
-              {/* Card 4: Response Promise */}
-              <ScrollReveal animation="fadeUp" delay={360}>
-                <div className="rounded-2xl border border-slate-200 p-8">
-                  <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center mb-5 shadow-md shadow-blue-600/20">
-                    <MessageCircle className="w-6 h-6 text-white" />
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                    Response Promise
-                  </span>
-                  <p className="font-[family-name:var(--font-sora)] font-bold text-slate-900 text-xl mt-1">
-                    Fast Response
-                  </p>
-                  <p className="text-sm text-slate-500 mt-2 leading-relaxed">
-                    We respond to every inquiry within 24 hours. Most quotes are
-                    ready in minutes with our satellite measurement system.
-                  </p>
-                  <Link
-                    href="/quote/new"
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-500 transition-colors mt-4"
-                  >
-                    Get instant quote
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
-              </ScrollReveal>
-            </div>
-          </div>
-        </section>
-
-        {/* ─── 4. SERVICE AREAS (Dark) ─── */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 to-slate-800 py-20 px-6">
-          <div
-            className="absolute inset-0 opacity-[0.04]"
-            style={{
-              backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
-              backgroundSize: '24px 24px',
-            }}
-            aria-hidden="true"
-          />
-
-          <div className="relative max-w-6xl mx-auto">
-            <ScrollReveal animation="fadeUp">
-              <div className="text-center mb-14">
-                <h2 className="font-[family-name:var(--font-sora)] text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
-                  Where We Serve
-                </h2>
-                <p className="text-slate-400 max-w-lg mx-auto">
-                  Proudly serving homeowners across five states with expert roof
-                  replacement.
+                <p className="text-slate-500 max-w-lg mx-auto">
+                  Prefer a phone call or email? We&apos;re here for you.
                 </p>
               </div>
             </ScrollReveal>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {serviceAreas.map((area, i) => (
-                <ScrollReveal key={area.abbr} animation="fadeUp" delay={i * 100}>
-                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-white/20 transition-all">
-                    <div className="w-10 h-10 bg-blue-600/20 rounded-full flex items-center justify-center mb-4">
-                      <MapPin className="w-4 h-4 text-blue-400" />
-                    </div>
-                    <span className="text-blue-400 uppercase tracking-wider text-xs font-bold">
-                      {area.abbr}
-                    </span>
-                    <p className="font-[family-name:var(--font-sora)] text-white text-lg font-semibold mt-0.5">
-                      {area.state}
-                    </p>
-                    <p className="text-slate-400 text-xs mt-2 leading-relaxed">
-                      {area.cities.join(', ')}
-                    </p>
-                  </div>
-                </ScrollReveal>
-              ))}
+            <div className="grid md:grid-cols-3 gap-6">
+              {contactMethods.map((method, i) => {
+                const Icon = method.icon;
+                const Wrapper = method.href ? 'a' : 'div';
+                const wrapperProps = method.href
+                  ? { href: method.href }
+                  : {};
+
+                return (
+                  <ScrollReveal key={method.label} animation="fadeUp" delay={i * 100}>
+                    <Wrapper
+                      {...wrapperProps}
+                      className="block bg-[#F7F9FC] rounded-xl border border-[#E8EDF5] p-6 hover:shadow-md hover:border-blue-200 transition-all text-center"
+                    >
+                      <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <Icon className="w-5 h-5 text-white" />
+                      </div>
+                      <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
+                        {method.label}
+                      </p>
+                      <p className="font-[family-name:var(--font-sora)] font-bold text-slate-900 text-lg mb-1">
+                        {method.value}
+                      </p>
+                      <p className="text-sm text-slate-500">{method.detail}</p>
+                    </Wrapper>
+                  </ScrollReveal>
+                );
+              })}
             </div>
           </div>
         </section>
 
-        {/* ─── 5. INSTANT QUOTE CTA (White) ─── */}
-        <section className="bg-white py-16 px-6">
-          <div className="max-w-4xl mx-auto">
-            <ScrollReveal animation="scaleIn">
-              <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-10 md:p-14 text-center relative overflow-hidden">
-                <div
-                  className="absolute inset-0 opacity-20"
-                  style={{
-                    background:
-                      'radial-gradient(ellipse at 30% 20%, rgba(147, 197, 253, 0.5), transparent 60%)',
-                  }}
-                  aria-hidden="true"
-                />
-
-                <div className="relative">
-                  <Phone className="w-12 h-12 text-blue-200 mx-auto mb-5" />
-                  <h2 className="font-[family-name:var(--font-sora)] text-2xl md:text-3xl font-bold text-white tracking-tight mb-4">
-                    Skip the Wait — Get an Instant Quote
-                  </h2>
-                  <p className="text-blue-100 mb-8 max-w-lg mx-auto leading-relaxed">
-                    No phone call required. Just enter your address and get
-                    satellite-measured pricing in minutes.
-                  </p>
-                  <Link
-                    href="/quote/new"
-                    className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-blue-600 font-semibold rounded-xl hover:bg-blue-50 transition-colors shadow-lg"
-                  >
-                    Get My Quote
-                    <ArrowRight size={16} />
-                  </Link>
-                </div>
+        {/* ─── 4. FAQ ─── */}
+        <section className="bg-white py-16 px-6 md:py-20">
+          <div className="max-w-3xl mx-auto">
+            <ScrollReveal animation="fadeUp">
+              <div className="text-center mb-10">
+                <span className="text-xs font-semibold tracking-[0.15em] uppercase text-blue-600 block mb-3">
+                  Common questions
+                </span>
+                <h2 className="font-[family-name:var(--font-sora)] text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
+                  Frequently Asked Questions
+                </h2>
               </div>
+            </ScrollReveal>
+
+            <ScrollReveal animation="fadeUp" delay={100}>
+              <InlineFAQ items={faqItems} />
             </ScrollReveal>
           </div>
         </section>
 
-        {/* ─── 6. FINAL CTA (Dark) ─── */}
-        <section className="bg-slate-900 py-24 px-6">
-          <div className="max-w-4xl mx-auto text-center">
+        {/* ─── 5. SERVICE AREA ─── */}
+        <section className="bg-[#F7F9FC] py-20 px-6 md:py-24">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 items-start">
+              <ScrollReveal animation="fadeUp">
+                <div>
+                  <span className="text-xs font-semibold tracking-[0.15em] uppercase text-blue-600 block mb-3">
+                    Where we work
+                  </span>
+                  <h2 className="font-[family-name:var(--font-sora)] text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-3">
+                    DFW Metro Area
+                  </h2>
+                  <p className="text-slate-500 mb-6">
+                    Proudly serving homeowners across the Dallas–Fort Worth metroplex.
+                  </p>
+
+                  <div className="flex flex-wrap gap-2">
+                    {serviceAreaCities.map((city) => (
+                      <span
+                        key={city}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-[#E8EDF5] rounded-full text-sm text-slate-700"
+                      >
+                        <MapPin size={12} className="text-blue-600" />
+                        {city}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal animation="fadeUp" delay={150}>
+                <div className="bg-slate-200 rounded-xl aspect-[4/3] flex items-center justify-center">
+                  <div className="text-center text-slate-500">
+                    <MapPin size={32} className="mx-auto mb-2 text-slate-400" />
+                    <p className="text-sm font-medium">Map Coming Soon</p>
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ─── 6. FINAL CTA ─── */}
+        <section className="bg-blue-600 py-20 px-6 md:py-24">
+          <div className="max-w-3xl mx-auto text-center">
             <ScrollReveal animation="fadeUp">
               <h2 className="font-[family-name:var(--font-sora)] text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
-                Ready to Get Started?
+                Ready for Your Free Quote?
               </h2>
             </ScrollReveal>
 
-            <ScrollReveal animation="fadeUp" delay={100}>
-              <p className="text-slate-400 mb-10 text-lg max-w-lg mx-auto">
-                Get your instant quote and see package pricing tailored to your
-                home.
+            <ScrollReveal animation="fadeUp" delay={80}>
+              <p className="text-blue-100 text-lg max-w-lg mx-auto mb-10 leading-relaxed">
+                Get satellite-measured pricing in under 3 minutes. No appointment, no
+                pressure, no surprises.
               </p>
             </ScrollReveal>
 
-            <ScrollReveal animation="fadeUp" delay={200}>
-              <Link
-                href="/quote/new"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-slate-900 font-bold rounded-xl hover:bg-slate-100 transition-colors shadow-lg text-lg"
-              >
-                Get My Free Quote
-                <ArrowRight size={18} />
-              </Link>
+            <ScrollReveal animation="fadeUp" delay={160}>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link
+                  href="/quote/new"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-600 font-bold rounded-md hover:bg-blue-50 transition-colors shadow-lg text-base"
+                >
+                  Get My Free Quote
+                  <ArrowRight size={16} />
+                </Link>
+                <a
+                  href="tel:+18007378587"
+                  className="inline-flex items-center gap-2 px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-md hover:bg-white/10 transition-colors text-base"
+                >
+                  <Phone size={16} />
+                  Call 1-800-RESULTS
+                </a>
+              </div>
             </ScrollReveal>
           </div>
         </section>
