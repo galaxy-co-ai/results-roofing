@@ -115,7 +115,7 @@ function PaymentsLedger({ email }: { email: string }) {
       {/* Invoices */}
       {invoiceList.length > 0 && (
         <section aria-label="Invoices" className={styles.invoicesSection}>
-          <h3 className={styles.sectionTitle}>Invoices</h3>
+          <h2 className={styles.sectionTitle}>Invoices</h2>
           <div className={styles.invoicesList}>
             {invoiceList.map((inv: any) => (
               <InvoiceCard key={inv.id} invoice={inv} />

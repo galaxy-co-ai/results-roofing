@@ -41,6 +41,7 @@ export function DocumentViewer() {
   const { isOpen, currentDocument, closeDocument } = useDocument();
   const contentRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   // Handle escape key
   useEffect(() => {
@@ -49,10 +50,48 @@ export function DocumentViewer() {
         closeDocument();
       }
     };
-    
+
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, closeDocument]);
+
+  // Focus trap + auto-focus + restore focus on close
+  useEffect(() => {
+    if (!isOpen || !modalRef.current) return;
+
+    previousFocusRef.current = document.activeElement as HTMLElement;
+
+    const modal = modalRef.current.querySelector('[class*="modal"]') as HTMLElement;
+    if (modal) {
+      const firstFocusable = modal.querySelector<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      firstFocusable?.focus();
+    }
+
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab' || !modal) return;
+      const focusable = modal.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleTab);
+    return () => {
+      document.removeEventListener('keydown', handleTab);
+      previousFocusRef.current?.focus();
+    };
+  }, [isOpen]);
 
   // Lock body scroll when open
   useEffect(() => {
@@ -146,13 +185,13 @@ export function DocumentViewer() {
                 <span>Sign Document</span>
               </button>
             )}
-            <button className={styles.actionButton} onClick={handleShare} title="Share">
+            <button className={styles.actionButton} onClick={handleShare} aria-label="Share document" title="Share">
               <Share2 size={18} />
             </button>
-            <button className={styles.actionButton} onClick={handlePrint} title="Print">
+            <button className={styles.actionButton} onClick={handlePrint} aria-label="Print document" title="Print">
               <Printer size={18} />
             </button>
-            <button className={styles.actionButton} onClick={handleDownload} title="Download PDF">
+            <button className={styles.actionButton} onClick={handleDownload} aria-label="Download PDF" title="Download PDF">
               <Download size={18} />
             </button>
             <button className={styles.closeButton} onClick={closeDocument} aria-label="Close">

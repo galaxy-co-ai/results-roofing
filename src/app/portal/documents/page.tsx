@@ -253,7 +253,7 @@ function DocumentsContent({ email }: { email: string | null }) {
 
   if (isLoading) {
     return (
-      <div className={styles.page}>
+      <div className={styles.page} aria-busy="true" aria-label="Loading documents">
         <PortalHeader title="Documents" />
         <div className={styles.skeletonBlock} style={{ height: 300 }} />
       </div>

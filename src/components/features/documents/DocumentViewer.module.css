@@ -112,8 +112,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   background: var(--rr-color-bg-tertiary);
   border: 1px solid var(--rr-color-border-default);
   border-radius: 8px;
@@ -167,8 +167,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   background: var(--rr-color-bg-tertiary);
   border: 1px solid var(--rr-color-border-default);
   border-radius: 8px;

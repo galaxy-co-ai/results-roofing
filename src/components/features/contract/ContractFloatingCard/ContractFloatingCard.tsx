@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { X, FileText, CheckCircle } from 'lucide-react';
 import { SignatureCapture } from '../SignatureCapture';
 import styles from './ContractFloatingCard.module.css';
@@ -51,6 +51,8 @@ export function ContractFloatingCard({
   contract,
 }: ContractFloatingCardProps) {
   const [signed, setSigned] = useState(contract?.status === 'signed');
+  const cardRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   // Lock body scroll when open
   useEffect(() => {
@@ -69,6 +71,40 @@ export function ContractFloatingCard({
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   }, [isOpen, onClose]);
+
+  // Focus trap + auto-focus + restore on close
+  useEffect(() => {
+    if (!isOpen || !cardRef.current) return;
+    previousFocusRef.current = document.activeElement as HTMLElement;
+
+    const firstFocusable = cardRef.current.querySelector<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    firstFocusable?.focus();
+
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab' || !cardRef.current) return;
+      const focusable = cardRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleTab);
+    return () => {
+      document.removeEventListener('keydown', handleTab);
+      previousFocusRef.current?.focus();
+    };
+  }, [isOpen]);
 
   const handleSignatureSubmit = useCallback(async (signature: string, email: string) => {
     const quoteId = order.quoteId || order.id;
@@ -101,6 +137,7 @@ export function ContractFloatingCard({
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div
+        ref={cardRef}
         className={styles.card}
         onClick={(e) => e.stopPropagation()}
         role="dialog"

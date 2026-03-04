@@ -36,6 +36,7 @@ export function PortalSidebarV2() {
               href={item.href}
               className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
               aria-current={isActive ? 'page' : undefined}
+              aria-label={item.label}
               title={item.label}
             >
               <item.icon size={22} aria-hidden="true" />

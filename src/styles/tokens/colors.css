@@ -24,7 +24,7 @@
   --rr-color-gray-100: #E8EDF5;        /* Borders, dividers */
   --rr-color-gray-200: #D1D9E6;        /* Disabled backgrounds */
   --rr-color-gray-400: #9BA8BD;        /* Placeholders */
-  --rr-color-gray-500: #6B7A94;        /* Secondary text */
+  --rr-color-gray-500: #5C6A7E;        /* Secondary text — 4.6:1 on white */
   --rr-color-gray-600: #4A5568;        /* Body text */
 
   /* Status Colors */

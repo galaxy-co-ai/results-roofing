@@ -80,7 +80,7 @@ function getStatusIcon(status: 'completed' | 'current' | 'upcoming') {
  */
 function DashboardSkeleton() {
   return (
-    <div className={styles.dashboard}>
+    <div className={styles.dashboard} aria-busy="true" aria-label="Loading dashboard">
       {/* Header Skeleton */}
       <header className={styles.header}>
         <Skeleton variant="text" width="60%" height={32} />
