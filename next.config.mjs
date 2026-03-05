@@ -30,6 +30,17 @@ const nextConfig = {
     },
   },
 
+  // Permanent redirects — V2 is the primary quote flow
+  async redirects() {
+    return [
+      {
+        source: '/quote/new',
+        destination: '/quote-v2',
+        permanent: true,
+      },
+    ];
+  },
+
   // Rewrites for clean URLs
   async rewrites() {
     return [

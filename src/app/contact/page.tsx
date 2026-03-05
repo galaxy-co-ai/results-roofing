@@ -296,10 +296,18 @@ export default function ContactPage() {
               </ScrollReveal>
 
               <ScrollReveal animation="fadeUp" delay={150}>
-                <div className="bg-slate-200 rounded-xl aspect-[4/3] flex items-center justify-center">
-                  <div className="text-center text-slate-500">
-                    <MapPin size={32} className="mx-auto mb-2 text-slate-400" />
-                    <p className="text-sm font-medium">Map Coming Soon</p>
+                <div className="rounded-xl aspect-[4/3] overflow-hidden relative">
+                  {/* Static Mapbox map centered on DFW metroplex */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`https://api.mapbox.com/styles/v1/mapbox/light-v11/static/-96.85,32.82,8.5,0/640x480@2x?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`}
+                    alt="Map of Dallas–Fort Worth service area"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-sm">
+                    <p className="text-xs font-semibold text-slate-900">Dallas–Fort Worth Metro</p>
+                    <p className="text-[10px] text-slate-500">12+ cities served</p>
                   </div>
                 </div>
               </ScrollReveal>
