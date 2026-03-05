@@ -64,8 +64,8 @@ export default function QuoteError({ error, reset }: QuoteErrorProps) {
 
         <p className={styles.helpText}>
           If this problem persists, please contact us at{' '}
-          <a href="tel:+18005551234" className={styles.helpLink}>
-            (800) 555-1234
+          <a href="tel:+18007378587" className={styles.helpLink}>
+            1-800-RESULTS
           </a>
         </p>
       </div>

@@ -156,8 +156,8 @@ export default async function ConfirmationPage({ params }: ConfirmationPageProps
           <div className={styles.contact}>
             <p className={styles.contactText}>
               Questions? Reach us at{' '}
-              <a href="tel:+18885551234" className={styles.contactLink}>
-                (888) 555-1234
+              <a href="tel:+18007378587" className={styles.contactLink}>
+                1-800-RESULTS
               </a>{' '}
               or{' '}
               <a href="mailto:support@resultsroofing.com" className={styles.contactLink}>

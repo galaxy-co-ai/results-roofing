@@ -172,7 +172,7 @@ export function CheckoutSuccess() {
       {/* Questions */}
       <div className={styles.questions}>
         <p>
-          Questions? Call us at <a href="tel:+15551234567">(555) 123-4567</a> or email{' '}
+          Questions? Call us at <a href="tel:+18007378587">1-800-RESULTS</a> or email{' '}
           <a href="mailto:support@resultsroofing.com">support@resultsroofing.com</a>
         </p>
       </div>

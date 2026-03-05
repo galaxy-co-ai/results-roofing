@@ -131,9 +131,9 @@ export default async function SuccessPage({ params }: SuccessPageProps) {
           <div className={styles.contactInfo}>
             <p className={styles.contactText}>Questions? We&apos;re here to help.</p>
             <div className={styles.contactMethods}>
-              <a href="tel:+18005551234" className={styles.contactLink}>
+              <a href="tel:+18007378587" className={styles.contactLink}>
                 <Phone size={16} />
-                (800) 555-1234
+                1-800-RESULTS
               </a>
               <a href="mailto:support@resultsroofing.com" className={styles.contactLink}>
                 <Mail size={16} />
