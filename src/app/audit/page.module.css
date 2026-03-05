@@ -1,0 +1,609 @@
+/* =================================================
+   AUDIT REPORT PAGE
+   Standalone read-only report with RR design tokens
+   Mobile-first, collapsible sections, responsive tables
+   ================================================= */
+
+.page {
+  min-height: 100vh;
+  background: var(--rr-color-bg-primary);
+  color: var(--rr-color-text-primary);
+  font-family: var(--font-inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--rr-color-charcoal);
+  color: var(--rr-color-white);
+  padding: 16px 20px;
+  border-bottom: 3px solid var(--rr-color-blue);
+}
+
+.headerInner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.headerTitle {
+  font-family: var(--font-sora, 'Sora', sans-serif);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+}
+
+.headerMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ========================================
+   STATUS BADGES
+   ======================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.badgeClean {
+  background: var(--rr-color-status-success-bg);
+  color: #166534;
+}
+.badgeClean .badgeDot {
+  background: var(--rr-color-status-success);
+}
+
+.badgeFlagged {
+  background: var(--rr-color-status-warning-bg);
+  color: #92400E;
+}
+.badgeFlagged .badgeDot {
+  background: var(--rr-color-status-warning);
+}
+
+.badgeInfo {
+  background: var(--rr-color-status-info-bg);
+  color: #1E40AF;
+}
+.badgeInfo .badgeDot {
+  background: var(--rr-color-status-info);
+}
+
+.badgeError {
+  background: var(--rr-color-status-error-bg);
+  color: #991B1B;
+}
+.badgeError .badgeDot {
+  background: var(--rr-color-status-error);
+}
+
+/* ========================================
+   NAVIGATION (Top bar on mobile, sidebar on desktop)
+   ======================================== */
+
+.nav {
+  position: sticky;
+  top: 65px; /* below header */
+  z-index: 9;
+  background: var(--rr-color-bg-secondary);
+  border-bottom: 1px solid var(--rr-color-border-default);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.nav::-webkit-scrollbar {
+  display: none;
+}
+
+.navInner {
+  display: flex;
+  gap: 0;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.navLink {
+  display: block;
+  padding: 10px 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--rr-color-text-tertiary);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.navLink:hover {
+  color: var(--rr-color-text-primary);
+  border-bottom-color: var(--rr-color-border-strong);
+}
+
+/* ========================================
+   CONTENT
+   ======================================== */
+
+.content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+
+/* ========================================
+   SECTIONS (collapsible via <details>)
+   ======================================== */
+
+.section {
+  margin-bottom: 24px;
+  background: var(--rr-color-bg-secondary);
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.section[open] > .sectionHeader {
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  transition: background 0.15s ease;
+}
+
+.sectionHeader:hover {
+  background: var(--rr-color-surface-hover);
+}
+
+.sectionHeader::-webkit-details-marker {
+  display: none;
+}
+
+.sectionChevron {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--rr-color-text-tertiary);
+  transition: transform 0.2s ease;
+}
+
+.section[open] .sectionChevron {
+  transform: rotate(90deg);
+}
+
+.sectionNumber {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--rr-color-blue);
+  color: var(--rr-color-white);
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.sectionTitle {
+  flex: 1;
+  font-family: var(--font-sora, 'Sora', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.sectionBody {
+  padding: 20px;
+}
+
+/* ========================================
+   EXECUTIVE SUMMARY
+   ======================================== */
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.summaryCard {
+  padding: 16px;
+  background: var(--rr-color-bg-tertiary);
+  border-radius: 8px;
+}
+
+.summaryLabel {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--rr-color-text-tertiary);
+  margin: 0 0 4px;
+}
+
+.summaryValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--rr-color-text-primary);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.summaryValueSmall {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0;
+}
+
+/* ========================================
+   DATA FLOW CARDS
+   ======================================== */
+
+.flowCard {
+  padding: 16px;
+  margin-bottom: 12px;
+  background: var(--rr-color-bg-tertiary);
+  border-radius: 8px;
+  border-left: 3px solid var(--rr-color-blue);
+}
+
+.flowCard:last-child {
+  margin-bottom: 0;
+}
+
+.flowCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.flowCardTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0;
+}
+
+.flowCardMeta {
+  font-size: 0.75rem;
+  color: var(--rr-color-text-tertiary);
+  margin: 0 0 8px;
+}
+
+.flowCardMeta code {
+  font-family: var(--font-jetbrains, 'JetBrains Mono', monospace);
+  font-size: 0.6875rem;
+  padding: 1px 6px;
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--rr-color-blue);
+  border-radius: 4px;
+}
+
+/* ========================================
+   TABLES
+   ======================================== */
+
+.tableWrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 12px 0;
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: 6px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--rr-color-text-tertiary);
+  background: var(--rr-color-bg-tertiary);
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.table td {
+  padding: 8px 12px;
+  color: var(--rr-color-text-secondary);
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table code {
+  font-family: var(--font-jetbrains, 'JetBrains Mono', monospace);
+  font-size: 0.6875rem;
+  padding: 1px 6px;
+  background: var(--rr-color-bg-tertiary);
+  border-radius: 4px;
+}
+
+.tableWrap .table {
+  min-width: 500px;
+}
+
+/* ========================================
+   SCHEMA BLOCK (pre-formatted)
+   ======================================== */
+
+.schemaBlock {
+  background: var(--rr-color-charcoal);
+  color: #e2e8f0;
+  padding: 16px;
+  border-radius: 8px;
+  font-family: var(--font-jetbrains, 'JetBrains Mono', monospace);
+  font-size: 0.6875rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: pre;
+  margin: 12px 0;
+}
+
+.schemaBlock .schemaHighlight {
+  color: #93c5fd;
+}
+
+.schemaBlock .schemaComment {
+  color: #6b7a94;
+}
+
+.schemaBlock .schemaPii {
+  color: #fbbf24;
+}
+
+/* ========================================
+   FINDING CARDS (Severity-coded)
+   ======================================== */
+
+.findingCard {
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border-left: 3px solid;
+}
+
+.findingCard:last-child {
+  margin-bottom: 0;
+}
+
+.findingMedium {
+  background: var(--rr-color-status-warning-bg);
+  border-left-color: var(--rr-color-status-warning);
+}
+
+.findingLow {
+  background: var(--rr-color-status-info-bg);
+  border-left-color: var(--rr-color-status-info);
+}
+
+.findingInfo {
+  background: var(--rr-color-bg-tertiary);
+  border-left-color: var(--rr-color-border-strong);
+}
+
+.findingTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.findingBody {
+  font-size: 0.8125rem;
+  color: var(--rr-color-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ========================================
+   CHECK LIST (verification results)
+   ======================================== */
+
+.checkList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.checkItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 0;
+  font-size: 0.8125rem;
+  color: var(--rr-color-text-secondary);
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.checkItem:last-child {
+  border-bottom: none;
+}
+
+.checkIcon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+}
+
+.checkPass {
+  color: var(--rr-color-status-success);
+}
+
+/* ========================================
+   SUBSECTION TITLES
+   ======================================== */
+
+.subTitle {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 20px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rr-color-border-default);
+}
+
+.subTitle:first-child {
+  margin-top: 0;
+}
+
+/* Paragraph text inside sections */
+.prose {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--rr-color-text-secondary);
+  margin: 0 0 12px;
+}
+
+.prose:last-child {
+  margin-bottom: 0;
+}
+
+/* ========================================
+   INTEGRATION CONTRACT CARDS
+   ======================================== */
+
+.integrationCard {
+  padding: 16px;
+  margin-bottom: 16px;
+  background: var(--rr-color-bg-tertiary);
+  border-radius: 8px;
+  border: 1px solid var(--rr-color-border-default);
+}
+
+.integrationCard:last-child {
+  margin-bottom: 0;
+}
+
+.integrationHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.integrationTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--rr-color-text-primary);
+  margin: 0;
+}
+
+.integrationMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.metaTag {
+  display: inline-flex;
+  padding: 2px 8px;
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--rr-color-blue);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  border-radius: 4px;
+  font-family: var(--font-jetbrains, 'JetBrains Mono', monospace);
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+.footer {
+  text-align: center;
+  padding: 24px 20px;
+  font-size: 0.75rem;
+  color: var(--rr-color-text-tertiary);
+  border-top: 1px solid var(--rr-color-border-default);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (min-width: 640px) {
+  .summaryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .headerTitle {
+    font-size: 1.25rem;
+  }
+
+  .content {
+    padding: 32px 24px 80px;
+  }
+
+  .sectionBody {
+    padding: 24px;
+  }
+}
+
+@media (min-width: 768px) {
+  .summaryGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .navLink {
+    font-size: 0.8125rem;
+    padding: 12px 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .content {
+    padding: 40px 32px 96px;
+  }
+}
