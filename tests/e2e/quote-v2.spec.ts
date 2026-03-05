@@ -25,9 +25,13 @@ test.describe('Quote V2 Flow', () => {
       await page.goto('/quote-v2');
       await page.waitForLoadState('domcontentloaded');
 
-      await expect(page.getByText('No obligation')).toBeVisible();
-      await expect(page.getByText('Instant estimate')).toBeVisible();
-      await expect(page.getByText('Licensed & insured')).toBeVisible();
+      // Trust indicators include a ✓ checkmark in a child span;
+      // use locator scoped to the trust section
+      const trustSection = page.locator('[class*="trust"]').first();
+      await expect(trustSection).toBeVisible();
+      await expect(trustSection).toContainText('No obligation');
+      await expect(trustSection).toContainText('Instant estimate');
+      await expect(trustSection).toContainText('Licensed & insured');
     });
 
     test('should show Get My Quote button', async ({ page }) => {
@@ -42,8 +46,9 @@ test.describe('Quote V2 Flow', () => {
       await page.goto('/quote-v2');
       await page.waitForLoadState('domcontentloaded');
 
-      // Click Get My Quote without entering address
-      await page.getByRole('button', { name: /get my quote/i }).click();
+      // Button should be disabled when no address is entered
+      const button = page.getByRole('button', { name: /get my quote/i });
+      await expect(button).toBeDisabled();
 
       // Should stay on address step
       await expect(page.locator('h1')).toContainText('Get Your Free Quote');
