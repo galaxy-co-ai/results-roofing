@@ -109,6 +109,95 @@ test.describe('Quote V2 Flow', () => {
   });
 });
 
+test.describe('Quote V2 - Out-of-Area Rejection', () => {
+  test('should show out-of-area alert for non-service-area address', async ({ page }) => {
+    // Mock Mapbox geocoding to return a New York address
+    await page.route('**/api.mapbox.com/geocoding/v5/**', (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          type: 'FeatureCollection',
+          features: [
+            {
+              id: 'address.123',
+              type: 'Feature',
+              place_name: '123 Broadway, New York, NY 10006',
+              text: 'Broadway',
+              address: '123',
+              center: [-74.0134, 40.7081],
+              context: [
+                { id: 'place.1', text: 'New York' },
+                { id: 'region.1', text: 'New York', short_code: 'US-NY' },
+                { id: 'postcode.1', text: '10006' },
+              ],
+            },
+          ],
+        }),
+      });
+    });
+
+    await page.goto('/quote-v2');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Type address to trigger autocomplete (min 5 chars)
+    const addressInput = page.locator('input[placeholder*="address"]').first();
+    await addressInput.fill('123 Broadway New York');
+
+    // Wait for suggestions and select the first one
+    const suggestion = page.locator('[role="option"]').first();
+    await expect(suggestion).toBeVisible({ timeout: 10000 });
+    await suggestion.click();
+
+    // Out-of-area alert container should appear
+    const alert = page.locator('div[class*="outOfArea"][role="alert"]');
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText("don't serve that area yet");
+    await expect(alert).toContainText('Texas, Georgia, North Carolina, Arizona, and Oklahoma');
+
+    // Get My Quote button should be disabled
+    const button = page.getByRole('button', { name: /get my quote/i });
+    await expect(button).toBeDisabled();
+  });
+});
+
+test.describe('Contact Form - Full Submission', () => {
+  test('should complete 3-step form and show success', async ({ page }) => {
+    // Mock the contact API to avoid writing to the real DB
+    await page.route('**/api/contact', (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ success: true, id: 'test-lead-id' }),
+      });
+    });
+
+    await page.goto('/contact');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Step 1: Select service type (target the form button, not FAQ content)
+    await page.getByRole('button', { name: 'Roof Replacement', exact: true }).click();
+    await page.getByRole('button', { name: 'Continue' }).first().click();
+
+    // Step 2: Fill address fields
+    await page.locator('input[placeholder="Street address"]').fill('456 Oak Lane');
+    await page.locator('input[placeholder="City"]').fill('Dallas');
+    await page.locator('input[placeholder="State"]').fill('TX');
+    await page.locator('input[placeholder="ZIP"]').fill('75201');
+    await page.getByRole('button', { name: 'Continue' }).first().click();
+
+    // Step 3: Fill contact info and submit
+    await page.locator('input[placeholder="Full name"]').fill('John Smith');
+    await page.locator('input[placeholder="Phone number"]').fill('2145551234');
+    await page.locator('input[placeholder="Email address"]').fill('john@example.com');
+
+    await page.getByRole('button', { name: 'Submit Request' }).click();
+
+    // Should show success state
+    await expect(page.getByText('Request Received!')).toBeVisible({ timeout: 10000 });
+  });
+});
+
 test.describe('Quote V2 - Page Navigation', () => {
   test('homepage Get My Quote should link to V2', async ({ page }) => {
     await page.goto('/');

@@ -584,8 +584,10 @@ The `contracts` table captures:
 | V1 → V2 Redirect | 1 | Passing (301 redirect verified) |
 | Layout & Structure | 3 | All passing |
 | Accessibility | 2 | All passing |
+| Out-of-Area Rejection | 1 | Passing (Mapbox mocked, alert + button-disabled verified) |
+| Contact Form Submission | 1 | Passing (3-step flow, API mocked, success state verified) |
 | Page Navigation (cross-page links) | 3 | All passing |
-| **Total** | **13 × 2 projects** | **26/26 passing** |
+| **Total** | **15 × 2 projects** | **30/30 passing** |
 
 **Browser coverage:** Desktop Chrome, Mobile Chrome (Pixel 5 viewport)
 
