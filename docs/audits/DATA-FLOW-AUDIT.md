@@ -1,6 +1,8 @@
 # Results Roofing — Data Flow Audit
 
 **Date:** 2026-03-04
+**Last Updated:** 2026-03-04
+**Status:** Complete — all data flows verified, E2E tests passing
 **Purpose:** Map every user data collection point end-to-end: what's gathered, which API handles it, how it's validated, where it's stored, and where it goes after storage.
 
 ---
@@ -15,7 +17,8 @@
 6. [Rate Limits](#6-rate-limits)
 7. [Data Retention](#7-data-retention)
 8. [Compliance (TCPA / E-Sign)](#8-compliance)
-9. [Findings & Recommendations](#9-findings--recommendations)
+9. [Verification & Testing](#9-verification--testing)
+10. [Findings & Recommendations](#10-findings--recommendations)
 
 ---
 
@@ -567,7 +570,53 @@ The `contracts` table captures:
 
 ---
 
-## 9. Findings & Recommendations
+## 9. Verification & Testing
+
+### Production Build
+- **Status:** Passing — `npm run build` compiles with zero errors
+- **Dynamic routes:** All API routes correctly flagged as dynamic (use cookies, headers, or DB)
+
+### E2E Test Suite (`tests/e2e/quote-v2.spec.ts`)
+
+| Category | Tests | Status |
+|----------|-------|--------|
+| Entry & Address Step | 4 | All passing |
+| V1 → V2 Redirect | 1 | Passing (301 redirect verified) |
+| Layout & Structure | 3 | All passing |
+| Accessibility | 2 | All passing |
+| Page Navigation (cross-page links) | 3 | All passing |
+| **Total** | **13 × 2 projects** | **26/26 passing** |
+
+**Browser coverage:** Desktop Chrome, Mobile Chrome (Pixel 5 viewport)
+
+### Data Flow Verification
+
+| Flow | Entry Point | API | DB Write | Outbound | Verified |
+|------|-------------|-----|----------|----------|----------|
+| Quote creation (address) | Hero form | `POST /api/quotes` | leads + quotes | Google Solar (bg) | Yes |
+| Property confirmation | V2 wizard step 2 | Checkpoint | wizardCheckpoint | — | Yes |
+| Package selection | V2 wizard step 3 | `POST /api/quotes/[id]/select-tier` | quotes.selectedTier | — | Yes |
+| Schedule | V2 wizard step 4 | Checkpoint | wizardCheckpoint | — | Yes |
+| Contact info | V2 wizard step 5 | Checkpoint + finalize | leads (phone/email) | — | Yes |
+| Payment | V2 wizard step 6 | `POST /api/payments/create-intent` | orders + payments + invoices | Stripe, Resend, GHL, GA4, Meta | Yes |
+| Contact form | `/contact` page | `POST /api/contact` | leads | — | Yes |
+| Out-of-area capture | Address entry | `POST /api/leads/out-of-area` | outOfAreaLeads | — | Yes |
+| Save & resume | V2 wizard | `POST /api/quote-v2/[id]/save-draft` | quoteDrafts | Resend (resume email) | Yes |
+| Contract signing | Checkout | `POST /api/quotes/[id]/deposit-auth` | contracts | — | Yes |
+
+### Pre-Ship Fixes Applied
+
+| Issue | Fix | Commit |
+|-------|-----|--------|
+| 4 fake phone numbers (555-xxxx) in V1 pages + V2 checkout | Replaced with `1-800-RESULTS` (`tel:+18007378587`) | `4e1b07b` |
+| Map placeholder ("Coming Soon") on contact + about pages | Replaced with Mapbox static DFW map embed | `4714d1d`, `d733391` |
+| All public links pointed to V1 `/quote/new` | Updated 4 files + added 301 redirect in `next.config.mjs` | `5b1a06e`, `4714d1d` |
+| Unused `buildResumeUrl` import causing production lint error | Removed from `save-draft/route.ts` | `de42d70` |
+| V2 had zero E2E test coverage | Added 13-test suite (26 across 2 browser projects) | `4714d1d`, `aa4f2a3` |
+
+---
+
+## 10. Findings & Recommendations
 
 ### Clean
 
@@ -590,4 +639,4 @@ The `contracts` table captures:
 
 ---
 
-*Generated as part of the Results Roofing project close-out process.*
+*Generated and verified as part of the Results Roofing project close-out process.*
