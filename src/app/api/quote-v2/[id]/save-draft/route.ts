@@ -6,7 +6,6 @@ import { logger } from '@/lib/utils';
 import {
   generateResumeToken,
   getResumeTokenExpiry,
-  buildResumeUrl,
 } from '@/lib/quote-resume';
 import { resendAdapter } from '@/lib/integrations/adapters/resend';
 import { rateLimiters, getRequestIdentifier, rateLimitHeaders } from '@/lib/api/rate-limit';
