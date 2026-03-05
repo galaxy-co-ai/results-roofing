@@ -17,7 +17,7 @@
 6. [Rate Limits](#6-rate-limits)
 7. [Data Retention](#7-data-retention)
 8. [Compliance (TCPA / E-Sign)](#8-compliance)
-9. [Verification & Testing](#9-verification--testing)
+9. [Verification & Testing](#9-verification--testing) — E2E results, data flow verification, integration contract map
 10. [Findings & Recommendations](#10-findings--recommendations)
 
 ---
@@ -614,7 +614,147 @@ The `contracts` table captures:
 | Map placeholder ("Coming Soon") on contact + about pages | Replaced with Mapbox static DFW map embed | `4714d1d`, `d733391` |
 | All public links pointed to V1 `/quote/new` | Updated 4 files + added 301 redirect in `next.config.mjs` | `5b1a06e`, `4714d1d` |
 | Unused `buildResumeUrl` import causing production lint error | Removed from `save-draft/route.ts` | `de42d70` |
-| V2 had zero E2E test coverage | Added 13-test suite (26 across 2 browser projects) | `4714d1d`, `aa4f2a3` |
+| V2 had zero E2E test coverage | Added 15-test suite (30 across 2 browser projects) | `4714d1d`, `aa4f2a3`, `9e262e4` |
+
+### Integration Contract Map
+
+Every external service integration documented below: what we send, what we expect back, where it's stored, and how it's authenticated. No live calls required — this is a contract-level verification that every adapter is wired correctly.
+
+#### Stripe (Payments)
+
+| | |
+|---|---|
+| **Adapter** | `src/lib/integrations/adapters/stripe.ts` |
+| **Auth** | `STRIPE_SECRET_KEY` (SDK), `STRIPE_WEBHOOK_SECRET` (HMAC signature verification) |
+| **API Version** | 2025-02-24.acacia |
+
+| Function | Endpoint | Payload → DB |
+|----------|----------|-------------|
+| `getOrCreateStripeCustomer()` | `POST /v1/customers` | email, name, metadata(`lead_id`) → `leads.stripeCustomerId` |
+| `createPaymentIntent` | `POST /v1/payment_intents` | amount, currency, customer, metadata(`quoteId`, `tier`, `address`) → Stripe-hosted |
+| Webhook: `payment_intent.succeeded` | Inbound `POST /api/payments/webhook` | PI metadata → `orders` + `payments` + `invoices` created, `quotes.status` → `converted` |
+| Webhook: `payment_intent.payment_failed` | Inbound | failure code/message → logged, customer notification sent |
+| Webhook: `charge.refunded` | Inbound | refund ID → `payments.status` → `refunded`, email sent |
+
+**Card data never touches our server** — Stripe Elements (PCI DSS Level 1). Only `cardLast4` and `cardBrand` stored from webhook.
+
+**Side effects on payment success:**
+1. Resend → payment confirmation email
+2. GHL → SMS confirmation (if phone present)
+3. GHL → contact synced with `deposit-paid` tag
+4. GHL → opportunity created/moved in pipeline
+5. Balance invoice auto-generated (due 3 days before install)
+
+#### GAF QuickMeasure (Roof Measurement)
+
+| | |
+|---|---|
+| **Adapter** | `src/lib/integrations/adapters/gaf.ts` |
+| **Auth** | OAuth2 client_credentials via Okta (`GAF_CLIENT_ID` + `GAF_CLIENT_SECRET`) |
+| **Webhook Auth** | `client_id` + `client_secret` headers (not Bearer) |
+
+| Function | Endpoint | Payload → DB |
+|----------|----------|-------------|
+| `placeOrder()` | `POST {GAF_API_URL}/order` | address, lat/lng, subscriberOrderNumber(`RR-{quoteId}`) → `measurements.gafOrderNumber` |
+| `checkCoverage()` | `GET /coverageCheck` | lat/lng → boolean (not stored) |
+| Webhook callback | Inbound `POST /api/webhooks/gaf` | RoofMeasurement (sqft, pitch, ridge/valley/eave/hip lengths) → `measurements` table |
+| `downloadAsset()` | `GET /download/{filename}` | PDF binary → Vercel Blob (`gaf/{quoteId}/{filename}`) → `measurements.gafAssets` |
+
+**Processing time:** ~1 hour after order placement. Webhook fires when complete.
+
+#### GoHighLevel (CRM + Messaging)
+
+| | |
+|---|---|
+| **Client** | `src/lib/ghl/client.ts` |
+| **Messaging Adapter** | `src/lib/integrations/adapters/ghl-messaging.ts` |
+| **Auth** | Bearer token (`GHL_API_KEY`), webhook HMAC (`GHL_WEBHOOK_SECRET`) |
+| **Base URL** | `https://services.leadconnectorhq.com` |
+| **Rate Limit** | 100 req/10s, 200k/day |
+
+| Function | Endpoint | Payload → DB |
+|----------|----------|-------------|
+| `upsertContact()` | `POST /contacts/upsert` | email, phone, name, address, tags → `leads.jobnimbusContactId` (legacy field name) |
+| `addContactTags()` | `POST /contacts/{id}/tags` | tags[] (e.g. `deposit-paid`, `quote-started`) → GHL only |
+| `sendSMS()` | `POST /conversations/messages` | contactId, message → GHL only |
+| `sendEmail()` | `POST /conversations/messages` | contactId, subject, html → GHL only |
+| `createOpportunity()` | `POST /opportunities` | name, pipelineId, stageId, contactId, monetaryValue → `invoices.ghlOpportunityId` |
+| `moveOpportunityToStage()` | `PUT /opportunities/{id}/status` | stageId → GHL only |
+| Webhook | Inbound `POST /api/ops/webhooks/ghl` | Various events → `webhookEvents` table (audit trail) |
+
+**Templated SMS methods:** `sendQuoteReadySms`, `sendBookingConfirmationSms`, `sendBookingReminderSms`, `sendPaymentConfirmationSms`, `sendContractSignedSms`, `sendInvoiceReadySms`
+
+**Pipeline stages:** Quote → Scheduled → In Progress → Completed (or Cancelled)
+
+#### Resend (Transactional Email)
+
+| | |
+|---|---|
+| **Adapter** | `src/lib/integrations/adapters/resend.ts` |
+| **Auth** | `RESEND_API_KEY` (SDK) |
+| **From** | `RESEND_FROM_EMAIL` (default: `dev@galaxyco.ai`) |
+
+| Template | Trigger | Payload |
+|----------|---------|---------|
+| `quote_ready` | Measurement complete | quoteId, quoteUrl |
+| `quote_resume` | Save & resume | resumeUrl, address, city, state, expiresAt |
+| `payment_confirmation` | `payment_intent.succeeded` | customerName, amount, confirmationNumber |
+| `booking_confirmation` | Appointment booked | customerName, date, address, confirmationNumber |
+| `booking_reminder` | Day before install | customerName, date, address |
+| `signature_request` | Contract ready | customerName, signatureUrl |
+| `project_update` | Manual (payment failure, etc.) | customerName, message, portalUrl |
+| `invoice_ready` | Balance due | customerName, invoiceNumber, amountFormatted, portalUrl |
+| `feedback_notification` | User feedback → admin | feedbackId, reason, priority, page, adminUrl |
+
+**No DB storage** — fire-and-forget. Resend handles delivery tracking.
+
+#### Google Solar API (Satellite Measurement)
+
+| | |
+|---|---|
+| **Adapter** | `src/lib/integrations/adapters/google-solar.ts` |
+| **Auth** | `GOOGLE_SOLAR_API_KEY` (query param) |
+| **Cost** | ~$0.075/request (NOT_FOUND responses are free) |
+| **Coverage** | 95%+ US buildings |
+
+| Function | Endpoint | Payload → DB |
+|----------|----------|-------------|
+| `fetchSolarMeasurement()` | `GET /v1/buildingInsights:findClosest` | lat, lng, requiredQuality=MEDIUM → `measurements` table (sqftTotal, sqftSteep, sqftFlat, pitchPrimary, pitchMin, pitchMax, complexity, confidence, rawResponse) |
+
+**Transforms:** m² → sqft, degrees → roof pitch notation (4/12, 6/12, etc.), facet count → complexity (simple/moderate/complex)
+
+#### Deprecated / Migrated Adapters
+
+| Adapter | Status | Now Routes To |
+|---------|--------|--------------|
+| JobNimbus (`jobnimbus.ts`) | Migrated Feb 2026 | GHL (wrapper functions) |
+| SignalWire (`signalwire.ts`) | Deprecated Feb 2026 | GHL SMS |
+| Wisetack (`wisetack.ts`) | Stub only | Migrating to Enhancify (not implemented) |
+
+#### Webhook Audit Trail
+
+All inbound webhooks are logged to `webhookEvents` table regardless of processing outcome:
+
+| Column | Purpose |
+|--------|---------|
+| `source` | `stripe`, `gaf`, `ghl` |
+| `eventType` | e.g. `payment_intent.succeeded`, `order.complete`, `ContactCreate` |
+| `eventId` | Vendor's unique event ID (idempotency) |
+| `payload` | Full JSON payload (JSONB) |
+| `processed` | Boolean — did handler succeed? |
+| `processedAt` | Timestamp of processing |
+| `error` | Error message if processing failed |
+
+#### Environment Variables (All Integrations)
+
+| Service | Required Variables |
+|---------|-------------------|
+| **Stripe** | `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET` |
+| **GAF** | `GAF_CLIENT_ID`, `GAF_CLIENT_SECRET`, `GAF_OKTA_TOKEN_URL`, `GAF_API_URL`, `GAF_SUBSCRIBER_NAME`, `GAF_PRODUCT_CODE`, `GAF_WEBHOOK_CLIENT_ID`, `GAF_WEBHOOK_CLIENT_SECRET` |
+| **GHL** | `GHL_API_KEY`, `GHL_LOCATION_ID`, `GHL_WEBHOOK_SECRET`, `GHL_PIPELINE_ID`, `GHL_QUOTE_STAGE_ID`, `GHL_SCHEDULED_STAGE_ID`, `GHL_IN_PROGRESS_STAGE_ID`, `GHL_COMPLETED_STAGE_ID`, `GHL_CANCELLED_STAGE_ID` |
+| **Resend** | `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `FEEDBACK_NOTIFICATION_EMAIL` |
+| **Google Solar** | `GOOGLE_SOLAR_API_KEY` |
+| **Mapbox** | `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` |
 
 ---
 
