@@ -78,7 +78,7 @@ function getPhaseStatus(tasks: Task[]): SOWStatus {
 // Last updated: 2026-02-05 (verified by codebase audit)
 const BLOCKERS: Blocker[] = [
   { item: 'Enhancify merchant account', owner: 'Client', impact: 'Financing pre-qual returns mock data' },
-  { item: 'Custom domain DNS', owner: 'Client', impact: 'Using Vercel subdomain' },
+  // RESOLVED 2026-03-06: Custom domain DNS - app.resultsroofing.com configured
   // RESOLVED 2026-02-05: Documenso - Full adapter with create/sign/download
   // REMOVED 2026-02-05: Cal.com - Not using external scheduling
   // REMOVED 2026-02-05: Roofr/GAF QuickMeasure - Not using satellite measurements

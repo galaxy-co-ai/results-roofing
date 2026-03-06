@@ -16,8 +16,8 @@ const PHASES = [
     name: 'Discovery & Kickoff',
     deliverables: [
       { name: 'Kickoff meeting', status: 'done', priority: 'high' },
-      { name: 'Access handoff (hosting, DNS, APIs)', status: 'todo', priority: 'high', note: 'Need: GAF QuickMeasure API credentials + SiteGround DNS access' },
-      { name: 'Confirm domain & hosting', status: 'todo', priority: 'medium', note: 'Awaiting client' },
+      { name: 'Access handoff (hosting, DNS, APIs)', status: 'done', priority: 'high', note: 'Domain + hosting configured' },
+      { name: 'Confirm domain & hosting', status: 'done', priority: 'medium', note: 'app.resultsroofing.com' },
     ],
   },
   {
@@ -44,8 +44,8 @@ const PHASES = [
       { name: 'Appointment booking UI', status: 'done', priority: 'high', note: 'Internal scheduling' },
       { name: 'Contract signing UI', status: 'done', priority: 'high', note: 'DocuSeal adapter complete (migrated from Documenso)' },
       { name: 'Payment (deposit) integration', status: 'done', priority: 'high', note: 'Stripe integration complete' },
-      { name: 'Quote confirmation card', status: 'todo', priority: 'high', note: 'Replace deposit step with booking confirmation (no payment at quote time)' },
-      { name: 'Portal deposit collection', status: 'todo', priority: 'high', note: 'Move deposit payment to customer portal dashboard' },
+      { name: 'Quote confirmation card', status: 'done', priority: 'high', note: 'Booking confirmation replaces deposit step (Feb 5)' },
+      { name: 'Portal deposit collection', status: 'done', priority: 'high', note: 'Stripe deposit collection in portal/payments (Feb 5)' },
       { name: 'Confirmation page', status: 'done', priority: 'medium' },
       { name: 'Customer portal', status: 'done', priority: 'high', note: '5 pages: home, dashboard, documents, payments, schedule' },
     ],
@@ -60,8 +60,8 @@ const PHASES = [
       { name: 'Funnel event tracking', status: 'done', priority: 'high' },
       { name: 'Conversion tracking', status: 'done', priority: 'high' },
       { name: 'Consent management', status: 'done', priority: 'medium' },
-      { name: 'Connect Google Analytics (GA4)', status: 'backlog', priority: 'high', note: 'Blocked: awaiting domain/DNS decision from client' },
-      { name: 'Connect Google Tag Manager', status: 'backlog', priority: 'high', note: 'Blocked: awaiting domain/DNS decision from client' },
+      { name: 'Connect Google Analytics (GA4)', status: 'done', priority: 'high', note: 'GA4 Measurement Protocol + server-side events (Mar 3)' },
+      { name: 'Connect Google Tag Manager', status: 'done', priority: 'high', note: 'GTM-W65THSV9 live in production (Mar 3)' },
     ],
   },
   {
@@ -71,8 +71,8 @@ const PHASES = [
       { name: 'E2E test suite', status: 'done', priority: 'high', note: '31 tests passing' },
       { name: 'Performance optimization', status: 'done', priority: 'medium', note: 'LCP 6.7s → 4.5s' },
       { name: 'Accessibility audit (WCAG)', status: 'done', priority: 'high', note: '86% → 92%' },
-      { name: 'Mobile responsiveness audit', status: 'todo', priority: 'high' },
-      { name: 'Cross-browser testing', status: 'todo', priority: 'medium' },
+      { name: 'Mobile responsiveness audit', status: 'done', priority: 'high', note: '5 responsive issues fixed + mobile E2E tests (Feb 17)' },
+      { name: 'Cross-browser testing', status: 'done', priority: 'medium', note: 'Playwright: Chromium + Mobile Chrome (Feb 18)' },
     ],
   },
   {
@@ -83,7 +83,7 @@ const PHASES = [
       { name: 'Production deployment', status: 'done', priority: 'urgent', note: 'results-roofing.vercel.app' },
       { name: 'SSL certificates', status: 'done', priority: 'high', note: 'Vercel auto-SSL' },
       { name: 'Monitoring setup', status: 'done', priority: 'medium', note: 'Sentry integrated' },
-      { name: 'DNS configuration', status: 'todo', priority: 'high', note: 'Custom domain pending' },
+      { name: 'DNS configuration', status: 'done', priority: 'high', note: 'app.resultsroofing.com configured' },
     ],
   },
   {
