@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
+import {
   Rocket,
   Layers,
   Code2,
@@ -17,6 +17,7 @@ import {
   Circle,
   AlertCircle,
   LayoutDashboard,
+  Loader2,
 } from 'lucide-react';
 import styles from './page.module.css';
 import { PhaseTimeline } from '@/components/ui/phase-timeline';
@@ -29,9 +30,10 @@ import {
 } from '@/components/ui/tooltip';
 
 // ============================================
-// SOW Data
+// Types
 // ============================================
 type Status = 'complete' | 'in_progress' | 'pending' | 'blocked';
+type TaskStatus = 'backlog' | 'todo' | 'in_progress' | 'review' | 'done';
 
 interface Deliverable {
   name: string;
@@ -46,96 +48,68 @@ interface Phase {
   deliverables: Deliverable[];
 }
 
-const PHASES: Phase[] = [
-  {
-    id: 1,
-    name: 'Discovery & Kickoff',
-    status: 'complete',
-    deliverables: [
-      { name: 'Kickoff meeting', status: 'complete' },
-      { name: 'Access handoff (hosting, DNS, APIs)', status: 'pending', note: 'Awaiting client' },
-      { name: 'Confirm domain & hosting', status: 'pending', note: 'Awaiting client' },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Foundations',
-    status: 'in_progress',
-    deliverables: [
-      { name: 'Neon PostgreSQL setup', status: 'complete' },
-      { name: 'Drizzle ORM migrations', status: 'complete' },
-      { name: 'Clerk authentication', status: 'complete' },
-      { name: 'JobNimbus CRM adapter', status: 'blocked', note: 'Awaiting API credentials' },
-      { name: 'Analytics infrastructure', status: 'complete' },
-      { name: 'Event taxonomy defined', status: 'complete' },
-    ],
-  },
-  {
-    id: 3,
-    name: 'Core Build',
-    status: 'in_progress',
-    deliverables: [
-      { name: 'Address entry page', status: 'complete' },
-      { name: 'Preliminary estimate', status: 'complete' },
-      { name: 'Measuring (satellite)', status: 'complete', note: 'With timeout fallback' },
-      { name: 'Package selection', status: 'complete' },
-      { name: 'Financing options', status: 'pending', note: 'UI only - Enhancify stub' },
-      { name: 'Appointment booking', status: 'complete', note: 'Internal scheduling' },
-      { name: 'Contract signing', status: 'complete', note: 'SignatureCapture component' },
-      { name: 'Payment (deposit)', status: 'complete', note: 'Stripe integration' },
-      { name: 'Confirmation page', status: 'complete' },
-      { name: 'Customer portal', status: 'in_progress', note: 'Dashboard done, others pending' },
-    ],
-  },
-  {
-    id: 4,
-    name: 'Analytics & Tracking',
-    status: 'complete',
-    deliverables: [
-      { name: 'GTM container loader', status: 'complete' },
-      { name: 'dataLayer integration', status: 'complete' },
-      { name: 'sGTM collection endpoint', status: 'complete' },
-      { name: 'Funnel event tracking', status: 'complete' },
-      { name: 'Conversion tracking', status: 'complete' },
-      { name: 'Consent management', status: 'complete' },
-    ],
-  },
-  {
-    id: 5,
-    name: 'Testing & QA',
-    status: 'pending',
-    deliverables: [
-      { name: 'Cross-browser testing', status: 'pending' },
-      { name: 'Mobile responsiveness', status: 'pending' },
-      { name: 'Accessibility audit', status: 'pending' },
-      { name: 'Performance optimization', status: 'pending' },
-      { name: 'E2E test suite', status: 'in_progress' },
-    ],
-  },
-  {
-    id: 6,
-    name: 'Launch Prep',
-    status: 'pending',
-    deliverables: [
-      { name: 'Staging deployment', status: 'pending' },
-      { name: 'DNS configuration', status: 'pending' },
-      { name: 'SSL certificates', status: 'pending' },
-      { name: 'Production deployment', status: 'pending' },
-      { name: 'Monitoring setup', status: 'pending' },
-    ],
-  },
-  {
-    id: 7,
-    name: 'Post-Launch',
-    status: 'pending',
-    deliverables: [
-      { name: '30-day support period', status: 'pending' },
-      { name: 'Bug fixes', status: 'pending' },
-      { name: 'Feature flag system', status: 'pending' },
-      { name: 'Documentation handoff', status: 'pending' },
-    ],
-  },
-];
+interface ApiTask {
+  id: string;
+  title: string;
+  description: string | null;
+  status: TaskStatus;
+  priority: string;
+  phaseId: string | null;
+  phaseName: string | null;
+}
+
+// ============================================
+// Helpers — derive phase data from live tasks
+// ============================================
+function taskStatusToSOWStatus(status: TaskStatus): Status {
+  switch (status) {
+    case 'done':
+    case 'review':
+      return 'complete';
+    case 'in_progress':
+      return 'in_progress';
+    case 'backlog':
+      return 'blocked';
+    default:
+      return 'pending';
+  }
+}
+
+function derivePhaseStatus(deliverables: Deliverable[]): Status {
+  if (deliverables.length === 0) return 'pending';
+  const allComplete = deliverables.every(d => d.status === 'complete');
+  if (allComplete) return 'complete';
+  const anyInProgress = deliverables.some(d => d.status === 'in_progress');
+  if (anyInProgress) return 'in_progress';
+  const anyBlocked = deliverables.some(d => d.status === 'blocked');
+  if (anyBlocked) return 'blocked';
+  return 'pending';
+}
+
+function buildPhasesFromTasks(tasks: ApiTask[]): Phase[] {
+  const phaseMap = new Map<string, { id: string; name: string; deliverables: Deliverable[] }>();
+
+  for (const task of tasks) {
+    if (!task.phaseId || !task.phaseName) continue;
+    if (!phaseMap.has(task.phaseId)) {
+      phaseMap.set(task.phaseId, { id: task.phaseId, name: task.phaseName, deliverables: [] });
+    }
+    phaseMap.get(task.phaseId)!.deliverables.push({
+      name: task.title,
+      status: taskStatusToSOWStatus(task.status),
+      note: task.description ?? undefined,
+    });
+  }
+
+  return Array.from(phaseMap.values())
+    .sort((a, b) => parseInt(a.id) - parseInt(b.id))
+    .map(p => ({
+      id: parseInt(p.id),
+      name: p.name,
+      status: derivePhaseStatus(p.deliverables),
+      deliverables: p.deliverables,
+    }));
+}
 
 const PHASE_ICONS = [Rocket, Layers, Code2, BarChart3, TestTube2, Send, HeartHandshake];
 
@@ -149,9 +123,29 @@ const STATUS_CONFIG = {
 export default function AdminDashboard() {
   const [selectedPhaseId, setSelectedPhaseId] = useState<number | null>(null);
   const [expandedDeliverable, setExpandedDeliverable] = useState<number | null>(null);
+  const [tasks, setTasks] = useState<ApiTask[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchTasks = useCallback(async () => {
+    try {
+      const response = await fetch('/api/admin/tasks');
+      if (!response.ok) throw new Error('Failed to fetch');
+      const data = await response.json();
+      setTasks(data.tasks || []);
+    } catch {
+      // Silent fail — show empty state
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
+
+  const PHASES = useMemo(() => buildPhasesFromTasks(tasks), [tasks]);
 
   const selectedPhase = PHASES.find(p => p.id === selectedPhaseId);
-
 
   const handlePhaseClick = (phaseId: number) => {
     if (selectedPhaseId === phaseId) {
@@ -166,6 +160,17 @@ export default function AdminDashboard() {
   const toggleDeliverable = (index: number) => {
     setExpandedDeliverable(expandedDeliverable === index ? null : index);
   };
+
+  if (isLoading) {
+    return (
+      <div className={styles.page}>
+        <div className="flex items-center justify-center py-20 text-muted-foreground">
+          <Loader2 size={20} className="animate-spin mr-2" />
+          Loading dashboard...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>

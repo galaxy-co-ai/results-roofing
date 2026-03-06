@@ -64,10 +64,10 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
   contracts: {
     name: 'contracts',
     displayName: 'Contracts',
-    description: 'E-signature contracts and status',
+    description: 'DocuSeal e-signature contracts and status',
     icon: FileText,
     category: 'core',
-    emptyMessage: 'Awaiting Documenso integration',
+    emptyMessage: 'Contracts appear after signing',
   },
   payments: {
     name: 'payments',
@@ -88,7 +88,7 @@ const TABLE_METADATA: Record<string, Omit<TableInfo, 'recordCount'>> = {
   measurements: {
     name: 'measurements',
     displayName: 'Measurements',
-    description: 'Roof measurement data from manual entry',
+    description: 'Roof measurement data from Google Solar + manual entry',
     icon: Table2,
     category: 'core',
     emptyMessage: 'No measurements recorded yet',
