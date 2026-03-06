@@ -62,6 +62,7 @@ const PHASES = [
       { name: 'Consent management', status: 'done', priority: 'medium' },
       { name: 'Connect Google Analytics (GA4)', status: 'done', priority: 'high', note: 'GA4 Measurement Protocol + server-side events (Mar 3)' },
       { name: 'Connect Google Tag Manager', status: 'done', priority: 'high', note: 'GTM-W65THSV9 live in production (Mar 3)' },
+      { name: 'Meta Pixel + Conversions API', status: 'todo', priority: 'high', note: 'Awaiting Meta Pixel ID + CAPI access token from client' },
     ],
   },
   {
