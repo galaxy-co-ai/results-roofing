@@ -80,8 +80,12 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 8px;
+  border-radius: 6px;
   font-size: 14px;
   color: var(--rr-color-text-primary);
+  cursor: pointer;
+  transition: background-color 150ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .checkbox {
@@ -90,6 +94,21 @@
   border: 2px solid var(--rr-color-border-strong);
   border-radius: 4px;
   flex-shrink: 0;
+  transition: border-color 150ms cubic-bezier(0.2, 0, 0, 1), background-color 150ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (hover: hover) {
+  .prepItem:hover {
+    background: var(--rr-color-surface-hover);
+  }
+
+  .prepItem:hover .checkbox {
+    border-color: var(--rr-color-blue);
+  }
+}
+
+.prepItem:active .checkbox {
+  background: var(--rr-color-surface-active);
 }
 
 .skeletonBlock {
@@ -123,16 +142,27 @@
   gap: 12px;
   padding: 16px;
   border: 1px solid var(--rr-color-border-default);
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--rr-color-bg-primary);
   text-decoration: none;
   color: var(--rr-color-text-primary);
-  transition: border-color 150ms, box-shadow 150ms;
+  transition: border-color 150ms cubic-bezier(0.2, 0, 0, 1), box-shadow 150ms cubic-bezier(0.2, 0, 0, 1);
 }
 
-.consultOption:hover {
-  border-color: var(--rr-color-blue);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+.consultOption:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--rr-color-bg-primary), 0 0 0 4px var(--rr-color-focus-ring);
+}
+
+@media (hover: hover) {
+  .consultOption:hover {
+    border-color: var(--rr-color-blue);
+    box-shadow: 0 0 0 3px var(--rr-color-focus-ring-alpha);
+  }
+}
+
+.consultOption:active {
+  transform: scale(0.98);
 }
 
 .consultOption strong {

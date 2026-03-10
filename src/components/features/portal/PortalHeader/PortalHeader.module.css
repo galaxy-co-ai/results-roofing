@@ -39,8 +39,8 @@
 }
 
 .helpButton:focus-visible {
-  outline: 2px solid var(--rr-color-focus-ring);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 2px var(--rr-color-bg-primary), 0 0 0 4px var(--rr-color-focus-ring);
 }
 
 @media (hover: hover) {

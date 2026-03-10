@@ -34,31 +34,31 @@ export function PaymentProgressCard({
     : 'No payment method on file';
 
   return (
-    <div className="rounded-xl border border-[var(--rr-color-border-default)] bg-[var(--rr-color-white)] p-6 shadow-sm">
+    <div className="rounded-[6px] border border-[var(--rr-color-border-default)] bg-[var(--rr-color-bg-secondary)] p-6">
       <div className="flex items-start justify-between gap-4 mb-6">
         {/* Metrics */}
         <div className="grid grid-cols-3 gap-6 flex-1">
           <div>
-            <span className="block text-xs uppercase tracking-wider text-[var(--rr-color-text-tertiary)] mb-1">
+            <span className="block text-[11px] uppercase tracking-[0.04em] font-medium text-[var(--rr-color-text-tertiary)] mb-1">
               Total cost
             </span>
-            <span className="block text-xl font-semibold tabular-nums text-[var(--rr-color-text-primary)]">
+            <span className="block text-xl font-semibold text-[var(--rr-color-text-primary)]" style={{ fontVariantNumeric: 'tabular-nums' }}>
               {formatCurrency(totalPrice)}
             </span>
           </div>
           <div>
-            <span className="block text-xs uppercase tracking-wider text-[var(--rr-color-text-tertiary)] mb-1">
+            <span className="block text-[11px] uppercase tracking-[0.04em] font-medium text-[var(--rr-color-text-tertiary)] mb-1">
               Amount paid
             </span>
-            <span className="block text-xl font-semibold tabular-nums text-[var(--rr-color-success)]">
+            <span className="block text-xl font-semibold text-[var(--rr-color-success)]" style={{ fontVariantNumeric: 'tabular-nums' }}>
               {formatCurrency(totalPaid)}
             </span>
           </div>
           <div>
-            <span className="block text-xs uppercase tracking-wider text-[var(--rr-color-text-tertiary)] mb-1">
+            <span className="block text-[11px] uppercase tracking-[0.04em] font-medium text-[var(--rr-color-text-tertiary)] mb-1">
               Remaining balance
             </span>
-            <span className={`block text-xl font-semibold tabular-nums ${isPaidInFull ? 'text-[var(--rr-color-success)]' : 'text-[var(--rr-color-blue)]'}`}>
+            <span className={`block text-xl font-semibold ${isPaidInFull ? 'text-[var(--rr-color-success)]' : 'text-[var(--rr-color-blue)]'}`} style={{ fontVariantNumeric: 'tabular-nums' }}>
               {formatCurrency(balance)}
             </span>
           </div>
@@ -69,9 +69,9 @@ export function PaymentProgressCard({
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm text-[var(--rr-color-text-secondary)]">Payment progress</span>
-          <span className="text-sm font-semibold tabular-nums text-[var(--rr-color-blue)]">{percentPaid.toFixed(0)}%</span>
+          <span className="text-sm font-semibold text-[var(--rr-color-blue)]" style={{ fontVariantNumeric: 'tabular-nums' }}>{percentPaid.toFixed(0)}%</span>
         </div>
-        <div className="h-2 rounded-full bg-[var(--rr-color-bg-secondary)] overflow-hidden">
+        <div className="h-2 rounded-full bg-[var(--rr-color-bg-tertiary)] overflow-hidden">
           <div
             className="h-full rounded-full bg-[var(--rr-color-blue)] transition-[width] duration-300"
             style={{ width: `${Math.min(percentPaid, 100)}%` }}
@@ -90,7 +90,7 @@ export function PaymentProgressCard({
 
 export function PaymentProgressCardSkeleton() {
   return (
-    <div className="rounded-xl border border-[var(--rr-color-border-default)] bg-[var(--rr-color-white)] p-6 shadow-sm animate-pulse">
+    <div className="rounded-[6px] border border-[var(--rr-color-border-default)] bg-[var(--rr-color-bg-secondary)] p-6 animate-pulse">
       <div className="grid grid-cols-3 gap-6 mb-6">
         {[1, 2, 3].map((i) => (
           <div key={i}>

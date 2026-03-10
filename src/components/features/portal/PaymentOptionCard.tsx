@@ -55,11 +55,11 @@ export function PaymentOptionCard({
 
   return (
     <div
-      className={`rounded-xl border ${borderColor} bg-[var(--rr-color-white)] p-5 shadow-sm flex flex-col gap-3 ${disabled ? 'opacity-50' : ''}`}
+      className={`rounded-[6px] border ${borderColor} bg-[var(--rr-color-bg-secondary)] p-6 flex flex-col gap-3 ${disabled ? 'opacity-50' : ''}`}
     >
       {/* Header */}
       <div className="flex items-center justify-between">
-        <span className="text-sm font-semibold uppercase tracking-wider text-[var(--rr-color-text-secondary)]">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.04em] text-[var(--rr-color-text-tertiary)]">
           {label}
         </span>
         {badge && (
@@ -71,7 +71,7 @@ export function PaymentOptionCard({
 
       {/* Amount */}
       {amount !== null && (
-        <span className="text-2xl font-bold tabular-nums text-[var(--rr-color-text-primary)]">
+        <span className="text-2xl font-bold text-[var(--rr-color-text-primary)]" style={{ fontVariantNumeric: 'tabular-nums' }}>
           {formatCurrency(amount)}
         </span>
       )}
@@ -93,7 +93,7 @@ export function PaymentOptionCard({
           {onDownloadReceipt && (
             <button
               onClick={onDownloadReceipt}
-              className="inline-flex items-center gap-1.5 text-sm text-[var(--rr-color-blue)] hover-hover:hover:underline active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rr-color-blue)] rounded"
+              className="inline-flex items-center gap-1.5 text-sm text-[var(--rr-color-blue)] hover-hover:hover:underline active:scale-[0.97] focus-visible:outline-none focus-visible:shadow-[0_0_0_2px_var(--rr-color-focus-ring)] rounded"
             >
               <Download size={14} />
               Download receipt
@@ -105,10 +105,10 @@ export function PaymentOptionCard({
           {!disabled ? (
             <button
               onClick={onPay}
-              className={`w-full rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
+              className={`w-full rounded-[6px] px-4 py-2.5 text-sm font-semibold transition-colors duration-150 active:scale-[0.97] focus-visible:outline-none focus-visible:shadow-[0_0_0_2px_var(--rr-color-focus-ring)] ${
                 variant === 'primary'
-                  ? 'bg-[var(--rr-color-blue)] text-white hover-hover:hover:bg-[var(--rr-color-brand-primary-active)] focus-visible:ring-[var(--rr-color-blue)]'
-                  : 'border border-[var(--rr-color-border-default)] bg-[var(--rr-color-white)] text-[var(--rr-color-text-primary)] hover-hover:hover:bg-[var(--rr-color-bg-tertiary)] focus-visible:ring-[var(--rr-color-blue)]'
+                  ? 'bg-[var(--rr-color-blue)] text-white hover-hover:hover:bg-[var(--rr-color-brand-primary-active)]'
+                  : 'border border-[var(--rr-color-border-default)] bg-[var(--rr-color-bg-secondary)] text-[var(--rr-color-text-primary)] hover-hover:hover:bg-[var(--rr-color-bg-tertiary)]'
               }`}
             >
               {label === 'Deposit' ? 'Pay deposit' : 'Pay balance'}
@@ -116,7 +116,7 @@ export function PaymentOptionCard({
           ) : (
             <button
               disabled
-              className="w-full rounded-lg px-4 py-2.5 text-sm font-semibold border border-[var(--rr-color-border-default)] bg-[var(--rr-color-bg-tertiary)] text-[var(--rr-color-text-tertiary)] cursor-not-allowed"
+              className="w-full rounded-[6px] px-4 py-2.5 text-sm font-semibold border border-[var(--rr-color-border-default)] bg-[var(--rr-color-bg-tertiary)] text-[var(--rr-color-text-tertiary)] cursor-not-allowed"
             >
               Coming soon
             </button>
@@ -129,11 +129,11 @@ export function PaymentOptionCard({
 
 export function PaymentOptionCardSkeleton() {
   return (
-    <div className="rounded-xl border border-[var(--rr-color-border-default)] bg-[var(--rr-color-white)] p-5 shadow-sm animate-pulse flex flex-col gap-3">
+    <div className="rounded-[6px] border border-[var(--rr-color-border-default)] bg-[var(--rr-color-bg-secondary)] p-6 animate-pulse flex flex-col gap-3">
       <div className="h-3 w-16 bg-[var(--rr-color-bg-tertiary)] rounded" />
       <div className="h-8 w-24 bg-[var(--rr-color-bg-tertiary)] rounded" />
       <div className="h-4 w-full bg-[var(--rr-color-bg-tertiary)] rounded" />
-      <div className="mt-auto h-10 w-full bg-[var(--rr-color-bg-tertiary)] rounded-lg" />
+      <div className="mt-auto h-10 w-full bg-[var(--rr-color-bg-tertiary)] rounded-[6px]" />
     </div>
   );
 }
