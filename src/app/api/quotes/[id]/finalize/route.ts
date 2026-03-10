@@ -129,32 +129,29 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     // Generate slot ID for scheduled time
     const slotId = `${scheduledDate}-${timeSlot}`;
 
-    // Execute critical updates in a transaction
-    await db.transaction(async (tx) => {
-      // 1. Update lead with contact info
-      await tx
-        .update(schema.leads)
-        .set({
-          phone,
-          ...(email ? { email } : {}),
-          updatedAt: new Date(),
-        })
-        .where(eq(schema.leads.id, quote.leadId!));
+    // Update lead with contact info
+    await db
+      .update(schema.leads)
+      .set({
+        phone,
+        ...(email ? { email } : {}),
+        updatedAt: new Date(),
+      })
+      .where(eq(schema.leads.id, quote.leadId!));
 
-      // 2. Update quote with schedule and financing
-      await tx
-        .update(schema.quotes)
-        .set({
-          scheduledDate: scheduledDateObj,
-          scheduledSlotId: slotId,
-          financingTerm,
-          financingMonthlyPayment: monthlyPayment?.toString() || null,
-          financingStatus: financingTerm === 'pay-full' ? null : 'pending',
-          status: 'scheduled',
-          updatedAt: new Date(),
-        })
-        .where(eq(schema.quotes.id, quoteId));
-    });
+    // Update quote with schedule and financing
+    await db
+      .update(schema.quotes)
+      .set({
+        scheduledDate: scheduledDateObj,
+        scheduledSlotId: slotId,
+        financingTerm,
+        financingMonthlyPayment: monthlyPayment?.toString() || null,
+        financingStatus: financingTerm === 'pay-full' ? null : 'pending',
+        status: 'scheduled',
+        updatedAt: new Date(),
+      })
+      .where(eq(schema.quotes.id, quoteId));
 
     // Record SMS consent separately (non-blocking — don't fail checkout for this)
     if (smsConsent) {
