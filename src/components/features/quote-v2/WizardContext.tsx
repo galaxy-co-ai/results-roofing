@@ -34,6 +34,7 @@ interface WizardContextValue {
   // Actions
   setAddress: (address: ParsedAddress) => void;
   confirmProperty: () => void;
+  continueToPackages: () => void;
   selectTier: (tier: 'good' | 'better' | 'best', tierId: string) => void;
   setSchedule: (date: Date, timeSlot: 'morning' | 'afternoon') => void;
   setContact: (phone: string, email: string, smsConsent: boolean) => void;
@@ -130,6 +131,10 @@ export function WizardProvider({
 
   const confirmProperty = useCallback(() => {
     send({ type: 'CONFIRM_PROPERTY' });
+  }, [send]);
+
+  const continueToPackages = useCallback(() => {
+    send({ type: 'CONTINUE' });
   }, [send]);
 
   const selectTier = useCallback((tier: 'good' | 'better' | 'best', tierId: string) => {
@@ -317,6 +322,7 @@ export function WizardProvider({
     direction: snapshot.context.navigationDirection,
     setAddress,
     confirmProperty,
+    continueToPackages,
     selectTier,
     setSchedule,
     setContact,
@@ -337,6 +343,7 @@ export function WizardProvider({
     isLoading,
     setAddress,
     confirmProperty,
+    continueToPackages,
     selectTier,
     setSchedule,
     setContact,
@@ -382,6 +389,7 @@ export function useWizardActions() {
   const {
     setAddress,
     confirmProperty,
+    continueToPackages,
     selectTier,
     setSchedule,
     setContact,
@@ -397,6 +405,7 @@ export function useWizardActions() {
   return {
     setAddress,
     confirmProperty,
+    continueToPackages,
     selectTier,
     setSchedule,
     setContact,

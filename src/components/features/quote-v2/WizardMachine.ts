@@ -58,6 +58,7 @@ export type WizardEvent =
   | { type: 'SET_ADDRESS'; address: ParsedAddress }
   | { type: 'CONFIRM_PROPERTY' }
   | { type: 'QUOTE_CREATED'; quoteId: string; sqftEstimate: number; priceRanges: TierPriceRange[] }
+  | { type: 'CONTINUE' }
   | { type: 'SELECT_TIER'; tier: 'good' | 'better' | 'best'; tierId: string }
   | { type: 'TIER_SAVED' }
   | { type: 'SET_SCHEDULE'; date: Date; timeSlot: 'morning' | 'afternoon' }
@@ -364,9 +365,8 @@ export const wizardMachine = setup({
           target: 'address',
           actions: 'goBack',
         },
-        SELECT_TIER: {
-          target: 'savingTier',
-          actions: 'selectTier',
+        CONTINUE: {
+          target: 'select',
         },
         HYDRATE: {
           actions: 'hydrateContext',

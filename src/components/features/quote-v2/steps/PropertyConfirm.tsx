@@ -37,7 +37,7 @@ function formatPriceRange(min: number, max: number): string {
  * User confirms this is the right property
  */
 export function PropertyConfirm() {
-  const { context, goBack, selectTier, error: wizardError } = useWizard();
+  const { context, goBack, continueToPackages, error: wizardError } = useWizard();
   const { address, sqftEstimate, priceRanges } = context;
   const [notMyProperty, setNotMyProperty] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -68,10 +68,7 @@ export function PropertyConfirm() {
     : null;
 
   const handleContinue = () => {
-    // Go directly to tier selection with "better" as default
-    if (betterTier) {
-      selectTier('better', betterTier.tierId);
-    }
+    continueToPackages();
   };
 
   const handleNotMyProperty = () => {
