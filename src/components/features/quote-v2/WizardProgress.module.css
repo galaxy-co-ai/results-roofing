@@ -9,10 +9,10 @@
   margin-bottom: 1.5rem;
 }
 
-/* Progress bar track */
+/* Progress bar track — vertically centered on the stage circles (36px) */
 .progressTrack {
   position: absolute;
-  top: 50%;
+  top: calc(1rem + 18px);
   left: 2rem;
   right: 2rem;
   height: 4px;
@@ -132,6 +132,7 @@
   }
 
   .progressTrack {
+    top: calc(0.75rem + 16px);
     left: 1rem;
     right: 1rem;
   }

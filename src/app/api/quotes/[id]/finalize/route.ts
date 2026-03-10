@@ -15,6 +15,7 @@ const finalizeSchema = z.object({
     .string()
     .min(10, 'Phone number must be at least 10 digits')
     .regex(/^[\d\s()+-]+$/, 'Invalid phone number format'),
+  email: z.string().email().optional(),
   smsConsent: z.boolean().default(false),
 
   // Schedule info
@@ -70,7 +71,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const { phone, smsConsent, scheduledDate, timeSlot, financingTerm } = parsed.data;
+    const { phone, email, smsConsent, scheduledDate, timeSlot, financingTerm } = parsed.data;
 
     // Fetch the quote with validation
     const quote = await db.query.quotes.findFirst({
@@ -128,26 +129,43 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     // Generate slot ID for scheduled time
     const slotId = `${scheduledDate}-${timeSlot}`;
 
-    // Execute all updates in a transaction for atomicity
+    // Execute critical updates in a transaction
     await db.transaction(async (tx) => {
-      // 1. Update lead with phone number
+      // 1. Update lead with contact info
       await tx
         .update(schema.leads)
         .set({
           phone,
+          ...(email ? { email } : {}),
           updatedAt: new Date(),
         })
         .where(eq(schema.leads.id, quote.leadId!));
 
-      // 2. Record SMS consent if given
-      if (smsConsent) {
+      // 2. Update quote with schedule and financing
+      await tx
+        .update(schema.quotes)
+        .set({
+          scheduledDate: scheduledDateObj,
+          scheduledSlotId: slotId,
+          financingTerm,
+          financingMonthlyPayment: monthlyPayment?.toString() || null,
+          financingStatus: financingTerm === 'pay-full' ? null : 'pending',
+          status: 'scheduled',
+          updatedAt: new Date(),
+        })
+        .where(eq(schema.quotes.id, quoteId));
+    });
+
+    // Record SMS consent separately (non-blocking — don't fail checkout for this)
+    if (smsConsent) {
+      try {
         const ipAddress =
           request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
           request.headers.get('x-real-ip') ||
           'unknown';
         const userAgent = request.headers.get('user-agent') || 'unknown';
 
-        await tx.insert(schema.smsConsents).values({
+        await db.insert(schema.smsConsents).values({
           leadId: quote.leadId!,
           phone,
           consentGiven: true,
@@ -156,25 +174,10 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
           ipAddress,
           userAgent,
         });
+      } catch (err) {
+        logger.warn('Failed to record SMS consent', { quoteId, error: err });
       }
-
-      // 3. Update quote with schedule and financing in one operation
-      await tx
-        .update(schema.quotes)
-        .set({
-          // Schedule fields
-          scheduledDate: scheduledDateObj,
-          scheduledSlotId: slotId,
-          // Financing fields
-          financingTerm,
-          financingMonthlyPayment: monthlyPayment?.toString() || null,
-          financingStatus: financingTerm === 'pay-full' ? null : 'pending',
-          // Status update - move to 'scheduled' state
-          status: 'scheduled',
-          updatedAt: new Date(),
-        })
-        .where(eq(schema.quotes.id, quoteId));
-    });
+    }
 
     const duration = Date.now() - startTime;
     logger.info('Checkout finalized', {
