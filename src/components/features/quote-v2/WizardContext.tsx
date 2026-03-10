@@ -291,21 +291,11 @@ export function WizardProvider({
           });
         }
         break;
-      case 'payment':
+      case 'success':
         funnelTracker.quoteCompleted({
           quoteId,
           tier: ctx.selectedTier || 'better',
           totalPrice: tierData?.priceEstimate ?? 0,
-        });
-        break;
-      case 'success':
-        funnelTracker.depositPaid({
-          quoteId,
-          orderId: quoteId,
-          confirmationNumber: '',
-          depositAmount: (tierData?.priceEstimate ?? 0) * 0.1,
-          totalPrice: tierData?.priceEstimate ?? 0,
-          tier: ctx.selectedTier || 'better',
         });
         trackEvent('confirmation_viewed', { quoteId, orderId: quoteId });
         break;

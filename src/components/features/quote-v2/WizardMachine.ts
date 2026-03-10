@@ -465,7 +465,7 @@ export const wizardMachine = setup({
           timeSlot: context.timeSlot!,
         }),
         onDone: {
-          target: 'payment',
+          target: 'success',
         },
         onError: {
           target: 'contact',
