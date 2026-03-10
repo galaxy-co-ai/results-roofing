@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle, Calendar, MapPin, Phone, Home } from 'lucide-react';
+import { CheckCircle, Calendar, MapPin, Phone, Home, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useWizardData } from '../WizardContext';
 import styles from './CheckoutSuccess.module.css';
@@ -32,36 +32,6 @@ function formatTimeSlot(slot: 'morning' | 'afternoon' | null): string {
 export function CheckoutSuccess() {
   const { context } = useWizardData();
   const { address, scheduledDate, timeSlot, phone, email, quoteId } = context;
-
-  const handleAddToCalendar = () => {
-    if (!scheduledDate || !timeSlot) return;
-
-    // Create calendar event details
-    const startTime = new Date(scheduledDate);
-    const endTime = new Date(scheduledDate);
-
-    if (timeSlot === 'morning') {
-      startTime.setHours(8, 0, 0);
-      endTime.setHours(12, 0, 0);
-    } else {
-      startTime.setHours(12, 0, 0);
-      endTime.setHours(17, 0, 0);
-    }
-
-    const title = 'Results Roofing - Roof Inspection';
-    const location = address?.formattedAddress || '';
-    const description = `Your free roof inspection with Results Roofing.\n\nQuote ID: ${quoteId}\n\nOur inspector will call 30 minutes before arrival.`;
-
-    // Google Calendar URL
-    const googleUrl = new URL('https://calendar.google.com/calendar/render');
-    googleUrl.searchParams.append('action', 'TEMPLATE');
-    googleUrl.searchParams.append('text', title);
-    googleUrl.searchParams.append('dates', `${startTime.toISOString().replace(/[-:]/g, '').split('.')[0]}Z/${endTime.toISOString().replace(/[-:]/g, '').split('.')[0]}Z`);
-    googleUrl.searchParams.append('location', location);
-    googleUrl.searchParams.append('details', description);
-
-    window.open(googleUrl.toString(), '_blank');
-  };
 
   return (
     <div className={styles.container}>
@@ -140,14 +110,13 @@ export function CheckoutSuccess() {
         </div>
       </div>
 
-      {/* Add to calendar */}
+      {/* Go to dashboard (triggers Clerk sign-up/sign-in) */}
       <Button
-        onClick={handleAddToCalendar}
-        variant="secondary"
+        onClick={() => window.location.href = '/portal'}
         className="w-full"
       >
-        <Calendar size={18} />
-        Add to Calendar
+        Go to My Dashboard
+        <ArrowRight size={18} />
       </Button>
 
       {/* What to expect */}
