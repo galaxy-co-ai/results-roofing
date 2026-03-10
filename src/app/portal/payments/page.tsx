@@ -32,6 +32,46 @@ function PaymentsSkeleton() {
   );
 }
 
+/** Quote-only view — shows deposit amount when no order exists yet */
+function PendingQuotePayments({ email }: { email: string }) {
+  const { quote } = usePortalPhase(email);
+
+  if (!quote) return null;
+
+  const totalPrice = quote.totalPrice ?? 0;
+  const depositAmount = quote.depositAmount ?? Math.round(totalPrice * 0.05);
+
+  return (
+    <div className={styles.pendingPayments}>
+      <div className={styles.pendingCard}>
+        <h2 className={styles.pendingTitle}>Your Deposit</h2>
+        <p className={styles.pendingDescription}>
+          A deposit of <strong>${depositAmount.toLocaleString()}</strong> secures your installation date
+          and covers material ordering.
+        </p>
+        <div className={styles.pendingDetails}>
+          <div className={styles.pendingRow}>
+            <span>Project total</span>
+            <span>${totalPrice.toLocaleString()}</span>
+          </div>
+          <div className={styles.pendingRow}>
+            <span>Deposit due</span>
+            <strong>${depositAmount.toLocaleString()}</strong>
+          </div>
+          <div className={styles.pendingRow}>
+            <span>Balance after deposit</span>
+            <span>${(totalPrice - depositAmount).toLocaleString()}</span>
+          </div>
+        </div>
+        <p className={styles.pendingNote}>
+          Payment will be available once your consultation is confirmed.
+          You can pay by credit card, debit card, or bank transfer.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 /** Phase 3+ ledger — preserves all existing payment flow logic */
 function PaymentsLedger({ email }: { email: string }) {
   const queryClient = useQueryClient();
@@ -53,6 +93,11 @@ function PaymentsLedger({ email }: { email: string }) {
   });
 
   const invoiceList = invoiceData?.invoices || [];
+
+  if (!details && !order) {
+    // No order yet — show deposit info from pending quote
+    return <PendingQuotePayments email={email} />;
+  }
 
   if (!details || !order) {
     return (

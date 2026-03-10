@@ -189,15 +189,19 @@ function DocumentRow({ doc }: DocumentRowProps) {
 // Documents list
 // ---------------------------------------------------------------------------
 
-function DocumentsList({ orderId }: { orderId: string }) {
+function DocumentsList({ orderId, quoteId }: { orderId: string | null; quoteId: string | null }) {
+  const params = new URLSearchParams();
+  if (orderId) params.set('orderId', orderId);
+  if (quoteId) params.set('quoteId', quoteId);
+
   const { data, isLoading } = useQuery<DocumentsResponse>({
-    queryKey: ['documents', orderId],
+    queryKey: ['documents', orderId, quoteId],
     queryFn: async () => {
-      const res = await fetch(`/api/portal/documents?orderId=${orderId}`);
+      const res = await fetch(`/api/portal/documents?${params.toString()}`);
       if (!res.ok) throw new Error('Failed to fetch documents');
       return res.json();
     },
-    enabled: !!orderId,
+    enabled: !!(orderId || quoteId),
     staleTime: 30 * 1000,
   });
 
@@ -249,7 +253,7 @@ function DocumentsList({ orderId }: { orderId: string }) {
 // ---------------------------------------------------------------------------
 
 function DocumentsContent({ email }: { email: string | null }) {
-  const { phase, isLoading, order } = usePortalPhase(email);
+  const { phase, isLoading, order, quote } = usePortalPhase(email);
 
   if (isLoading) {
     return (
@@ -275,7 +279,12 @@ function DocumentsContent({ email }: { email: string | null }) {
             ctaHref="/portal"
           />
         ) : (
-          order && <DocumentsList orderId={order.id} />
+          (order || quote) && (
+            <DocumentsList
+              orderId={order?.id ?? null}
+              quoteId={quote?.id ?? null}
+            />
+          )
         )}
       </div>
       <DocumentViewer />

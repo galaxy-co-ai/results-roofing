@@ -45,26 +45,45 @@ export async function GET(request: NextRequest) {
     }
 
     const orderId = request.nextUrl.searchParams.get('orderId');
+    const quoteIdParam = request.nextUrl.searchParams.get('quoteId');
 
-    if (!orderId) {
+    if (!orderId && !quoteIdParam) {
       return NextResponse.json({ documents: [], measurementStatus: null });
     }
 
-    // Fetch the order to get the quoteId (and verify ownership)
-    const order = await db.query.orders.findFirst({
-      where: eq(schema.orders.id, orderId),
-    });
+    let quoteId: string;
+    let order: any = null;
 
-    if (!order) {
-      return NextResponse.json({ documents: [], measurementStatus: null });
+    if (orderId) {
+      // Fetch the order to get the quoteId (and verify ownership)
+      order = await db.query.orders.findFirst({
+        where: eq(schema.orders.id, orderId),
+      });
+
+      if (!order) {
+        return NextResponse.json({ documents: [], measurementStatus: null });
+      }
+
+      // Verify the user owns this order (by clerkUserId)
+      if (!DEV_BYPASS_ENABLED && order.clerkUserId !== userId) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
+
+      quoteId = order.quoteId;
+    } else {
+      // Direct quoteId — verify the quote exists and user owns it
+      const quote = await db.query.quotes.findFirst({
+        where: eq(schema.quotes.id, quoteIdParam!),
+        with: { lead: true },
+      });
+
+      if (!quote) {
+        return NextResponse.json({ documents: [], measurementStatus: null });
+      }
+
+      quoteId = quote.id;
     }
 
-    // Verify the user owns this order (by clerkUserId)
-    if (!DEV_BYPASS_ENABLED && order.clerkUserId !== userId) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
-
-    const quoteId = order.quoteId;
     const documents: DocumentResponse[] = [];
 
     // 1. Fetch GAF measurement assets
@@ -106,46 +125,68 @@ export async function GET(request: NextRequest) {
     }
 
     // 3. Inject synthetic (generated-on-the-fly) branded documents
-    // Quote summary — always present once an order exists
+    // Quote summary — always present
     documents.push({
-      id: `quote-${orderId}`,
+      id: `quote-${quoteId}`,
       name: 'Roof Replacement Estimate',
       type: 'quote',
       url: null,
       source: 'generated',
-      createdAt: order.createdAt.toISOString(),
+      createdAt: order?.createdAt?.toISOString() ?? new Date().toISOString(),
     });
+
+    // Signed contract — check contracts table
+    const signedContract = await db.query.contracts.findFirst({
+      where: and(
+        eq(schema.contracts.quoteId, quoteId),
+        eq(schema.contracts.status, 'signed'),
+      ),
+    });
+
+    if (signedContract) {
+      documents.push({
+        id: `contract-${signedContract.id}`,
+        name: 'Signed Roofing Services Agreement',
+        type: 'contract',
+        url: null,
+        source: 'generated',
+        status: 'signed',
+        createdAt: signedContract.signedAt?.toISOString() ?? signedContract.createdAt.toISOString(),
+      });
+    }
 
     // Material order — only if measurement is complete
     if (measurement?.status === 'completed') {
       documents.push({
-        id: `materials-${orderId}`,
+        id: `materials-${quoteId}`,
         name: 'Material Order',
         type: 'materials',
         url: null,
         source: 'generated',
-        createdAt: order.createdAt.toISOString(),
+        createdAt: order?.createdAt?.toISOString() ?? new Date().toISOString(),
       });
     }
 
-    // Deposit authorization — only if a deposit payment exists
-    const depositPayment = await db.query.payments.findFirst({
-      where: and(
-        eq(schema.payments.orderId, orderId),
-        eq(schema.payments.type, 'deposit'),
-      ),
-    });
-
-    if (depositPayment) {
-      documents.push({
-        id: `deposit-auth-${orderId}`,
-        name: 'Deposit Authorization',
-        type: 'deposit_authorization',
-        url: null,
-        source: 'generated',
-        status: 'signed',
-        createdAt: depositPayment.processedAt?.toISOString() ?? order.createdAt.toISOString(),
+    // Deposit authorization — only if an order and deposit payment exists
+    if (orderId) {
+      const depositPayment = await db.query.payments.findFirst({
+        where: and(
+          eq(schema.payments.orderId, orderId),
+          eq(schema.payments.type, 'deposit'),
+        ),
       });
+
+      if (depositPayment) {
+        documents.push({
+          id: `deposit-auth-${orderId}`,
+          name: 'Deposit Authorization',
+          type: 'deposit_authorization',
+          url: null,
+          source: 'generated',
+          status: 'signed',
+          createdAt: depositPayment.processedAt?.toISOString() ?? order.createdAt.toISOString(),
+        });
+      }
     }
 
     return NextResponse.json({ documents, measurementStatus });

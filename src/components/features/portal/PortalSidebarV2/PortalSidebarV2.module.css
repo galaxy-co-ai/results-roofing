@@ -13,6 +13,12 @@
   padding: 16px 0;
   gap: 8px;
   z-index: 10;
+  transition: width 0.2s ease;
+}
+
+.sidebar.expanded {
+  width: 220px;
+  align-items: stretch;
 }
 
 .logo {
@@ -27,6 +33,8 @@
   font-size: 14px;
   color: var(--rr-color-blue);
   border-radius: 8px;
+  flex-shrink: 0;
+  align-self: center;
 }
 
 .logo:focus-visible {
@@ -42,6 +50,11 @@
   flex: 1;
 }
 
+.expanded .nav {
+  align-items: stretch;
+  padding: 0 12px;
+}
+
 .navItem {
   width: 44px;
   height: 44px;
@@ -52,6 +65,20 @@
   color: var(--rr-color-text-tertiary);
   transition: background-color 150ms, color 150ms;
   text-decoration: none;
+  gap: 12px;
+}
+
+.expanded .navItem {
+  width: auto;
+  height: auto;
+  justify-content: flex-start;
+  padding: 10px 12px;
+}
+
+.navLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .navItem:focus-visible {
@@ -64,6 +91,29 @@
   color: var(--rr-color-blue);
 }
 
+/* Toggle button */
+.toggleButton {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--rr-color-border-default);
+  background: var(--rr-color-bg-secondary);
+  color: var(--rr-color-text-tertiary);
+  cursor: pointer;
+  transition: background-color 150ms, color 150ms;
+  flex-shrink: 0;
+  align-self: center;
+  margin-top: auto;
+}
+
+.expanded .toggleButton {
+  align-self: flex-end;
+  margin-right: 12px;
+}
+
 @media (hover: hover) {
   .navItem:hover {
     background: var(--rr-color-surface-hover);
@@ -72,6 +122,10 @@
   .navItemActive:hover {
     background: var(--rr-color-surface-selected);
     color: var(--rr-color-blue);
+  }
+  .toggleButton:hover {
+    background: var(--rr-color-surface-hover);
+    color: var(--rr-color-text-primary);
   }
 }
 

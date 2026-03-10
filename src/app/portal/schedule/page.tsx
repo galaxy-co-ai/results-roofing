@@ -1,7 +1,7 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import { Calendar, Clock, Users, CheckCircle2 } from 'lucide-react';
+import { Calendar, Clock, Users, CheckCircle2, Video, Phone } from 'lucide-react';
 import { PortalHeader } from '@/components/features/portal/PortalHeader/PortalHeader';
 import { EmptyStateLocked } from '@/components/features/portal/EmptyStateLocked/EmptyStateLocked';
 import { usePortalPhase } from '@/hooks/usePortalPhase';
@@ -78,8 +78,44 @@ function PreparationChecklist() {
   );
 }
 
+function ConsultationBooking() {
+  return (
+    <div className={styles.card}>
+      <div className={styles.cardHeader}>
+        <h2 className={styles.cardTitle}>Book Your Consultation</h2>
+      </div>
+      <p className={styles.consultDescription}>
+        Meet with a Results Roofing Pro to review your project details,
+        go over material options, and answer any questions before installation.
+      </p>
+      <div className={styles.consultOptions}>
+        <a
+          href="tel:+18007378587"
+          className={styles.consultOption}
+        >
+          <Phone size={20} />
+          <div>
+            <strong>Call Us</strong>
+            <span>1-800-RESULTS</span>
+          </div>
+        </a>
+        <a
+          href="mailto:support@resultsroofing.com?subject=Consultation%20Request"
+          className={styles.consultOption}
+        >
+          <Video size={20} />
+          <div>
+            <strong>Request Virtual Consult</strong>
+            <span>We&apos;ll schedule a video call</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  );
+}
+
 function ScheduleContent({ email }: { email: string | null }) {
-  const { phase, isLoading, order } = usePortalPhase(email);
+  const { phase, isLoading, order, quote } = usePortalPhase(email);
 
   if (isLoading) {
     return (
@@ -92,6 +128,7 @@ function ScheduleContent({ email }: { email: string | null }) {
   }
 
   const isLocked = !phase || phase.phase <= PortalPhase.QUOTED;
+  const showConsultation = phase?.phase === PortalPhase.CONTRACTED && !phase.hasDeposit;
 
   return (
     <div className={styles.page}>
@@ -106,7 +143,8 @@ function ScheduleContent({ email }: { email: string | null }) {
         />
       ) : (
         <>
-          <InstallationDetails order={order} />
+          {showConsultation && <ConsultationBooking />}
+          <InstallationDetails order={order ?? quote} />
           <PreparationChecklist />
         </>
       )}

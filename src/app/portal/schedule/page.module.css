@@ -103,9 +103,57 @@
   50% { opacity: 0.5; }
 }
 
+/* Consultation booking */
+.consultDescription {
+  font-size: 14px;
+  color: var(--rr-color-text-secondary);
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+.consultOptions {
+  display: flex;
+  gap: 12px;
+}
+
+.consultOption {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--rr-color-border-default);
+  border-radius: 8px;
+  background: var(--rr-color-bg-primary);
+  text-decoration: none;
+  color: var(--rr-color-text-primary);
+  transition: border-color 150ms, box-shadow 150ms;
+}
+
+.consultOption:hover {
+  border-color: var(--rr-color-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.consultOption strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.consultOption span {
+  display: block;
+  font-size: 13px;
+  color: var(--rr-color-text-tertiary);
+}
+
 @media (max-width: 768px) {
   .detailsGrid {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .consultOptions {
+    flex-direction: column;
   }
 }
