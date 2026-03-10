@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { getOrdersByUser, linkQuotesToUser, getPendingQuotesByUser } from '@/db/queries';
-import { db, schema, eq, inArray } from '@/db/index';
+import { db, schema, inArray } from '@/db/index';
 import { logger } from '@/lib/utils';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 
