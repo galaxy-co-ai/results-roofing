@@ -8,39 +8,12 @@ import { db, schema, eq } from '@/db/index';
  */
 const checkpointSchema = z.object({
   state: z.string(),
-  context: z.object({
-    quoteId: z.string().nullable(),
-    address: z.object({
-      streetAddress: z.string(),
-      city: z.string(),
-      state: z.string(),
-      zip: z.string(),
-      formattedAddress: z.string(),
-      lat: z.number(),
-      lng: z.number(),
-      placeId: z.string(),
-    }).nullable(),
-    propertyConfirmed: z.boolean(),
-    sqftEstimate: z.number().nullable(),
-    priceRanges: z.array(z.object({
-      tierId: z.string(),
-      tierName: z.string(),
-      tier: z.enum(['good', 'better', 'best']),
-      priceMin: z.number(),
-      priceMax: z.number(),
-      priceEstimate: z.number(),
-    })).nullable(),
-    selectedTier: z.enum(['good', 'better', 'best']).nullable(),
-    selectedTierId: z.string().nullable(),
-    scheduledDate: z.string().nullable(), // ISO string
-    timeSlot: z.enum(['morning', 'afternoon']).nullable(),
-    phone: z.string(),
-    email: z.string(),
-    smsConsent: z.boolean(),
-    paymentIntentId: z.string().nullable(),
-    paymentStatus: z.enum(['idle', 'processing', 'succeeded', 'failed']),
-  }).partial(),
+  context: z.record(z.unknown()),
 });
+
+interface RouteParams {
+  params: Promise<{ id: string }>;
+}
 
 /**
  * GET /api/quote-v2/[id]/checkpoint
@@ -48,9 +21,9 @@ const checkpointSchema = z.object({
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
-  const quoteId = params.id;
+  const { id: quoteId } = await params;
 
   const quote = await db.query.quotes.findFirst({
     where: eq(schema.quotes.id, quoteId),
@@ -80,9 +53,9 @@ export async function GET(
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
-  const quoteId = params.id;
+  const { id: quoteId } = await params;
 
   try {
     const body = await request.json();
@@ -132,9 +105,9 @@ export async function POST(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
-  const quoteId = params.id;
+  const { id: quoteId } = await params;
 
   await db
     .update(schema.quotes)
