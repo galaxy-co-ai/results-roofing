@@ -32,43 +32,103 @@ function PaymentsSkeleton() {
   );
 }
 
-/** Quote-only view — shows deposit amount when no order exists yet */
+/** Quote-only view — shows deposit amount + payment options when no order exists yet */
 function PendingQuotePayments({ email }: { email: string }) {
   const { quote } = usePortalPhase(email);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedPaymentType, setSelectedPaymentType] = useState<PaymentType>('deposit');
+  const [selectedAmount, setSelectedAmount] = useState(0);
+  const queryClient = useQueryClient();
 
   if (!quote) return null;
 
   const totalPrice = quote.totalPrice ?? 0;
   const depositAmount = quote.depositAmount ?? Math.round(totalPrice * 0.05);
 
+  function handlePaymentClick(type: PaymentType, amount: number) {
+    setSelectedPaymentType(type);
+    setSelectedAmount(amount);
+    setDrawerOpen(true);
+  }
+
+  function handlePaymentSuccess() {
+    funnelTracker.paymentMade({
+      quoteId: quote!.id,
+      paymentType: selectedPaymentType,
+      amount: selectedAmount,
+    });
+    setDrawerOpen(false);
+    queryClient.invalidateQueries({ queryKey: ['orders'] });
+  }
+
   return (
-    <div className={styles.pendingPayments}>
-      <div className={styles.pendingCard}>
-        <h2 className={styles.pendingTitle}>Your Deposit</h2>
-        <p className={styles.pendingDescription}>
-          A deposit of <strong>${depositAmount.toLocaleString()}</strong> secures your installation date
-          and covers material ordering.
-        </p>
-        <div className={styles.pendingDetails}>
-          <div className={styles.pendingRow}>
-            <span>Project total</span>
-            <span>${totalPrice.toLocaleString()}</span>
-          </div>
-          <div className={styles.pendingRow}>
-            <span>Deposit due</span>
-            <strong>${depositAmount.toLocaleString()}</strong>
-          </div>
-          <div className={styles.pendingRow}>
-            <span>Balance after deposit</span>
-            <span>${(totalPrice - depositAmount).toLocaleString()}</span>
+    <>
+      <div className={styles.pendingPayments}>
+        <div className={styles.pendingCard}>
+          <h2 className={styles.pendingTitle}>Your Deposit</h2>
+          <p className={styles.pendingDescription}>
+            A deposit of <strong>${depositAmount.toLocaleString()}</strong> secures your installation date
+            and covers material ordering.
+          </p>
+          <div className={styles.pendingDetails}>
+            <div className={styles.pendingRow}>
+              <span>Project total</span>
+              <span>${totalPrice.toLocaleString()}</span>
+            </div>
+            <div className={styles.pendingRow}>
+              <span>Deposit due</span>
+              <strong>${depositAmount.toLocaleString()}</strong>
+            </div>
+            <div className={styles.pendingRow}>
+              <span>Balance after deposit</span>
+              <span>${(totalPrice - depositAmount).toLocaleString()}</span>
+            </div>
           </div>
         </div>
-        <p className={styles.pendingNote}>
-          Payment will be available once your consultation is confirmed.
-          You can pay by credit card, debit card, or bank transfer.
-        </p>
       </div>
-    </div>
+
+      {/* Payment Options */}
+      <section aria-label="Payment options" className={styles.optionsGrid}>
+        <PaymentOptionCard
+          type="deposit"
+          label="Deposit"
+          amount={depositAmount}
+          description="Secure your installation date"
+          isPaid={false}
+          variant="primary"
+          onPay={() => handlePaymentClick('deposit', depositAmount)}
+        />
+        <PaymentOptionCard
+          type="balance"
+          label="Pay in full"
+          amount={totalPrice}
+          description="Pay your entire balance now"
+          isPaid={false}
+          variant="outline"
+          onPay={() => handlePaymentClick('full' as PaymentType, totalPrice)}
+        />
+        <PaymentOptionCard
+          type="financing"
+          label="Financing"
+          amount={null}
+          description="Flexible payment plans — coming soon"
+          isPaid={false}
+          variant="outline"
+          disabled
+          badge="Coming soon"
+        />
+      </section>
+
+      {/* Payment Drawer */}
+      <PaymentDrawer
+        open={drawerOpen}
+        onOpenChange={setDrawerOpen}
+        quoteId={quote.id}
+        paymentType={selectedPaymentType}
+        amount={selectedAmount}
+        onPaymentSuccess={handlePaymentSuccess}
+      />
+    </>
   );
 }
 

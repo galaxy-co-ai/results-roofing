@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FolderKanban, CreditCard, FileText, Calendar, ChevronRight, ChevronLeft } from 'lucide-react';
+import { useSidebar } from './SidebarContext';
 import styles from './PortalSidebarV2.module.css';
 
 const NAV_ITEMS = [
@@ -15,7 +15,7 @@ const NAV_ITEMS = [
 
 export function PortalSidebarV2() {
   const pathname = usePathname();
-  const [expanded, setExpanded] = useState(false);
+  const { expanded, toggle } = useSidebar();
 
   return (
     <aside
@@ -54,7 +54,7 @@ export function PortalSidebarV2() {
       {/* Toggle expand/collapse */}
       <button
         className={styles.toggleButton}
-        onClick={() => setExpanded(!expanded)}
+        onClick={toggle}
         aria-label={expanded ? 'Collapse sidebar' : 'Expand sidebar'}
         aria-expanded={expanded}
       >

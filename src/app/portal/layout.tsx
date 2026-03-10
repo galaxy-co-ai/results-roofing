@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
-import { PortalSidebarV2 } from '@/components/features/portal/PortalSidebarV2/PortalSidebarV2';
-import { BottomTabBar } from '@/components/features/portal/BottomTabBar/BottomTabBar';
-import styles from './layout.module.css';
+import { PortalShell } from '@/components/features/portal/PortalSidebarV2/PortalShell';
 
 /**
  * Force dynamic rendering for all portal pages
@@ -28,18 +26,7 @@ export default function PortalLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const content = (
-    <div className={styles.portalLayout}>
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-3 focus:bg-white focus:text-blue-600 focus:font-semibold focus:shadow-lg focus:rounded-lg focus:top-2 focus:left-2">
-        Skip to main content
-      </a>
-      <PortalSidebarV2 />
-      <main className={styles.mainContent} id="main-content">
-        {children}
-      </main>
-      <BottomTabBar />
-    </div>
-  );
+  const content = <PortalShell>{children}</PortalShell>;
 
   // Skip ClerkProvider in bypass mode
   if (BYPASS_CLERK) {
