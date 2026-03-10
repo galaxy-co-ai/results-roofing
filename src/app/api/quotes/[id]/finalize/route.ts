@@ -203,10 +203,16 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     });
   } catch (error) {
     const duration = Date.now() - startTime;
-    logger.error('Error finalizing checkout', { error, durationMs: duration });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : undefined;
+    logger.error('Error finalizing checkout', {
+      error: errorMessage,
+      stack: errorStack,
+      durationMs: duration,
+    });
 
     return NextResponse.json(
-      { error: 'Failed to complete checkout. Please try again.' },
+      { error: `Failed to complete checkout: ${errorMessage}` },
       { status: 500 }
     );
   }
