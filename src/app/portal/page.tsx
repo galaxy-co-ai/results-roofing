@@ -124,6 +124,10 @@ function Phase3Content({ order, quote, hasDeposit, checklistStep }: { order: any
       />
       <Checklist
         activeStep={checklistStep}
+        stepCtas={{
+          3: { label: 'Book Consultation →', href: '/portal/schedule' },
+          4: { label: 'Submit Deposit →', href: '/portal/payments' },
+        }}
       />
     </>
   );
