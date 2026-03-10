@@ -38,8 +38,10 @@ export function detectPhase(
     return { phase: PortalPhase.IN_PROGRESS, order, quote, hasSignedContract, hasDeposit, checklistStep: 5 };
   }
 
-  if (hasDeposit && hasSignedContract) {
-    return { phase: PortalPhase.CONTRACTED, order, quote, hasSignedContract, hasDeposit, checklistStep: 5 };
+  if (hasSignedContract) {
+    // Contract signed — advance to step 3 (consultation) or 4 (deposit) based on deposit status
+    const step = hasDeposit ? 5 : 3;
+    return { phase: PortalPhase.CONTRACTED, order, quote, hasSignedContract, hasDeposit, checklistStep: step };
   }
 
   if (order || quote) {

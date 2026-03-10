@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { getOrdersByUser, linkQuotesToUser, getPendingQuotesByUser } from '@/db/queries';
+import { db, schema, eq, inArray } from '@/db/index';
 import { logger } from '@/lib/utils';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 
@@ -94,9 +95,24 @@ export async function GET(request: NextRequest) {
       updatedAt: quote.updatedAt,
     }));
 
+    // Fetch contracts for pending quotes (needed for phase detection)
+    const quoteIds = pendingQuotes.map((q) => q.id);
+    let contracts: { id: string; status: string; signedAt: Date | null; quoteId: string }[] = [];
+    if (quoteIds.length > 0) {
+      contracts = await db.query.contracts.findMany({
+        where: inArray(schema.contracts.quoteId, quoteIds),
+        columns: { id: true, status: true, signedAt: true, quoteId: true },
+      });
+    }
+
     return NextResponse.json({
       orders: formattedOrders,
       pendingQuotes: formattedPendingQuotes,
+      contracts: contracts.map((c) => ({
+        id: c.id,
+        status: c.status,
+        signedAt: c.signedAt?.toISOString() ?? null,
+      })),
     });
   } catch (error) {
     logger.error('Error fetching user orders', error);

@@ -24,4 +24,4 @@ export const db = drizzle(sql, { schema });
 export { schema };
 
 // Re-export common Drizzle utilities
-export { eq, and, or, desc, asc, isNull, sql as rawSql } from 'drizzle-orm';
+export { eq, and, or, desc, asc, isNull, inArray, sql as rawSql } from 'drizzle-orm';

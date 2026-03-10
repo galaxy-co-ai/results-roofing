@@ -98,24 +98,32 @@ function Phase2Content({ quote, order }: { quote: any; order: any }) {
   );
 }
 
-function Phase3Content({ order }: { order: any }) {
+function Phase3Content({ order, quote, hasDeposit, checklistStep }: { order: any; quote: any; hasDeposit: boolean; checklistStep: number }) {
+  const address = order?.propertyAddress || quote?.address || '';
+  const city = order?.propertyCity || quote?.city || '';
+  const state = order?.propertyState || quote?.state || '';
+  const tier = order?.selectedTier || quote?.selectedTier || 'good';
+  const total = order?.totalPrice || quote?.totalPrice || 0;
+  const installDate = order?.scheduledStartDate || quote?.scheduledDate || null;
+
+  const subtitle = hasDeposit
+    ? 'Your project is underway — installation is being scheduled'
+    : 'Contract signed — book your consultation and submit your deposit';
+
   return (
     <>
-      <p className={styles.subtitle}>Your project is underway — installation is being scheduled</p>
-      <ProjectTimeline currentStage={5} />
-      {order && (
-        <QuoteSummaryCard
-          address={order.propertyAddress}
-          city={order.propertyCity}
-          state={order.propertyState}
-          packageTier={order.selectedTier}
-          totalPrice={order.totalPrice}
-          installDate={order.scheduledStartDate}
-        />
-      )}
+      <p className={styles.subtitle}>{subtitle}</p>
+      <ProjectTimeline currentStage={checklistStep} />
+      <QuoteSummaryCard
+        address={address}
+        city={city}
+        state={state}
+        packageTier={tier}
+        totalPrice={total}
+        installDate={installDate}
+      />
       <Checklist
-        activeStep={5}
-        stepCtas={{ 5: { label: 'View Schedule →', href: '/portal/schedule' } }}
+        activeStep={checklistStep}
       />
     </>
   );
@@ -140,7 +148,14 @@ function MyProjectContent({ email }: { email: string | null }) {
       <PortalHeader title="My Project" />
       {phase?.phase === PortalPhase.PRE_QUOTE && <Phase1Content email={email!} />}
       {phase?.phase === PortalPhase.QUOTED && <Phase2Content quote={quote} order={order} />}
-      {phase?.phase === PortalPhase.CONTRACTED && <Phase3Content order={order} />}
+      {phase?.phase === PortalPhase.CONTRACTED && (
+        <Phase3Content
+          order={order}
+          quote={quote}
+          hasDeposit={phase.hasDeposit}
+          checklistStep={phase.checklistStep}
+        />
+      )}
       {phase?.phase === PortalPhase.IN_PROGRESS && (
         <PhaseShell phase="in-progress" page="project" />
       )}

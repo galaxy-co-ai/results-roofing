@@ -11,10 +11,14 @@ export function usePortalPhase(email: string | null) {
 
   const phaseContext = useMemo<PhaseContext | null>(() => {
     if (!ordersData) return null;
+    // Merge contracts from both sources: order details and pending quotes
+    const orderContracts = details?.contracts ?? [];
+    const quoteContracts = ordersData.contracts ?? [];
+    const allContracts = [...orderContracts, ...quoteContracts];
     return detectPhase(
       ordersData.orders,
       ordersData.pendingQuotes,
-      details?.contracts ?? [],
+      allContracts,
     );
   }, [ordersData, details]);
 

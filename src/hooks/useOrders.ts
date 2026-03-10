@@ -126,7 +126,7 @@ const MOCK_ORDER_DETAILS: OrderDetailsResponse = {
   ],
 };
 
-async function fetchOrders(email: string): Promise<{ orders: Order[]; pendingQuotes: PendingQuote[] }> {
+async function fetchOrders(email: string): Promise<{ orders: Order[]; pendingQuotes: PendingQuote[]; contracts: Contract[] }> {
   // In dev bypass mode, fetch real orders but fall back to mock if none exist
   const res = await fetch(`/api/portal/orders?email=${encodeURIComponent(email)}`);
   if (!res.ok) {
@@ -136,12 +136,13 @@ async function fetchOrders(email: string): Promise<{ orders: Order[]; pendingQuo
 
   // If no real orders and dev bypass is enabled, return mock data
   if (DEV_BYPASS_ENABLED && (!data.orders || data.orders.length === 0)) {
-    return { orders: [MOCK_ORDER], pendingQuotes: [] };
+    return { orders: [MOCK_ORDER], pendingQuotes: [], contracts: [] };
   }
 
   return {
     orders: data.orders || [],
     pendingQuotes: data.pendingQuotes || [],
+    contracts: data.contracts || [],
   };
 }
 
