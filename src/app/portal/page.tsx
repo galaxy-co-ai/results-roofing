@@ -8,6 +8,7 @@ import { Checklist } from '@/components/features/portal/Checklist/Checklist';
 import { QuoteSummaryCard } from '@/components/features/portal/QuoteSummaryCard/QuoteSummaryCard';
 import { QuoteWizard } from '@/components/features/portal/QuoteWizard/QuoteWizard';
 import { PhaseShell } from '@/components/features/portal/PhaseShell/PhaseShell';
+import { ContractFloatingCard } from '@/components/features/contract/ContractFloatingCard/ContractFloatingCard';
 import { usePortalPhase } from '@/hooks/usePortalPhase';
 import { PortalPhase } from '@/lib/portal/phases';
 import { trackEvent } from '@/lib/analytics';
@@ -49,12 +50,15 @@ function Phase1Content({ email }: { email: string }) {
 }
 
 function Phase2Content({ quote, order }: { quote: any; order: any }) {
+  const [contractOpen, setContractOpen] = useState(false);
+
   const address = order?.propertyAddress || quote?.address || '';
   const city = order?.propertyCity || quote?.city || '';
   const state = order?.propertyState || quote?.state || '';
   const tier = order?.selectedTier || quote?.selectedTier || 'good';
   const total = order?.totalPrice || quote?.totalPrice || 0;
   const installDate = order?.scheduledStartDate || quote?.scheduledDate || null;
+  const quoteId = order?.quoteId || quote?.id || '';
 
   return (
     <>
@@ -70,7 +74,25 @@ function Phase2Content({ quote, order }: { quote: any; order: any }) {
       />
       <Checklist
         activeStep={2}
-        stepCtas={{ 2: { label: 'Review Contract →', href: '/portal/documents' } }}
+        stepCtas={{ 2: { label: 'Review Contract →', onClick: () => setContractOpen(true) } }}
+      />
+      <ContractFloatingCard
+        isOpen={contractOpen}
+        onClose={() => setContractOpen(false)}
+        onSigned={() => {
+          setContractOpen(false);
+          window.location.reload();
+        }}
+        order={{
+          id: quoteId,
+          quoteId,
+          propertyAddress: address,
+          propertyCity: city,
+          propertyState: state,
+          selectedTier: tier,
+          totalPrice: total,
+        }}
+        contract={null}
       />
     </>
   );
