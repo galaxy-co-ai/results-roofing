@@ -135,12 +135,12 @@ const createQuoteActor = fromPromise<
  */
 const selectTierActor = fromPromise<
   { success: boolean },
-  { quoteId: string; tierId: string }
+  { quoteId: string; tier: 'good' | 'better' | 'best' }
 >(async ({ input }) => {
   const response = await fetch(`/api/quotes/${input.quoteId}/select-tier`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tierId: input.tierId }),
+    body: JSON.stringify({ tier: input.tier }),
   });
 
   if (!response.ok) {
@@ -397,7 +397,7 @@ export const wizardMachine = setup({
         src: 'selectTier',
         input: ({ context }) => ({
           quoteId: context.quoteId!,
-          tierId: context.selectedTierId!,
+          tier: context.selectedTier!,
         }),
         onDone: {
           target: 'schedule',
