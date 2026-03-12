@@ -156,7 +156,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Material order — only if measurement is complete
-    if (measurement?.status === 'completed') {
+    if (measurement?.status === 'complete') {
       documents.push({
         id: `materials-${quoteId}`,
         name: 'Material Order',
