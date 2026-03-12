@@ -57,6 +57,20 @@ interface GAFCallbackPayload {
 }
 
 // ============================================================
+// Helpers
+// ============================================================
+
+/** Infer a semantic asset key from the filename for portal display */
+function inferAssetKey(filename: string): string | null {
+  const lower = filename.toLowerCase();
+  if (lower.includes('homeowner')) return 'HomeownerReport';
+  if (lower.includes('diagram') || lower.includes('layout')) return 'Diagram';
+  if (lower.includes('cover')) return 'Cover';
+  if (lower.includes('report') || lower.includes('measurement')) return 'Report';
+  return null;
+}
+
+// ============================================================
 // Route handler
 // ============================================================
 
@@ -85,13 +99,15 @@ export async function POST(request: NextRequest) {
   });
 
   // 2. Log the webhook event
+  const webhookEventId = `gaf-${gafOrderNumber || subscriberOrderNumber}-${Date.now()}`;
   await db.insert(schema.webhookEvents).values({
-    eventId: `gaf-${gafOrderNumber || subscriberOrderNumber}-${Date.now()}`,
+    eventId: webhookEventId,
     source: 'gaf',
     eventType: payload.ProblemCode ? 'order.failed' : 'order.complete',
     payload: payload as unknown as Record<string, unknown>,
     processed: false,
     relatedEntityType: 'quote',
+    relatedEntityId: subscriberOrderNumber.replace(/^RR-/, '') || undefined,
   });
 
   // 3. Extract quoteId from SubscriberOrderNumber (format: "RR-{quoteId}")
@@ -103,14 +119,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid SubscriberOrderNumber' }, { status: 400 });
   }
 
-  // 4. Find existing measurement for this quote
-  const existingMeasurement = await db.query.measurements.findFirst({
+  // 4. Find or create measurement for this quote
+  let existingMeasurement = await db.query.measurements.findFirst({
     where: eq(schema.measurements.quoteId, quoteId),
   });
 
   if (!existingMeasurement) {
-    logger.error('[GAF Webhook] No measurement record found for quote', { quoteId });
-    return NextResponse.json({ error: 'Measurement not found' }, { status: 404 });
+    // Create a measurement record if one doesn't exist yet (e.g., Google Solar failed or raced)
+    logger.info('[GAF Webhook] No measurement record found — creating one', { quoteId });
+    const [created] = await db
+      .insert(schema.measurements)
+      .values({
+        quoteId,
+        vendor: 'gaf',
+        gafOrderNumber: String(gafOrderNumber || ''),
+        status: 'processing',
+      })
+      .returning();
+    existingMeasurement = created;
   }
 
   // 5. Handle error case
@@ -152,7 +178,14 @@ export async function POST(request: NextRequest) {
           contentType: report.FileType || 'application/pdf',
         });
 
-        gafAssets[report.FileName] = blob.url;
+        // Use a semantic key derived from the report.
+        // GAF reports may include a ReportType or Category field.
+        // Fall back to inferring from filename, then use filename as-is.
+        const reportType = (report as Record<string, unknown>).ReportType as string | undefined;
+        const assetKey = reportType
+          || inferAssetKey(report.FileName)
+          || report.FileName;
+        gafAssets[assetKey] = blob.url;
 
         logger.info('[GAF Webhook] Asset stored in Blob', {
           quoteId,
@@ -237,7 +270,7 @@ export async function POST(request: NextRequest) {
   await db
     .update(schema.webhookEvents)
     .set({ processed: true, processedAt: new Date() })
-    .where(eq(schema.webhookEvents.eventId, `gaf-${gafOrderNumber || subscriberOrderNumber}-${Date.now()}`));
+    .where(eq(schema.webhookEvents.eventId, webhookEventId));
 
   logger.info('[GAF Webhook] Measurement updated with GAF data', {
     quoteId,

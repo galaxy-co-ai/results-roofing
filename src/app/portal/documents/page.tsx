@@ -264,7 +264,7 @@ function DocumentsContent({ email }: { email: string | null }) {
     );
   }
 
-  const isLocked = !phase || phase.phase <= PortalPhase.QUOTED;
+  const isLocked = !phase || phase.phase < PortalPhase.QUOTED;
 
   return (
     <DocumentProvider>
@@ -273,7 +273,7 @@ function DocumentsContent({ email }: { email: string | null }) {
         {isLocked ? (
           <EmptyStateLocked
             title="No Documents Yet"
-            description="Your documents will appear after your contract is signed."
+            description="Your documents will appear once your quote is ready."
             currentStep={phase?.checklistStep ?? 1}
             ctaLabel="Start Your Quote"
             ctaHref="/portal"

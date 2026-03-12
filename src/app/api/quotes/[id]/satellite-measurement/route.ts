@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { fetchSolarMeasurement } from '@/lib/integrations/adapters/google-solar';
+import { gafAdapter } from '@/lib/integrations/adapters/gaf';
 import { calculateQuotePricing } from '@/lib/pricing/calculate-quote';
 import { db, schema, eq } from '@/db/index';
 import { logger } from '@/lib/utils';
@@ -157,6 +158,39 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       complexity: measurement.complexity,
       confidence: measurement.confidence,
     });
+
+    // Fire-and-forget: place GAF QuickMeasure order in background
+    // Only if GAF is configured and we don't already have a GAF order
+    if (gafAdapter.isConfigured() && !savedMeasurement.gafOrderNumber) {
+      gafAdapter
+        .placeOrder({
+          quoteId,
+          address1: quote.address!,
+          city: quote.city!,
+          state: quote.state!,
+          zip: quote.zip!,
+          lat,
+          lng,
+          fullAddress: `${quote.address}, ${quote.city}, ${quote.state} ${quote.zip}`,
+        })
+        .then(async (gafResult) => {
+          await db
+            .update(schema.measurements)
+            .set({ gafOrderNumber: String(gafResult.OrderNumber || gafResult.orderId || '') })
+            .where(eq(schema.measurements.id, savedMeasurement.id));
+
+          logger.info('[SatelliteMeasurement] GAF QuickMeasure order placed', {
+            quoteId,
+            gafOrderNumber: gafResult.OrderNumber || gafResult.orderId,
+          });
+        })
+        .catch((err) => {
+          logger.warn('[SatelliteMeasurement] Background GAF order failed', {
+            quoteId,
+            error: err instanceof Error ? err.message : 'Unknown error',
+          });
+        });
+    }
 
     // 6. Return measurement + updated pricing
     return NextResponse.json({

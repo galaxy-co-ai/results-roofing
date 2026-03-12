@@ -5,13 +5,26 @@ import { db, schema, eq, and } from '@/db';
 import { logger } from '@/lib/utils';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 
-/** Human-readable names for GAF asset keys */
+/** Human-readable names for GAF asset keys (semantic or filename-based) */
 const GAF_ASSET_LABELS: Record<string, string> = {
   Report: 'GAF Roof Measurement Report',
   HomeownerReport: 'Homeowner Report',
   Diagram: 'Roof Diagram',
   Cover: 'Report Cover',
 };
+
+/** Resolve a human-readable label for a GAF asset key (may be a filename) */
+function resolveGafAssetLabel(key: string): string {
+  if (GAF_ASSET_LABELS[key]) return GAF_ASSET_LABELS[key];
+  // If key looks like a filename, try to infer a label
+  const lower = key.toLowerCase();
+  if (lower.includes('homeowner')) return 'Homeowner Report';
+  if (lower.includes('diagram') || lower.includes('layout')) return 'Roof Diagram';
+  if (lower.includes('cover')) return 'Report Cover';
+  if (lower.includes('report') || lower.includes('measurement')) return 'GAF Roof Measurement Report';
+  // Strip extension and titleize for unknown files
+  return key.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
 
 interface DocumentResponse {
   id: string;
@@ -97,10 +110,10 @@ export async function GET(request: NextRequest) {
       const assets = measurement.gafAssets;
       for (const [key, url] of Object.entries(assets)) {
         documents.push({
-          id: `gaf-${key.toLowerCase()}`,
-          name: GAF_ASSET_LABELS[key] ?? key,
+          id: `gaf-${key.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
+          name: resolveGafAssetLabel(key),
           type: 'measurement',
-          url,
+          url: url as string,
           source: 'gaf',
           createdAt: (measurement.completedAt ?? measurement.requestedAt).toISOString(),
         });
@@ -156,7 +169,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Material order — only if measurement is complete
-    if (measurement?.status === 'completed') {
+    if (measurement?.status === 'complete') {
       documents.push({
         id: `materials-${quoteId}`,
         name: 'Material Order',
