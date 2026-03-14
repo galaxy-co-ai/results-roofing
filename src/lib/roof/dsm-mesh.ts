@@ -105,9 +105,13 @@ export function generateRoofMesh(
   const maxSpan = Math.max(spanX, spanZ, 1);
   const scale = 15 / maxSpan; // target ~15 units across
 
+  // Exaggerate elevation to make roof slopes visually prominent.
+  // Real roofs have only 2-3m of rise over 10-20m of span — nearly flat without this.
+  const Y_EXAGGERATION = 3;
+
   for (let i = 0; i < positions.length; i += 3) {
     positions[i] = (positions[i] - centerX) * scale;
-    positions[i + 1] = (positions[i + 1] - minY) * scale;
+    positions[i + 1] = (positions[i + 1] - minY) * scale * Y_EXAGGERATION;
     positions[i + 2] = (positions[i + 2] - centerZ) * scale;
   }
 

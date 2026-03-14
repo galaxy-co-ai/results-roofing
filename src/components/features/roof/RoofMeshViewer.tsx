@@ -71,9 +71,10 @@ function RoofScene({ mesh, shingleHex }: RoofMeshViewerProps) {
 
   return (
     <>
-      {/* Lighting */}
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[10, 15, 8]} intensity={0.8} />
+      {/* Lighting — two directional lights for visible slope shading */}
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[10, 20, 8]} intensity={0.9} />
+      <directionalLight position={[-8, 12, -6]} intensity={0.3} />
 
       {/* Roof mesh */}
       <mesh ref={meshRef} geometry={geometry} material={material} />
