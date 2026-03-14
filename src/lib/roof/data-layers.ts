@@ -16,7 +16,7 @@ import { generateRoofMesh } from './dsm-mesh';
 const SOLAR_API_BASE = 'https://solar.googleapis.com/v1';
 const MAX_PAYLOAD_BYTES = 1_000_000; // 1MB — don't write larger blobs to jsonb
 const MAX_MESH_BYTES = 1_000_000;  // 1MB — separate budget for mesh data
-const DSM_STEP_INITIAL = 2;        // 0.2m resolution (every 2nd pixel)
+const DSM_STEP_INITIAL = 1;        // full resolution on cropped area (~200x200px)
 const RADIUS_METERS = 75;
 const PADDING_METERS = 20;
 
@@ -83,18 +83,35 @@ export async function fetchRoofLayers(
     const maskResult = await parseGeoTiff(maskBuffer, 'mask');
     if (!rgbResult || !maskResult) return null;
 
-    // 3b. Parse DSM GeoTIFF (for 3D mesh — non-fatal if this fails)
+    // 4. Compute crop bounds around the building center + padding
+    const cropBounds = computeCropBounds(lat, lng, PADDING_METERS, rgbResult.meta);
+
+    // 3b. Parse DSM GeoTIFF and generate mesh from CROPPED area (non-fatal)
     let roofMesh: RoofMesh | null = null;
     if (dsmBuffer) {
       const dsmResult = await parseDsmGeoTiff(dsmBuffer);
       if (dsmResult && maskResult) {
-        const maskData = maskResult.data as Uint8Array;
         const dsmW = dsmResult.meta.width;
         const dsmH = dsmResult.meta.height;
 
-        // DSM and mask must have the same dimensions
         if (dsmW === maskResult.meta.width && dsmH === maskResult.meta.height) {
-          roofMesh = buildAndSerializeMesh(dsmResult.data, maskData, dsmW, dsmH);
+          // Crop DSM + mask to building area (same crop as RGB/mask PNGs)
+          // This isolates just the target building, excluding neighboring houses
+          const { x, y, widthPx, heightPx } = cropBounds;
+          const croppedDsm = new Float32Array(widthPx * heightPx);
+          const croppedMask = new Uint8Array(widthPx * heightPx);
+          const maskData = maskResult.data as Uint8Array;
+
+          for (let row = 0; row < heightPx; row++) {
+            for (let col = 0; col < widthPx; col++) {
+              const srcIdx = (y + row) * dsmW + (x + col);
+              const dstIdx = row * widthPx + col;
+              croppedDsm[dstIdx] = dsmResult.data[srcIdx];
+              croppedMask[dstIdx] = maskData[srcIdx] > 0 ? 255 : 0;
+            }
+          }
+
+          roofMesh = buildAndSerializeMesh(croppedDsm, croppedMask, widthPx, heightPx);
         } else {
           logger.warn(
             `[DataLayers] DSM/mask dimension mismatch: DSM=${dsmW}x${dsmH}, mask=${maskResult.meta.width}x${maskResult.meta.height}`,
@@ -102,9 +119,6 @@ export async function fetchRoofLayers(
         }
       }
     }
-
-    // 4. Compute crop bounds around the building center + padding
-    const cropBounds = computeCropBounds(lat, lng, PADDING_METERS, rgbResult.meta);
 
     // 5. Crop and encode as PNGs
     const rgbPng = await cropAndEncode(rgbResult.data, rgbResult.meta, cropBounds, 'rgb');
