@@ -10,10 +10,13 @@
 import { fromArrayBuffer } from 'geotiff';
 import sharp from 'sharp';
 import { logger } from '@/lib/utils';
-import type { RoofLayers } from './types';
+import type { RoofLayers, RoofMesh } from './types';
+import { generateRoofMesh } from './dsm-mesh';
 
 const SOLAR_API_BASE = 'https://solar.googleapis.com/v1';
 const MAX_PAYLOAD_BYTES = 1_000_000; // 1MB — don't write larger blobs to jsonb
+const MAX_MESH_BYTES = 1_000_000;  // 1MB — separate budget for mesh data
+const DSM_STEP_INITIAL = 2;        // 0.2m resolution (every 2nd pixel)
 const RADIUS_METERS = 75;
 const PADDING_METERS = 20;
 
@@ -55,10 +58,11 @@ export async function fetchRoofLayers(
     let layerUrls = await fetchDataLayerUrls(lat, lng, apiKey);
     if (!layerUrls) return null;
 
-    // 2. Download RGB + Mask GeoTIFFs in parallel
-    let [rgbBuffer, maskBuffer] = await Promise.all([
+    // 2. Download RGB + Mask + DSM GeoTIFFs in parallel
+    let [rgbBuffer, maskBuffer, dsmBuffer] = await Promise.all([
       downloadGeoTiff(layerUrls.rgbUrl, apiKey),
       downloadGeoTiff(layerUrls.maskUrl, apiKey),
+      downloadGeoTiff(layerUrls.dsmUrl, apiKey),
     ]);
 
     // Retry once if download failed (URLs may have expired)
@@ -66,9 +70,10 @@ export async function fetchRoofLayers(
       logger.warn('[DataLayers] GeoTIFF download failed, retrying with fresh URLs');
       layerUrls = await fetchDataLayerUrls(lat, lng, apiKey);
       if (!layerUrls) return null;
-      [rgbBuffer, maskBuffer] = await Promise.all([
+      [rgbBuffer, maskBuffer, dsmBuffer] = await Promise.all([
         downloadGeoTiff(layerUrls.rgbUrl, apiKey),
         downloadGeoTiff(layerUrls.maskUrl, apiKey),
+        downloadGeoTiff(layerUrls.dsmUrl, apiKey),
       ]);
     }
     if (!rgbBuffer || !maskBuffer) return null;
@@ -77,6 +82,26 @@ export async function fetchRoofLayers(
     const rgbResult = await parseGeoTiff(rgbBuffer, 'rgb');
     const maskResult = await parseGeoTiff(maskBuffer, 'mask');
     if (!rgbResult || !maskResult) return null;
+
+    // 3b. Parse DSM GeoTIFF (for 3D mesh — non-fatal if this fails)
+    let roofMesh: RoofMesh | null = null;
+    if (dsmBuffer) {
+      const dsmResult = await parseDsmGeoTiff(dsmBuffer);
+      if (dsmResult && maskResult) {
+        const maskData = maskResult.data as Uint8Array;
+        const dsmW = dsmResult.meta.width;
+        const dsmH = dsmResult.meta.height;
+
+        // DSM and mask must have the same dimensions
+        if (dsmW === maskResult.meta.width && dsmH === maskResult.meta.height) {
+          roofMesh = buildAndSerializeMesh(dsmResult.data, maskData, dsmW, dsmH);
+        } else {
+          logger.warn(
+            `[DataLayers] DSM/mask dimension mismatch: DSM=${dsmW}x${dsmH}, mask=${maskResult.meta.width}x${maskResult.meta.height}`,
+          );
+        }
+      }
+    }
 
     // 4. Compute crop bounds around the building center + padding
     const cropBounds = computeCropBounds(lat, lng, PADDING_METERS, rgbResult.meta);
@@ -102,6 +127,7 @@ export async function fetchRoofLayers(
         sw: { latitude: cropBounds.swLat, longitude: cropBounds.swLng },
         ne: { latitude: cropBounds.neLat, longitude: cropBounds.neLng },
       },
+      mesh: roofMesh,
     };
   } catch (error) {
     logger.error('[DataLayers] Unexpected error processing roof layers', error);
@@ -198,6 +224,71 @@ async function parseGeoTiff(
     logger.error(`[DataLayers] GeoTIFF parse error (${type})`, error);
     return null;
   }
+}
+
+async function parseDsmGeoTiff(
+  buffer: ArrayBuffer,
+): Promise<{ data: Float32Array; meta: GeoTiffMeta } | null> {
+  try {
+    const tiff = await fromArrayBuffer(buffer);
+    const image = await tiff.getImage();
+
+    const width = image.getWidth();
+    const height = image.getHeight();
+    const origin = image.getOrigin() as [number, number];
+    const resolution = image.getResolution() as [number, number];
+    const bbox = image.getBoundingBox() as [number, number, number, number];
+
+    const rasters = await image.readRasters();
+    const meta: GeoTiffMeta = { origin, resolution, width, height, bbox };
+
+    return {
+      data: new Float32Array(rasters[0] as ArrayLike<number>),
+      meta,
+    };
+  } catch (error) {
+    logger.error('[DataLayers] DSM GeoTIFF parse error', error);
+    return null;
+  }
+}
+
+function buildAndSerializeMesh(
+  dsm: Float32Array,
+  mask: Uint8Array,
+  width: number,
+  height: number,
+): RoofMesh | null {
+  let step = DSM_STEP_INITIAL;
+  const maxRetries = 2;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const mesh = generateRoofMesh(dsm, mask, width, height, step);
+    if (!mesh) return null;
+
+    const posB64 = Buffer.from(mesh.positions.buffer).toString('base64');
+    const normB64 = Buffer.from(mesh.normals.buffer).toString('base64');
+    const idxB64 = Buffer.from(mesh.indices.buffer).toString('base64');
+
+    const totalBytes = posB64.length + normB64.length + idxB64.length;
+
+    if (totalBytes <= MAX_MESH_BYTES) {
+      return {
+        positions: posB64,
+        normals: normB64,
+        indices: idxB64,
+        vertexCount: mesh.vertexCount,
+        triangleCount: mesh.triangleCount,
+      };
+    }
+
+    logger.warn(
+      `[DataLayers] Mesh ${totalBytes} bytes exceeds ${MAX_MESH_BYTES}, retrying with step=${step * 2}`,
+    );
+    step *= 2;
+  }
+
+  logger.warn('[DataLayers] Mesh still too large after max retries');
+  return null;
 }
 
 // ── Geo-to-Pixel Conversion & Cropping ────────────────────────────────────────
