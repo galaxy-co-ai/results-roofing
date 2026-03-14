@@ -4,7 +4,8 @@ import { auth } from '@clerk/nextjs/server';
 import { db, schema, eq } from '@/db';
 import { logger } from '@/lib/utils';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
-import type { RoofDataResponse } from '@/lib/roof/types';
+import type { RoofDataResponse, RoofLayers } from '@/lib/roof/types';
+import { fetchRoofLayers } from '@/lib/roof/data-layers';
 
 /**
  * GET /api/portal/roof-data?quoteId=xxx
@@ -112,6 +113,28 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
     }
 
+    // ── Fetch/cache roof visualization layers ─────────────────────────────
+    let layers: RoofLayers | null = (measurement.roofLayers as RoofLayers) ?? null;
+
+    if (!layers) {
+      const apiKey = process.env.GOOGLE_SOLAR_API_KEY;
+      if (apiKey) {
+        layers = await fetchRoofLayers(center.latitude, center.longitude, apiKey);
+        if (layers) {
+          // Cache in DB — never need to call the API again for this property
+          try {
+            await db
+              .update(schema.measurements)
+              .set({ roofLayers: layers })
+              .where(eq(schema.measurements.id, measurement.id));
+          } catch (cacheErr) {
+            logger.error('[RoofData] Failed to cache layers', cacheErr);
+            // Non-fatal — we still have the layers for this response
+          }
+        }
+      }
+    }
+
     const response: RoofDataResponse = {
       segments: segments as RoofDataResponse['segments'],
       buildingCenter: { lat: center.latitude, lng: center.longitude },
@@ -127,6 +150,7 @@ export async function GET(request: NextRequest) {
         facetCount: segments.length,
         vendor: 'google_solar',
       },
+      layers,
     };
 
     return NextResponse.json(response);
