@@ -115,12 +115,15 @@ export function buildRoofGeometry(
     const sw = latLngToLocal(seg.boundingBox.sw.latitude, seg.boundingBox.sw.longitude, buildingCenter.lat, buildingCenter.lng);
     const ne = latLngToLocal(seg.boundingBox.ne.latitude, seg.boundingBox.ne.longitude, buildingCenter.lat, buildingCenter.lng);
 
-    // Bounding box → rectangle polygon (CCW)
+    // Bounding box → rectangle polygon, padded to ensure neighbor overlap.
+    // Google's per-segment bounding boxes are tight-fitting and leave gaps
+    // between adjacent segments without padding.
+    const PAD = 5; // meters
     const polygon: Pt2[] = [
-      [sw[0], sw[1]], // SW
-      [ne[0], sw[1]], // SE
-      [ne[0], ne[1]], // NE
-      [sw[0], ne[1]], // NW
+      [sw[0] - PAD, sw[1] + PAD], // SW (further west + south)
+      [ne[0] + PAD, sw[1] + PAD], // SE (further east + south)
+      [ne[0] + PAD, ne[1] - PAD], // NE (further east + north)
+      [sw[0] - PAD, ne[1] - PAD], // NW (further west + north)
     ];
 
     const pitch = seg.pitchDegrees < 2 ? 0 : (seg.pitchDegrees * Math.PI) / 180;
@@ -132,35 +135,31 @@ export function buildRoofGeometry(
 
   if (locals.length === 0) return null;
 
-  // 2. Compute overall building footprint and use as starting polygon for all segments.
-  //    Google's per-segment bounding boxes are tight-fitting and leave gaps between
-  //    adjacent segments. Using the building AABB ensures full coverage — the clipping
-  //    will carve each segment's territory from the shared footprint.
-  let overallMinX = Infinity, overallMaxX = -Infinity;
-  let overallMinZ = Infinity, overallMaxZ = -Infinity;
-  for (const local of locals) {
+  // 2. Save original padded bounds for overlap detection.
+  //    We check overlap with pre-clip bounds so that clipping polygon[i] against
+  //    plane j doesn't cause a later overlap check for (i, k) to miss.
+  const originalBounds = locals.map(local => {
+    let minX = Infinity, maxX = -Infinity;
+    let minZ = Infinity, maxZ = -Infinity;
     for (const [x, z] of local.polygon) {
-      overallMinX = Math.min(overallMinX, x);
-      overallMaxX = Math.max(overallMaxX, x);
-      overallMinZ = Math.min(overallMinZ, z);
-      overallMaxZ = Math.max(overallMaxZ, z);
+      minX = Math.min(minX, x);
+      maxX = Math.max(maxX, x);
+      minZ = Math.min(minZ, z);
+      maxZ = Math.max(maxZ, z);
     }
-  }
+    return { minX, maxX, minZ, maxZ };
+  });
 
-  const PAD = 2; // meters — small margin beyond outermost segment bounds
-  for (const local of locals) {
-    local.polygon = [
-      [overallMinX - PAD, overallMaxZ + PAD],
-      [overallMaxX + PAD, overallMaxZ + PAD],
-      [overallMaxX + PAD, overallMinZ - PAD],
-      [overallMinX - PAD, overallMinZ - PAD],
-    ];
-  }
-
-  // 3. Clip each segment against all others — carves building footprint into territories
+  // 3. Clip each segment against overlapping neighbors only
   for (let i = 0; i < locals.length; i++) {
     for (let j = 0; j < locals.length; j++) {
       if (i === j) continue;
+
+      // Use ORIGINAL padded bounds for overlap check (not mutated polygon)
+      const a = originalBounds[i];
+      const b = originalBounds[j];
+      if (a.maxX < b.minX || b.maxX < a.minX ||
+          a.maxZ < b.minZ || b.maxZ < a.minZ) continue;
 
       const line = planeIntersectionLine(locals[i], locals[j]);
       if (!line) continue;
