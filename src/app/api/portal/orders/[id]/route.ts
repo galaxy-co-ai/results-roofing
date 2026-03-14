@@ -8,6 +8,7 @@ import {
   getContractsByOrderId,
   getTotalPaidForOrder
 } from '@/db/queries';
+import { db, schema, eq } from '@/db';
 import { logger } from '@/lib/utils';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 
@@ -57,11 +58,16 @@ export async function GET(
     }
 
     // Get related data
-    const [payments, appointments, contracts, totalPaid] = await Promise.all([
+    const [payments, appointments, contracts, totalPaid, measurement] = await Promise.all([
       getPaymentsByOrderId(id),
       getAppointmentsByOrderId(id),
       getContractsByOrderId(id),
       getTotalPaidForOrder(id),
+      order.quoteId
+        ? db.query.measurements.findFirst({
+            where: eq(schema.measurements.quoteId, order.quoteId),
+          })
+        : null,
     ]);
 
     const balance = parseFloat(order.totalPrice) - totalPaid;
@@ -112,6 +118,9 @@ export async function GET(
         status: c.status,
         signedAt: c.signedAt,
       })),
+      measurement: measurement
+        ? { vendor: measurement.vendor, status: measurement.status }
+        : null,
     });
   } catch (error) {
     logger.error('Error fetching order details', error);
