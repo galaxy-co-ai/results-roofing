@@ -68,13 +68,11 @@ export function buildRoofGeometry(
     const sw = latLngToLocal(seg.boundingBox.sw.latitude, seg.boundingBox.sw.longitude, buildingCenter.lat, buildingCenter.lng);
     const ne = latLngToLocal(seg.boundingBox.ne.latitude, seg.boundingBox.ne.longitude, buildingCenter.lat, buildingCenter.lng);
 
-    // Pad bounding box to close gaps between adjacent segments
-    const PAD = 3; // meters
     const polygon: Pt2[] = [
-      [sw[0] - PAD, sw[1] + PAD],
-      [ne[0] + PAD, sw[1] + PAD],
-      [ne[0] + PAD, ne[1] - PAD],
-      [sw[0] - PAD, ne[1] - PAD],
+      [sw[0], sw[1]],
+      [ne[0], sw[1]],
+      [ne[0], ne[1]],
+      [sw[0], ne[1]],
     ];
 
     const pitch = seg.pitchDegrees < 2 ? 0 : (seg.pitchDegrees * Math.PI) / 180;
@@ -86,7 +84,37 @@ export function buildRoofGeometry(
 
   if (locals.length === 0) return null;
 
-  // 2. No clipping — the GPU Z-buffer resolves overlaps naturally.
+  // 2. Compute building footprint and clamp each segment to it.
+  //    Individual bounding boxes may extend beyond the building — clamping
+  //    trims edges cleanly while allowing interior overlap for Z-buffer.
+  let bldgMinX = Infinity, bldgMaxX = -Infinity;
+  let bldgMinZ = Infinity, bldgMaxZ = -Infinity;
+  for (const local of locals) {
+    for (const [x, z] of local.polygon) {
+      bldgMinX = Math.min(bldgMinX, x);
+      bldgMaxX = Math.max(bldgMaxX, x);
+      bldgMinZ = Math.min(bldgMinZ, z);
+      bldgMaxZ = Math.max(bldgMaxZ, z);
+    }
+  }
+
+  // Shrink the overall bounds slightly — outermost bounding boxes extend
+  // past the actual building edge. 15% inset approximates the footprint.
+  const shrinkX = (bldgMaxX - bldgMinX) * 0.08;
+  const shrinkZ = (bldgMaxZ - bldgMinZ) * 0.08;
+  bldgMinX += shrinkX;
+  bldgMaxX -= shrinkX;
+  bldgMinZ += shrinkZ;
+  bldgMaxZ -= shrinkZ;
+
+  for (const local of locals) {
+    local.polygon = local.polygon.map(([x, z]) => [
+      Math.max(bldgMinX, Math.min(bldgMaxX, x)),
+      Math.max(bldgMinZ, Math.min(bldgMaxZ, z)),
+    ] as Pt2);
+  }
+
+  // 3. No clipping — the GPU Z-buffer resolves overlaps naturally.
   //    Where two tilted planes overlap, the higher surface is visible,
   //    producing natural ridge/hip/valley lines without clipping math.
 
