@@ -2,23 +2,26 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FolderKanban, CreditCard, FileText, Calendar } from 'lucide-react';
+import { FolderKanban, CreditCard, FileText, Calendar, Home } from 'lucide-react';
+import { useSidebar } from '@/components/features/portal/PortalSidebarV2/SidebarContext';
 import styles from './BottomTabBar.module.css';
-
-const TAB_ITEMS = [
-  { label: 'Project', href: '/portal', icon: FolderKanban },
-  { label: 'Payments', href: '/portal/payments', icon: CreditCard },
-  { label: 'Documents', href: '/portal/documents', icon: FileText },
-  { label: 'Schedule', href: '/portal/schedule', icon: Calendar },
-];
 
 export function BottomTabBar() {
   const pathname = usePathname();
+  const { hasRoofData } = useSidebar();
+
+  const tabItems = [
+    { label: 'Project', href: '/portal', icon: FolderKanban },
+    ...(hasRoofData ? [{ label: 'My Roof', href: '/portal/roof', icon: Home }] : []),
+    { label: 'Payments', href: '/portal/payments', icon: CreditCard },
+    { label: 'Documents', href: '/portal/documents', icon: FileText },
+    { label: 'Schedule', href: '/portal/schedule', icon: Calendar },
+  ];
 
   return (
     <nav className={styles.tabBar} aria-label="Portal navigation">
       <div className={styles.tabList} role="tablist">
-        {TAB_ITEMS.map((item) => {
+        {tabItems.map((item) => {
           const isActive =
             item.href === '/portal'
               ? pathname === '/portal'
@@ -34,7 +37,7 @@ export function BottomTabBar() {
               aria-selected={isActive}
             >
               <item.icon size={20} aria-hidden="true" />
-              {item.label}
+              <span className={styles.tabLabel}>{item.label}</span>
             </Link>
           );
         })}

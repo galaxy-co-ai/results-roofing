@@ -78,6 +78,7 @@ interface OrderDetailsResponse {
   payments: Payment[];
   appointments: Appointment[];
   contracts: Contract[];
+  measurement?: { vendor: string; status: string } | null;
 }
 
 /**
@@ -124,6 +125,7 @@ const MOCK_ORDER_DETAILS: OrderDetailsResponse = {
   contracts: [
     { id: 'contract-1', status: 'signed', signedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() },
   ],
+  measurement: { vendor: 'google_solar', status: 'complete' },
 };
 
 async function fetchOrders(email: string): Promise<{ orders: Order[]; pendingQuotes: PendingQuote[]; contracts: Contract[] }> {
@@ -187,4 +189,4 @@ export function useOrderDetails(orderId: string | null) {
   });
 }
 
-export type { Order, OrderDetails, TimelineStep, Payment, Appointment, Contract, PendingQuote };
+export type { Order, OrderDetails, OrderDetailsResponse, TimelineStep, Payment, Appointment, Contract, PendingQuote };

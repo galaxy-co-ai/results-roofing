@@ -47,3 +47,14 @@
     display: block;
   }
 }
+
+@media (max-width: 374px) {
+  .tabLabel {
+    display: none;
+  }
+
+  .tab {
+    padding: 8px 4px;
+    min-width: unset;
+  }
+}

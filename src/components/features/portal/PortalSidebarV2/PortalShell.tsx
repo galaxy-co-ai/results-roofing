@@ -1,9 +1,12 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { useUser } from '@clerk/nextjs';
 import { SidebarProvider, useSidebar } from './SidebarContext';
 import { PortalSidebarV2 } from './PortalSidebarV2';
 import { BottomTabBar } from '@/components/features/portal/BottomTabBar/BottomTabBar';
+import { useOrders, useOrderDetails } from '@/hooks';
+import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import styles from '@/app/portal/layout.module.css';
 
 function ShellInner({ children }: { children: ReactNode }) {
@@ -30,10 +33,44 @@ function ShellInner({ children }: { children: ReactNode }) {
   );
 }
 
-export function PortalShell({ children }: { children: ReactNode }) {
+/** Derive hasRoofData from measurement on the user's first order */
+function useHasRoofData(userEmail: string | null): boolean {
+  const { data: ordersData } = useOrders(userEmail);
+  const currentOrderId = ordersData?.orders?.[0]?.id ?? null;
+  const { data: orderDetails } = useOrderDetails(currentOrderId);
+
   return (
-    <SidebarProvider>
+    orderDetails?.measurement?.vendor === 'google_solar' &&
+    orderDetails?.measurement?.status === 'complete'
+  ) ?? false;
+}
+
+function ClerkShell({ children }: { children: ReactNode }) {
+  const { user } = useUser();
+  const userEmail = user?.primaryEmailAddress?.emailAddress ?? null;
+  const hasRoofData = useHasRoofData(userEmail);
+
+  return (
+    <SidebarProvider hasRoofData={hasRoofData}>
       <ShellInner>{children}</ShellInner>
     </SidebarProvider>
   );
+}
+
+function DevShell({ children }: { children: ReactNode }) {
+  const userEmail = MOCK_USER.primaryEmailAddress.emailAddress;
+  const hasRoofData = useHasRoofData(userEmail);
+
+  return (
+    <SidebarProvider hasRoofData={hasRoofData}>
+      <ShellInner>{children}</ShellInner>
+    </SidebarProvider>
+  );
+}
+
+export function PortalShell({ children }: { children: ReactNode }) {
+  if (DEV_BYPASS_ENABLED) {
+    return <DevShell>{children}</DevShell>;
+  }
+  return <ClerkShell>{children}</ClerkShell>;
 }
