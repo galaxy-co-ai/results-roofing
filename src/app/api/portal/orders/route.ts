@@ -65,6 +65,7 @@ export async function GET(request: NextRequest) {
     // Map orders to response format
     const formattedOrders = orders.map((order) => ({
       id: order.id,
+      quoteId: order.quoteId,
       status: order.status,
       confirmationNumber: order.confirmationNumber,
       propertyAddress: order.propertyAddress,

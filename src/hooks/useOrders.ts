@@ -5,6 +5,7 @@ import { DEV_BYPASS_ENABLED } from '@/lib/auth/dev-bypass';
 
 interface Order {
   id: string;
+  quoteId?: string | null;
   status: string;
   confirmationNumber: string;
   propertyAddress: string;

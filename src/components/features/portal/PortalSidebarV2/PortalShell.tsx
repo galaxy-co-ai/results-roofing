@@ -5,7 +5,8 @@ import { useUser } from '@clerk/nextjs';
 import { SidebarProvider, useSidebar } from './SidebarContext';
 import { PortalSidebarV2 } from './PortalSidebarV2';
 import { BottomTabBar } from '@/components/features/portal/BottomTabBar/BottomTabBar';
-import { useOrders, useOrderDetails } from '@/hooks';
+import { useOrders } from '@/hooks';
+import { useRoofData } from '@/hooks/useRoofData';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import styles from '@/app/portal/layout.module.css';
 
@@ -33,28 +34,22 @@ function ShellInner({ children }: { children: ReactNode }) {
   );
 }
 
-/** Derive hasRoofData from measurement on the user's first order */
+/**
+ * Derive hasRoofData by attempting to fetch roof segment data.
+ * Works for both orders (quoteId via order) and pending quotes (quoteId directly).
+ * The /api/portal/roof-data endpoint handles auth and checks for actual segment data.
+ */
 function useHasRoofData(userEmail: string | null): boolean {
-  const { data: ordersData, isLoading: ordersLoading } = useOrders(userEmail);
-  const currentOrderId = ordersData?.orders?.[0]?.id ?? null;
-  const { data: orderDetails, isLoading: detailsLoading } = useOrderDetails(currentOrderId);
+  const { data: ordersData } = useOrders(userEmail);
 
-  // Debug: trace the data chain (remove after confirming fix)
-  if (typeof window !== 'undefined' && userEmail) {
-    console.log('[My Roof Debug]', {
-      email: userEmail,
-      ordersLoading,
-      orderCount: ordersData?.orders?.length ?? 0,
-      currentOrderId,
-      detailsLoading,
-      measurement: orderDetails?.measurement ?? 'no measurement field',
-    });
-  }
+  // Get quoteId from either the first order or the first pending quote
+  const firstOrder = ordersData?.orders?.[0];
+  const firstPendingQuote = ordersData?.pendingQuotes?.[0];
+  const quoteId = firstOrder?.quoteId ?? firstPendingQuote?.id ?? null;
 
-  return (
-    orderDetails?.measurement?.status === 'complete' &&
-    orderDetails?.measurement?.hasRoofSegments === true
-  ) ?? false;
+  const { data: roofData } = useRoofData(quoteId);
+
+  return (roofData?.segments?.length ?? 0) > 0;
 }
 
 function ClerkShell({ children }: { children: ReactNode }) {
