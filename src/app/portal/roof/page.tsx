@@ -1,25 +1,19 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { Home } from 'lucide-react';
-import dynamic from 'next/dynamic';
 import { PortalHeader } from '@/components/features/portal/PortalHeader/PortalHeader';
+import { RoofPhotoViewer } from '@/components/features/roof/RoofPhotoViewer';
 import { ShingleSelector } from '@/components/features/roof/ShingleSelector';
 import { RoofStats } from '@/components/features/roof/RoofStats';
 import { RoofPageSkeleton } from '@/components/features/roof/RoofPageSkeleton';
 import { usePortalPhase } from '@/hooks/usePortalPhase';
 import { useRoofData } from '@/hooks/useRoofData';
 import { getDefaultShingle } from '@/lib/roof/shingle-catalog';
-import { buildRoofGeometry } from '@/lib/roof/facet-geometry';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import type { ShingleOption } from '@/lib/roof/types';
 import styles from './page.module.css';
-
-const RoofMeshViewer = dynamic(
-  () => import('@/components/features/roof/RoofMeshViewer').then(m => ({ default: m.RoofMeshViewer })),
-  { ssr: false, loading: () => <RoofPageSkeleton /> },
-);
 
 // ---------------------------------------------------------------------------
 // Inner content (receives a resolved email)
@@ -35,16 +29,12 @@ function RoofContent({ email }: { email: string | null }) {
     () => getDefaultShingle('better'),
   );
 
-  const roofGeometry = useMemo(() => {
-    if (!roofData?.segments || !roofData?.buildingCenter) return null;
-    return buildRoofGeometry(roofData.segments, roofData.buildingCenter);
-  }, [roofData?.segments, roofData?.buildingCenter]);
-
   if (phaseLoading || dataLoading) {
     return <RoofPageSkeleton />;
   }
 
   const hasData = !!roofData?.buildingCenter;
+  const layers = roofData?.layers;
 
   return (
     <div className={styles.page}>
@@ -52,9 +42,12 @@ function RoofContent({ email }: { email: string | null }) {
 
       <div className={styles.content}>
         <div className={styles.viewport}>
-          {roofGeometry ? (
-            <RoofMeshViewer
-              geometry={roofGeometry}
+          {layers ? (
+            <RoofPhotoViewer
+              rgb={layers.rgb}
+              mask={layers.mask}
+              width={layers.width}
+              height={layers.height}
               shingleHex={selectedShingle.hex}
             />
           ) : hasData ? (
@@ -76,7 +69,6 @@ function RoofContent({ email }: { email: string | null }) {
           )}
         </div>
 
-        {/* Sidebar */}
         <aside className={styles.sidebar}>
           <ShingleSelector
             initialTier="better"
