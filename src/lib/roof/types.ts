@@ -21,6 +21,12 @@ export interface ShingleOption {
   brand: string;
 }
 
+/** Parsed 3D face from a DXF file */
+export interface DxfFacet {
+  vertices: [number, number, number][]; // [x, y, z] per vertex (3 or 4 points)
+  normal: [number, number, number];     // unit normal of the face plane
+}
+
 /** Response from /api/portal/roof-data */
 export interface RoofDataResponse {
   segments: RawRoofSegment[];
@@ -37,6 +43,12 @@ export interface RoofDataResponse {
   };
   /** Satellite image + roof mask for canvas rendering. Null if not yet fetched or unavailable. */
   layers: RoofLayers | null;
+  /** GAF QuickMeasure order status */
+  gafStatus: 'pending' | 'complete' | 'failed' | 'none';
+  /** URL to DXF file in Vercel Blob (null if not yet available) */
+  gafDxfUrl: string | null;
+  /** All GAF asset URLs keyed by asset type */
+  gafAssets: Record<string, string> | null;
 }
 
 /** Cached roof visualization layers from Google Solar Data Layers API */
