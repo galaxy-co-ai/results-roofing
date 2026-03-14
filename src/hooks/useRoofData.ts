@@ -13,5 +13,11 @@ export function useRoofData(quoteId: string | null | undefined) {
     queryFn: () => fetchRoofData(quoteId!),
     enabled: !!quoteId,
     staleTime: 5 * 60 * 1000,
+    // Poll every 30s when GAF data is pending, stop when complete
+    refetchInterval: (query) => {
+      const data = query.state.data;
+      if (data?.gafStatus === 'pending') return 30_000;
+      return false;
+    },
   });
 }

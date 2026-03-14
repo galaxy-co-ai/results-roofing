@@ -58,7 +58,7 @@ export function buildGeometryFromFacets(facets: DxfFacet[]): RoofGeometry | null
   const roofHeight = maxY - minY;
   const wallBottom = minY - roofHeight * 0.6;
 
-  for (const { a, b } of edgeCount.values()) {
+  for (const { a, b } of Array.from(edgeCount.values())) {
     const startIdx = vertexOffset;
     const edgeDx = b[0] - a[0];
     const edgeDz = b[2] - a[2];

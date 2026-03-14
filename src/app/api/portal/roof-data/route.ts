@@ -137,6 +137,23 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    // ── Resolve GAF status and assets ──────────────────────────────────
+    const gafAssets = (measurement.gafAssets as Record<string, string>) ?? null;
+    let gafStatus: RoofDataResponse['gafStatus'] = 'none';
+
+    if (measurement.gafOrderNumber) {
+      const mStatus = measurement.status as string;
+      if (measurement.vendor === 'gaf' && mStatus === 'complete') {
+        gafStatus = 'complete';
+      } else if (mStatus === 'failed') {
+        gafStatus = 'failed';
+      } else {
+        gafStatus = 'pending';
+      }
+    }
+
+    const gafDxfUrl = gafAssets?.DxfUrl ?? gafAssets?.BuildingDxfUrl ?? gafAssets?.dxfUrl ?? null;
+
     const response: RoofDataResponse = {
       segments: segments as RoofDataResponse['segments'],
       buildingCenter: { lat: center.latitude, lng: center.longitude },
@@ -149,10 +166,13 @@ export async function GET(request: NextRequest) {
       stats: {
         sqftTotal: measurement.sqftTotal ? Number(measurement.sqftTotal) : 0,
         pitchPrimary: measurement.pitchPrimary ?? 'Unknown',
-        facetCount: segments.length,
-        vendor: 'google_solar',
+        facetCount: measurement.facetCount ?? segments.length,
+        vendor: measurement.vendor ?? 'google_solar',
       },
       layers,
+      gafStatus,
+      gafDxfUrl,
+      gafAssets,
     };
 
     return NextResponse.json(response);
