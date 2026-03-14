@@ -54,6 +54,27 @@ function RoofContent({ email }: { email: string | null }) {
 
   const hasData = !!roofData && facets.length > 0;
 
+  // Debug: trace geometry output (remove after confirming fix)
+  if (typeof window !== 'undefined' && facets.length > 0) {
+    console.log('[Roof Debug] facets:', facets.length, 'first facet:', {
+      vertexCount: facets[0].vertices3D.length,
+      vertices: facets[0].vertices3D,
+      width: facets[0].widthMeters,
+      depth: facets[0].depthMeters,
+      pitch: facets[0].pitchDegrees,
+      azimuth: facets[0].azimuthDegrees,
+    });
+    const allVerts = facets.flatMap(f => f.vertices3D);
+    const xs = allVerts.map(v => v[0]);
+    const ys = allVerts.map(v => v[1]);
+    const zs = allVerts.map(v => v[2]);
+    console.log('[Roof Debug] bounds:', {
+      x: [Math.min(...xs).toFixed(1), Math.max(...xs).toFixed(1)],
+      y: [Math.min(...ys).toFixed(1), Math.max(...ys).toFixed(1)],
+      z: [Math.min(...zs).toFixed(1), Math.max(...zs).toFixed(1)],
+    });
+  }
+
   return (
     <div className={styles.page}>
       <PortalHeader title="Roof Visualizer" />
