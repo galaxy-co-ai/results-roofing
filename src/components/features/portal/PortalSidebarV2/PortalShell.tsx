@@ -35,9 +35,21 @@ function ShellInner({ children }: { children: ReactNode }) {
 
 /** Derive hasRoofData from measurement on the user's first order */
 function useHasRoofData(userEmail: string | null): boolean {
-  const { data: ordersData } = useOrders(userEmail);
+  const { data: ordersData, isLoading: ordersLoading } = useOrders(userEmail);
   const currentOrderId = ordersData?.orders?.[0]?.id ?? null;
-  const { data: orderDetails } = useOrderDetails(currentOrderId);
+  const { data: orderDetails, isLoading: detailsLoading } = useOrderDetails(currentOrderId);
+
+  // Debug: trace the data chain (remove after confirming fix)
+  if (typeof window !== 'undefined' && userEmail) {
+    console.log('[My Roof Debug]', {
+      email: userEmail,
+      ordersLoading,
+      orderCount: ordersData?.orders?.length ?? 0,
+      currentOrderId,
+      detailsLoading,
+      measurement: orderDetails?.measurement ?? 'no measurement field',
+    });
+  }
 
   return (
     orderDetails?.measurement?.status === 'complete' &&
