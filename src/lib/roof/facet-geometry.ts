@@ -132,11 +132,35 @@ export function buildRoofGeometry(
 
   if (locals.length === 0) return null;
 
-  // 2. Clip overlapping segments
+  // 2. Compute overall building footprint and use as starting polygon for all segments.
+  //    Google's per-segment bounding boxes are tight-fitting and leave gaps between
+  //    adjacent segments. Using the building AABB ensures full coverage — the clipping
+  //    will carve each segment's territory from the shared footprint.
+  let overallMinX = Infinity, overallMaxX = -Infinity;
+  let overallMinZ = Infinity, overallMaxZ = -Infinity;
+  for (const local of locals) {
+    for (const [x, z] of local.polygon) {
+      overallMinX = Math.min(overallMinX, x);
+      overallMaxX = Math.max(overallMaxX, x);
+      overallMinZ = Math.min(overallMinZ, z);
+      overallMaxZ = Math.max(overallMaxZ, z);
+    }
+  }
+
+  const PAD = 2; // meters — small margin beyond outermost segment bounds
+  for (const local of locals) {
+    local.polygon = [
+      [overallMinX - PAD, overallMaxZ + PAD],
+      [overallMaxX + PAD, overallMaxZ + PAD],
+      [overallMaxX + PAD, overallMinZ - PAD],
+      [overallMinX - PAD, overallMinZ - PAD],
+    ];
+  }
+
+  // 3. Clip each segment against all others — carves building footprint into territories
   for (let i = 0; i < locals.length; i++) {
     for (let j = 0; j < locals.length; j++) {
       if (i === j) continue;
-      if (!boxesOverlap(locals[i].polygon, locals[j].polygon)) continue;
 
       const line = planeIntersectionLine(locals[i], locals[j]);
       if (!line) continue;
@@ -349,22 +373,3 @@ function estimateHeight(seg: RawRoofSegment): number {
   return 3 + Math.tan(pitch) * halfWidth;
 }
 
-function boxesOverlap(polyA: Pt2[], polyB: Pt2[]): boolean {
-  const [aMin, aMax] = polyBounds(polyA);
-  const [bMin, bMax] = polyBounds(polyB);
-
-  return !(aMax[0] < bMin[0] || bMax[0] < aMin[0] ||
-           aMax[1] < bMin[1] || bMax[1] < aMin[1]);
-}
-
-function polyBounds(poly: Pt2[]): [Pt2, Pt2] {
-  let minX = Infinity, maxX = -Infinity;
-  let minZ = Infinity, maxZ = -Infinity;
-  for (const [x, z] of poly) {
-    minX = Math.min(minX, x);
-    maxX = Math.max(maxX, x);
-    minZ = Math.min(minZ, z);
-    maxZ = Math.max(maxZ, z);
-  }
-  return [[minX, minZ], [maxX, maxZ]];
-}
