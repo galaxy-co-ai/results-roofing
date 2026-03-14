@@ -49,13 +49,6 @@ export const measurements = pgTable(
         sw: { latitude: number; longitude: number };
         ne: { latitude: number; longitude: number };
       };
-      mesh: {
-        positions: string;
-        normals: string;
-        indices: string;
-        vertexCount: number;
-        triangleCount: number;
-      } | null;
     }>(),
     // Raw vendor response
     rawResponse: jsonb('raw_response'),

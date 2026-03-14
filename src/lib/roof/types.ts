@@ -53,18 +53,14 @@ export interface RoofLayers {
     sw: { latitude: number; longitude: number };
     ne: { latitude: number; longitude: number };
   };
-  /** 3D mesh generated from DSM. Null if DSM unavailable or generation failed. */
-  mesh: RoofMesh | null;
 }
 
-/** Serialized triangle mesh for 3D rendering */
-export interface RoofMesh {
-  /** Base64-encoded Float32Array — vertex positions [x,y,z, x,y,z, ...] */
-  positions: string;
-  /** Base64-encoded Float32Array — vertex normals [nx,ny,nz, ...] */
-  normals: string;
-  /** Base64-encoded Uint32Array — triangle indices [i0,i1,i2, ...] */
-  indices: string;
+/** Geometry output from the parametric facet engine — ready for Three.js */
+export interface RoofGeometry {
+  positions: Float32Array;   // [x,y,z, ...] — centered at origin, ~15 units span
+  normals: Float32Array;     // [nx,ny,nz, ...] — per-vertex
+  indices: Uint32Array;      // [i0,i1,i2, ...] — triangles
   vertexCount: number;
   triangleCount: number;
+  facetCount: number;
 }
