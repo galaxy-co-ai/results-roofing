@@ -2,20 +2,21 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FolderKanban, CreditCard, FileText, Calendar, ChevronRight, ChevronLeft } from 'lucide-react';
+import { FolderKanban, CreditCard, FileText, Calendar, ChevronRight, ChevronLeft, Home } from 'lucide-react';
 import { useSidebar } from './SidebarContext';
 import styles from './PortalSidebarV2.module.css';
 
-const NAV_ITEMS = [
-  { label: 'My Project', href: '/portal', icon: FolderKanban },
-  { label: 'Payments', href: '/portal/payments', icon: CreditCard },
-  { label: 'Documents', href: '/portal/documents', icon: FileText },
-  { label: 'Schedule', href: '/portal/schedule', icon: Calendar },
-];
-
 export function PortalSidebarV2() {
   const pathname = usePathname();
-  const { expanded, toggle } = useSidebar();
+  const { expanded, toggle, hasRoofData } = useSidebar();
+
+  const navItems = [
+    { label: 'My Project', href: '/portal', icon: FolderKanban },
+    ...(hasRoofData ? [{ label: 'My Roof', href: '/portal/roof', icon: Home }] : []),
+    { label: 'Payments', href: '/portal/payments', icon: CreditCard },
+    { label: 'Documents', href: '/portal/documents', icon: FileText },
+    { label: 'Schedule', href: '/portal/schedule', icon: Calendar },
+  ];
 
   return (
     <aside
@@ -29,7 +30,7 @@ export function PortalSidebarV2() {
 
       {/* Navigation */}
       <nav className={styles.nav}>
-        {NAV_ITEMS.map((item) => {
+        {navItems.map((item) => {
           const isActive =
             item.href === '/portal'
               ? pathname === '/portal'
