@@ -11,34 +11,6 @@ export interface RawRoofSegment {
   planeHeightAtCenterMeters?: number;
 }
 
-/** 2D point in local meter coordinates */
-export interface Point2D {
-  x: number;
-  y: number;
-}
-
-/** A polygon in local 2D space (before pitch tilt) */
-export type Polygon2D = Point2D[];
-
-/** Processed facet ready for Three.js rendering */
-export interface ProcessedFacet {
-  polygon: Polygon2D;
-  vertices3D: [number, number, number][];
-  pitchDegrees: number;
-  azimuthDegrees: number;
-  widthMeters: number;
-  depthMeters: number;
-  center: Point2D;
-}
-
-/** Camera preset for the viewer */
-export interface CameraPreset {
-  id: string;
-  label: string;
-  position: [number, number, number];
-  target: [number, number, number];
-}
-
 /** Shingle option for the catalog */
 export interface ShingleOption {
   id: string;

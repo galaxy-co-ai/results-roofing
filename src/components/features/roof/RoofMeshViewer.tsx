@@ -61,6 +61,14 @@ function RoofScene({ mesh, shingleHex }: RoofMeshViewerProps) {
     material.color.set(shingleHex);
   }, [shingleHex, material]);
 
+  // Dispose GPU resources on unmount
+  useEffect(() => {
+    return () => {
+      geometry.dispose();
+      material.dispose();
+    };
+  }, [geometry, material]);
+
   return (
     <>
       {/* Lighting */}
