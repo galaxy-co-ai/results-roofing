@@ -39,6 +39,17 @@ export const measurements = pgTable(
     // GAF QuickMeasure specific
     gafOrderNumber: text('gaf_order_number'),
     gafAssets: jsonb('gaf_assets').$type<Record<string, string>>(), // { filename: blobUrl }
+    // Cached visualization layers (Google Solar Data Layers)
+    roofLayers: jsonb('roof_layers').$type<{
+      rgb: string;
+      mask: string;
+      width: number;
+      height: number;
+      bounds: {
+        sw: { latitude: number; longitude: number };
+        ne: { latitude: number; longitude: number };
+      };
+    }>(),
     // Raw vendor response
     rawResponse: jsonb('raw_response'),
     errorMessage: text('error_message'),
