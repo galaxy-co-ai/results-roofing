@@ -114,7 +114,10 @@ export async function GET(request: NextRequest) {
     }
 
     // ── Fetch/cache roof visualization layers ─────────────────────────────
-    let layers: RoofLayers | null = (measurement.roofLayers as RoofLayers) ?? null;
+    const forceRefresh = request.nextUrl.searchParams.get('refresh') === '1';
+    let layers: RoofLayers | null = forceRefresh
+      ? null
+      : (measurement.roofLayers as RoofLayers) ?? null;
 
     if (!layers) {
       // Full cache miss — fetch everything
