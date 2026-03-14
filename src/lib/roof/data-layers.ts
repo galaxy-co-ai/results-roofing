@@ -32,10 +32,11 @@ interface DataLayersResponse {
 }
 
 interface GeoTiffMeta {
-  origin: [number, number]; // [lng, lat] of top-left pixel
-  resolution: [number, number]; // [lngPerPixel, latPerPixel] (lat is negative)
+  origin: [number, number]; // [easting, northing] of top-left pixel (UTM meters)
+  resolution: [number, number]; // [metersPerPixelX, metersPerPixelY] (Y is positive, rows go top→bottom)
   width: number;
   height: number;
+  bbox: [number, number, number, number]; // [minX, minY, maxX, maxY] in UTM
 }
 
 // ── Public API ────────────────────────────────────────────────────────────────
@@ -172,8 +173,9 @@ async function parseGeoTiff(
     const resolution = image.getResolution() as [number, number];
 
     const rasters = await image.readRasters();
+    const bbox = image.getBoundingBox() as [number, number, number, number];
 
-    const meta: GeoTiffMeta = { origin, resolution, width, height };
+    const meta: GeoTiffMeta = { origin, resolution, width, height, bbox };
 
     if (type === 'rgb') {
       // RGB: 3 bands, each Uint8Array of width*height
@@ -211,10 +213,62 @@ interface CropBounds {
   neLng: number;
 }
 
+// ── Lat/Lng to UTM Conversion ─────────────────────────────────────────────────
+
+/**
+ * Convert WGS84 lat/lng to UTM easting/northing.
+ * Google Solar GeoTIFFs use UTM projected coordinates (e.g., EPSG:32614 for Zone 14N).
+ */
+function latLngToUtm(lat: number, lng: number): { easting: number; northing: number } {
+  const a = 6378137; // WGS84 semi-major axis
+  const f = 1 / 298.257223563;
+  const k0 = 0.9996;
+
+  const latRad = (lat * Math.PI) / 180;
+  const lngRad = (lng * Math.PI) / 180;
+
+  const zone = Math.floor((lng + 180) / 6) + 1;
+  const centralMeridian = ((zone - 1) * 6 - 180 + 3) * Math.PI / 180;
+
+  const e = Math.sqrt(2 * f - f * f);
+  const e2 = e * e;
+  const ep2 = e2 / (1 - e2);
+
+  const N = a / Math.sqrt(1 - e2 * Math.sin(latRad) ** 2);
+  const T = Math.tan(latRad) ** 2;
+  const C = ep2 * Math.cos(latRad) ** 2;
+  const A = Math.cos(latRad) * (lngRad - centralMeridian);
+
+  const M =
+    a *
+    ((1 - e2 / 4 - (3 * e2 ** 2) / 64 - (5 * e2 ** 3) / 256) * latRad -
+      ((3 * e2) / 8 + (3 * e2 ** 2) / 32 + (45 * e2 ** 3) / 1024) * Math.sin(2 * latRad) +
+      ((15 * e2 ** 2) / 256 + (45 * e2 ** 3) / 1024) * Math.sin(4 * latRad) -
+      ((35 * e2 ** 3) / 3072) * Math.sin(6 * latRad));
+
+  const easting =
+    k0 * N * (A + ((1 - T + C) * A ** 3) / 6 + ((5 - 18 * T + T ** 2 + 72 * C - 58 * ep2) * A ** 5) / 120) +
+    500000;
+
+  const northing =
+    k0 *
+    (M +
+      N *
+        Math.tan(latRad) *
+        (A ** 2 / 2 +
+          ((5 - T + 9 * C + 4 * C ** 2) * A ** 4) / 24 +
+          ((61 - 58 * T + T ** 2 + 600 * C - 330 * ep2) * A ** 6) / 720));
+
+  return { easting, northing: lat >= 0 ? northing : northing + 10000000 };
+}
+
 /**
  * Compute a pixel-space crop rectangle centered on (lat, lng) with padding in meters.
- * Uses the GeoTIFF's affine transform: origin = [lng, lat] of top-left pixel,
- * resolution = [lng/pixel, lat/pixel] where lat component is negative (rows go top→bottom).
+ *
+ * Google Solar GeoTIFFs use UTM projected coordinates (meters), not WGS84 degrees.
+ * Origin = [easting, northing] of top-left pixel in UTM.
+ * Resolution = [metersPerPixelX, metersPerPixelY] (both positive, 0.1m typically).
+ * Rows go top→bottom, so northing decreases as pixel Y increases.
  */
 function computeCropBounds(
   centerLat: number,
@@ -222,35 +276,39 @@ function computeCropBounds(
   paddingMeters: number,
   meta: GeoTiffMeta,
 ): CropBounds {
-  // Convert padding from meters to approximate degrees
-  // 1 degree lat ≈ 111,320m, 1 degree lng ≈ 111,320m * cos(lat)
-  const mPerDegreeLat = 111_320;
-  const mPerDegreeLng = 111_320 * Math.cos((centerLat * Math.PI) / 180);
-  const padLat = paddingMeters / mPerDegreeLat;
-  const padLng = paddingMeters / mPerDegreeLng;
+  // Convert building center from lat/lng to UTM
+  const { easting, northing } = latLngToUtm(centerLat, centerLng);
 
-  // Desired geographic bounds
-  const swLat = centerLat - padLat;
-  const swLng = centerLng - padLng;
-  const neLat = centerLat + padLat;
-  const neLng = centerLng + padLng;
+  // UTM bounding box of the desired crop area (padding is already in meters)
+  const cropMinE = easting - paddingMeters;
+  const cropMaxE = easting + paddingMeters;
+  const cropMinN = northing - paddingMeters;
+  const cropMaxN = northing + paddingMeters;
 
-  // Convert geo coords to pixel coords using affine transform
-  // pixel_x = (lng - origin_lng) / resolution_lng
-  // pixel_y = (lat - origin_lat) / resolution_lat  (resolution_lat is negative)
-  const [originLng, originLat] = meta.origin;
-  const [resLng, resLat] = meta.resolution;
+  // GeoTIFF affine: origin is top-left corner [easting, northing]
+  // pixel_x = (easting - origin_easting) / resolution_x
+  // pixel_y = (origin_northing - northing) / resolution_y  (northing decreases downward)
+  const [originE, originN] = meta.origin;
+  const [resX, resY] = meta.resolution;
 
-  const x1 = Math.floor((swLng - originLng) / resLng);
-  const y1 = Math.floor((neLat - originLat) / resLat); // neLat maps to top (smaller y)
-  const x2 = Math.ceil((neLng - originLng) / resLng);
-  const y2 = Math.ceil((swLat - originLat) / resLat); // swLat maps to bottom (larger y)
+  const x1 = Math.floor((cropMinE - originE) / resX);
+  const y1 = Math.floor((originN - cropMaxN) / resY); // higher northing = smaller y
+  const x2 = Math.ceil((cropMaxE - originE) / resX);
+  const y2 = Math.ceil((originN - cropMinN) / resY);
 
   // Clamp to image bounds
   const x = Math.max(0, Math.min(x1, meta.width - 1));
   const y = Math.max(0, Math.min(y1, meta.height - 1));
-  const widthPx = Math.min(x2 - x, meta.width - x);
-  const heightPx = Math.min(y2 - y, meta.height - y);
+  const widthPx = Math.max(1, Math.min(x2 - x, meta.width - x));
+  const heightPx = Math.max(1, Math.min(y2 - y, meta.height - y));
+
+  // Store geographic bounds for the response
+  const mPerDegreeLat = 111_320;
+  const mPerDegreeLng = 111_320 * Math.cos((centerLat * Math.PI) / 180);
+  const swLat = centerLat - paddingMeters / mPerDegreeLat;
+  const swLng = centerLng - paddingMeters / mPerDegreeLng;
+  const neLat = centerLat + paddingMeters / mPerDegreeLat;
+  const neLng = centerLng + paddingMeters / mPerDegreeLng;
 
   return { x, y, widthPx, heightPx, swLat, swLng, neLat, neLng };
 }

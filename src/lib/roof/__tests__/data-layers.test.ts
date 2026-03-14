@@ -2,19 +2,21 @@ import { describe, it, expect } from 'vitest';
 import { computeCropBounds, type GeoTiffMeta } from '../data-layers';
 
 describe('computeCropBounds', () => {
-  // Simulated GeoTIFF metadata for Moore, OK area
-  // 0.1m/pixel resolution → ~0.0000009° lat, ~0.0000011° lng per pixel
+  // Simulated GeoTIFF metadata matching real Google Solar output for Moore, OK
+  // UTM Zone 14N (EPSG:32614), 0.1m/pixel resolution
   const meta: GeoTiffMeta = {
-    origin: [-97.482, 35.332], // [lng, lat] of top-left pixel
-    resolution: [0.0000011, -0.0000009], // [lngPerPx, latPerPx] — lat is negative
-    width: 2000,
-    height: 2000,
+    origin: [637973.8, 3910806.3], // [easting, northing] of top-left pixel in UTM meters
+    resolution: [0.1, 0.1], // 0.1 meters per pixel
+    width: 1492,
+    height: 1498,
+    bbox: [637973.8, 3910656.5, 638123.0, 3910806.3],
   };
 
-  const centerLat = 35.330;
-  const centerLng = -97.480;
+  // Moore, OK — lat/lng of a building center within the GeoTIFF coverage
+  const centerLat = 35.3303;
+  const centerLng = -97.4811;
 
-  it('returns a crop rectangle centered on the building', () => {
+  it('returns a crop rectangle with positive dimensions', () => {
     const crop = computeCropBounds(centerLat, centerLng, 20, meta);
 
     expect(crop.widthPx).toBeGreaterThan(0);
@@ -23,14 +25,21 @@ describe('computeCropBounds', () => {
     expect(crop.y).toBeGreaterThanOrEqual(0);
   });
 
-  it('clamps crop to image bounds', () => {
-    // Center near the edge of the image
-    const crop = computeCropBounds(35.332, -97.482, 20, meta);
+  it('crop fits within image bounds', () => {
+    const crop = computeCropBounds(centerLat, centerLng, 20, meta);
 
-    expect(crop.x).toBeGreaterThanOrEqual(0);
-    expect(crop.y).toBeGreaterThanOrEqual(0);
     expect(crop.x + crop.widthPx).toBeLessThanOrEqual(meta.width);
     expect(crop.y + crop.heightPx).toBeLessThanOrEqual(meta.height);
+  });
+
+  it('20m padding at 0.1m/pixel produces ~400px crop', () => {
+    const crop = computeCropBounds(centerLat, centerLng, 20, meta);
+
+    // 20m padding on each side = 40m total / 0.1m per pixel = ~400px
+    expect(crop.widthPx).toBeGreaterThanOrEqual(380);
+    expect(crop.widthPx).toBeLessThanOrEqual(420);
+    expect(crop.heightPx).toBeGreaterThanOrEqual(380);
+    expect(crop.heightPx).toBeLessThanOrEqual(420);
   });
 
   it('produces larger crop with more padding', () => {
@@ -48,6 +57,17 @@ describe('computeCropBounds', () => {
     expect(crop.neLat).toBeGreaterThan(centerLat);
     expect(crop.swLng).toBeLessThan(centerLng);
     expect(crop.neLng).toBeGreaterThan(centerLng);
+  });
+
+  it('clamps to image bounds when center is near edge', () => {
+    // Use a lat/lng that maps to near the top-left corner of the image
+    // The crop should still be within bounds
+    const crop = computeCropBounds(centerLat + 0.001, centerLng - 0.001, 20, meta);
+
+    expect(crop.x).toBeGreaterThanOrEqual(0);
+    expect(crop.y).toBeGreaterThanOrEqual(0);
+    expect(crop.x + crop.widthPx).toBeLessThanOrEqual(meta.width);
+    expect(crop.y + crop.heightPx).toBeLessThanOrEqual(meta.height);
   });
 });
 
