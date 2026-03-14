@@ -46,8 +46,6 @@ function RoofScene({ mesh, shingleHex }: RoofMeshViewerProps) {
     return geom;
   }, [mesh.positions, mesh.normals, mesh.indices]);
 
-  const materialRef = useRef<THREE.MeshStandardMaterial>(null);
-
   const material = useMemo(() => {
     return new THREE.MeshStandardMaterial({
       color: new THREE.Color(shingleHex),
@@ -55,7 +53,8 @@ function RoofScene({ mesh, shingleHex }: RoofMeshViewerProps) {
       metalness: 0.1,
       flatShading: false,
     });
-  }, []); // material created once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // material created once, color updated via useEffect
 
   // Update color reactively without recreating material
   useEffect(() => {
