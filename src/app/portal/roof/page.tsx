@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { Home } from 'lucide-react';
 import dynamic from 'next/dynamic';
@@ -11,6 +11,7 @@ import { RoofPageSkeleton } from '@/components/features/roof/RoofPageSkeleton';
 import { usePortalPhase } from '@/hooks/usePortalPhase';
 import { useRoofData } from '@/hooks/useRoofData';
 import { getDefaultShingle } from '@/lib/roof/shingle-catalog';
+import { buildRoofGeometry } from '@/lib/roof/facet-geometry';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import type { ShingleOption } from '@/lib/roof/types';
 import styles from './page.module.css';
@@ -34,6 +35,11 @@ function RoofContent({ email }: { email: string | null }) {
     () => getDefaultShingle('better'),
   );
 
+  const roofGeometry = useMemo(() => {
+    if (!roofData?.segments || !roofData?.buildingCenter) return null;
+    return buildRoofGeometry(roofData.segments, roofData.buildingCenter);
+  }, [roofData?.segments, roofData?.buildingCenter]);
+
   if (phaseLoading || dataLoading) {
     return <RoofPageSkeleton />;
   }
@@ -45,11 +51,10 @@ function RoofContent({ email }: { email: string | null }) {
       <PortalHeader title="My Roof" />
 
       <div className={styles.content}>
-        {/* 3D mesh viewer */}
         <div className={styles.viewport}>
-          {hasData && roofData?.layers?.mesh ? (
+          {roofGeometry ? (
             <RoofMeshViewer
-              mesh={roofData.layers.mesh}
+              geometry={roofGeometry}
               shingleHex={selectedShingle.hex}
             />
           ) : hasData ? (
