@@ -40,8 +40,8 @@ function useHasRoofData(userEmail: string | null): boolean {
   const { data: orderDetails } = useOrderDetails(currentOrderId);
 
   return (
-    orderDetails?.measurement?.vendor === 'google_solar' &&
-    orderDetails?.measurement?.status === 'complete'
+    orderDetails?.measurement?.status === 'complete' &&
+    orderDetails?.measurement?.hasRoofSegments === true
   ) ?? false;
 }
 

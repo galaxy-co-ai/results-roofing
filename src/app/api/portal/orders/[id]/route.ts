@@ -119,7 +119,16 @@ export async function GET(
         signedAt: c.signedAt,
       })),
       measurement: measurement
-        ? { vendor: measurement.vendor, status: measurement.status }
+        ? {
+            vendor: measurement.vendor,
+            status: measurement.status,
+            hasRoofSegments: (() => {
+              const raw = measurement.rawResponse as Record<string, unknown> | null;
+              const solar = raw?.solarPotential as Record<string, unknown> | undefined;
+              const segments = solar?.roofSegmentStats;
+              return Array.isArray(segments) && segments.length > 0;
+            })(),
+          }
         : null,
     });
   } catch (error) {

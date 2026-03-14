@@ -94,19 +94,12 @@ export async function GET(request: NextRequest) {
       where: eq(schema.measurements.quoteId, quoteId),
     });
 
-    if (!measurement) {
-      return NextResponse.json({ error: 'Not found' }, { status: 404 });
-    }
-
-    if (measurement.vendor !== 'google_solar') {
-      return NextResponse.json({ error: 'Not found' }, { status: 404 });
-    }
-
-    if (measurement.status !== 'complete') {
+    if (!measurement || measurement.status !== 'complete') {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
     }
 
     // ── Extract Solar data from rawResponse ───────────────────────────────
+    // Google Solar data persists in rawResponse even when GAF overwrites the vendor
     const raw = measurement.rawResponse as Record<string, unknown> | null;
     const solarPotential = raw?.solarPotential as Record<string, unknown> | undefined;
     const segments = (solarPotential?.roofSegmentStats as unknown[]) ?? [];
