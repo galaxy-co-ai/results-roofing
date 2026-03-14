@@ -81,4 +81,18 @@ export interface RoofLayers {
     sw: { latitude: number; longitude: number };
     ne: { latitude: number; longitude: number };
   };
+  /** 3D mesh generated from DSM. Null if DSM unavailable or generation failed. */
+  mesh: RoofMesh | null;
+}
+
+/** Serialized triangle mesh for 3D rendering */
+export interface RoofMesh {
+  /** Base64-encoded Float32Array — vertex positions [x,y,z, x,y,z, ...] */
+  positions: string;
+  /** Base64-encoded Float32Array — vertex normals [nx,ny,nz, ...] */
+  normals: string;
+  /** Base64-encoded Uint32Array — triangle indices [i0,i1,i2, ...] */
+  indices: string;
+  vertexCount: number;
+  triangleCount: number;
 }
