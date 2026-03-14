@@ -93,7 +93,7 @@ export function ConfirmPageClient({ quoteId, quoteSummary }: ConfirmPageClientPr
         throw new Error(data.error || 'Failed to confirm booking');
       }
 
-      router.push(`/portal/dashboard?confirmed=${quoteId}`);
+      router.push(`/portal?confirmed=${quoteId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
     } finally {

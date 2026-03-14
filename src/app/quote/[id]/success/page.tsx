@@ -121,7 +121,7 @@ export default async function SuccessPage({ params }: SuccessPageProps) {
               </div>
             </div>
 
-            <Link href="/portal/dashboard" className={styles.dashboardCta}>
+            <Link href="/portal" className={styles.dashboardCta}>
               Go to My Dashboard
               <ArrowRight className={styles.dashboardCtaIcon} />
             </Link>

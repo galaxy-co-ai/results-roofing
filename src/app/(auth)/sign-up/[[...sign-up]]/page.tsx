@@ -48,7 +48,7 @@ export default function SignUpPage() {
                 Authentication is bypassed in development mode.
               </p>
               <button
-                onClick={() => router.push('/portal/dashboard')}
+                onClick={() => router.push('/portal')}
                 className={styles.devButton}
               >
                 Continue to Dashboard
@@ -122,7 +122,7 @@ export default function SignUpPage() {
               },
             }}
             signInUrl="/sign-in"
-            forceRedirectUrl="/portal/dashboard"
+            forceRedirectUrl="/portal"
           />
         </div>
       </main>

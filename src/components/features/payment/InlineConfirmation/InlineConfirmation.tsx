@@ -56,7 +56,7 @@ export function InlineConfirmation({
   scheduledDate,
   timeSlot,
   customerEmail,
-  portalUrl = '/portal/dashboard',
+  portalUrl = '/portal',
   className = '',
 }: InlineConfirmationProps) {
   const [showCheckmark, setShowCheckmark] = useState(false);

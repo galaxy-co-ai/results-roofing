@@ -11,7 +11,7 @@ const QUICK_LINKS = [
   { label: 'Services', href: '/services' },
   { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '/contact' },
-  { label: 'My Project', href: '/portal/dashboard' },
+  { label: 'My Project', href: '/portal' },
 ];
 
 const SERVICE_AREAS = [
