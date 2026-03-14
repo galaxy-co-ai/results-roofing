@@ -63,4 +63,22 @@ export interface RoofDataResponse {
     facetCount: number;
     vendor: string;
   };
+  /** Satellite image + roof mask for canvas rendering. Null if not yet fetched or unavailable. */
+  layers: RoofLayers | null;
+}
+
+/** Cached roof visualization layers from Google Solar Data Layers API */
+export interface RoofLayers {
+  /** Base64-encoded PNG — cropped satellite image */
+  rgb: string;
+  /** Base64-encoded PNG — binary roof mask */
+  mask: string;
+  /** Image dimensions in pixels */
+  width: number;
+  height: number;
+  /** Geographic bounds of the cropped area */
+  bounds: {
+    sw: { latitude: number; longitude: number };
+    ne: { latitude: number; longitude: number };
+  };
 }
