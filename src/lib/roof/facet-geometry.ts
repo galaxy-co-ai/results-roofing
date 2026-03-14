@@ -73,8 +73,8 @@ function planeIntersectionLine(
   const coeffZ = tanB * dbz - tanA * daz;
   const rhs =
     b.height - a.height +
-    tanA * (a.center[0] * dax + a.center[1] * daz) -
-    tanB * (b.center[0] * dbx + b.center[1] * dbz);
+    tanB * (b.center[0] * dbx + b.center[1] * dbz) -
+    tanA * (a.center[0] * dax + a.center[1] * daz);
 
   const len = Math.sqrt(coeffX ** 2 + coeffZ ** 2);
   if (len < 1e-10) return null; // parallel planes
