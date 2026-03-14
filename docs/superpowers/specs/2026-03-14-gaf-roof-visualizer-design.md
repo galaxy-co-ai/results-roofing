@@ -57,10 +57,25 @@ Client-side pure function. Input: `DxfFacet[]`. Output: `RoofGeometry`.
 
 **Pipeline:**
 1. Collect all vertices from all facets
-2. Center at origin, scale to ~15 units (match existing viewer camera)
-3. Compute per-vertex normals from face normals
-4. Build index buffer with fan triangulation (for polygon facets) or direct indices (for 3DFACE triangles)
-5. Return `RoofGeometry` (positions, normals, indices as typed arrays)
+2. Detect eave edges (edges that are on the lowest perimeter of the roof — not shared between two sloped facets, or shared with a flat/near-horizontal facet)
+3. Generate wall geometry by extruding each eave edge vertically down to a ground plane (Y=0 after normalization). Each eave edge produces a rectangular wall face (2 triangles).
+4. Center at origin, scale to ~15 units (match existing viewer camera)
+5. Compute per-vertex normals from face normals (roof facets get their slope normal, walls get outward-facing horizontal normals)
+6. Build index buffer with fan triangulation (for polygon facets) or direct indices (for 3DFACE triangles)
+7. Return `RoofGeometry` (positions, normals, indices as typed arrays)
+
+### Wall Extrusion Logic
+
+Eave edges are identified as edges on the roof boundary that aren't ridges, hips, or valleys. In the DXF, these are edges that:
+- Belong to only ONE facet (boundary edges), OR
+- Are shared between a sloped facet and a flat/ground-level facet
+
+For each eave edge (two 3D points at the roofline):
+- Create two additional vertices directly below at Y=0 (ground level)
+- Form a rectangular wall face from the 4 points (2 triangles)
+- Normal faces outward (perpendicular to the wall, horizontal)
+
+This produces a clean house silhouette: roof facets on top, vertical walls below the eave line down to ground. No windows, doors, or architectural details — just the structural volume.
 
 ### Loading States
 
@@ -154,3 +169,5 @@ In the meantime, we can:
 2. **Street-level photo overlay** — AI segmentation of uploaded photos (Phase 3)
 3. **GAF Report3D embed** — Fallback iframe of GAF's hosted 3D viewer
 4. **Polling for pending orders** — Auto-refresh when GAF data arrives
+5. **Wall color/material** — Currently walls use a neutral gray. Could add siding color picker.
+6. **Windows/doors** — Architectural details on walls (would need additional data source)
