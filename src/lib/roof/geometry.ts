@@ -129,18 +129,22 @@ export function processSegments(
     );
   }
 
-  // Determine base eave height
+  // Determine ground elevation — planeHeightAtCenterMeters is absolute (meters above sea level),
+  // not relative to ground. Subtract the minimum to normalize so the lowest eave sits near y=0.
   const knownHeights = localSegments
     .map((s) => s.raw.planeHeightAtCenterMeters)
     .filter((h): h is number => h !== undefined);
-  const baseEaveHeight = knownHeights.length > 0 ? Math.min(...knownHeights) : DEFAULT_EAVE_HEIGHT;
+  const groundElevation = knownHeights.length > 0 ? Math.min(...knownHeights) : 0;
+  const ROOF_BASE_OFFSET = DEFAULT_EAVE_HEIGHT; // lift roof above ground plane
 
   return localSegments
     .filter((s) => s.polygon.length >= 3)
     .map((s) => {
       const { width, depth } = polygonExtents(s.polygon);
-      const height = s.raw.planeHeightAtCenterMeters
-        ?? (width / 2) * Math.tan(s.raw.pitchDegrees * DEG_TO_RAD) + baseEaveHeight;
+      const absoluteHeight = s.raw.planeHeightAtCenterMeters
+        ?? (width / 2) * Math.tan(s.raw.pitchDegrees * DEG_TO_RAD) + groundElevation;
+      // Convert absolute elevation to relative height above ground
+      const height = (absoluteHeight - groundElevation) + ROOF_BASE_OFFSET;
       const pitch = s.raw.pitchDegrees < 2 ? 0 : s.raw.pitchDegrees;
       const vertices3D = tiltPolygon(s.polygon, pitch, s.raw.azimuthDegrees, height);
 
