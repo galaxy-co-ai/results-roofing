@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { Home } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { PortalHeader } from '@/components/features/portal/PortalHeader/PortalHeader';
-import { RoofCanvasViewer } from '@/components/features/roof/RoofCanvasViewer';
 import { ShingleSelector } from '@/components/features/roof/ShingleSelector';
 import { RoofStats } from '@/components/features/roof/RoofStats';
 import { RoofPageSkeleton } from '@/components/features/roof/RoofPageSkeleton';
@@ -14,6 +14,11 @@ import { getDefaultShingle } from '@/lib/roof/shingle-catalog';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
 import type { ShingleOption } from '@/lib/roof/types';
 import styles from './page.module.css';
+
+const RoofMeshViewer = dynamic(
+  () => import('@/components/features/roof/RoofMeshViewer').then(m => ({ default: m.RoofMeshViewer })),
+  { ssr: false, loading: () => <RoofPageSkeleton /> },
+);
 
 // ---------------------------------------------------------------------------
 // Inner content (receives a resolved email)
@@ -40,16 +45,12 @@ function RoofContent({ email }: { email: string | null }) {
       <PortalHeader title="My Roof" />
 
       <div className={styles.content}>
-        {/* Satellite aerial view */}
+        {/* 3D mesh viewer */}
         <div className={styles.viewport}>
-          {hasData && roofData?.layers ? (
-            <RoofCanvasViewer
-              rgbBase64={roofData.layers.rgb}
-              maskBase64={roofData.layers.mask}
-              width={roofData.layers.width}
-              height={roofData.layers.height}
+          {hasData && roofData?.layers?.mesh ? (
+            <RoofMeshViewer
+              mesh={roofData.layers.mesh}
               shingleHex={selectedShingle.hex}
-              shingleName={selectedShingle.name}
             />
           ) : hasData ? (
             <div className={styles.emptyState}>
