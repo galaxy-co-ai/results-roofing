@@ -26,6 +26,7 @@ function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
       roughness: 0.8,
       metalness: 0.1,
       flatShading: false,
+      side: THREE.DoubleSide,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
