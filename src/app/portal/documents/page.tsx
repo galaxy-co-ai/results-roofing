@@ -29,6 +29,20 @@ import styles from './page.module.css';
 // Types
 // ---------------------------------------------------------------------------
 
+interface PortalDocumentProjectData {
+  address: string;
+  customerName: string;
+  email: string;
+  phone: string;
+  packageName: string;
+  totalPrice: number;
+  depositAmount: number;
+  installationDate: string;
+  contractDate: string;
+  materials: string;
+  warrantyYears: number;
+}
+
 interface PortalDocument {
   id: string;
   name: string;
@@ -37,6 +51,7 @@ interface PortalDocument {
   source: 'gaf' | 'manual' | 'generated';
   status?: string;
   createdAt: string;
+  projectData?: PortalDocumentProjectData;
 }
 
 interface DocumentsResponse {
@@ -121,6 +136,7 @@ function DocumentRow({ doc }: DocumentRowProps) {
       title: doc.name,
       status: toViewerStatus(doc.status),
       date: doc.createdAt,
+      projectData: doc.projectData,
     });
   }
 

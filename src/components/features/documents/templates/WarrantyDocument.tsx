@@ -8,11 +8,11 @@ interface WarrantyDocumentProps {
 
 export function WarrantyDocument({ document }: WarrantyDocumentProps) {
   const project = document.projectData || {
-    address: '123 Main Street, Austin, TX 78701',
-    customerName: 'John Smith',
-    contractDate: 'January 22, 2026',
-    materials: 'GAF Timberline HDZ Architectural Shingles',
-    warrantyYears: 30,
+    address: '',
+    customerName: '',
+    contractDate: '',
+    materials: '',
+    warrantyYears: 25,
   };
 
   const warrantyEndDate = new Date();

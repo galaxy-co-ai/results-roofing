@@ -8,17 +8,17 @@ interface ContractDocumentProps {
 
 export function ContractDocument({ document }: ContractDocumentProps) {
   const project = document.projectData || {
-    address: '123 Main Street, Austin, TX 78701',
-    customerName: 'John Smith',
-    email: 'john@example.com',
-    phone: '(555) 123-4567',
-    packageName: 'Premium Package',
-    totalPrice: 15000,
-    depositAmount: 750,
-    installationDate: 'February 3, 2026',
-    contractDate: 'January 22, 2026',
-    materials: 'GAF Timberline HDZ Architectural Shingles',
-    warrantyYears: 30,
+    address: '',
+    customerName: '',
+    email: '',
+    phone: '',
+    packageName: '',
+    totalPrice: 0,
+    depositAmount: 0,
+    installationDate: '',
+    contractDate: '',
+    materials: '',
+    warrantyYears: 25,
   };
 
   const formatCurrency = (amount: number) => 

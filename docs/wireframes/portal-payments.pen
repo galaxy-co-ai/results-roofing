@@ -1,0 +1,4032 @@
+{
+  "version": "2.8",
+  "children": [
+    {
+      "type": "frame",
+      "id": "4oNSf",
+      "x": 0,
+      "y": 0,
+      "name": "[System]",
+      "width": 3000,
+      "fill": "#F0F0F0",
+      "gap": 40,
+      "padding": 40,
+      "children": [
+        {
+          "type": "frame",
+          "id": "NFmbg",
+          "name": "Button/Primary",
+          "reusable": true,
+          "height": 40,
+          "fill": "$--primary",
+          "cornerRadius": "$--radius-m",
+          "gap": 8,
+          "padding": [
+            0,
+            20
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "zXdcf",
+              "name": "label",
+              "fill": "$--primary-foreground",
+              "content": "Button",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "0ryxa",
+          "name": "Button/Secondary",
+          "reusable": true,
+          "height": 40,
+          "fill": "$--secondary",
+          "cornerRadius": "$--radius-m",
+          "gap": 8,
+          "padding": [
+            0,
+            20
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "txmyP",
+              "name": "label",
+              "fill": "$--foreground",
+              "content": "Button",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "N2y6b",
+          "name": "Button/Outline",
+          "reusable": true,
+          "height": 40,
+          "fill": "$--card",
+          "cornerRadius": "$--radius-m",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$--border"
+          },
+          "gap": 8,
+          "padding": [
+            0,
+            20
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "iUOV6",
+              "name": "label",
+              "fill": "$--foreground",
+              "content": "Button",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "4x6ke",
+          "name": "Button/Ghost",
+          "reusable": true,
+          "height": 40,
+          "cornerRadius": "$--radius-m",
+          "gap": 8,
+          "padding": [
+            0,
+            20
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "C2vUc",
+              "name": "label",
+              "fill": "$--muted-foreground",
+              "content": "Button",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "UXf95",
+          "name": "Button/Disabled",
+          "reusable": true,
+          "opacity": 0.5,
+          "height": 40,
+          "fill": "$--secondary",
+          "cornerRadius": "$--radius-m",
+          "gap": 8,
+          "padding": [
+            0,
+            20
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "Kpz3k",
+              "name": "label",
+              "fill": "$--muted-foreground",
+              "content": "Button",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "t8FtN",
+          "name": "Card/Default",
+          "reusable": true,
+          "width": 320,
+          "fill": "$--card",
+          "cornerRadius": "$--radius-m",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$--border"
+          },
+          "layout": "vertical",
+          "gap": 16,
+          "padding": 24,
+          "children": [
+            {
+              "type": "text",
+              "id": "aYHfy",
+              "name": "title",
+              "fill": "$--foreground",
+              "content": "Card Title",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "6ZCYM",
+              "name": "description",
+              "fill": "$--muted-foreground",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Card description text goes here",
+              "fontFamily": "Inter",
+              "fontSize": 14
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "6qdgz",
+          "name": "Badge/Default",
+          "reusable": true,
+          "fill": "$--secondary",
+          "cornerRadius": "$--radius-pill",
+          "padding": [
+            4,
+            10
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "HzOOF",
+              "name": "label",
+              "fill": "$--foreground",
+              "content": "Badge",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kfrdF",
+          "name": "Badge/Success",
+          "reusable": true,
+          "fill": "$--success-light",
+          "cornerRadius": "$--radius-pill",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$--color-success"
+          },
+          "padding": [
+            4,
+            10
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "kVIfh",
+              "name": "label",
+              "fill": "$--color-success",
+              "content": "Success",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "8LqoP",
+          "name": "Badge/Warning",
+          "reusable": true,
+          "fill": "$--warning-light",
+          "cornerRadius": "$--radius-pill",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$--color-warning"
+          },
+          "padding": [
+            4,
+            10
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "BONnr",
+              "name": "label",
+              "fill": "$--color-warning",
+              "content": "Warning",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "dfiHL",
+          "name": "Badge/Error",
+          "reusable": true,
+          "fill": "#FEF2F2",
+          "cornerRadius": "$--radius-pill",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$--color-error"
+          },
+          "padding": [
+            4,
+            10
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "tm3Vs",
+              "name": "label",
+              "fill": "$--color-error",
+              "content": "Error",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ykC7c",
+          "name": "ProgressBar",
+          "reusable": true,
+          "width": 280,
+          "height": 8,
+          "fill": "$--secondary",
+          "cornerRadius": 4,
+          "children": [
+            {
+              "type": "rectangle",
+              "cornerRadius": 4,
+              "id": "D314R",
+              "name": "fill",
+              "fill": "$--primary",
+              "width": 84,
+              "height": 8
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "omHKk",
+          "name": "Button/Icon",
+          "reusable": true,
+          "width": 36,
+          "height": 36,
+          "fill": "$--card",
+          "cornerRadius": "$--radius-m",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$--border"
+          },
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "h1JSK",
+              "name": "icon",
+              "width": 16,
+              "height": 16,
+              "iconFontName": "download",
+              "iconFontFamily": "lucide",
+              "fill": "$--muted-foreground"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "wM5Ez",
+          "name": "Badge/Blue",
+          "reusable": true,
+          "fill": "$--primary-light",
+          "cornerRadius": "$--radius-pill",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$--primary"
+          },
+          "padding": [
+            4,
+            10
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "3KtzY",
+              "name": "label",
+              "fill": "$--primary",
+              "content": "Deposit",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "ATV24",
+      "x": 0,
+      "y": 900,
+      "name": "[Screens]",
+      "gap": 100,
+      "padding": 40,
+      "children": [
+        {
+          "type": "frame",
+          "id": "0guTI",
+          "name": "Payments - Default",
+          "width": 1440,
+          "fill": "$--background",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            40,
+            48,
+            48,
+            48
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "fAP9P",
+              "name": "pageHeader",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "NYcyU",
+                  "name": "title",
+                  "fill": "$--foreground",
+                  "content": "Payments",
+                  "fontFamily": "Inter",
+                  "fontSize": 32,
+                  "fontWeight": "700",
+                  "letterSpacing": -0.5
+                },
+                {
+                  "type": "text",
+                  "id": "XgEjZ",
+                  "name": "subtitle",
+                  "fill": "$--muted-foreground",
+                  "content": "Manage your project payments and view transaction history",
+                  "fontFamily": "Inter",
+                  "fontSize": 16
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Jd2Pv",
+              "name": "progressCard",
+              "width": "fill_container",
+              "fill": "$--card",
+              "cornerRadius": "$--radius-m",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 20,
+              "padding": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "WUVzY",
+                  "name": "topRow",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "n6FU7",
+                      "name": "metrics",
+                      "gap": 48,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "IYQvj",
+                          "name": "metricTotal",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "MTQsK",
+                              "name": "metricTotalLabel",
+                              "fill": "$--muted-foreground",
+                              "content": "Total cost",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "500",
+                              "letterSpacing": 0.5
+                            },
+                            {
+                              "type": "text",
+                              "id": "NrqA4",
+                              "name": "metricTotalVal",
+                              "fill": "$--foreground",
+                              "content": "$18,200.00",
+                              "fontFamily": "Inter",
+                              "fontSize": 28,
+                              "fontWeight": "700",
+                              "letterSpacing": -0.5
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "b6Vyn",
+                          "name": "metricPaid",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "3xQPU",
+                              "name": "metricPaidLabel",
+                              "fill": "$--muted-foreground",
+                              "content": "Amount paid",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "500",
+                              "letterSpacing": 0.5
+                            },
+                            {
+                              "type": "text",
+                              "id": "8l1OH",
+                              "name": "metricPaidVal",
+                              "fill": "$--foreground",
+                              "content": "$0.00",
+                              "fontFamily": "Inter",
+                              "fontSize": 28,
+                              "fontWeight": "700",
+                              "letterSpacing": -0.5
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "BKfWn",
+                          "name": "metricBalance",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "D32Ny",
+                              "name": "metricBalLabel",
+                              "fill": "$--muted-foreground",
+                              "content": "Remaining balance",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "500",
+                              "letterSpacing": 0.5
+                            },
+                            {
+                              "type": "text",
+                              "id": "IBzQW",
+                              "name": "metricBalVal",
+                              "fill": "$--primary",
+                              "content": "$18,200.00",
+                              "fontFamily": "Inter",
+                              "fontSize": 28,
+                              "fontWeight": "700",
+                              "letterSpacing": -0.5
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "7eUfo",
+                  "name": "progressBarRow",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "4RDTL",
+                      "name": "track",
+                      "width": "fill_container",
+                      "height": 8,
+                      "fill": "$--secondary",
+                      "cornerRadius": 4
+                    },
+                    {
+                      "type": "text",
+                      "id": "6sYjC",
+                      "name": "pBarLabel",
+                      "fill": "$--muted-foreground",
+                      "content": "0% paid",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "djhUy",
+                  "name": "divider",
+                  "fill": "$--border",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "k3OHc",
+                  "name": "paymentMethod",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "n9YIP",
+                      "name": "pmIcon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "credit-card",
+                      "iconFontFamily": "lucide",
+                      "fill": "$--muted-foreground"
+                    },
+                    {
+                      "type": "text",
+                      "id": "PYDba",
+                      "name": "pmText",
+                      "fill": "$--muted-foreground",
+                      "content": "No payment method on file",
+                      "fontFamily": "Inter",
+                      "fontSize": 14
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "nIIil",
+              "name": "paymentOptions",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "szMXs",
+                  "name": "depositCard",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 2,
+                    "fill": "$--primary"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "dLIo5",
+                      "name": "header",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "9pjZY",
+                          "name": "depTitle",
+                          "fill": "$--foreground",
+                          "content": "Deposit",
+                          "fontFamily": "Inter",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "id": "44sBo",
+                          "type": "ref",
+                          "ref": "wM5Ez",
+                          "name": "depBadge",
+                          "descendants": {
+                            "3KtzY": {
+                              "content": "5%"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "OSTpt",
+                      "name": "depAmount",
+                      "fill": "$--foreground",
+                      "content": "$910.00",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.5
+                    },
+                    {
+                      "type": "text",
+                      "id": "qYg1d",
+                      "name": "depDesc",
+                      "fill": "$--muted-foreground",
+                      "content": "Secure your installation date",
+                      "fontFamily": "Inter",
+                      "fontSize": 14
+                    },
+                    {
+                      "id": "E3gCX",
+                      "type": "ref",
+                      "ref": "NFmbg",
+                      "width": "fill_container",
+                      "name": "depBtn",
+                      "descendants": {
+                        "zXdcf": {
+                          "content": "Pay deposit"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "m1BPV",
+                  "name": "payInFullCard",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "sJRFb",
+                      "name": "header",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "xBZVc",
+                          "name": "fullTitle",
+                          "fill": "$--foreground",
+                          "content": "Pay in full",
+                          "fontFamily": "Inter",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "gV6w6",
+                      "name": "fullAmount",
+                      "fill": "$--foreground",
+                      "content": "$18,200.00",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.5
+                    },
+                    {
+                      "type": "text",
+                      "id": "mMc9D",
+                      "name": "fullDesc",
+                      "fill": "$--muted-foreground",
+                      "content": "Pay your entire balance",
+                      "fontFamily": "Inter",
+                      "fontSize": 14
+                    },
+                    {
+                      "id": "d2v9N",
+                      "type": "ref",
+                      "ref": "N2y6b",
+                      "width": "fill_container",
+                      "name": "fullBtn",
+                      "descendants": {
+                        "iUOV6": {
+                          "content": "Pay balance"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "KF6NJ",
+                  "name": "financingCard",
+                  "opacity": 0.6,
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "QkEAG",
+                      "name": "header",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "s2kzV",
+                          "name": "finTitle",
+                          "fill": "$--foreground",
+                          "content": "Financing",
+                          "fontFamily": "Inter",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "id": "zkkdT",
+                          "type": "ref",
+                          "ref": "8LqoP",
+                          "name": "finBadge",
+                          "descendants": {
+                            "BONnr": {
+                              "content": "Coming soon"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "lIBsr",
+                      "name": "finAmount",
+                      "fill": "$--muted-foreground",
+                      "content": "—",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "M68Bh",
+                      "name": "finDesc",
+                      "fill": "$--muted-foreground",
+                      "content": "Flexible payment plans through Wisetack",
+                      "fontFamily": "Inter",
+                      "fontSize": 14
+                    },
+                    {
+                      "id": "9OUiX",
+                      "type": "ref",
+                      "ref": "UXf95",
+                      "width": "fill_container",
+                      "name": "finBtn",
+                      "descendants": {
+                        "Kpz3k": {
+                          "content": "Coming soon"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "OFbIk",
+              "name": "paymentHistory",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "rhEVt",
+                  "name": "historyHeader",
+                  "fill": "$--foreground",
+                  "content": "Payment history",
+                  "fontFamily": "Inter",
+                  "fontSize": 20,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "B1F1g",
+                  "name": "historyTable",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "5znVl",
+                      "name": "tableHeader",
+                      "width": "fill_container",
+                      "fill": "$--secondary",
+                      "padding": [
+                        12,
+                        20
+                      ],
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "sIW0n",
+                          "name": "thDate",
+                          "width": 160,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "OpuEn",
+                              "name": "thDateTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "DATE",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "eq2SA",
+                          "name": "thType",
+                          "width": 140,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "n65A5",
+                              "name": "thTypeTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "TYPE",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "Nh6Ed",
+                          "name": "thAmount",
+                          "width": "fill_container",
+                          "justifyContent": "end",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "qOD1V",
+                              "name": "thAmountTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "AMOUNT",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "60dJv",
+                          "name": "thStatus",
+                          "width": 140,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "NbIoe",
+                              "name": "thStatusTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "STATUS",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "S9ekE",
+                          "name": "thActions",
+                          "width": 80,
+                          "justifyContent": "end",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "RXTi2",
+                              "name": "thActionsTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "ACTIONS",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "2wk1d",
+                      "name": "emptyState",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": [
+                        48,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "DuXK3",
+                          "name": "emptyIcon",
+                          "opacity": 0.4,
+                          "width": 48,
+                          "height": 48,
+                          "iconFontName": "credit-card",
+                          "iconFontFamily": "lucide",
+                          "fill": "$--muted-foreground"
+                        },
+                        {
+                          "type": "text",
+                          "id": "sHGWc",
+                          "name": "emptyTitle",
+                          "fill": "$--foreground",
+                          "content": "No payments yet",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "THiUj",
+                          "name": "emptyDesc",
+                          "fill": "$--muted-foreground",
+                          "content": "Complete your first payment above to see it here",
+                          "textAlign": "center",
+                          "fontFamily": "Inter",
+                          "fontSize": 14
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "SExTE",
+          "name": "Payments - Deposit Paid",
+          "width": 1440,
+          "fill": "$--background",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            40,
+            48,
+            48,
+            48
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "tL1HA",
+              "name": "pageHeader",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "nO56L",
+                  "name": "title",
+                  "fill": "$--foreground",
+                  "content": "Payments",
+                  "fontFamily": "Inter",
+                  "fontSize": 32,
+                  "fontWeight": "700",
+                  "letterSpacing": -0.5
+                },
+                {
+                  "type": "text",
+                  "id": "GkV3W",
+                  "name": "subtitle",
+                  "fill": "$--muted-foreground",
+                  "content": "Manage your project payments and view transaction history",
+                  "fontFamily": "Inter",
+                  "fontSize": 16
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "1GZ4L",
+              "name": "progressCard",
+              "width": "fill_container",
+              "fill": "$--card",
+              "cornerRadius": "$--radius-m",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 20,
+              "padding": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "bbyrS",
+                  "name": "topRow",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "NbhZc",
+                      "name": "metrics",
+                      "gap": 48,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "c4RY6",
+                          "name": "metricTotal",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "crbxb",
+                              "name": "metricTotalLabel",
+                              "fill": "$--muted-foreground",
+                              "content": "Total cost",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "500",
+                              "letterSpacing": 0.5
+                            },
+                            {
+                              "type": "text",
+                              "id": "K6Zaf",
+                              "name": "metricTotalVal",
+                              "fill": "$--foreground",
+                              "content": "$18,200.00",
+                              "fontFamily": "Inter",
+                              "fontSize": 28,
+                              "fontWeight": "700",
+                              "letterSpacing": -0.5
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "14wdv",
+                          "name": "metricPaid",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "wDVU1",
+                              "name": "metricPaidLabel",
+                              "fill": "$--muted-foreground",
+                              "content": "Amount paid",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "500",
+                              "letterSpacing": 0.5
+                            },
+                            {
+                              "type": "text",
+                              "id": "8DUxW",
+                              "name": "metricPaidVal",
+                              "fill": "$--foreground",
+                              "content": "$910.00",
+                              "fontFamily": "Inter",
+                              "fontSize": 28,
+                              "fontWeight": "700",
+                              "letterSpacing": -0.5
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "BXyAM",
+                          "name": "metricBalance",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "KcRqV",
+                              "name": "metricBalLabel",
+                              "fill": "$--muted-foreground",
+                              "content": "Remaining balance",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "500",
+                              "letterSpacing": 0.5
+                            },
+                            {
+                              "type": "text",
+                              "id": "YTjpH",
+                              "name": "metricBalVal",
+                              "fill": "$--primary",
+                              "content": "$17,290.00",
+                              "fontFamily": "Inter",
+                              "fontSize": 28,
+                              "fontWeight": "700",
+                              "letterSpacing": -0.5
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "mrqGr",
+                  "name": "progressBarRow",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "TI9fI",
+                      "name": "track",
+                      "width": "fill_container",
+                      "height": 8,
+                      "fill": "$--secondary",
+                      "cornerRadius": 4,
+                      "children": [
+                        {
+                          "type": "rectangle",
+                          "cornerRadius": 4,
+                          "id": "dP0kW",
+                          "name": "fill",
+                          "fill": "$--primary",
+                          "width": 40,
+                          "height": 8
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "PwtSM",
+                      "name": "pBarLabel",
+                      "fill": "$--muted-foreground",
+                      "content": "5% paid",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "Lc2LO",
+                  "name": "divider",
+                  "fill": "$--border",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "yfnba",
+                  "name": "paymentMethod",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "A6f5J",
+                      "name": "pmIcon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "credit-card",
+                      "iconFontFamily": "lucide",
+                      "fill": "$--foreground"
+                    },
+                    {
+                      "type": "text",
+                      "id": "GiEM7",
+                      "name": "pmText",
+                      "fill": "$--muted-foreground",
+                      "content": "Visa •••• 4242",
+                      "fontFamily": "Inter",
+                      "fontSize": 14
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "BVTz6",
+              "name": "paymentOptions",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "k925x",
+                  "name": "depositCard",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--color-success"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kaYxB",
+                      "name": "header",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "1NY26",
+                          "name": "depTitle",
+                          "fill": "$--foreground",
+                          "content": "Deposit",
+                          "fontFamily": "Inter",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "id": "jowlh",
+                          "type": "ref",
+                          "ref": "wM5Ez",
+                          "name": "depBadge",
+                          "descendants": {
+                            "3KtzY": {
+                              "content": "5%"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "SKlTg",
+                      "name": "paidInfo",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "VUQT2",
+                          "name": "checkIcon",
+                          "width": 18,
+                          "height": 18,
+                          "iconFontName": "circle-check",
+                          "iconFontFamily": "lucide",
+                          "fill": "$--color-success"
+                        },
+                        {
+                          "type": "text",
+                          "id": "WXDcu",
+                          "name": "paidText",
+                          "fill": "$--color-success",
+                          "content": "Paid on Feb 20, 2026",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "Epbg7",
+                      "name": "paidAmount",
+                      "fill": "$--foreground",
+                      "content": "$910.00",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.5
+                    },
+                    {
+                      "type": "frame",
+                      "id": "8MOZ0",
+                      "name": "receiptLink",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "xysJa",
+                          "name": "receiptIcon",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "download",
+                          "iconFontFamily": "lucide",
+                          "fill": "$--primary"
+                        },
+                        {
+                          "type": "text",
+                          "id": "jApYG",
+                          "name": "receiptText",
+                          "fill": "$--primary",
+                          "content": "Download receipt",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "IdCdm",
+                  "name": "payInFullCard",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 2,
+                    "fill": "$--primary"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "5R3Zo",
+                      "name": "header",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "OcL2t",
+                          "name": "fullTitle",
+                          "fill": "$--foreground",
+                          "content": "Pay in full",
+                          "fontFamily": "Inter",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "dsoHS",
+                      "name": "fullAmount",
+                      "fill": "$--foreground",
+                      "content": "$17,290.00",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.5
+                    },
+                    {
+                      "type": "text",
+                      "id": "cKaf7",
+                      "name": "fullDesc",
+                      "fill": "$--muted-foreground",
+                      "content": "Pay remaining balance",
+                      "fontFamily": "Inter",
+                      "fontSize": 14
+                    },
+                    {
+                      "id": "Qzm4G",
+                      "type": "ref",
+                      "ref": "NFmbg",
+                      "width": "fill_container",
+                      "name": "fullBtnNew",
+                      "descendants": {
+                        "zXdcf": {
+                          "content": "Pay balance"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "h4k2x",
+                  "name": "financingCard",
+                  "opacity": 0.6,
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "WyKIw",
+                      "name": "header",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vwkzl",
+                          "name": "finTitle",
+                          "fill": "$--foreground",
+                          "content": "Financing",
+                          "fontFamily": "Inter",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "id": "KgRvG",
+                          "type": "ref",
+                          "ref": "8LqoP",
+                          "name": "finBadge",
+                          "descendants": {
+                            "BONnr": {
+                              "content": "Coming soon"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "GxQDk",
+                      "name": "finAmount",
+                      "fill": "$--muted-foreground",
+                      "content": "—",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "7ZE9G",
+                      "name": "finDesc",
+                      "fill": "$--muted-foreground",
+                      "content": "Flexible payment plans through Wisetack",
+                      "fontFamily": "Inter",
+                      "fontSize": 14
+                    },
+                    {
+                      "id": "6Cppm",
+                      "type": "ref",
+                      "ref": "UXf95",
+                      "width": "fill_container",
+                      "name": "finBtn",
+                      "descendants": {
+                        "Kpz3k": {
+                          "content": "Coming soon"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "o8Xcf",
+              "name": "paymentHistory",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "DuH8X",
+                  "name": "historyHeader",
+                  "fill": "$--foreground",
+                  "content": "Payment history",
+                  "fontFamily": "Inter",
+                  "fontSize": 20,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "9MsyS",
+                  "name": "historyTable",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "KKSCG",
+                      "name": "tableHeader",
+                      "width": "fill_container",
+                      "fill": "$--secondary",
+                      "padding": [
+                        12,
+                        20
+                      ],
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "0Mvfp",
+                          "name": "thDate",
+                          "width": 160,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "mQFVV",
+                              "name": "thDateTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "DATE",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "ikHXO",
+                          "name": "thType",
+                          "width": 140,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "gmlCE",
+                              "name": "thTypeTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "TYPE",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "vcW5U",
+                          "name": "thAmount",
+                          "width": "fill_container",
+                          "justifyContent": "end",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "9pZEK",
+                              "name": "thAmountTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "AMOUNT",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "A44h6",
+                          "name": "thStatus",
+                          "width": 140,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "tjy8R",
+                              "name": "thStatusTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "STATUS",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "8SXqF",
+                          "name": "thActions",
+                          "width": 80,
+                          "justifyContent": "end",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "P1EkS",
+                              "name": "thActionsTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "ACTIONS",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "TrTWi",
+                      "name": "dataRow",
+                      "width": "fill_container",
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": {
+                          "bottom": 1
+                        },
+                        "fill": "$--border"
+                      },
+                      "padding": [
+                        14,
+                        20
+                      ],
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "RAdsy",
+                          "name": "cellDate",
+                          "width": 160,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "2lA8J",
+                              "name": "cellDateTxt",
+                              "fill": "$--foreground",
+                              "content": "Feb 20, 2026",
+                              "fontFamily": "Inter",
+                              "fontSize": 14
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "vOF9G",
+                          "name": "cellType",
+                          "width": 140,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "RlK6m",
+                              "type": "ref",
+                              "ref": "wM5Ez",
+                              "name": "cellTypeBadge",
+                              "descendants": {
+                                "3KtzY": {
+                                  "content": "Deposit"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "6IxQW",
+                          "name": "cellAmount",
+                          "width": "fill_container",
+                          "justifyContent": "end",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "CJbht",
+                              "name": "cellAmountTxt",
+                              "fill": "$--foreground",
+                              "content": "$910.00",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "TN3M4",
+                          "name": "cellStatus",
+                          "width": 140,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "92KNB",
+                              "type": "ref",
+                              "ref": "kfrdF",
+                              "name": "cellStatusBadge",
+                              "descendants": {
+                                "kVIfh": {
+                                  "content": "Succeeded"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "v9FK2",
+                          "name": "cellActions",
+                          "width": 80,
+                          "justifyContent": "end",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "JF6lR",
+                              "type": "ref",
+                              "ref": "omHKk",
+                              "name": "cellActBtn"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "QQBoj",
+          "name": "Payments - Paid in Full",
+          "width": 1440,
+          "fill": "$--background",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            40,
+            48,
+            48,
+            48
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "pXlw7",
+              "name": "pageHeader",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "yNP3u",
+                  "name": "title",
+                  "fill": "$--foreground",
+                  "content": "Payments",
+                  "fontFamily": "Inter",
+                  "fontSize": 32,
+                  "fontWeight": "700",
+                  "letterSpacing": -0.5
+                },
+                {
+                  "type": "text",
+                  "id": "DvKeY",
+                  "name": "subtitle",
+                  "fill": "$--muted-foreground",
+                  "content": "Manage your project payments and view transaction history",
+                  "fontFamily": "Inter",
+                  "fontSize": 16
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "2QLSG",
+              "name": "progressCard",
+              "width": "fill_container",
+              "fill": "$--card",
+              "cornerRadius": "$--radius-m",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 20,
+              "padding": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "BSiFl",
+                  "name": "topRow",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "sxFMC",
+                      "name": "metrics",
+                      "gap": 48,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "7xzRy",
+                          "name": "metricTotal",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "8kL9J",
+                              "name": "metricTotalLabel",
+                              "fill": "$--muted-foreground",
+                              "content": "Total cost",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "500",
+                              "letterSpacing": 0.5
+                            },
+                            {
+                              "type": "text",
+                              "id": "U7Dg4",
+                              "name": "metricTotalVal",
+                              "fill": "$--foreground",
+                              "content": "$18,200.00",
+                              "fontFamily": "Inter",
+                              "fontSize": 28,
+                              "fontWeight": "700",
+                              "letterSpacing": -0.5
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "hIEpl",
+                          "name": "metricPaid",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "c5Ojn",
+                              "name": "metricPaidLabel",
+                              "fill": "$--muted-foreground",
+                              "content": "Amount paid",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "500",
+                              "letterSpacing": 0.5
+                            },
+                            {
+                              "type": "text",
+                              "id": "kcgYT",
+                              "name": "metricPaidVal",
+                              "fill": "$--foreground",
+                              "content": "$18,200.00",
+                              "fontFamily": "Inter",
+                              "fontSize": 28,
+                              "fontWeight": "700",
+                              "letterSpacing": -0.5
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "PsEQK",
+                          "name": "metricBalance",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "uvuGg",
+                              "name": "metricBalLabel",
+                              "fill": "$--muted-foreground",
+                              "content": "Remaining balance",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "500",
+                              "letterSpacing": 0.5
+                            },
+                            {
+                              "type": "text",
+                              "id": "UvCZY",
+                              "name": "metricBalVal",
+                              "fill": "$--color-success",
+                              "content": "$0.00",
+                              "fontFamily": "Inter",
+                              "fontSize": 28,
+                              "fontWeight": "700",
+                              "letterSpacing": -0.5
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "h0CG9",
+                  "name": "progressBarRow",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "4gaAm",
+                      "name": "track",
+                      "width": "fill_container",
+                      "height": 8,
+                      "fill": "$--secondary",
+                      "cornerRadius": 4,
+                      "children": [
+                        {
+                          "type": "rectangle",
+                          "cornerRadius": 4,
+                          "id": "zjzcr",
+                          "name": "fill",
+                          "fill": "$--primary",
+                          "width": "fill_container",
+                          "height": 8
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "lxNnZ",
+                      "name": "pBarLabel",
+                      "fill": "$--muted-foreground",
+                      "content": "100% paid",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "dRPsK",
+                  "name": "divider",
+                  "fill": "$--border",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "UPtKn",
+                  "name": "paymentMethod",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "2yvTk",
+                      "name": "pmIcon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "credit-card",
+                      "iconFontFamily": "lucide",
+                      "fill": "$--foreground"
+                    },
+                    {
+                      "type": "text",
+                      "id": "4XieO",
+                      "name": "pmText",
+                      "fill": "$--muted-foreground",
+                      "content": "Visa •••• 4242",
+                      "fontFamily": "Inter",
+                      "fontSize": 14
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "6FnLo",
+              "name": "paymentOptions",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "x1NYY",
+                  "name": "depositCard",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--color-success"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "a213J",
+                      "name": "header",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "nhXjR",
+                          "name": "depTitle",
+                          "fill": "$--foreground",
+                          "content": "Deposit",
+                          "fontFamily": "Inter",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "id": "81Xqi",
+                          "type": "ref",
+                          "ref": "wM5Ez",
+                          "name": "depBadge",
+                          "descendants": {
+                            "3KtzY": {
+                              "content": "5%"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "9SEjX",
+                      "name": "paidInfo",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "us0Ui",
+                          "name": "checkIcon",
+                          "width": 18,
+                          "height": 18,
+                          "iconFontName": "circle-check",
+                          "iconFontFamily": "lucide",
+                          "fill": "$--color-success"
+                        },
+                        {
+                          "type": "text",
+                          "id": "l8ahm",
+                          "name": "paidText",
+                          "fill": "$--color-success",
+                          "content": "Paid on Feb 20, 2026",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "xWMYY",
+                      "name": "paidAmount",
+                      "fill": "$--foreground",
+                      "content": "$910.00",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.5
+                    },
+                    {
+                      "type": "frame",
+                      "id": "av5WY",
+                      "name": "receiptLink",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "Jagr7",
+                          "name": "receiptIcon",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "download",
+                          "iconFontFamily": "lucide",
+                          "fill": "$--primary"
+                        },
+                        {
+                          "type": "text",
+                          "id": "f4m8H",
+                          "name": "receiptText",
+                          "fill": "$--primary",
+                          "content": "Download receipt",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "io59K",
+                  "name": "payInFullCard",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--color-success"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "3ju6d",
+                      "name": "header",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "6HG6i",
+                          "name": "fullTitle",
+                          "fill": "$--foreground",
+                          "content": "Pay in full",
+                          "fontFamily": "Inter",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "chWIH",
+                      "name": "paidInfo",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "0ltZ5",
+                          "name": "checkIcon2",
+                          "width": 18,
+                          "height": 18,
+                          "iconFontName": "circle-check",
+                          "iconFontFamily": "lucide",
+                          "fill": "$--color-success"
+                        },
+                        {
+                          "type": "text",
+                          "id": "EhYax",
+                          "name": "paidText2",
+                          "fill": "$--color-success",
+                          "content": "Paid on Feb 25, 2026",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "Gwime",
+                      "name": "paidAmt2",
+                      "fill": "$--foreground",
+                      "content": "$17,290.00",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.5
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Drobb",
+                      "name": "receiptLink",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "V6qkA",
+                          "name": "recIcon2",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "download",
+                          "iconFontFamily": "lucide",
+                          "fill": "$--primary"
+                        },
+                        {
+                          "type": "text",
+                          "id": "oXRS7",
+                          "name": "recText2",
+                          "fill": "$--primary",
+                          "content": "Download receipt",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "FTlka",
+                  "name": "financingCard",
+                  "opacity": 0.6,
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kemRo",
+                      "name": "header",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "QiR5D",
+                          "name": "finTitle",
+                          "fill": "$--foreground",
+                          "content": "Financing",
+                          "fontFamily": "Inter",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "id": "pbevE",
+                          "type": "ref",
+                          "ref": "8LqoP",
+                          "name": "finBadge",
+                          "descendants": {
+                            "BONnr": {
+                              "content": "Coming soon"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "8a0kM",
+                      "name": "finAmount",
+                      "fill": "$--muted-foreground",
+                      "content": "—",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Tufcm",
+                      "name": "finDesc",
+                      "fill": "$--muted-foreground",
+                      "content": "Flexible payment plans through Wisetack",
+                      "fontFamily": "Inter",
+                      "fontSize": 14
+                    },
+                    {
+                      "id": "3ve1s",
+                      "type": "ref",
+                      "ref": "UXf95",
+                      "width": "fill_container",
+                      "name": "finBtn",
+                      "descendants": {
+                        "Kpz3k": {
+                          "content": "Coming soon"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rLo4F",
+              "name": "paymentHistory",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "E9Kjj",
+                  "name": "historyHeader",
+                  "fill": "$--foreground",
+                  "content": "Payment history",
+                  "fontFamily": "Inter",
+                  "fontSize": 20,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "Cpal7",
+                  "name": "historyTable",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ClkCJ",
+                      "name": "tableHeader",
+                      "width": "fill_container",
+                      "fill": "$--secondary",
+                      "padding": [
+                        12,
+                        20
+                      ],
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "1SBmd",
+                          "name": "thDate",
+                          "width": 160,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "BfHox",
+                              "name": "thDateTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "DATE",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "8phRV",
+                          "name": "thType",
+                          "width": 140,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "qmk5a",
+                              "name": "thTypeTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "TYPE",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "bF9Eg",
+                          "name": "thAmount",
+                          "width": "fill_container",
+                          "justifyContent": "end",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "NYF1s",
+                              "name": "thAmountTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "AMOUNT",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "I6pWa",
+                          "name": "thStatus",
+                          "width": 140,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "FbgFa",
+                              "name": "thStatusTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "STATUS",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "hYgBs",
+                          "name": "thActions",
+                          "width": 80,
+                          "justifyContent": "end",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "ZgMlV",
+                              "name": "thActionsTxt",
+                              "fill": "$--muted-foreground",
+                              "content": "ACTIONS",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "B8dbb",
+                      "name": "dataRow",
+                      "width": "fill_container",
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": {
+                          "bottom": 1
+                        },
+                        "fill": "$--border"
+                      },
+                      "padding": [
+                        14,
+                        20
+                      ],
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "mOr3g",
+                          "name": "cellDate",
+                          "width": 160,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "yMcCI",
+                              "name": "cellDateTxt",
+                              "fill": "$--foreground",
+                              "content": "Feb 20, 2026",
+                              "fontFamily": "Inter",
+                              "fontSize": 14
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "k7Ice",
+                          "name": "cellType",
+                          "width": 140,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "da8Vr",
+                              "type": "ref",
+                              "ref": "wM5Ez",
+                              "name": "cellTypeBadge",
+                              "descendants": {
+                                "3KtzY": {
+                                  "content": "Deposit"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "mVjKO",
+                          "name": "cellAmount",
+                          "width": "fill_container",
+                          "justifyContent": "end",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "wDG3I",
+                              "name": "cellAmountTxt",
+                              "fill": "$--foreground",
+                              "content": "$910.00",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "PN03b",
+                          "name": "cellStatus",
+                          "width": 140,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "DFig3",
+                              "type": "ref",
+                              "ref": "kfrdF",
+                              "name": "cellStatusBadge",
+                              "descendants": {
+                                "kVIfh": {
+                                  "content": "Succeeded"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "gBhCl",
+                          "name": "cellActions",
+                          "width": 80,
+                          "justifyContent": "end",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "tyBe0",
+                              "type": "ref",
+                              "ref": "omHKk",
+                              "name": "cellActBtn"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "1gehJ",
+                      "name": "dataRow2",
+                      "width": "fill_container",
+                      "padding": [
+                        14,
+                        20
+                      ],
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "lzkjR",
+                          "name": "cellDate",
+                          "width": 160,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "wVpYM",
+                              "name": "balDateTxt",
+                              "fill": "$--foreground",
+                              "content": "Feb 25, 2026",
+                              "fontFamily": "Inter",
+                              "fontSize": 14
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "u4TqT",
+                          "name": "cellType",
+                          "width": 140,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "SkGY4",
+                              "type": "ref",
+                              "ref": "kfrdF",
+                              "name": "balTypeBadge",
+                              "descendants": {
+                                "kVIfh": {
+                                  "content": "Balance"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "6J5nq",
+                          "name": "cellAmount",
+                          "width": "fill_container",
+                          "justifyContent": "end",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "BhA0K",
+                              "name": "balAmtTxt",
+                              "fill": "$--foreground",
+                              "content": "$17,290.00",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "XI765",
+                          "name": "cellStatus",
+                          "width": 140,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "woG5z",
+                              "type": "ref",
+                              "ref": "kfrdF",
+                              "name": "balStatusBadge",
+                              "descendants": {
+                                "kVIfh": {
+                                  "content": "Succeeded"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "tI2bN",
+                          "name": "cellActions",
+                          "width": 80,
+                          "justifyContent": "end",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "8Qwsa",
+                              "type": "ref",
+                              "ref": "omHKk",
+                              "name": "balActBtn"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "t8BYu",
+          "name": "Mobile - Default",
+          "width": 390,
+          "fill": "$--background",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            32,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "xBxj9",
+              "name": "pageHeader",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "qFLkM",
+                  "name": "mH1",
+                  "fill": "$--foreground",
+                  "content": "Payments",
+                  "fontFamily": "Inter",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "letterSpacing": -0.5
+                },
+                {
+                  "type": "text",
+                  "id": "xmN19",
+                  "name": "mSubtitle",
+                  "fill": "$--muted-foreground",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Manage your project payments and view transaction history",
+                  "fontFamily": "Inter",
+                  "fontSize": 14
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "PbPCV",
+              "name": "progressCard",
+              "width": "fill_container",
+              "fill": "$--card",
+              "cornerRadius": "$--radius-m",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Mfa3s",
+                  "name": "metrics",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "AEoMI",
+                      "name": "mMetricRow1",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "lYhdv",
+                          "name": "mMr1Label",
+                          "fill": "$--muted-foreground",
+                          "content": "Total cost",
+                          "fontFamily": "Inter",
+                          "fontSize": 14
+                        },
+                        {
+                          "type": "text",
+                          "id": "DJ59P",
+                          "name": "mMr1Val",
+                          "fill": "$--foreground",
+                          "content": "$18,200.00",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "hVGY4",
+                      "name": "mMetricRow2",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "TXKy5",
+                          "name": "mMr2Label",
+                          "fill": "$--muted-foreground",
+                          "content": "Amount paid",
+                          "fontFamily": "Inter",
+                          "fontSize": 14
+                        },
+                        {
+                          "type": "text",
+                          "id": "XHfpn",
+                          "name": "mMr2Val",
+                          "fill": "$--foreground",
+                          "content": "$0.00",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "loSE9",
+                      "name": "mMetricRow3",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "jOS3M",
+                          "name": "mMr3Label",
+                          "fill": "$--muted-foreground",
+                          "content": "Remaining balance",
+                          "fontFamily": "Inter",
+                          "fontSize": 14
+                        },
+                        {
+                          "type": "text",
+                          "id": "79YXH",
+                          "name": "mMr3Val",
+                          "fill": "$--primary",
+                          "content": "$18,200.00",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "l22V7",
+                  "name": "track",
+                  "width": "fill_container",
+                  "height": 6,
+                  "fill": "$--secondary",
+                  "cornerRadius": 3
+                },
+                {
+                  "type": "rectangle",
+                  "id": "W5Gvu",
+                  "name": "divider",
+                  "fill": "$--border",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "MMTjn",
+                  "name": "paymentMethod",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "JoZFg",
+                      "name": "mPmIcon",
+                      "width": 14,
+                      "height": 14,
+                      "iconFontName": "credit-card",
+                      "iconFontFamily": "lucide",
+                      "fill": "$--muted-foreground"
+                    },
+                    {
+                      "type": "text",
+                      "id": "VxutA",
+                      "name": "mPmText",
+                      "fill": "$--muted-foreground",
+                      "content": "No payment method on file",
+                      "fontFamily": "Inter",
+                      "fontSize": 13
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "WNL45",
+              "name": "paymentOptions",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "WbnI2",
+                  "name": "depositCard",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 2,
+                    "fill": "$--primary"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "XKhJD",
+                      "name": "mDepHead",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "uaHY6",
+                          "name": "mDepTitle",
+                          "fill": "$--foreground",
+                          "content": "Deposit",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "id": "PcJpt",
+                          "type": "ref",
+                          "ref": "wM5Ez",
+                          "name": "mDepBadge",
+                          "descendants": {
+                            "3KtzY": {
+                              "content": "5%"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "1ChaN",
+                      "name": "mDepAmt",
+                      "fill": "$--foreground",
+                      "content": "$910.00",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.5
+                    },
+                    {
+                      "type": "text",
+                      "id": "JhHmN",
+                      "name": "mDepDesc",
+                      "fill": "$--muted-foreground",
+                      "content": "Secure your installation date",
+                      "fontFamily": "Inter",
+                      "fontSize": 13
+                    },
+                    {
+                      "id": "doonR",
+                      "type": "ref",
+                      "ref": "NFmbg",
+                      "width": "fill_container",
+                      "name": "mDepBtn",
+                      "descendants": {
+                        "zXdcf": {
+                          "content": "Pay deposit"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "cR0x6",
+                  "name": "payInFullCard",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "n1oYP",
+                      "name": "mFullHead",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "oJbDg",
+                          "name": "mFullTitle",
+                          "fill": "$--foreground",
+                          "content": "Pay in full",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "InIlZ",
+                      "name": "mFullAmt",
+                      "fill": "$--foreground",
+                      "content": "$18,200.00",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.5
+                    },
+                    {
+                      "type": "text",
+                      "id": "DgVnu",
+                      "name": "mFullDesc",
+                      "fill": "$--muted-foreground",
+                      "content": "Pay your entire balance",
+                      "fontFamily": "Inter",
+                      "fontSize": 13
+                    },
+                    {
+                      "id": "0tNrm",
+                      "type": "ref",
+                      "ref": "N2y6b",
+                      "width": "fill_container",
+                      "name": "mFullBtn",
+                      "descendants": {
+                        "iUOV6": {
+                          "content": "Pay balance"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Aaxed",
+                  "name": "financingCard",
+                  "opacity": 0.6,
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "vDf44",
+                      "name": "mFinHead",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "lgM9j",
+                          "name": "mFinTitle",
+                          "fill": "$--foreground",
+                          "content": "Financing",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "id": "uxPts",
+                          "type": "ref",
+                          "ref": "8LqoP",
+                          "name": "mFinBadge",
+                          "descendants": {
+                            "BONnr": {
+                              "content": "Coming soon"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "I5Yke",
+                      "name": "mFinDesc",
+                      "fill": "$--muted-foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Flexible payment plans through Wisetack",
+                      "fontFamily": "Inter",
+                      "fontSize": 13
+                    },
+                    {
+                      "id": "0e9zt",
+                      "type": "ref",
+                      "ref": "UXf95",
+                      "width": "fill_container",
+                      "name": "mFinBtn",
+                      "descendants": {
+                        "Kpz3k": {
+                          "content": "Coming soon"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "pRlHF",
+              "name": "paymentHistory",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "mH8hp",
+                  "name": "mHistTitle",
+                  "fill": "$--foreground",
+                  "content": "Payment history",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "TRtRf",
+                  "name": "historyCard",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "iAnBI",
+                      "name": "emptyState",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "padding": [
+                        32,
+                        16
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "KLNoR",
+                          "name": "mEmptyIcon",
+                          "opacity": 0.4,
+                          "width": 36,
+                          "height": 36,
+                          "iconFontName": "credit-card",
+                          "iconFontFamily": "lucide",
+                          "fill": "$--muted-foreground"
+                        },
+                        {
+                          "type": "text",
+                          "id": "dFKzX",
+                          "name": "mEmptyTitle",
+                          "fill": "$--foreground",
+                          "content": "No payments yet",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "nDMAX",
+                          "name": "mEmptyDesc",
+                          "fill": "$--muted-foreground",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Complete your first payment above to see it here",
+                          "textAlign": "center",
+                          "fontFamily": "Inter",
+                          "fontSize": 13
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "jloZ3",
+          "name": "Mobile - Deposit Paid",
+          "width": 390,
+          "fill": "$--background",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            32,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "wkjIS",
+              "name": "pageHeader",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "pjzqQ",
+                  "name": "mH1",
+                  "fill": "$--foreground",
+                  "content": "Payments",
+                  "fontFamily": "Inter",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "letterSpacing": -0.5
+                },
+                {
+                  "type": "text",
+                  "id": "xqqSs",
+                  "name": "mSubtitle",
+                  "fill": "$--muted-foreground",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Manage your project payments and view transaction history",
+                  "fontFamily": "Inter",
+                  "fontSize": 14
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "O9P4J",
+              "name": "progressCard",
+              "width": "fill_container",
+              "fill": "$--card",
+              "cornerRadius": "$--radius-m",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "tId25",
+                  "name": "metrics",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "tPhWD",
+                      "name": "mMetricRow1",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "E6jbI",
+                          "name": "mMr1Label",
+                          "fill": "$--muted-foreground",
+                          "content": "Total cost",
+                          "fontFamily": "Inter",
+                          "fontSize": 14
+                        },
+                        {
+                          "type": "text",
+                          "id": "wjdC0",
+                          "name": "mMr1Val",
+                          "fill": "$--foreground",
+                          "content": "$18,200.00",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kRWNN",
+                      "name": "mMetricRow2",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "aAypl",
+                          "name": "mMr2Label",
+                          "fill": "$--muted-foreground",
+                          "content": "Amount paid",
+                          "fontFamily": "Inter",
+                          "fontSize": 14
+                        },
+                        {
+                          "type": "text",
+                          "id": "Ipjfv",
+                          "name": "mMr2Val",
+                          "fill": "$--foreground",
+                          "content": "$910.00",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ypOj9",
+                      "name": "mMetricRow3",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "BuyH1",
+                          "name": "mMr3Label",
+                          "fill": "$--muted-foreground",
+                          "content": "Remaining balance",
+                          "fontFamily": "Inter",
+                          "fontSize": 14
+                        },
+                        {
+                          "type": "text",
+                          "id": "uDMeC",
+                          "name": "mMr3Val",
+                          "fill": "$--primary",
+                          "content": "$17,290.00",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kCtus",
+                  "name": "track",
+                  "width": "fill_container",
+                  "height": 6,
+                  "fill": "$--secondary",
+                  "cornerRadius": 3,
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 3,
+                      "id": "DAVng",
+                      "name": "fill",
+                      "fill": "$--primary",
+                      "width": 20,
+                      "height": 6
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "ORDMh",
+                  "name": "divider",
+                  "fill": "$--border",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "ak5rv",
+                  "name": "paymentMethod",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "zjvWV",
+                      "name": "mPmIcon",
+                      "width": 14,
+                      "height": 14,
+                      "iconFontName": "credit-card",
+                      "iconFontFamily": "lucide",
+                      "fill": "$--foreground"
+                    },
+                    {
+                      "type": "text",
+                      "id": "6W1GE",
+                      "name": "mPmText",
+                      "fill": "$--muted-foreground",
+                      "content": "Visa •••• 4242",
+                      "fontFamily": "Inter",
+                      "fontSize": 13
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Zmjsy",
+              "name": "paymentOptions",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "hVQW9",
+                  "name": "depositCard",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--color-success"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "7tQ6N",
+                      "name": "mDepHead",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "SJANU",
+                          "name": "mDepTitle",
+                          "fill": "$--foreground",
+                          "content": "Deposit",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "id": "RQnOM",
+                          "type": "ref",
+                          "ref": "wM5Ez",
+                          "name": "mDepBadge",
+                          "descendants": {
+                            "3KtzY": {
+                              "content": "5%"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "SScbB",
+                      "name": "paidInfo",
+                      "width": "fill_container",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "WZo2S",
+                          "name": "mCheckIco",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "circle-check",
+                          "iconFontFamily": "lucide",
+                          "fill": "$--color-success"
+                        },
+                        {
+                          "type": "text",
+                          "id": "DlZHn",
+                          "name": "mPaidTxt",
+                          "fill": "$--color-success",
+                          "content": "Paid on Feb 20, 2026",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "mzSJb",
+                      "name": "mPaidAmt",
+                      "fill": "$--foreground",
+                      "content": "$910.00",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "L54Xb",
+                      "name": "receiptLink",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "BGKXa",
+                          "name": "mRecIco",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "download",
+                          "iconFontFamily": "lucide",
+                          "fill": "$--primary"
+                        },
+                        {
+                          "type": "text",
+                          "id": "SR1XK",
+                          "name": "mRecTxt",
+                          "fill": "$--primary",
+                          "content": "Download receipt",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "GNI8U",
+                  "name": "payInFullCard",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 2,
+                    "fill": "$--primary"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "KWedw",
+                      "name": "mFullHead",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "XRkIh",
+                          "name": "mFullTitle",
+                          "fill": "$--foreground",
+                          "content": "Pay in full",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "pUet2",
+                      "name": "mFullAmt",
+                      "fill": "$--foreground",
+                      "content": "$17,290.00",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.5
+                    },
+                    {
+                      "type": "text",
+                      "id": "TeOeC",
+                      "name": "mFullDesc",
+                      "fill": "$--muted-foreground",
+                      "content": "Pay remaining balance",
+                      "fontFamily": "Inter",
+                      "fontSize": 13
+                    },
+                    {
+                      "id": "ImqAC",
+                      "type": "ref",
+                      "ref": "NFmbg",
+                      "width": "fill_container",
+                      "name": "mNewBtn",
+                      "descendants": {
+                        "zXdcf": {
+                          "content": "Pay balance"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "KshaH",
+                  "name": "financingCard",
+                  "opacity": 0.6,
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "OfWlP",
+                      "name": "mFinHead",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "i2HEV",
+                          "name": "mFinTitle",
+                          "fill": "$--foreground",
+                          "content": "Financing",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "id": "pqSX0",
+                          "type": "ref",
+                          "ref": "8LqoP",
+                          "name": "mFinBadge",
+                          "descendants": {
+                            "BONnr": {
+                              "content": "Coming soon"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "fbDC0",
+                      "name": "mFinDesc",
+                      "fill": "$--muted-foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Flexible payment plans through Wisetack",
+                      "fontFamily": "Inter",
+                      "fontSize": 13
+                    },
+                    {
+                      "id": "8Czp3",
+                      "type": "ref",
+                      "ref": "UXf95",
+                      "width": "fill_container",
+                      "name": "mFinBtn",
+                      "descendants": {
+                        "Kpz3k": {
+                          "content": "Coming soon"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "LcYL1",
+              "name": "paymentHistory",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "k9bK7",
+                  "name": "mHistTitle",
+                  "fill": "$--foreground",
+                  "content": "Payment history",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "SszwZ",
+                  "name": "historyCard",
+                  "width": "fill_container",
+                  "fill": "$--card",
+                  "cornerRadius": "$--radius-m",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Mcqih",
+                      "name": "dataRow",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "padding": 16,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "8N9xr",
+                          "name": "mRowTop",
+                          "width": "fill_container",
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "gfDGw",
+                              "name": "mRowDate",
+                              "fill": "$--muted-foreground",
+                              "content": "Feb 20, 2026",
+                              "fontFamily": "Inter",
+                              "fontSize": 13
+                            },
+                            {
+                              "id": "fnt4A",
+                              "type": "ref",
+                              "ref": "wM5Ez",
+                              "name": "mRowBadge",
+                              "descendants": {
+                                "3KtzY": {
+                                  "content": "Deposit"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "7gJsX",
+                          "name": "mRowBottom",
+                          "width": "fill_container",
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "bUAXC",
+                              "name": "mRowAmt",
+                              "fill": "$--foreground",
+                              "content": "$910.00",
+                              "fontFamily": "Inter",
+                              "fontSize": 15,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "id": "Jx9mt",
+                              "type": "ref",
+                              "ref": "kfrdF",
+                              "name": "mRowStatus",
+                              "descendants": {
+                                "kVIfh": {
+                                  "content": "Succeeded"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "wQdTh",
+      "x": 37,
+      "y": 3196,
+      "name": "[Sandbox]",
+      "width": 2000,
+      "height": "fit_content(400)",
+      "gap": 40,
+      "padding": 40
+    }
+  ],
+  "variables": {
+    "--accent": {
+      "type": "color",
+      "value": "#2563EB"
+    },
+    "--background": {
+      "type": "color",
+      "value": "#F7F9FC"
+    },
+    "--border": {
+      "type": "color",
+      "value": "#E8EDF5"
+    },
+    "--card": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "--color-error": {
+      "type": "color",
+      "value": "#EF4444"
+    },
+    "--color-success": {
+      "type": "color",
+      "value": "#10B981"
+    },
+    "--color-warning": {
+      "type": "color",
+      "value": "#F59E0B"
+    },
+    "--destructive": {
+      "type": "color",
+      "value": "#EF4444"
+    },
+    "--foreground": {
+      "type": "color",
+      "value": "#1E2329"
+    },
+    "--muted-foreground": {
+      "type": "color",
+      "value": "#6B7280"
+    },
+    "--primary": {
+      "type": "color",
+      "value": "#2563EB"
+    },
+    "--primary-foreground": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "--primary-light": {
+      "type": "color",
+      "value": "#EFF6FF"
+    },
+    "--radius-m": {
+      "type": "number",
+      "value": 6
+    },
+    "--radius-pill": {
+      "type": "number",
+      "value": 9999
+    },
+    "--secondary": {
+      "type": "color",
+      "value": "#F2F4F8"
+    },
+    "--success-light": {
+      "type": "color",
+      "value": "#ECFDF5"
+    },
+    "--warning-light": {
+      "type": "color",
+      "value": "#FFFBEB"
+    }
+  }
+}

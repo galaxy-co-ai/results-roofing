@@ -8,10 +8,10 @@ interface PermitDocumentProps {
 
 export function PermitDocument({ document }: PermitDocumentProps) {
   const project = document.projectData || {
-    address: '123 Main Street, Austin, TX 78701',
-    customerName: 'John Smith',
-    contractDate: 'January 22, 2026',
-    permitNumber: 'BP-2026-00847',
+    address: '',
+    customerName: '',
+    contractDate: '',
+    permitNumber: '',
   };
 
   return (

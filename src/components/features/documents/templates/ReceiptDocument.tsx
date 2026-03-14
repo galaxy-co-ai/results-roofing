@@ -8,13 +8,13 @@ interface ReceiptDocumentProps {
 
 export function ReceiptDocument({ document }: ReceiptDocumentProps) {
   const project = document.projectData || {
-    address: '123 Main Street, Austin, TX 78701',
-    customerName: 'John Smith',
-    email: 'john@example.com',
-    packageName: 'Premium Package',
-    totalPrice: 15000,
-    depositAmount: 750,
-    contractDate: 'January 22, 2026',
+    address: '',
+    customerName: '',
+    email: '',
+    packageName: '',
+    totalPrice: 0,
+    depositAmount: 0,
+    contractDate: '',
   };
 
   const formatCurrency = (amount: number) => 

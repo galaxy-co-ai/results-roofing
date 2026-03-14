@@ -1,0 +1,5140 @@
+{
+  "version": "2.8",
+  "children": [
+    {
+      "type": "frame",
+      "id": "6yPKi",
+      "x": 0,
+      "y": 0,
+      "name": "Page 1 — Cover",
+      "width": 850,
+      "height": 1100,
+      "fill": "$bg-white",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "JrZ2U",
+          "name": "Cover Header",
+          "width": "fill_container",
+          "height": 220,
+          "fill": "$bg-dark",
+          "padding": [
+            48,
+            56
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "end",
+          "children": [
+            {
+              "type": "frame",
+              "id": "EEZI8",
+              "name": "Logo Group",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "t9wN0",
+                  "name": "Logo Mark",
+                  "width": 48,
+                  "height": 48,
+                  "fill": "$brand-blue",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "YythE",
+                      "name": "logoR",
+                      "fill": "$text-white",
+                      "content": "RR",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "8F7sv",
+                  "name": "companyName",
+                  "fill": "$text-white",
+                  "content": "Results Roofing",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "ejeR7",
+                  "name": "tagline",
+                  "fill": "$text-muted",
+                  "content": "Instant Roof Replacement Quotes",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "JSkrx",
+              "name": "Header Right",
+              "layout": "vertical",
+              "gap": 2,
+              "alignItems": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "mp66J",
+                  "name": "phone",
+                  "fill": "$text-muted",
+                  "content": "(214) 272-2424",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "liTMK",
+                  "name": "email",
+                  "fill": "$text-muted",
+                  "content": "claims@results-roofing.com",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "vduu4",
+                  "name": "web",
+                  "fill": "$brand-blue",
+                  "content": "resultsroofing.com",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "XULQP",
+          "name": "Cover Body",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": 56,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "rrJiK",
+              "name": "title",
+              "fill": "$text-primary",
+              "content": "Roof Measurement Report",
+              "textAlign": "center",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 36,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "J07Te",
+              "name": "divLine",
+              "width": 80,
+              "height": 3,
+              "fill": "$brand-blue",
+              "cornerRadius": 2
+            },
+            {
+              "type": "frame",
+              "id": "81j9F",
+              "name": "Address Block",
+              "layout": "vertical",
+              "gap": 6,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "3qkYN",
+                  "name": "addrLabel",
+                  "fill": "$text-muted",
+                  "content": "PREPARED FOR",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 1.5
+                },
+                {
+                  "type": "text",
+                  "id": "qHk2q",
+                  "name": "addr",
+                  "fill": "$text-primary",
+                  "content": "1105 Greenfield Avenue",
+                  "textAlign": "center",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 22,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "0pUOn",
+                  "name": "cityState",
+                  "fill": "$text-secondary",
+                  "content": "Yukon, Oklahoma 73099",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "B5VM2",
+              "name": "Satellite Image",
+              "width": 580,
+              "height": 340,
+              "fill": "$bg-soft",
+              "cornerRadius": 8,
+              "stroke": {
+                "thickness": 1,
+                "fill": "$border"
+              },
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "kTbBT",
+                  "name": "imgLabel",
+                  "fill": "$text-muted",
+                  "content": "Satellite Image",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "VIxVI",
+              "name": "Date Block",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "KKTY3",
+                  "name": "dateLabel",
+                  "fill": "$text-muted",
+                  "content": "Report Date",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "vkEbx",
+                  "name": "dateVal",
+                  "fill": "$text-primary",
+                  "content": "March 3, 2026",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "QXU2b",
+          "name": "Cover Footer",
+          "width": "fill_container",
+          "height": 60,
+          "fill": "$bg-soft",
+          "stroke": {
+            "thickness": {
+              "top": 1
+            },
+            "fill": "$border"
+          },
+          "padding": [
+            0,
+            56
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "0EnJn",
+              "name": "footLeft",
+              "fill": "$text-muted",
+              "content": "Powered by GAF QuickMeasure",
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "P4E7O",
+              "name": "footRight",
+              "fill": "$brand-blue",
+              "content": "resultsroofing.com",
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "600"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "9NQg1",
+      "x": 950,
+      "y": 0,
+      "name": "Page 2 — Summary",
+      "width": 850,
+      "height": 1100,
+      "fill": "$bg-white",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "T8mD3",
+          "name": "Page Header",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$bg-dark",
+          "padding": [
+            0,
+            40
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "ujyM8",
+              "name": "hdr2Logo",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "I45GQ",
+                  "name": "hdr2Mark",
+                  "width": 28,
+                  "height": 28,
+                  "fill": "$brand-blue",
+                  "cornerRadius": 5,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "XWzBC",
+                      "name": "hdr2R",
+                      "fill": "$text-white",
+                      "content": "RR",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "2dP2U",
+                  "name": "hdr2Name",
+                  "fill": "$text-white",
+                  "content": "Results Roofing",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "e3PEx",
+              "name": "hdr2Page",
+              "fill": "$text-muted",
+              "content": "Page 1 of 2",
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "nA0h4",
+          "name": "Title Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 4,
+          "padding": [
+            32,
+            40,
+            24,
+            40
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "dCKn2",
+              "name": "pageTitle",
+              "fill": "$text-primary",
+              "content": "Property Summary",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 26,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "Hs9dP",
+              "name": "pageAddr",
+              "fill": "$text-secondary",
+              "content": "1105 Greenfield Avenue, Yukon, OK 73099",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "b9lBq",
+          "name": "Stat Cards",
+          "width": "fill_container",
+          "gap": 16,
+          "padding": [
+            0,
+            40
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "rjBd0",
+              "name": "card1",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "cornerRadius": 8,
+              "stroke": {
+                "thickness": 1,
+                "fill": "$border"
+              },
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "wd63B",
+                  "name": "c1label",
+                  "fill": "$text-muted",
+                  "content": "TOTAL AREA",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "600",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "vneBE",
+                  "name": "c1val",
+                  "fill": "$text-primary",
+                  "content": "2,983",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 32,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "9fO7J",
+                  "name": "c1unit",
+                  "fill": "$text-secondary",
+                  "content": "square feet",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "h47Jp",
+              "name": "card2",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "cornerRadius": 8,
+              "stroke": {
+                "thickness": 1,
+                "fill": "$border"
+              },
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "wqaJd",
+                  "name": "c2label",
+                  "fill": "$text-muted",
+                  "content": "PITCH",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "600",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "OcDrD",
+                  "name": "c2val",
+                  "fill": "$text-primary",
+                  "content": "6/12",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 32,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "W97Lo",
+                  "name": "c2unit",
+                  "fill": "$text-secondary",
+                  "content": "predominant",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "lcC4y",
+              "name": "card3",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "cornerRadius": 8,
+              "stroke": {
+                "thickness": 1,
+                "fill": "$border"
+              },
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "tRkvu",
+                  "name": "c3label",
+                  "fill": "$text-muted",
+                  "content": "FACETS",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "600",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "8A58a",
+                  "name": "c3val",
+                  "fill": "$text-primary",
+                  "content": "5",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 32,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "gzSRC",
+                  "name": "c3unit",
+                  "fill": "$text-secondary",
+                  "content": "roof planes",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "lGCuS",
+              "name": "card4",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "cornerRadius": 8,
+              "stroke": {
+                "thickness": 1,
+                "fill": "$border"
+              },
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "cZ1qU",
+                  "name": "c4label",
+                  "fill": "$text-muted",
+                  "content": "COMPLEXITY",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "600",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "BgHi6",
+                  "name": "c4val",
+                  "fill": "$success",
+                  "content": "Simple",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 32,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "bxAXu",
+                  "name": "c4unit",
+                  "fill": "$text-secondary",
+                  "content": "roof structure",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "WvPAJ",
+          "name": "Divider",
+          "width": "fill_container",
+          "height": 1,
+          "fill": "$border"
+        },
+        {
+          "type": "frame",
+          "id": "8lZva",
+          "name": "Measurements Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "padding": [
+            24,
+            40,
+            0,
+            40
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "N77p8",
+              "name": "measTitle",
+              "fill": "$text-primary",
+              "content": "Structural Measurements",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 18,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "cxrbz",
+              "name": "Meas Grid",
+              "width": "fill_container",
+              "gap": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "cWB5z",
+                  "name": "Edge Lengths",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "oMQS4",
+                      "name": "Left Header",
+                      "width": "fill_container",
+                      "fill": "$bg-dark",
+                      "cornerRadius": [
+                        6,
+                        6,
+                        0,
+                        0
+                      ],
+                      "padding": [
+                        8,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "NMOuS",
+                          "name": "leftHeadText",
+                          "fill": "$text-white",
+                          "content": "EDGE LENGTHS",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700",
+                          "letterSpacing": 1
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "4p1sz",
+                      "name": "row-eaves",
+                      "width": "fill_container",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border"
+                      },
+                      "padding": [
+                        10,
+                        12
+                      ],
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "HYb3Y",
+                          "name": "eL1",
+                          "fill": "$text-secondary",
+                          "content": "Eaves",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "va5Bm",
+                          "name": "eV1",
+                          "fill": "$text-primary",
+                          "content": "188 ft",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "aL6x8",
+                      "name": "row-hips",
+                      "width": "fill_container",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border"
+                      },
+                      "padding": [
+                        10,
+                        12
+                      ],
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "CL57R",
+                          "name": "eL2",
+                          "fill": "$text-secondary",
+                          "content": "Hips",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "bUSAf",
+                          "name": "eV2",
+                          "fill": "$text-primary",
+                          "content": "113 ft",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "hw3hQ",
+                      "name": "row-rakes",
+                      "width": "fill_container",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border"
+                      },
+                      "padding": [
+                        10,
+                        12
+                      ],
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "b7kyS",
+                          "name": "eL3",
+                          "fill": "$text-secondary",
+                          "content": "Rakes",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "nhv6z",
+                          "name": "eV3",
+                          "fill": "$text-primary",
+                          "content": "27 ft",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "T8H7y",
+                      "name": "row-ridges",
+                      "width": "fill_container",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border"
+                      },
+                      "padding": [
+                        10,
+                        12
+                      ],
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "gKQ2L",
+                          "name": "eL4",
+                          "fill": "$text-secondary",
+                          "content": "Ridges",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "ZxLDi",
+                          "name": "eV4",
+                          "fill": "$text-primary",
+                          "content": "31 ft",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "I9fry",
+                      "name": "row-valleys",
+                      "width": "fill_container",
+                      "cornerRadius": [
+                        0,
+                        0,
+                        6,
+                        6
+                      ],
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border"
+                      },
+                      "padding": [
+                        10,
+                        12
+                      ],
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "YgJm5",
+                          "name": "eL5",
+                          "fill": "$text-secondary",
+                          "content": "Valleys",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "AXn14",
+                          "name": "eV5",
+                          "fill": "$text-primary",
+                          "content": "19 ft",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "XP64n",
+                  "name": "Accessories",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "5Nnyj",
+                      "name": "Right Header",
+                      "width": "fill_container",
+                      "fill": "$brand-blue",
+                      "cornerRadius": [
+                        6,
+                        6,
+                        0,
+                        0
+                      ],
+                      "padding": [
+                        8,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "UWBqP",
+                          "name": "rightHeadText",
+                          "fill": "$text-white",
+                          "content": "ACCESSORIES",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700",
+                          "letterSpacing": 1
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "yPUNU",
+                      "name": "row-drip",
+                      "width": "fill_container",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border"
+                      },
+                      "padding": [
+                        10,
+                        12
+                      ],
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "3PW2k",
+                          "name": "aL1",
+                          "fill": "$text-secondary",
+                          "content": "Drip Edge",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "jlhzF",
+                          "name": "aV1",
+                          "fill": "$text-primary",
+                          "content": "215 ft",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "bxkRw",
+                      "name": "row-leak",
+                      "width": "fill_container",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border"
+                      },
+                      "padding": [
+                        10,
+                        12
+                      ],
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "j8Mi8",
+                          "name": "aL2",
+                          "fill": "$text-secondary",
+                          "content": "Leak Barrier",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "F0KNR",
+                          "name": "aV2",
+                          "fill": "$text-primary",
+                          "content": "347 ft",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "D8ys9",
+                      "name": "row-ridge",
+                      "width": "fill_container",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border"
+                      },
+                      "padding": [
+                        10,
+                        12
+                      ],
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "3fS7n",
+                          "name": "aL3",
+                          "fill": "$text-secondary",
+                          "content": "Ridge Cap",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "6FqH6",
+                          "name": "aV3",
+                          "fill": "$text-primary",
+                          "content": "144 ft",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "qZJzk",
+                      "name": "row-starter",
+                      "width": "fill_container",
+                      "cornerRadius": [
+                        0,
+                        0,
+                        6,
+                        6
+                      ],
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border"
+                      },
+                      "padding": [
+                        10,
+                        12
+                      ],
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "AlVrV",
+                          "name": "aL4",
+                          "fill": "$text-secondary",
+                          "content": "Starter Strip",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "pqN4L",
+                          "name": "aV4",
+                          "fill": "$text-primary",
+                          "content": "215 ft",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Obxvk",
+          "name": "Divider2",
+          "width": "fill_container",
+          "height": 1,
+          "fill": "$border"
+        },
+        {
+          "type": "frame",
+          "id": "i6ntZ",
+          "name": "Waste Factor",
+          "width": "fill_container",
+          "gap": 16,
+          "padding": [
+            0,
+            40
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "ny042",
+              "name": "waste-icon",
+              "width": 48,
+              "height": 48,
+              "fill": "$brand-blue-light",
+              "cornerRadius": 24,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "5X8ZR",
+                  "name": "wasteIconTxt",
+                  "fill": "$brand-blue",
+                  "content": "10%",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kaNvU",
+              "name": "waste-text",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "nABm1",
+                  "name": "wasteLine1",
+                  "fill": "$text-primary",
+                  "content": "Recommended Waste Factor: 10%",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "q2ep1",
+                  "name": "wasteLine2",
+                  "fill": "$text-muted",
+                  "content": "Based on a Simple complexity roof with 5 facets. Estimated total with waste: 33 squares.",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "3oWmM",
+          "name": "Divider3",
+          "width": "fill_container",
+          "height": 1,
+          "fill": "$border"
+        },
+        {
+          "type": "frame",
+          "id": "pcp5k",
+          "name": "Roof Diagram",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": [
+            16,
+            40,
+            24,
+            40
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "rQrvS",
+              "name": "diagramTitle",
+              "fill": "$text-primary",
+              "content": "Roof Diagram",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 18,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "XwoPY",
+              "name": "Diagram Placeholder",
+              "width": "fill_container",
+              "height": 220,
+              "fill": "$bg-soft",
+              "cornerRadius": 8,
+              "stroke": {
+                "thickness": 1,
+                "fill": "$border"
+              },
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Bxh2R",
+                  "name": "diagramLabel",
+                  "fill": "$text-muted",
+                  "content": "[ GAF Roof Diagram — auto-inserted from report ]",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "fYmCN",
+      "x": 1900,
+      "y": 0,
+      "name": "Page 3 — Materials",
+      "width": 850,
+      "height": 1100,
+      "fill": "$bg-white",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "9iOvw",
+          "name": "Page Header",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$bg-dark",
+          "padding": [
+            0,
+            40
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "o7tLm",
+              "name": "hdr3Logo",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "0zzi4",
+                  "name": "hdr3Mark",
+                  "width": 28,
+                  "height": 28,
+                  "fill": "$brand-blue",
+                  "cornerRadius": 5,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ePo7w",
+                      "name": "hdr3rr",
+                      "fill": "$text-white",
+                      "content": "RR",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "E4HOx",
+                  "name": "hdr3name",
+                  "fill": "$text-white",
+                  "content": "Results Roofing",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "j6wRX",
+              "name": "hdr3page",
+              "fill": "$text-muted",
+              "content": "Page 2 of 2",
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Blkv0",
+          "name": "Title Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 4,
+          "padding": [
+            32,
+            40,
+            24,
+            40
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "DRTdG",
+              "name": "matTitleText",
+              "fill": "$text-primary",
+              "content": "Material Order",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 26,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "KtzJl",
+              "name": "matTitleSub",
+              "fill": "$text-secondary",
+              "content": "Detailed material list with brands and specifications",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "8JLS0",
+          "name": "Materials Table",
+          "width": 850,
+          "layout": "vertical",
+          "padding": [
+            0,
+            40
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "qRVxk",
+              "name": "th-row",
+              "width": "fill_container",
+              "fill": "$bg-dark",
+              "cornerRadius": [
+                6,
+                6,
+                0,
+                0
+              ],
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "j0IJK",
+                  "name": "th1",
+                  "fill": "$text-white",
+                  "textGrowth": "fixed-width",
+                  "width": 140,
+                  "content": "MATERIAL",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "rfUun",
+                  "name": "th2",
+                  "fill": "$text-white",
+                  "textGrowth": "fixed-width",
+                  "width": 210,
+                  "content": "BRAND",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "QJXsm",
+                  "name": "th3",
+                  "fill": "$text-white",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "COLOR",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "kyloM",
+                  "name": "th4",
+                  "fill": "$text-white",
+                  "textGrowth": "fixed-width",
+                  "width": 50,
+                  "content": "QTY",
+                  "textAlign": "right",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "JpIqp",
+                  "name": "th5",
+                  "fill": "$text-white",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "UNIT",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "3yOSi",
+              "name": "row-shingles",
+              "width": "fill_container",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "LXm8b",
+                  "name": "r1a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 140,
+                  "content": "Shingles",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "OHmie",
+                  "name": "r1b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 210,
+                  "content": "GAF Timberline HDZ",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "sfZVq",
+                  "name": "r1c",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "Charcoal",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "kO9A1",
+                  "name": "r1d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 50,
+                  "content": "101",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "9LLpD",
+                  "name": "r1e",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "bundles",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "dxRSf",
+              "name": "row-underlayment",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "UNmZS",
+                  "name": "r2a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 140,
+                  "content": "Underlayment",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "IxzVY",
+                  "name": "r2b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 210,
+                  "content": "GAF VersaShield",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "nKkEm",
+                  "name": "r2c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "—",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "RgVfk",
+                  "name": "r2d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 50,
+                  "content": "10",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "WCHjv",
+                  "name": "r2e",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "rolls",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "t0B2x",
+              "name": "row-leak-barrier",
+              "width": "fill_container",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "mAMRa",
+                  "name": "r3a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 140,
+                  "content": "Leak Barrier",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "RBKIL",
+                  "name": "r3b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 210,
+                  "content": "GAF StormGuard",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "D9Dgv",
+                  "name": "r3c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "—",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "2zhJt",
+                  "name": "r3d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 50,
+                  "content": "6",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "V7BXm",
+                  "name": "r3e",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "rolls",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rmZQx",
+              "name": "row-drip-edge",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "gJ76R",
+                  "name": "r4a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 140,
+                  "content": "Drip Edge",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "Hu4zq",
+                  "name": "r4b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 210,
+                  "content": "GAF",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "IkjNf",
+                  "name": "r4c",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "Charcoal",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "4e3fX",
+                  "name": "r4d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 50,
+                  "content": "54",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "CBnBA",
+                  "name": "r4e",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "pieces",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Zlr4K",
+              "name": "row-starter",
+              "width": "fill_container",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "BqfO2",
+                  "name": "r5a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 140,
+                  "content": "Starter Strip",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "p2tKj",
+                  "name": "r5b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 210,
+                  "content": "GAF WeatherBlocker",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "1uiua",
+                  "name": "r5c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "—",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "r0CvA",
+                  "name": "r5d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 50,
+                  "content": "3",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "NC41Q",
+                  "name": "r5e",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "bundles",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "9Wbns",
+              "name": "row-ridge-cap",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "W37OI",
+                  "name": "r6a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 140,
+                  "content": "Ridge Cap",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "fTGnP",
+                  "name": "r6b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 210,
+                  "content": "GAF Seal-A-Ridge",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "XRS6q",
+                  "name": "r6c",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "Charcoal",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "ODuGA",
+                  "name": "r6d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 50,
+                  "content": "7",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "bRhy1",
+                  "name": "r6e",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "bundles",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "LpMvO",
+              "name": "row-vents",
+              "width": "fill_container",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "LwRe6",
+                  "name": "r7a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 140,
+                  "content": "Attic Ventilation",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "Bbe1M",
+                  "name": "r7b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 210,
+                  "content": "Master Flow",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "jEfDK",
+                  "name": "r7c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "—",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "7U5pf",
+                  "name": "r7d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 50,
+                  "content": "4",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "7fNpu",
+                  "name": "r7e",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "units",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "GpX6S",
+              "name": "row-nails",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "cornerRadius": [
+                0,
+                0,
+                6,
+                6
+              ],
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "gCoA8",
+                  "name": "r8a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 140,
+                  "content": "Roofing Nails",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "19hWb",
+                  "name": "r8b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 210,
+                  "content": "Grip-Rite",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "K4ocT",
+                  "name": "r8c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "—",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "gac9f",
+                  "name": "r8d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 50,
+                  "content": "4",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "iGUKh",
+                  "name": "r8e",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "boxes",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "NQJ0Z",
+          "name": "spacer",
+          "width": "fill_container",
+          "height": 24
+        },
+        {
+          "type": "frame",
+          "id": "23D47",
+          "name": "CTA Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "padding": [
+            0,
+            40
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "y17Hf",
+              "name": "CTA Card",
+              "width": "fill_container",
+              "fill": "$brand-blue-light",
+              "cornerRadius": 8,
+              "stroke": {
+                "thickness": 1,
+                "fill": "$brand-blue"
+              },
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 32,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "PHAwv",
+                  "name": "ctaTitle",
+                  "fill": "$text-primary",
+                  "content": "Ready to Get Started?",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 20,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "4S1hW",
+                  "name": "ctaBody",
+                  "fill": "$text-secondary",
+                  "content": "Your personalized quote includes premium materials, expert installation, and a manufacturer-backed warranty. \nChoose a package that fits your budget and schedule your installation today.",
+                  "lineHeight": 1.6,
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "q88gU",
+                  "name": "CTA Buttons",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "YYkjh",
+                      "name": "btn-primary",
+                      "fill": "$brand-blue",
+                      "cornerRadius": 6,
+                      "padding": [
+                        12,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "FB2KW",
+                          "name": "ctaBtn1Text",
+                          "fill": "$text-white",
+                          "content": "View Your Quote",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "5ChPe",
+                      "name": "btn-secondary",
+                      "fill": "$bg-white",
+                      "cornerRadius": 6,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border"
+                      },
+                      "padding": [
+                        12,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "yuv5F",
+                          "name": "ctaBtn2Text",
+                          "fill": "$text-primary",
+                          "content": "Call (214) 272-2424",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "bWcQl",
+          "name": "grow-spacer",
+          "width": "fill_container",
+          "height": "fit_content(0)"
+        },
+        {
+          "type": "frame",
+          "id": "l4Ece",
+          "name": "Footer",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": [
+            16,
+            40,
+            32,
+            40
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "qqhgh",
+              "name": "disclaimer",
+              "fill": "$text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "This report is generated from satellite imagery and should be used for estimation purposes only. Final material quantities may vary based on on-site inspection. Measurements provided by GAF QuickMeasure.",
+              "lineHeight": 1.5,
+              "fontFamily": "Inter",
+              "fontSize": 9,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "fxHjr",
+              "name": "footer-divider",
+              "width": "fill_container",
+              "height": 1,
+              "fill": "$border"
+            },
+            {
+              "type": "frame",
+              "id": "eZkgS",
+              "name": "footer-bar",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "nBSwb",
+                  "name": "footerLeft",
+                  "fill": "$brand-blue",
+                  "content": "resultsroofing.com",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "LZr1w",
+                  "name": "footerRight",
+                  "fill": "$text-muted",
+                  "content": "Powered by GAF QuickMeasure",
+                  "fontFamily": "Inter",
+                  "fontSize": 9,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "qbxvV",
+      "x": 0,
+      "y": 1300,
+      "name": "Contract — Page 1",
+      "width": 850,
+      "height": 1100,
+      "fill": "$bg-white",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "xwWF3",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$bg-dark",
+          "padding": [
+            0,
+            40
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "2zdVp",
+              "name": "Logo",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "W3juN",
+                  "name": "Mark",
+                  "width": 28,
+                  "height": 28,
+                  "fill": "$brand-blue",
+                  "cornerRadius": 5,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "URyid",
+                      "name": "c1rr",
+                      "fill": "$text-white",
+                      "content": "RR",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "JgYpj",
+                  "name": "c1name",
+                  "fill": "$text-white",
+                  "content": "Results Roofing",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "KNn54",
+              "name": "Contact",
+              "layout": "vertical",
+              "gap": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "vVRW4",
+                  "name": "c1phone",
+                  "fill": "$text-muted",
+                  "content": "(214) 272-2424",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "GLDxA",
+                  "name": "c1email",
+                  "fill": "$text-muted",
+                  "content": "claims@results-roofing.com",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "aI1VO",
+          "name": "Title Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 4,
+          "padding": [
+            32,
+            40,
+            16,
+            40
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "kkrCi",
+              "name": "cTitleText",
+              "fill": "$text-primary",
+              "content": "Roof Replacement Agreement",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 26,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "2vBo1",
+              "name": "cTitleSub",
+              "fill": "$text-secondary",
+              "content": "Contract No. RR-2026-00142",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "h15bS",
+          "name": "Divider",
+          "width": "fill_container",
+          "height": 1,
+          "fill": "$border"
+        },
+        {
+          "type": "frame",
+          "id": "pCtsc",
+          "name": "Parties",
+          "width": "fill_container",
+          "gap": 24,
+          "padding": [
+            20,
+            40
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "n3RKv",
+              "name": "Homeowner",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "xWikk",
+                  "name": "cOwnerLabel",
+                  "fill": "$text-muted",
+                  "content": "HOMEOWNER",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "BLG16",
+                  "name": "cOwnerName",
+                  "fill": "$text-primary",
+                  "content": "John Smith",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "EoEdh",
+                  "name": "cOwnerAddr",
+                  "fill": "$text-secondary",
+                  "content": "1105 Greenfield Avenue\nYukon, OK 73099",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "3sfpa",
+              "name": "Contractor",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "TcYkJ",
+                  "name": "cContLabel",
+                  "fill": "$text-muted",
+                  "content": "CONTRACTOR",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "dV88P",
+                  "name": "cContName",
+                  "fill": "$text-primary",
+                  "content": "Results Roofing LLC",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "rtU1S",
+                  "name": "cContAddr",
+                  "fill": "$text-secondary",
+                  "content": "Dallas, TX\n(214) 272-2424",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "5s0iE",
+          "name": "Divider2",
+          "width": "fill_container",
+          "height": 1,
+          "fill": "$border"
+        },
+        {
+          "type": "frame",
+          "id": "eFQwm",
+          "name": "Scope Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "padding": [
+            20,
+            40
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "LmEuc",
+              "name": "scopeTitle",
+              "fill": "$text-primary",
+              "content": "Scope of Work",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 18,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "WOCWX",
+              "name": "Package Card",
+              "width": "fill_container",
+              "fill": "$brand-blue-light",
+              "cornerRadius": 8,
+              "stroke": {
+                "thickness": 1,
+                "fill": "$brand-blue"
+              },
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "9miQY",
+                  "name": "Package Header",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "2WtX2",
+                      "name": "pkgName",
+                      "fill": "$brand-blue",
+                      "content": "Best Package — Premium",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 18,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Z88My",
+                      "name": "pkgPrice",
+                      "fill": "$text-primary",
+                      "content": "$14,850.00",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "URA7G",
+                  "name": "Package Items",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ginhj",
+                      "name": "pkgI1",
+                      "fill": "$text-secondary",
+                      "content": "• GAF Timberline HDZ Lifetime Shingles",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ofGYi",
+                      "name": "pkgI2",
+                      "fill": "$text-secondary",
+                      "content": "• Full tear-off and disposal of existing roof",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "e48hD",
+                      "name": "pkgI3",
+                      "fill": "$text-secondary",
+                      "content": "• Synthetic underlayment + ice & water shield",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "P27T4",
+                      "name": "pkgI4",
+                      "fill": "$text-secondary",
+                      "content": "• New drip edge, ridge cap, and starter strip",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "mkIax",
+                      "name": "pkgI5",
+                      "fill": "$text-secondary",
+                      "content": "• GAF System Plus Limited Warranty",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "33hih",
+                      "name": "pkgI6",
+                      "fill": "$text-secondary",
+                      "content": "• Attic ventilation inspection and upgrade",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "LvOED",
+          "name": "Payment Terms",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": [
+            16,
+            40
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "0sFMq",
+              "name": "payTitle",
+              "fill": "$text-primary",
+              "content": "Payment Terms",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 16,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "ws9y2",
+              "name": "Pay Grid",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "9Ehay",
+                  "name": "Deposit",
+                  "width": "fill_container",
+                  "fill": "$bg-soft",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$border"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "d7hH1",
+                      "name": "payDepLabel",
+                      "fill": "$text-muted",
+                      "content": "DEPOSIT DUE AT SIGNING",
+                      "fontFamily": "Inter",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                      "letterSpacing": 1
+                    },
+                    {
+                      "type": "text",
+                      "id": "CaAzb",
+                      "name": "payDepAmt",
+                      "fill": "$brand-blue",
+                      "content": "$1,500.00",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "RlcQy",
+                  "name": "Balance",
+                  "width": "fill_container",
+                  "fill": "$bg-soft",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$border"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "2hMkf",
+                      "name": "payBalLabel",
+                      "fill": "$text-muted",
+                      "content": "BALANCE DUE ON COMPLETION",
+                      "fontFamily": "Inter",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                      "letterSpacing": 1
+                    },
+                    {
+                      "type": "text",
+                      "id": "fpofY",
+                      "name": "payBalAmt",
+                      "fill": "$text-primary",
+                      "content": "$13,350.00",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "sBNKc",
+          "name": "grow",
+          "width": "fill_container",
+          "height": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "lUkCo",
+          "name": "Footer",
+          "width": "fill_container",
+          "padding": [
+            16,
+            40,
+            32,
+            40
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "FruWt",
+              "name": "cFootLeft",
+              "fill": "$brand-blue",
+              "content": "resultsroofing.com",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 11,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "gJfLM",
+              "name": "cFootRight",
+              "fill": "$text-muted",
+              "content": "Page 1 of 2",
+              "fontFamily": "Inter",
+              "fontSize": 10,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "Klcau",
+      "x": 950,
+      "y": 1300,
+      "name": "Contract — Page 2 (Signature)",
+      "width": 850,
+      "height": 1100,
+      "fill": "$bg-white",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "cvYho",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$bg-dark",
+          "padding": [
+            0,
+            40
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "ZK1x4",
+              "name": "Logo",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "pd4f8",
+                  "name": "Mark",
+                  "width": 28,
+                  "height": 28,
+                  "fill": "$brand-blue",
+                  "cornerRadius": 5,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "yNvwV",
+                      "name": "c2rr",
+                      "fill": "$text-white",
+                      "content": "RR",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "x0poY",
+                  "name": "c2name",
+                  "fill": "$text-white",
+                  "content": "Results Roofing",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "25RVe",
+              "name": "c2page",
+              "fill": "$text-muted",
+              "content": "Page 2 of 2",
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "qNkKL",
+          "name": "Terms Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "padding": [
+            32,
+            40,
+            16,
+            40
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "QG1Ux",
+              "name": "termsTitle",
+              "fill": "$text-primary",
+              "content": "Terms & Conditions",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 22,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "tZwWb",
+              "name": "term1",
+              "fill": "$text-secondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "1. WORK AUTHORIZATION — Homeowner authorizes Results Roofing LLC to perform the roof replacement work described in the Scope of Work on the preceding page.",
+              "lineHeight": 1.6,
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "aTBMm",
+              "name": "term2",
+              "fill": "$text-secondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "2. MATERIALS — All materials will be as specified in the selected package. Equivalent substitutions may be made with homeowner approval if specific products are unavailable.",
+              "lineHeight": 1.6,
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "m5NZy",
+              "name": "term3",
+              "fill": "$text-secondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "3. WARRANTY — Work is covered by the manufacturer warranty associated with the selected package and a 5-year workmanship warranty from Results Roofing LLC.",
+              "lineHeight": 1.6,
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "5Iv57",
+              "name": "term4",
+              "fill": "$text-secondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "4. PAYMENT — Deposit is due at signing. Remaining balance is due upon completion of work. Payments are processed securely via Stripe.",
+              "lineHeight": 1.6,
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "9PI8R",
+              "name": "term5",
+              "fill": "$text-secondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "5. CANCELLATION — Homeowner may cancel this agreement within 3 business days of signing for a full refund of the deposit.",
+              "lineHeight": 1.6,
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "0hqc9",
+              "name": "term6",
+              "fill": "$text-secondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "6. SCHEDULING — Installation will be scheduled within 2-4 weeks of deposit receipt, weather permitting. Results Roofing will coordinate the installation date with the homeowner.",
+              "lineHeight": 1.6,
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "XbKPS",
+          "name": "SigDivider",
+          "width": "fill_container",
+          "height": 2,
+          "fill": "$brand-blue"
+        },
+        {
+          "type": "frame",
+          "id": "csAs9",
+          "name": "Signature Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            32,
+            40
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "0muQH",
+              "name": "sigTitle",
+              "fill": "$text-primary",
+              "content": "Authorization & Signature",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 18,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "Bm8el",
+              "name": "sigDesc",
+              "fill": "$text-secondary",
+              "content": "By signing below, I acknowledge that I have read and agree to the terms and conditions above, and I authorize Results Roofing LLC\n to perform the work described in this agreement.",
+              "lineHeight": 1.6,
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "EOC2k",
+              "name": "Sig Grid",
+              "width": "fill_container",
+              "gap": 32,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kBLqy",
+                  "name": "Sig Left",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Y2O9c",
+                      "name": "sigNameLabel",
+                      "fill": "$text-muted",
+                      "content": "HOMEOWNER NAME",
+                      "fontFamily": "Inter",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                      "letterSpacing": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "HG5ao",
+                      "name": "Name Input",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "$bg-soft",
+                      "cornerRadius": 6,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border"
+                      },
+                      "padding": [
+                        0,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "UfOY3",
+                          "name": "sigNameVal",
+                          "fill": "$text-primary",
+                          "content": "John Smith",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "fs9hf",
+                  "name": "Sig Right",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Gx5Qd",
+                      "name": "sigSigLabel",
+                      "fill": "$text-muted",
+                      "content": "SIGNATURE (TYPE FULL NAME)",
+                      "fontFamily": "Inter",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                      "letterSpacing": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "PqctG",
+                      "name": "Sig Input",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "$bg-soft",
+                      "cornerRadius": 6,
+                      "stroke": {
+                        "thickness": 2,
+                        "fill": "$brand-blue"
+                      },
+                      "padding": [
+                        0,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "k9K6Q",
+                          "name": "sigSigVal",
+                          "fill": "$brand-blue",
+                          "content": "John Smith",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "KTUnE",
+              "name": "Date Row",
+              "width": "fill_container",
+              "gap": 32,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "nJfv9",
+                  "name": "Date Left",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "sIbB3",
+                      "name": "sigDateLabel",
+                      "fill": "$text-muted",
+                      "content": "DATE SIGNED",
+                      "fontFamily": "Inter",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                      "letterSpacing": 1
+                    },
+                    {
+                      "type": "text",
+                      "id": "lvtl5",
+                      "name": "sigDateVal",
+                      "fill": "$text-primary",
+                      "content": "March 3, 2026",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "FlcJi",
+                  "name": "IP Right",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "x6p16",
+                      "name": "sigIpLabel",
+                      "fill": "$text-muted",
+                      "content": "IP ADDRESS",
+                      "fontFamily": "Inter",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                      "letterSpacing": 1
+                    },
+                    {
+                      "type": "text",
+                      "id": "aECPP",
+                      "name": "sigIpVal",
+                      "fill": "$text-primary",
+                      "content": "192.168.1.xxx",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "QlwG1",
+          "name": "grow",
+          "width": "fill_container",
+          "height": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "cDtz0",
+          "name": "Footer",
+          "width": "fill_container",
+          "padding": [
+            16,
+            40,
+            32,
+            40
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "dkYou",
+              "name": "c2FootL",
+              "fill": "$brand-blue",
+              "content": "resultsroofing.com",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 11,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "Wsafi",
+              "name": "c2FootR",
+              "fill": "$text-muted",
+              "content": "Page 2 of 2",
+              "fontFamily": "Inter",
+              "fontSize": 10,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "Jppmu",
+      "x": 0,
+      "y": 2600,
+      "name": "Receipt — Payment Confirmation",
+      "width": 850,
+      "height": 1100,
+      "fill": "$bg-white",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "TXJ0P",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$bg-dark",
+          "padding": [
+            0,
+            40
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "mqU8o",
+              "name": "Logo",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "CDeB3",
+                  "name": "Mark",
+                  "width": 28,
+                  "height": 28,
+                  "fill": "$brand-blue",
+                  "cornerRadius": 5,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "h9ifq",
+                      "name": "rcptRR",
+                      "fill": "$text-white",
+                      "content": "RR",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "6q10W",
+                  "name": "rcptName",
+                  "fill": "$text-white",
+                  "content": "Results Roofing",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "zHeDJ",
+              "name": "Contact",
+              "layout": "vertical",
+              "gap": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "PYuvZ",
+                  "name": "rcptPhone",
+                  "fill": "$text-muted",
+                  "content": "(214) 272-2424",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "7qgsj",
+                  "name": "rcptEmail",
+                  "fill": "$text-muted",
+                  "content": "claims@results-roofing.com",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "iyri0",
+          "name": "Title Row",
+          "width": "fill_container",
+          "padding": [
+            32,
+            40,
+            16,
+            40
+          ],
+          "justifyContent": "space_between",
+          "children": [
+            {
+              "type": "frame",
+              "id": "aoWdF",
+              "name": "Left",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "xDRyh",
+                  "name": "rcptTitleText",
+                  "fill": "$text-primary",
+                  "content": "Payment Receipt",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 26,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "uscsJ",
+                  "name": "rcptTitleSub",
+                  "fill": "$text-secondary",
+                  "content": "Transaction confirmed",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "BoFyD",
+              "name": "Paid Badge",
+              "fill": "#ECFDF5",
+              "cornerRadius": 6,
+              "stroke": {
+                "thickness": 1,
+                "fill": "$success"
+              },
+              "padding": [
+                8,
+                20
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "VMVze",
+                  "name": "rcptBadgeText",
+                  "fill": "$success",
+                  "content": "PAID",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "700",
+                  "letterSpacing": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "lKmnQ",
+          "name": "Divider",
+          "width": "fill_container",
+          "height": 1,
+          "fill": "$border"
+        },
+        {
+          "type": "frame",
+          "id": "xterJ",
+          "name": "Details Grid",
+          "width": "fill_container",
+          "gap": 24,
+          "padding": [
+            20,
+            40
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "FBBYx",
+              "name": "Col1",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ioCxg",
+                  "name": "rcptDtLabel",
+                  "fill": "$text-muted",
+                  "content": "PAYMENT DATE",
+                  "fontFamily": "Inter",
+                  "fontSize": 9,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "xXIle",
+                  "name": "rcptDtVal",
+                  "fill": "$text-primary",
+                  "content": "March 3, 2026 at 2:14 PM",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "xiYh3",
+                  "name": "rcptMthLabel",
+                  "fill": "$text-muted",
+                  "content": "PAYMENT METHOD",
+                  "fontFamily": "Inter",
+                  "fontSize": 9,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "sDRTQ",
+                  "name": "rcptMthVal",
+                  "fill": "$text-primary",
+                  "content": "Visa ending in 4242",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "2vxoM",
+              "name": "Col2",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "QkXYq",
+                  "name": "rcptRefLabel",
+                  "fill": "$text-muted",
+                  "content": "REFERENCE NUMBER",
+                  "fontFamily": "Inter",
+                  "fontSize": 9,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "Yl7TW",
+                  "name": "rcptRefVal",
+                  "fill": "$text-primary",
+                  "content": "pi_3RG4kL2eZvKYlo2C0abc1234",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "MXizD",
+                  "name": "rcptCustLabel",
+                  "fill": "$text-muted",
+                  "content": "CUSTOMER",
+                  "fontFamily": "Inter",
+                  "fontSize": 9,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "HbpvL",
+                  "name": "rcptCustVal",
+                  "fill": "$text-primary",
+                  "content": "John Smith\n1105 Greenfield Ave, Yukon, OK 73099",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "gWv52",
+          "name": "Divider2",
+          "width": "fill_container",
+          "height": 1,
+          "fill": "$border"
+        },
+        {
+          "type": "frame",
+          "id": "npA0T",
+          "name": "Line Items",
+          "width": "fill_container",
+          "layout": "vertical",
+          "padding": [
+            20,
+            40
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "Zkety",
+              "name": "TH",
+              "width": "fill_container",
+              "fill": "$bg-dark",
+              "cornerRadius": [
+                6,
+                6,
+                0,
+                0
+              ],
+              "padding": [
+                10,
+                16
+              ],
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "U6ceP",
+                  "name": "rcptTH1",
+                  "fill": "$text-white",
+                  "content": "DESCRIPTION",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "FqCks",
+                  "name": "rcptTH2",
+                  "fill": "$text-white",
+                  "content": "AMOUNT",
+                  "textAlign": "right",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Qk80m",
+              "name": "row1",
+              "width": "fill_container",
+              "stroke": {
+                "thickness": 1,
+                "fill": "$border"
+              },
+              "padding": [
+                14,
+                16
+              ],
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "M9yMY",
+                  "name": "rcptR1a",
+                  "fill": "$text-primary",
+                  "content": "Deposit — Best Package (Premium)",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "6B7mz",
+                  "name": "rcptR1b",
+                  "fill": "$text-primary",
+                  "content": "$1,500.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "N7TaE",
+              "name": "total",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "cornerRadius": [
+                0,
+                0,
+                6,
+                6
+              ],
+              "stroke": {
+                "thickness": 1,
+                "fill": "$border"
+              },
+              "padding": [
+                14,
+                16
+              ],
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Vz3BO",
+                  "name": "rcptTotalLabel",
+                  "fill": "$text-primary",
+                  "content": "Total Paid",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "2YAqr",
+                  "name": "rcptTotalVal",
+                  "fill": "$brand-blue",
+                  "textGrowth": "fixed-width-height",
+                  "width": 107,
+                  "height": 30,
+                  "content": "$1,500.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 18,
+                  "fontWeight": "700"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "DUzG3",
+          "name": "Remaining",
+          "width": "fill_container",
+          "padding": [
+            12,
+            40
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "vtgtk",
+              "name": "Rem Card",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "cornerRadius": 6,
+              "stroke": {
+                "thickness": 1,
+                "fill": "$border"
+              },
+              "padding": 20,
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "1aEEn",
+                  "name": "rcptRemLabel",
+                  "fill": "$text-secondary",
+                  "content": "Remaining balance due on completion:",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "nxHeK",
+                  "name": "rcptRemVal",
+                  "fill": "$text-primary",
+                  "content": "$13,350.00",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 18,
+                  "fontWeight": "700"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ApAD1",
+          "name": "grow",
+          "width": "fill_container",
+          "height": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "6Q5U7",
+          "name": "Footer",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": [
+            16,
+            40,
+            32,
+            40
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "gqHcy",
+              "name": "rcptDisclaimer",
+              "fill": "$text-muted",
+              "content": "This receipt confirms your payment was processed securely via Stripe. For questions about your payment, contact us at claims@results-roofing.com or (214) 272-2424.",
+              "lineHeight": 1.5,
+              "fontFamily": "Inter",
+              "fontSize": 10,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "xP0tO",
+              "name": "divider",
+              "width": "fill_container",
+              "height": 1,
+              "fill": "$border"
+            },
+            {
+              "type": "frame",
+              "id": "3I9pK",
+              "name": "bar",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "8jzJ3",
+                  "name": "rcptFootL",
+                  "fill": "$brand-blue",
+                  "content": "resultsroofing.com",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "ptxoT",
+                  "name": "rcptFootR",
+                  "fill": "$text-muted",
+                  "content": "Payments secured by Stripe",
+                  "fontFamily": "Inter",
+                  "fontSize": 9,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "twMUo",
+      "x": 950,
+      "y": 2600,
+      "name": "Quote Summary",
+      "width": 850,
+      "height": 1100,
+      "fill": "$bg-white",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "qCuAO",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$bg-dark",
+          "padding": [
+            0,
+            40
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "iDeO3",
+              "name": "Logo",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "9Q4fK",
+                  "name": "Mark",
+                  "width": 28,
+                  "height": 28,
+                  "fill": "$brand-blue",
+                  "cornerRadius": 5,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "euEhW",
+                      "name": "qsRR",
+                      "fill": "$text-white",
+                      "content": "RR",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "rcZuf",
+                  "name": "qsNameT",
+                  "fill": "$text-white",
+                  "content": "Results Roofing",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "EWFK1",
+              "name": "Contact",
+              "layout": "vertical",
+              "gap": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "CdToD",
+                  "name": "qsPhone",
+                  "fill": "$text-muted",
+                  "content": "(214) 272-2424",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "7npgJ",
+                  "name": "qsEmail",
+                  "fill": "$text-muted",
+                  "content": "claims@results-roofing.com",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "XLAFA",
+          "name": "Title Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 4,
+          "padding": [
+            32,
+            40,
+            16,
+            40
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "ypJZR",
+              "name": "qsTitleText",
+              "fill": "$text-primary",
+              "content": "Your Roof Replacement Quote",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 26,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "r8kgv",
+              "name": "qsTitleSub",
+              "fill": "$text-secondary",
+              "content": "Prepared for John Smith — 1105 Greenfield Avenue, Yukon, OK 73099",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "WPjck",
+          "name": "Divider",
+          "width": "fill_container",
+          "height": 1,
+          "fill": "$border"
+        },
+        {
+          "type": "frame",
+          "id": "uZvQl",
+          "name": "Estimate Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "padding": [
+            20,
+            40
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "8pdzd",
+              "name": "estTitle",
+              "fill": "$text-primary",
+              "content": "Itemized Estimate",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 18,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "Sjq7J",
+              "name": "spacer1",
+              "width": "fill_container",
+              "height": 12
+            },
+            {
+              "type": "frame",
+              "id": "KDbKX",
+              "name": "th-row",
+              "width": "fill_container",
+              "fill": "$bg-dark",
+              "cornerRadius": [
+                6,
+                6,
+                0,
+                0
+              ],
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "QJHjY",
+                  "name": "th1",
+                  "fill": "$text-white",
+                  "textGrowth": "fixed-width",
+                  "width": 380,
+                  "content": "ITEM",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "qzwWC",
+                  "name": "th2",
+                  "fill": "$text-white",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "QTY",
+                  "textAlign": "right",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "GtLGq",
+                  "name": "th3",
+                  "fill": "$text-white",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "UNIT",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "c0v35",
+                  "name": "th4",
+                  "fill": "$text-white",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "AMOUNT",
+                  "textAlign": "right",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "3q88p",
+              "name": "cat-materials",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "padding": [
+                8,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "fgocK",
+                  "name": "catMatTxt",
+                  "fill": "$text-secondary",
+                  "content": "MATERIALS",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "I0xPH",
+              "name": "row-shingles",
+              "width": "fill_container",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "FRUF9",
+                  "name": "r1a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 380,
+                  "content": "GAF Timberline HDZ Shingles",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "Xl07L",
+                  "name": "r1b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "101",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "NSQTo",
+                  "name": "r1c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "bundles",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "REoWO",
+                  "name": "r1d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$4,545.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "IqBa1",
+              "name": "row-underlayment",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "q7G1e",
+                  "name": "r2a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 380,
+                  "content": "Synthetic Underlayment (VersaShield)",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "Zg482",
+                  "name": "r2b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "10",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "zh89w",
+                  "name": "r2c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "rolls",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "3v4lj",
+                  "name": "r2d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$450.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Sfy4J",
+              "name": "row-starter",
+              "width": "fill_container",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "P3nuO",
+                  "name": "r3a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 380,
+                  "content": "WeatherBlocker Starter Strip",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "jHQdg",
+                  "name": "r3b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "3",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "lNrt2",
+                  "name": "r3c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "bundles",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "og4sv",
+                  "name": "r3d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$144.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "WuuzN",
+              "name": "row-leak-barrier",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "g0LBr",
+                  "name": "r4a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 380,
+                  "content": "StormGuard Leak Barrier",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "UXAgx",
+                  "name": "r4b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "6",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "Q2zdt",
+                  "name": "r4c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "rolls",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "ofTjJ",
+                  "name": "r4d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$570.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "pbV1v",
+              "name": "row-ridge-cap",
+              "width": "fill_container",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uLJ42",
+                  "name": "r5a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 380,
+                  "content": "Seal-A-Ridge Ridge Cap",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "xj4BO",
+                  "name": "r5b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "7",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "8HMrQ",
+                  "name": "r5c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "bundles",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "kgaE5",
+                  "name": "r5d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$406.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "0AZ89",
+              "name": "row-drip-edge",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "1Ez5L",
+                  "name": "r6a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 380,
+                  "content": "Drip Edge",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "sKy7a",
+                  "name": "r6b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "54",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "vZ7qm",
+                  "name": "r6c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "pieces",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "zH4IH",
+                  "name": "r6d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$378.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "h2KEL",
+              "name": "row-nails",
+              "width": "fill_container",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "qncT2",
+                  "name": "r7a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 380,
+                  "content": "Roofing Nails (Cap + Coil)",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "fHHh3",
+                  "name": "r7b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "4",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "LUL81",
+                  "name": "r7c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "boxes",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "CxrUr",
+                  "name": "r7d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$88.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "gycZb",
+              "name": "row-vents",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "CiFOm",
+                  "name": "r8a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 380,
+                  "content": "Attic Ventilation",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "Z498I",
+                  "name": "r8b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "4",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "oQ046",
+                  "name": "r8c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "units",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "SvHUD",
+                  "name": "r8d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$260.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "YU6fk",
+              "name": "cat-labor",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "padding": [
+                8,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "CvLv2",
+                  "name": "catLabTxt",
+                  "fill": "$text-secondary",
+                  "content": "LABOR",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "g6KjY",
+              "name": "row-tearoff",
+              "width": "fill_container",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "P4VV6",
+                  "name": "r9a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 380,
+                  "content": "Tear-off & Disposal",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "11koo",
+                  "name": "r9b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "1",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "cMWnd",
+                  "name": "r9c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "job",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "tu3YL",
+                  "name": "r9d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$1,800.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "v4KHA",
+              "name": "row-install",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "S6uRZ",
+                  "name": "r10a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 380,
+                  "content": "Professional Installation",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "eK0nL",
+                  "name": "r10b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "1",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "oGt1L",
+                  "name": "r10c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "job",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "sQBiQ",
+                  "name": "r10d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$3,900.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "lHVFh",
+              "name": "row-cleanup",
+              "width": "fill_container",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Exot2",
+                  "name": "r11a",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 380,
+                  "content": "Cleanup & Haul-away",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "BEk97",
+                  "name": "r11b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "1",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "FUTjK",
+                  "name": "r11c",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "job",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "LM6F6",
+                  "name": "r11d",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$560.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "woscJ",
+              "name": "spacer2",
+              "width": "fill_container",
+              "height": 8
+            },
+            {
+              "type": "frame",
+              "id": "Wn44i",
+              "name": "subtotal-materials",
+              "width": "fill_container",
+              "gap": 8,
+              "padding": [
+                8,
+                16
+              ],
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "u7e3h",
+                  "name": "sub1a",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 140,
+                  "content": "Materials Subtotal",
+                  "textAlign": "right",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "ORZml",
+                  "name": "sub1b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$6,841.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "YLVY5",
+              "name": "subtotal-labor",
+              "width": "fill_container",
+              "gap": 8,
+              "padding": [
+                8,
+                16
+              ],
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "7BxDz",
+                  "name": "sub2a",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 140,
+                  "content": "Labor Subtotal",
+                  "textAlign": "right",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "wkq6X",
+                  "name": "sub2b",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$6,260.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "tmUXF",
+              "name": "divLine",
+              "width": "fill_container",
+              "height": 1,
+              "fill": "$border"
+            },
+            {
+              "type": "frame",
+              "id": "YtcFA",
+              "name": "grand-total",
+              "width": "fill_container",
+              "gap": 8,
+              "padding": [
+                10,
+                16
+              ],
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "CYytn",
+                  "name": "totalLabel",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 140,
+                  "content": "TOTAL",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 14,
+                  "fontWeight": "700",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "rdCPM",
+                  "name": "totalAmt",
+                  "fill": "$brand-blue",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "$13,101.00",
+                  "textAlign": "right",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "7Q35W",
+          "name": "Divider2",
+          "width": "fill_container",
+          "height": 1,
+          "fill": "$border"
+        },
+        {
+          "type": "frame",
+          "id": "p7JLV",
+          "name": "CTA Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "padding": [
+            16,
+            40
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "PgTE7",
+              "name": "CTA Card",
+              "width": "fill_container",
+              "fill": "$bg-soft",
+              "cornerRadius": 8,
+              "stroke": {
+                "thickness": 1,
+                "fill": "$border"
+              },
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 24,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "0NTwk",
+                  "name": "qsCtaTitle",
+                  "fill": "$text-primary",
+                  "content": "Ready to Get Started?",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 18,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "pRh0t",
+                  "name": "qsCtaDesc",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Select your package and schedule your roof replacement online. Your personalized quote includes premium materials, expert installation, and a manufacturer-backed warranty.",
+                  "lineHeight": 1.6,
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "yGxis",
+                  "name": "Buttons",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "WjHSu",
+                      "name": "Primary Button",
+                      "fill": "$brand-blue",
+                      "cornerRadius": 8,
+                      "padding": [
+                        12,
+                        28
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "j5CQD",
+                          "name": "qsCtaBtnText",
+                          "fill": "$text-white",
+                          "content": "Choose Package",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "OviIz",
+                      "name": "qsCtaPhone",
+                      "fill": "$text-secondary",
+                      "content": "Call (214) 272-2424",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Dbspc",
+          "name": "grow",
+          "width": "fill_container",
+          "height": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "PLrBP",
+          "name": "Footer",
+          "width": "fill_container",
+          "padding": [
+            16,
+            40,
+            32,
+            40
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "qRFYq",
+              "name": "qsFootL",
+              "fill": "$brand-blue",
+              "content": "resultsroofing.com",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 11,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "mduKB",
+              "name": "qsFootR",
+              "fill": "$text-muted",
+              "content": "Quote valid for 30 days",
+              "fontFamily": "Inter",
+              "fontSize": 10,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "accent-warm": {
+      "type": "color",
+      "value": "#F59E0B"
+    },
+    "bg-dark": {
+      "type": "color",
+      "value": "#1E2329"
+    },
+    "bg-soft": {
+      "type": "color",
+      "value": "#F7F9FC"
+    },
+    "bg-white": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "border": {
+      "type": "color",
+      "value": "#E8EDF5"
+    },
+    "border-light": {
+      "type": "color",
+      "value": "#F2F4F8"
+    },
+    "brand-blue": {
+      "type": "color",
+      "value": "#2563EB"
+    },
+    "brand-blue-light": {
+      "type": "color",
+      "value": "#EFF6FF"
+    },
+    "success": {
+      "type": "color",
+      "value": "#10B981"
+    },
+    "text-muted": {
+      "type": "color",
+      "value": "#9CA3AF"
+    },
+    "text-primary": {
+      "type": "color",
+      "value": "#1E2329"
+    },
+    "text-secondary": {
+      "type": "color",
+      "value": "#6B7280"
+    },
+    "text-white": {
+      "type": "color",
+      "value": "#FFFFFF"
+    }
+  }
+}

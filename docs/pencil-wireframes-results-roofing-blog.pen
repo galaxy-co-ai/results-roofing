@@ -1,0 +1,3784 @@
+{
+  "version": "2.8",
+  "children": [
+    {
+      "type": "frame",
+      "id": "bi8Au",
+      "x": 0,
+      "y": 0,
+      "name": "Frame",
+      "clip": true,
+      "width": 800,
+      "height": 600,
+      "fill": "#FFFFFF",
+      "layout": "none"
+    },
+    {
+      "type": "frame",
+      "id": "Dy3Zx",
+      "x": 0,
+      "y": 0,
+      "name": "Blog Index - /blog",
+      "width": 1440,
+      "fill": "#FAFBFC",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "mZHg3",
+          "name": "NavBar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#FFFFFFEB",
+          "padding": [
+            0,
+            40
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "O2UA8",
+              "name": "navLeft",
+              "height": "fill_container",
+              "gap": 28,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "xxifd",
+                  "name": "logoIcon",
+                  "width": 30,
+                  "height": 30,
+                  "fill": "#4361ee",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "XGUWb",
+                      "name": "logoText",
+                      "fill": "#FFFFFF",
+                      "content": "⌂",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "ofQ3X",
+                  "name": "logoLabel",
+                  "fill": "#1a1a2e",
+                  "content": "Results Roofing",
+                  "fontFamily": "Sora",
+                  "fontSize": 16,
+                  "fontWeight": "700",
+                  "letterSpacing": -0.3
+                },
+                {
+                  "type": "frame",
+                  "id": "1QlU4",
+                  "name": "navLinks",
+                  "gap": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "8ABWW",
+                      "name": "navAbout",
+                      "fill": "#64748b",
+                      "content": "About",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "SlJh9",
+                      "name": "navServices",
+                      "fill": "#64748b",
+                      "content": "Services",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "2domS",
+                      "name": "navContact",
+                      "fill": "#64748b",
+                      "content": "Contact",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "XS9qI",
+                      "name": "navBlog",
+                      "fill": "#4361ee",
+                      "content": "Blog",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "CW609",
+              "name": "ctaBtn",
+              "fill": "#4361ee",
+              "cornerRadius": 8,
+              "padding": [
+                8,
+                18
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "qCAfi",
+                  "name": "ctaText",
+                  "fill": "#FFFFFF",
+                  "content": "Get My Quote →",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Teu9p",
+          "name": "Blog Hero",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            40,
+            180
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "CDno7",
+              "name": "heroTitle",
+              "fill": "#1a1a2e",
+              "content": "The Results Blog",
+              "fontFamily": "Sora",
+              "fontSize": 36,
+              "fontWeight": "800",
+              "letterSpacing": -0.8
+            },
+            {
+              "type": "text",
+              "id": "FjtFD",
+              "name": "heroSub",
+              "fill": "#64748b",
+              "content": "Practical roofing knowledge for homeowners. 18 articles and counting.",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "0CqcR",
+              "name": "SearchBar",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "#FFFFFF",
+              "cornerRadius": 10,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#e8ecf1"
+              },
+              "gap": 12,
+              "padding": [
+                0,
+                16
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "oG6Zm",
+                  "name": "searchIcon",
+                  "width": 18,
+                  "height": 18,
+                  "iconFontName": "search",
+                  "iconFontFamily": "lucide",
+                  "fill": "#94a3b8"
+                },
+                {
+                  "type": "text",
+                  "id": "cJ0y5",
+                  "name": "searchPlaceholder",
+                  "fill": "#94a3b8",
+                  "content": "Search articles...",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "eaoq6",
+              "name": "CategoryPills",
+              "width": "fill_container",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "vmiBD",
+                  "name": "pillAll",
+                  "fill": "#4361ee",
+                  "cornerRadius": 20,
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "IMNMo",
+                      "name": "pillAllText",
+                      "fill": "#FFFFFF",
+                      "content": "All Posts",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Eyxux",
+                  "name": "pillTips",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 20,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "qmgu7",
+                      "name": "pillTipsText",
+                      "fill": "#64748b",
+                      "content": "Homeowner Tips",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "xTc15",
+                  "name": "pill101",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 20,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "mqDcB",
+                      "name": "pill101Text",
+                      "fill": "#64748b",
+                      "content": "Roofing 101",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "y4qms",
+                  "name": "pillStorm",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 20,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "aqGXc",
+                      "name": "pillStormText",
+                      "fill": "#64748b",
+                      "content": "Storm & Insurance",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "BApKL",
+                  "name": "pillTech",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 20,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "KtPco",
+                      "name": "pillTechText",
+                      "fill": "#64748b",
+                      "content": "Technology",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "7TcPB",
+                  "name": "pillNews",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 20,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "8sHcm",
+                      "name": "pillNewsText",
+                      "fill": "#64748b",
+                      "content": "Company News",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "fE0D2",
+          "name": "Featured Posts",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "padding": [
+            0,
+            180
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "lCR1P",
+              "name": "FeaturedCard - Satellite",
+              "clip": true,
+              "width": "fill_container",
+              "height": 280,
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#e8ecf1"
+              },
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "GiqiW",
+                  "name": "GradientThumb",
+                  "width": "fill_container",
+                  "height": "fill_container",
+                  "fill": {
+                    "type": "gradient",
+                    "gradientType": "linear",
+                    "enabled": true,
+                    "rotation": 135,
+                    "size": {
+                      "height": 1
+                    },
+                    "colors": [
+                      {
+                        "color": "#4361ee",
+                        "position": 0
+                      },
+                      {
+                        "color": "#1a1a2e",
+                        "position": 1
+                      }
+                    ]
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "mwkKD",
+                      "name": "feat1Badge",
+                      "fill": "#FFFFFF33",
+                      "cornerRadius": 10,
+                      "padding": [
+                        4,
+                        10
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "RjXpl",
+                          "name": "feat1BadgeTxt",
+                          "fill": "#FFFFFF",
+                          "content": "FEATURED",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700",
+                          "letterSpacing": 0.8
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "CQizA",
+                      "name": "feat1Emoji",
+                      "content": "🛰️",
+                      "fontFamily": "Inter",
+                      "fontSize": 64,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "WgVKD",
+                  "name": "Content",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "padding": 28,
+                  "justifyContent": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "M9XXx",
+                      "name": "feat1Cat",
+                      "fill": "#4361ee",
+                      "content": "TECHNOLOGY",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "600",
+                      "letterSpacing": 0.8
+                    },
+                    {
+                      "type": "text",
+                      "id": "pGIYN",
+                      "name": "feat1Title",
+                      "fill": "#1a1a2e",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "How Satellite Roof Measurements Are Changing the Way You Get a Roofing Quote",
+                      "lineHeight": 1.35,
+                      "fontFamily": "Sora",
+                      "fontSize": 21,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.3
+                    },
+                    {
+                      "type": "text",
+                      "id": "0Goti",
+                      "name": "feat1Exc",
+                      "fill": "#64748b",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Traditional roofing quotes mean a stranger on your roof and days of waiting. We measure your roof from space in under 2 seconds.",
+                      "lineHeight": 1.6,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "PcGKC",
+                      "name": "feat1Auth",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "PqQKI",
+                          "name": "feat1Av",
+                          "width": 28,
+                          "height": 28,
+                          "fill": {
+                            "type": "gradient",
+                            "gradientType": "linear",
+                            "enabled": true,
+                            "rotation": 135,
+                            "size": {
+                              "height": 1
+                            },
+                            "colors": [
+                              {
+                                "color": "#4361ee",
+                                "position": 0
+                              },
+                              {
+                                "color": "#6366f1",
+                                "position": 1
+                              }
+                            ]
+                          },
+                          "cornerRadius": 14,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "gGdV0",
+                              "name": "feat1In",
+                              "fill": "#FFFFFF",
+                              "content": "DR",
+                              "fontFamily": "Inter",
+                              "fontSize": 10,
+                              "fontWeight": "700"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "vAhKa",
+                          "name": "feat1Info",
+                          "layout": "vertical",
+                          "gap": 1,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "637eT",
+                              "name": "feat1Name",
+                              "fill": "#1a1a2e",
+                              "content": "Dalton Reed",
+                              "fontFamily": "Inter",
+                              "fontSize": 13,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "NfnDt",
+                              "name": "feat1Meta",
+                              "fill": "#94a3b8",
+                              "content": "Feb 12, 2026 · 7 min read",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ucblD",
+              "name": "FeaturedCard - Warning Signs",
+              "clip": true,
+              "width": "fill_container",
+              "height": 280,
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#e8ecf1"
+              },
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "OXGWl",
+                  "name": "GradientThumb",
+                  "width": "fill_container",
+                  "height": "fill_container",
+                  "fill": {
+                    "type": "gradient",
+                    "gradientType": "linear",
+                    "enabled": true,
+                    "rotation": 135,
+                    "size": {
+                      "height": 1
+                    },
+                    "colors": [
+                      {
+                        "color": "#f59e0b",
+                        "position": 0
+                      },
+                      {
+                        "color": "#ef4444",
+                        "position": 1
+                      }
+                    ]
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kSObU",
+                      "name": "feat2Badge",
+                      "fill": "#FFFFFF33",
+                      "cornerRadius": 10,
+                      "padding": [
+                        4,
+                        10
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "O9sKY",
+                          "name": "feat2BadgeTxt",
+                          "fill": "#FFFFFF",
+                          "content": "FEATURED",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700",
+                          "letterSpacing": 0.8
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "LQkBf",
+                      "name": "feat2Emoji",
+                      "content": "🏠",
+                      "fontFamily": "Inter",
+                      "fontSize": 64,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "N17wF",
+                  "name": "Content",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "padding": 28,
+                  "justifyContent": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bqGCo",
+                      "name": "feat2Cat",
+                      "fill": "#4361ee",
+                      "content": "HOMEOWNER TIPS",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "600",
+                      "letterSpacing": 0.8
+                    },
+                    {
+                      "type": "text",
+                      "id": "Upmeu",
+                      "name": "feat2Title",
+                      "fill": "#1a1a2e",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "5 Warning Signs Your Roof Needs Replacing (Before It's Too Late)",
+                      "lineHeight": 1.35,
+                      "fontFamily": "Sora",
+                      "fontSize": 21,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.3
+                    },
+                    {
+                      "type": "text",
+                      "id": "9HwuZ",
+                      "name": "feat2Exc",
+                      "fill": "#64748b",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Most homeowners don't think about their roof until there's a bucket in the living room. Here are five signs it's time — and what happens if you wait.",
+                      "lineHeight": 1.6,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "HC18Z",
+                      "name": "feat2Auth",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "nXlFP",
+                          "name": "feat2Av",
+                          "width": 28,
+                          "height": 28,
+                          "fill": {
+                            "type": "gradient",
+                            "gradientType": "linear",
+                            "enabled": true,
+                            "rotation": 135,
+                            "size": {
+                              "height": 1
+                            },
+                            "colors": [
+                              {
+                                "color": "#4361ee",
+                                "position": 0
+                              },
+                              {
+                                "color": "#6366f1",
+                                "position": 1
+                              }
+                            ]
+                          },
+                          "cornerRadius": 14,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "oz4qI",
+                              "name": "feat2In",
+                              "fill": "#FFFFFF",
+                              "content": "DR",
+                              "fontFamily": "Inter",
+                              "fontSize": 10,
+                              "fontWeight": "700"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "FOU8S",
+                          "name": "feat2Info",
+                          "layout": "vertical",
+                          "gap": 1,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "Gk9B3",
+                              "name": "feat2Name",
+                              "fill": "#1a1a2e",
+                              "content": "Dalton Reed",
+                              "fontFamily": "Inter",
+                              "fontSize": 13,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "jmkDC",
+                              "name": "feat2Date",
+                              "fill": "#94a3b8",
+                              "content": "Feb 6, 2026 · 7 min read",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Ni872",
+          "name": "Posts Grid",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "padding": [
+            32,
+            180
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "J7w17",
+              "name": "Row 1",
+              "width": "fill_container",
+              "gap": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "UDYXY",
+                  "name": "Card - Roof Pitch",
+                  "clip": true,
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "2MNOG",
+                      "name": "card1Grad",
+                      "width": "fill_container",
+                      "height": 140,
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "linear",
+                        "enabled": true,
+                        "rotation": 135,
+                        "size": {
+                          "height": 1
+                        },
+                        "colors": [
+                          {
+                            "color": "#06b6d4",
+                            "position": 0
+                          },
+                          {
+                            "color": "#3b82f6",
+                            "position": 1
+                          }
+                        ]
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "gRckX",
+                          "name": "card1Emoji",
+                          "content": "📐",
+                          "fontFamily": "Inter",
+                          "fontSize": 36,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "zridV",
+                      "name": "card1Body",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": 18,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "9S6H0",
+                          "name": "card1Cat",
+                          "fill": "#4361ee",
+                          "content": "ROOFING 101",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "600",
+                          "letterSpacing": 0.8
+                        },
+                        {
+                          "type": "text",
+                          "id": "ICjIW",
+                          "name": "card1Title",
+                          "fill": "#1a1a2e",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Understanding Roof Pitch: What It Means for Your Replacement Cost",
+                          "lineHeight": 1.4,
+                          "fontFamily": "Sora",
+                          "fontSize": 15,
+                          "fontWeight": "700",
+                          "letterSpacing": -0.2
+                        },
+                        {
+                          "type": "text",
+                          "id": "rBEJJ",
+                          "name": "card1Exc",
+                          "fill": "#64748b",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Roof pitch sounds technical, but it's the single biggest factor most homeowners overlook when budgeting.",
+                          "lineHeight": 1.55,
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "oUnfb",
+                          "name": "card1Auth",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "tDDK1",
+                              "name": "card1Av",
+                              "width": 28,
+                              "height": 28,
+                              "fill": {
+                                "type": "gradient",
+                                "gradientType": "linear",
+                                "enabled": true,
+                                "rotation": 135,
+                                "size": {
+                                  "height": 1
+                                },
+                                "colors": [
+                                  {
+                                    "color": "#4361ee",
+                                    "position": 0
+                                  },
+                                  {
+                                    "color": "#6366f1",
+                                    "position": 1
+                                  }
+                                ]
+                              },
+                              "cornerRadius": 14,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "cPzHp",
+                                  "name": "card1In",
+                                  "fill": "#FFFFFF",
+                                  "content": "DR",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "LIHk0",
+                              "name": "card1Info",
+                              "layout": "vertical",
+                              "gap": 1,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "Nr5Yd",
+                                  "name": "card1Name",
+                                  "fill": "#1a1a2e",
+                                  "content": "Dalton Reed",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "BCjIw",
+                                  "name": "card1Date",
+                                  "fill": "#94a3b8",
+                                  "content": "Feb 10, 2026 · 6 min read",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "CX3rI",
+                  "name": "Card - Shingles",
+                  "clip": true,
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "NfTiQ",
+                      "name": "card2Grad",
+                      "width": "fill_container",
+                      "height": 140,
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "linear",
+                        "enabled": true,
+                        "rotation": 135,
+                        "size": {
+                          "height": 1
+                        },
+                        "colors": [
+                          {
+                            "color": "#10b981",
+                            "position": 0
+                          },
+                          {
+                            "color": "#064e3b",
+                            "position": 1
+                          }
+                        ]
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "eXk4y",
+                          "name": "card2Emoji",
+                          "content": "🏷️",
+                          "fontFamily": "Inter",
+                          "fontSize": 36,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "m9uzK",
+                      "name": "card2Body",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": 18,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "hwTlG",
+                          "name": "card2Cat",
+                          "fill": "#4361ee",
+                          "content": "ROOFING 101",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "600",
+                          "letterSpacing": 0.8
+                        },
+                        {
+                          "type": "text",
+                          "id": "lVztT",
+                          "name": "card2Title",
+                          "fill": "#1a1a2e",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "GAF vs. Owens Corning vs. CertainTeed: Which Shingles Are Right for Your Home?",
+                          "lineHeight": 1.4,
+                          "fontFamily": "Sora",
+                          "fontSize": 15,
+                          "fontWeight": "700",
+                          "letterSpacing": -0.2
+                        },
+                        {
+                          "type": "text",
+                          "id": "ICaVc",
+                          "name": "card2Exc",
+                          "fill": "#64748b",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "The Big Three shingle brands all make solid products. But they're not identical. Here's an honest comparison.",
+                          "lineHeight": 1.55,
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "TuuIa",
+                          "name": "card2Auth",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "jUtav",
+                              "name": "card2Av",
+                              "width": 28,
+                              "height": 28,
+                              "fill": {
+                                "type": "gradient",
+                                "gradientType": "linear",
+                                "enabled": true,
+                                "rotation": 135,
+                                "size": {
+                                  "height": 1
+                                },
+                                "colors": [
+                                  {
+                                    "color": "#4361ee",
+                                    "position": 0
+                                  },
+                                  {
+                                    "color": "#6366f1",
+                                    "position": 1
+                                  }
+                                ]
+                              },
+                              "cornerRadius": 14,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "kYdlf",
+                                  "name": "card2In",
+                                  "fill": "#FFFFFF",
+                                  "content": "DR",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "rKmSc",
+                              "name": "card2Info",
+                              "layout": "vertical",
+                              "gap": 1,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "noweP",
+                                  "name": "card2Name",
+                                  "fill": "#1a1a2e",
+                                  "content": "Dalton Reed",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "a5Ko6",
+                                  "name": "card2Date",
+                                  "fill": "#94a3b8",
+                                  "content": "Feb 13, 2026 · 8 min read",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "LNWRX",
+                  "name": "Card - Storm Claims",
+                  "clip": true,
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "0jlKn",
+                      "name": "card3Grad",
+                      "width": "fill_container",
+                      "height": 140,
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "linear",
+                        "enabled": true,
+                        "rotation": 135,
+                        "size": {
+                          "height": 1
+                        },
+                        "colors": [
+                          {
+                            "color": "#6366f1",
+                            "position": 0
+                          },
+                          {
+                            "color": "#1e1b4b",
+                            "position": 1
+                          }
+                        ]
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "F0XlJ",
+                          "name": "card3Emoji",
+                          "content": "⛈️",
+                          "fontFamily": "Inter",
+                          "fontSize": 36,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Ds1g6",
+                      "name": "card3Body",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": 18,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "MYwab",
+                          "name": "card3Cat",
+                          "fill": "#4361ee",
+                          "content": "STORM & INSURANCE",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "600",
+                          "letterSpacing": 0.8
+                        },
+                        {
+                          "type": "text",
+                          "id": "P11Jq",
+                          "name": "card3Title",
+                          "fill": "#1a1a2e",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Filed a Storm Damage Claim? Here's What Actually Happens Next",
+                          "lineHeight": 1.4,
+                          "fontFamily": "Sora",
+                          "fontSize": 15,
+                          "fontWeight": "700",
+                          "letterSpacing": -0.2
+                        },
+                        {
+                          "type": "text",
+                          "id": "RG6JI",
+                          "name": "card3Exc",
+                          "fill": "#64748b",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "The insurance claim process is confusing by design. Here's a plain-English walkthrough of every step.",
+                          "lineHeight": 1.55,
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "ZjThW",
+                          "name": "card3Auth",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "q766p",
+                              "name": "card3Av",
+                              "width": 28,
+                              "height": 28,
+                              "fill": {
+                                "type": "gradient",
+                                "gradientType": "linear",
+                                "enabled": true,
+                                "rotation": 135,
+                                "size": {
+                                  "height": 1
+                                },
+                                "colors": [
+                                  {
+                                    "color": "#4361ee",
+                                    "position": 0
+                                  },
+                                  {
+                                    "color": "#6366f1",
+                                    "position": 1
+                                  }
+                                ]
+                              },
+                              "cornerRadius": 14,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "TLtoV",
+                                  "name": "card3In",
+                                  "fill": "#FFFFFF",
+                                  "content": "DR",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "QOawM",
+                              "name": "card3Info",
+                              "layout": "vertical",
+                              "gap": 1,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "fzqII",
+                                  "name": "card3Name",
+                                  "fill": "#1a1a2e",
+                                  "content": "Dalton Reed",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "CggDn",
+                                  "name": "card3Date",
+                                  "fill": "#94a3b8",
+                                  "content": "Feb 10, 2026 · 8 min read",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "quoKk",
+              "name": "Row 2",
+              "width": "fill_container",
+              "gap": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "KuswP",
+                  "name": "Card - Satellite Launch",
+                  "clip": true,
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "hRKrD",
+                      "name": "card4Grad",
+                      "width": "fill_container",
+                      "height": 140,
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "linear",
+                        "enabled": true,
+                        "rotation": 135,
+                        "size": {
+                          "height": 1
+                        },
+                        "colors": [
+                          {
+                            "color": "#4f46e5",
+                            "position": 0
+                          },
+                          {
+                            "color": "#7c3aed",
+                            "position": 1
+                          }
+                        ]
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vIiYA",
+                          "name": "card4Emoji",
+                          "content": "🛰️",
+                          "fontFamily": "Inter",
+                          "fontSize": 36,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "RI8RU",
+                      "name": "card4Body",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": 18,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "fZVaX",
+                          "name": "card4Cat",
+                          "fill": "#4361ee",
+                          "content": "COMPANY NEWS",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "600",
+                          "letterSpacing": 0.8
+                        },
+                        {
+                          "type": "text",
+                          "id": "EdYe6",
+                          "name": "card4Title",
+                          "fill": "#1a1a2e",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "We Just Launched Instant Satellite Roof Quotes — Here's How It Works",
+                          "lineHeight": 1.4,
+                          "fontFamily": "Sora",
+                          "fontSize": 15,
+                          "fontWeight": "700",
+                          "letterSpacing": -0.2
+                        },
+                        {
+                          "type": "text",
+                          "id": "pGulQ",
+                          "name": "card4Exc",
+                          "fill": "#64748b",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Enter your address, get a real quote in under two minutes. No sales call, no home visit, no guessing.",
+                          "lineHeight": 1.55,
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "WTbyi",
+                          "name": "card4Auth",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "YkUAB",
+                              "name": "card4Av",
+                              "width": 28,
+                              "height": 28,
+                              "fill": {
+                                "type": "gradient",
+                                "gradientType": "linear",
+                                "enabled": true,
+                                "rotation": 135,
+                                "size": {
+                                  "height": 1
+                                },
+                                "colors": [
+                                  {
+                                    "color": "#4361ee",
+                                    "position": 0
+                                  },
+                                  {
+                                    "color": "#6366f1",
+                                    "position": 1
+                                  }
+                                ]
+                              },
+                              "cornerRadius": 14,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "lK6zs",
+                                  "name": "card4In",
+                                  "fill": "#FFFFFF",
+                                  "content": "DR",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "5jI7s",
+                              "name": "card4Info",
+                              "layout": "vertical",
+                              "gap": 1,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "rtShn",
+                                  "name": "card4Name",
+                                  "fill": "#1a1a2e",
+                                  "content": "Dalton Reed",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "aLUjL",
+                                  "name": "card4Date",
+                                  "fill": "#94a3b8",
+                                  "content": "Feb 7, 2026 · 6 min read",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "q613r",
+                  "name": "Card - Timeline",
+                  "clip": true,
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "waKg7",
+                      "name": "card5Grad",
+                      "width": "fill_container",
+                      "height": 140,
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "linear",
+                        "enabled": true,
+                        "rotation": 135,
+                        "size": {
+                          "height": 1
+                        },
+                        "colors": [
+                          {
+                            "color": "#f97316",
+                            "position": 0
+                          },
+                          {
+                            "color": "#dc2626",
+                            "position": 1
+                          }
+                        ]
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "1mpvT",
+                          "name": "card5Emoji",
+                          "content": "🔨",
+                          "fontFamily": "Inter",
+                          "fontSize": 36,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "qjpPF",
+                      "name": "card5Body",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": 18,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "i6xQO",
+                          "name": "card5Cat",
+                          "fill": "#4361ee",
+                          "content": "HOMEOWNER TIPS",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "600",
+                          "letterSpacing": 0.8
+                        },
+                        {
+                          "type": "text",
+                          "id": "lpavJ",
+                          "name": "card5Title",
+                          "fill": "#1a1a2e",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Day-by-Day: What to Expect During Your Roof Replacement",
+                          "lineHeight": 1.4,
+                          "fontFamily": "Sora",
+                          "fontSize": 15,
+                          "fontWeight": "700",
+                          "letterSpacing": -0.2
+                        },
+                        {
+                          "type": "text",
+                          "id": "qL6Yk",
+                          "name": "card5Exc",
+                          "fill": "#64748b",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Trucks in the driveway, strangers on your roof, and a lot of noise. Here's exactly what happens each day.",
+                          "lineHeight": 1.55,
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "Wt5PY",
+                          "name": "card5Auth",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "0xx4u",
+                              "name": "card5Av",
+                              "width": 28,
+                              "height": 28,
+                              "fill": {
+                                "type": "gradient",
+                                "gradientType": "linear",
+                                "enabled": true,
+                                "rotation": 135,
+                                "size": {
+                                  "height": 1
+                                },
+                                "colors": [
+                                  {
+                                    "color": "#4361ee",
+                                    "position": 0
+                                  },
+                                  {
+                                    "color": "#6366f1",
+                                    "position": 1
+                                  }
+                                ]
+                              },
+                              "cornerRadius": 14,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "x5tbk",
+                                  "name": "card5In",
+                                  "fill": "#FFFFFF",
+                                  "content": "DR",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "pT4F0",
+                              "name": "c5Info",
+                              "layout": "vertical",
+                              "gap": 1,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "Nsxti",
+                                  "name": "c5Name",
+                                  "fill": "#1a1a2e",
+                                  "content": "Dalton Reed",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "X6uyT",
+                                  "name": "c5Date",
+                                  "fill": "#94a3b8",
+                                  "content": "Feb 5, 2026 · 7 min read",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "gkX5b",
+                  "name": "Card - Financing",
+                  "clip": true,
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "vZFMn",
+                      "name": "card6Grad",
+                      "width": "fill_container",
+                      "height": 140,
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "linear",
+                        "enabled": true,
+                        "rotation": 135,
+                        "size": {
+                          "height": 1
+                        },
+                        "colors": [
+                          {
+                            "color": "#059669",
+                            "position": 0
+                          },
+                          {
+                            "color": "#065f46",
+                            "position": 1
+                          }
+                        ]
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "mVten",
+                          "name": "card6Emoji",
+                          "content": "💰",
+                          "fontFamily": "Inter",
+                          "fontSize": 36,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "0U5wU",
+                      "name": "card6Body",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": 18,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "P16Q3",
+                          "name": "card6Cat",
+                          "fill": "#4361ee",
+                          "content": "HOMEOWNER TIPS",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "600",
+                          "letterSpacing": 0.8
+                        },
+                        {
+                          "type": "text",
+                          "id": "sDtly",
+                          "name": "card6Title",
+                          "fill": "#1a1a2e",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Can't Afford a New Roof? Here's How Roofing Financing Actually Works",
+                          "lineHeight": 1.4,
+                          "fontFamily": "Sora",
+                          "fontSize": 15,
+                          "fontWeight": "700",
+                          "letterSpacing": -0.2
+                        },
+                        {
+                          "type": "text",
+                          "id": "8xZJD",
+                          "name": "card6Exc",
+                          "fill": "#64748b",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "A new roof costs $8,000-$15,000 and most people don't have that in savings. Here's every way to pay.",
+                          "lineHeight": 1.55,
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "zyEXZ",
+                          "name": "card6Auth",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "n0Gur",
+                              "name": "card6Av",
+                              "width": 28,
+                              "height": 28,
+                              "fill": {
+                                "type": "gradient",
+                                "gradientType": "linear",
+                                "enabled": true,
+                                "rotation": 135,
+                                "size": {
+                                  "height": 1
+                                },
+                                "colors": [
+                                  {
+                                    "color": "#4361ee",
+                                    "position": 0
+                                  },
+                                  {
+                                    "color": "#6366f1",
+                                    "position": 1
+                                  }
+                                ]
+                              },
+                              "cornerRadius": 14,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "MnkmT",
+                                  "name": "card6In",
+                                  "fill": "#FFFFFF",
+                                  "content": "DR",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "vuGi5",
+                              "name": "card6Info",
+                              "layout": "vertical",
+                              "gap": 1,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "xiXNn",
+                                  "name": "card6Name",
+                                  "fill": "#1a1a2e",
+                                  "content": "Dalton Reed",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "hXGK9",
+                                  "name": "card6Date",
+                                  "fill": "#94a3b8",
+                                  "content": "Feb 12, 2026 · 8 min read",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "sQoeI",
+          "name": "Newsletter CTA",
+          "width": "fill_container",
+          "layout": "vertical",
+          "padding": [
+            0,
+            180,
+            40,
+            180
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "3WyJL",
+              "name": "nlCard",
+              "width": "fill_container",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "linear",
+                "enabled": true,
+                "rotation": 135,
+                "size": {
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#1a1a2e",
+                    "position": 0
+                  },
+                  {
+                    "color": "#2d2d5e",
+                    "position": 1
+                  }
+                ]
+              },
+              "cornerRadius": 16,
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 40,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "AWP7T",
+                  "name": "nlTitle",
+                  "fill": "#FFFFFF",
+                  "content": "Roofing insights, delivered",
+                  "textAlign": "center",
+                  "fontFamily": "Sora",
+                  "fontSize": 22,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "7zqyn",
+                  "name": "nlSub",
+                  "fill": "#FFFFFF99",
+                  "content": "Practical tips for homeowners. No spam — once a month.",
+                  "lineHeight": 1.6,
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "3MxfE",
+                  "name": "nlForm",
+                  "width": 420,
+                  "gap": 8,
+                  "padding": [
+                    20,
+                    0,
+                    0,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "9Bkje",
+                      "name": "nlInput",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "#FFFFFF14",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#FFFFFF26"
+                      },
+                      "padding": [
+                        0,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "8bTQw",
+                          "name": "nlPlaceholder",
+                          "fill": "#FFFFFF99",
+                          "content": "you@email.com",
+                          "fontFamily": "Inter",
+                          "fontSize": 15,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "1v7I0",
+                      "name": "nlBtn",
+                      "fill": "#4361ee",
+                      "cornerRadius": 8,
+                      "padding": [
+                        12,
+                        24
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "g6a50",
+                          "name": "nlBtnText",
+                          "fill": "#FFFFFF",
+                          "content": "Subscribe",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "PlUDj",
+          "name": "Footer",
+          "width": "fill_container",
+          "fill": "#1a1a2e",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": 32,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "HniDg",
+              "name": "footerBrand",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "byAOG",
+                  "name": "footerIcon",
+                  "width": 26,
+                  "height": 26,
+                  "fill": "#4361ee",
+                  "cornerRadius": 6,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "4dRjT",
+                      "name": "footerIconText",
+                      "fill": "#FFFFFF",
+                      "content": "⌂",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "ZzERV",
+                  "name": "footerLabel",
+                  "fill": "#FFFFFF",
+                  "content": "Results Roofing",
+                  "fontFamily": "Sora",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "1Y0H5",
+              "name": "footerCopy",
+              "fill": "#FFFFFF59",
+              "content": "© 2026 Results Roofing. Premium roof replacement with transparent pricing.",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "Iwd16",
+      "x": 1600,
+      "y": 0,
+      "name": "Blog Article - /blog/[slug]",
+      "width": 1440,
+      "fill": "#FAFBFC",
+      "layout": "vertical",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "wK0kj",
+          "name": "NavBar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#FFFFFFEB",
+          "padding": [
+            0,
+            40
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "fj7ki",
+              "name": "artNavLeft",
+              "height": "fill_container",
+              "gap": 28,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "xIdCF",
+                  "name": "artLogo",
+                  "width": 30,
+                  "height": 30,
+                  "fill": "#4361ee",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "o84ea",
+                      "name": "artLogoTxt",
+                      "fill": "#FFFFFF",
+                      "content": "⌂",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "Cw0p6",
+                  "name": "artLogoLbl",
+                  "fill": "#1a1a2e",
+                  "content": "Results Roofing",
+                  "fontFamily": "Sora",
+                  "fontSize": 16,
+                  "fontWeight": "700",
+                  "letterSpacing": -0.3
+                },
+                {
+                  "type": "frame",
+                  "id": "KYeub",
+                  "name": "artNavLinks",
+                  "gap": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "2Vgyy",
+                      "name": "artNA",
+                      "fill": "#64748b",
+                      "content": "About",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "2IsrL",
+                      "name": "artNS",
+                      "fill": "#64748b",
+                      "content": "Services",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "mNDlY",
+                      "name": "artNC",
+                      "fill": "#64748b",
+                      "content": "Contact",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "4zBFg",
+                      "name": "artNB",
+                      "fill": "#4361ee",
+                      "content": "Blog",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rbaqO",
+              "name": "artCta",
+              "fill": "#4361ee",
+              "cornerRadius": 8,
+              "padding": [
+                8,
+                18
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "5edij",
+                  "name": "artCtaTxt",
+                  "fill": "#FFFFFF",
+                  "content": "Get My Quote →",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "jxXMO",
+          "name": "ProgressBar",
+          "width": "fill_container",
+          "height": 3,
+          "fill": "#e8ecf1",
+          "children": [
+            {
+              "type": "frame",
+              "id": "Nkuh9",
+              "name": "progressFill",
+              "width": 480,
+              "height": 3,
+              "fill": {
+                "type": "gradient",
+                "gradientType": "linear",
+                "enabled": true,
+                "rotation": 90,
+                "size": {
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#4361ee",
+                    "position": 0
+                  },
+                  {
+                    "color": "#6366f1",
+                    "position": 1
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "WfTBu",
+          "name": "Article Header",
+          "width": 720,
+          "layout": "vertical",
+          "gap": 10,
+          "padding": [
+            40,
+            0,
+            0,
+            0
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "Yv8sK",
+              "name": "backLink",
+              "fill": "#4361ee",
+              "content": "← Back to Blog",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "5XCSp",
+              "name": "artCatPill",
+              "fill": "#4361ee",
+              "content": "TECHNOLOGY",
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 0.8
+            },
+            {
+              "type": "text",
+              "id": "qQhss",
+              "name": "artTitle",
+              "fill": "#1a1a2e",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "How Satellite Roof Measurements Are Changing the Way You Get a Roofing Quote",
+              "lineHeight": 1.25,
+              "fontFamily": "Sora",
+              "fontSize": 34,
+              "fontWeight": "800",
+              "letterSpacing": -0.5
+            },
+            {
+              "type": "frame",
+              "id": "1T5nk",
+              "name": "artMeta",
+              "width": "fill_container",
+              "padding": [
+                6,
+                0
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "VeWby",
+                  "name": "artAuthLine",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "2TA6j",
+                      "name": "artAv",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "linear",
+                        "enabled": true,
+                        "rotation": 135,
+                        "size": {
+                          "height": 1
+                        },
+                        "colors": [
+                          {
+                            "color": "#4361ee",
+                            "position": 0
+                          },
+                          {
+                            "color": "#6366f1",
+                            "position": 1
+                          }
+                        ]
+                      },
+                      "cornerRadius": 20,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "TYfFm",
+                          "name": "artAvIn",
+                          "fill": "#FFFFFF",
+                          "content": "DR",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "TB7pc",
+                      "name": "artAuthInfo",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "aIeyq",
+                          "name": "artAuthName",
+                          "fill": "#1a1a2e",
+                          "content": "Dalton Reed",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "QUeLf",
+                          "name": "artAuthDate",
+                          "fill": "#94a3b8",
+                          "content": "Feb 12, 2026 · 7 min read",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "a2r1H",
+                  "name": "shareRow",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "fPF5a",
+                      "name": "shareX",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#e8ecf1"
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "M6ijI",
+                          "name": "shareXTxt",
+                          "fill": "#64748b",
+                          "content": "𝕏",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "WrAUA",
+                      "name": "shareLi",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#e8ecf1"
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "YHE0V",
+                          "name": "shareLiTxt",
+                          "fill": "#64748b",
+                          "content": "in",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "IaOyt",
+                      "name": "shareMail",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#e8ecf1"
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "0EBZB",
+                          "name": "shareMailIcon",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "mail",
+                          "iconFontFamily": "lucide",
+                          "fill": "#64748b"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "3KD5v",
+          "name": "Hero Gradient",
+          "width": 720,
+          "height": 300,
+          "fill": {
+            "type": "gradient",
+            "gradientType": "linear",
+            "enabled": true,
+            "rotation": 135,
+            "size": {
+              "height": 1
+            },
+            "colors": [
+              {
+                "color": "#4361ee",
+                "position": 0
+              },
+              {
+                "color": "#1a1a2e",
+                "position": 1
+              }
+            ]
+          },
+          "cornerRadius": 14,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "cYLmy",
+              "name": "heroEmoji",
+              "content": "🛰️",
+              "fontFamily": "Inter",
+              "fontSize": 80,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "dQFZq",
+          "name": "Content Layout",
+          "width": 1080,
+          "gap": 40,
+          "padding": [
+            40,
+            0
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "RKlYN",
+              "name": "TOC Sidebar",
+              "width": 200,
+              "layout": "vertical",
+              "gap": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "t6G9u",
+                  "name": "tocLabel",
+                  "fill": "#94a3b8",
+                  "content": "ON THIS PAGE",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "700",
+                  "letterSpacing": 1.2
+                },
+                {
+                  "type": "frame",
+                  "id": "1iRzE",
+                  "name": "tocSpacer",
+                  "width": "fill_container",
+                  "height": 14
+                },
+                {
+                  "type": "frame",
+                  "id": "vlPgL",
+                  "name": "tocItem1",
+                  "width": "fill_container",
+                  "fill": "#eef1ff",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 2,
+                    "fill": "#4361ee"
+                  },
+                  "padding": [
+                    6,
+                    12
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "eXUdo",
+                      "name": "tocItem1Txt",
+                      "fill": "#4361ee",
+                      "content": "Introduction",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "q8NZb",
+                  "name": "tocItem2",
+                  "width": "fill_container",
+                  "cornerRadius": 6,
+                  "padding": [
+                    6,
+                    12
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "2rj7J",
+                      "name": "tocItem2Txt",
+                      "fill": "#64748b",
+                      "content": "How It Works",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "F1wk2",
+                  "name": "tocItem3",
+                  "width": "fill_container",
+                  "cornerRadius": 6,
+                  "padding": [
+                    6,
+                    12
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Ihkfj",
+                      "name": "tocItem3Txt",
+                      "fill": "#64748b",
+                      "content": "Accuracy & Data",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bLyft",
+                  "name": "tocItem4",
+                  "width": "fill_container",
+                  "cornerRadius": 6,
+                  "padding": [
+                    6,
+                    12
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "AjBqZ",
+                      "name": "tocItem4Txt",
+                      "fill": "#64748b",
+                      "content": "What We Measure",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rqmGF",
+                  "name": "tocItem5",
+                  "width": "fill_container",
+                  "cornerRadius": 6,
+                  "padding": [
+                    6,
+                    12
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "fY4y3",
+                      "name": "tocItem5Txt",
+                      "fill": "#64748b",
+                      "content": "Privacy & Concerns",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "vgEMu",
+                  "name": "tocItem6",
+                  "width": "fill_container",
+                  "cornerRadius": 6,
+                  "padding": [
+                    6,
+                    12
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "lBFdB",
+                      "name": "tocItem6Txt",
+                      "fill": "#64748b",
+                      "content": "The Bottom Line",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uxmFc",
+              "name": "Article Body",
+              "width": 680,
+              "layout": "vertical",
+              "gap": 36,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Al4q2",
+                  "name": "Section - Intro",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "MAFfH",
+                      "name": "sec1P1",
+                      "fill": "#374151",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "If you've ever gotten a roofing quote the traditional way, you know the drill: schedule an appointment, wait for someone to show up, watch them climb your roof with a tape measure, then wait another few days for an email with a number that may or may not make sense.",
+                      "lineHeight": 1.75,
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "OGZDw",
+                      "name": "sec1P2",
+                      "fill": "#374151",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "We thought there had to be a better way. Turns out, there is — and it involves satellites.",
+                      "lineHeight": 1.75,
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "V3hVC",
+                  "name": "Section - How It Works",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 14,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "dCi2X",
+                      "name": "sec2H",
+                      "fill": "#1a1a2e",
+                      "content": "How Satellite Measurement Actually Works",
+                      "fontFamily": "Sora",
+                      "fontSize": 22,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.3
+                    },
+                    {
+                      "type": "text",
+                      "id": "8ARN0",
+                      "name": "sec2P1",
+                      "fill": "#374151",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Google's Solar API uses high-resolution aerial imagery — the same kind that powers Google Maps — combined with machine learning to create a detailed 3D model of your roof. In under 2 seconds, it calculates total square footage, pitch angle, number of facets, and structural complexity.",
+                      "lineHeight": 1.75,
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "vmFgW",
+                      "name": "sec2P2",
+                      "fill": "#374151",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "When you enter your address on our site, we send it to the Solar API, get back the measurements, and use them to generate real pricing based on your actual roof — not a guess, not an average, your roof.",
+                      "lineHeight": 1.75,
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "9T35H",
+                  "name": "Section - Accuracy",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 14,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "cbhrB",
+                      "name": "sec3H",
+                      "fill": "#1a1a2e",
+                      "content": "Is It Actually Accurate?",
+                      "fontFamily": "Sora",
+                      "fontSize": 22,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.3
+                    },
+                    {
+                      "type": "text",
+                      "id": "t3xHm",
+                      "name": "sec3P1",
+                      "fill": "#374151",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Fair question. The short answer: yes, within 2-5% of a manual measurement for most residential roofs. Google's imagery is refreshed regularly and the ML models have been trained on millions of buildings.",
+                      "lineHeight": 1.75,
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Rxwny",
+                  "name": "Mid-Article CTA",
+                  "width": "fill_container",
+                  "fill": "#eef1ff",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#4361ee33"
+                  },
+                  "layout": "vertical",
+                  "gap": 6,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "vsUh6",
+                      "name": "midCtaTitle",
+                      "fill": "#1a1a2e",
+                      "content": "🛰️ Want to see your actual roof measurements?",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "h9Kg0",
+                      "name": "midCtaSub",
+                      "fill": "#64748b",
+                      "content": "Enter your address and get satellite-verified pricing in under 2 minutes.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "8HESn",
+                      "name": "midCtaBtn",
+                      "fill": "#4361ee",
+                      "cornerRadius": 8,
+                      "padding": [
+                        12,
+                        20
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "HyHy5",
+                          "name": "midCtaBtnTxt",
+                          "fill": "#FFFFFF",
+                          "content": "Get My Instant Quote →",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "YE7cc",
+                  "name": "Section - What We Measure",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 14,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "PhDuH",
+                      "name": "sec4H",
+                      "fill": "#1a1a2e",
+                      "content": "What We Actually Measure",
+                      "fontFamily": "Sora",
+                      "fontSize": 22,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.3
+                    },
+                    {
+                      "type": "text",
+                      "id": "MGa3c",
+                      "name": "sec4P",
+                      "fill": "#374151",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "When the satellite scans your roof, we capture four key data points: total square footage (the actual surface area, not your home's footprint), roof pitch (the steepness — steeper roofs cost more to install), number of facets (each plane of your roof), and overall complexity score. These four numbers are what drive your quote.",
+                      "lineHeight": 1.75,
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "s2eqW",
+                  "name": "Section - Privacy",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 14,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "1ATUL",
+                      "name": "sec5H",
+                      "fill": "#1a1a2e",
+                      "content": "Privacy & Common Concerns",
+                      "fontFamily": "Sora",
+                      "fontSize": 22,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.3
+                    },
+                    {
+                      "type": "text",
+                      "id": "lJoWI",
+                      "name": "sec5P",
+                      "fill": "#374151",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "We get it — \"satellite measurement\" sounds a little Big Brother. But this is the same imagery you can already see on Google Maps. We don't use drones, we don't take new photos, and we don't capture anything inside your home. The data we receive is purely structural: roof dimensions and geometry. Nothing else.",
+                      "lineHeight": 1.75,
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pbs8F",
+                  "name": "Section - Bottom Line",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 14,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "To7wl",
+                      "name": "sec6H",
+                      "fill": "#1a1a2e",
+                      "content": "The Bottom Line",
+                      "fontFamily": "Sora",
+                      "fontSize": 22,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.3
+                    },
+                    {
+                      "type": "text",
+                      "id": "fyHQD",
+                      "name": "sec6P",
+                      "fill": "#374151",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Satellite roof measurement isn't the future — it's the present. It means you can get a real, accurate roofing quote from your couch in under two minutes. No strangers on your roof, no awkward sales pitch, no waiting. Just your actual measurements, your actual prices, and your decision on your timeline.",
+                      "lineHeight": 1.75,
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "v7xaC",
+                  "name": "divider",
+                  "width": "fill_container",
+                  "height": 1,
+                  "fill": "#e8ecf1"
+                },
+                {
+                  "type": "frame",
+                  "id": "SETIw",
+                  "name": "Author Bio",
+                  "width": "fill_container",
+                  "gap": 14,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "iQjnN",
+                      "name": "bioAv",
+                      "width": 52,
+                      "height": 52,
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "linear",
+                        "enabled": true,
+                        "rotation": 135,
+                        "size": {
+                          "height": 1
+                        },
+                        "colors": [
+                          {
+                            "color": "#4361ee",
+                            "position": 0
+                          },
+                          {
+                            "color": "#6366f1",
+                            "position": 1
+                          }
+                        ]
+                      },
+                      "cornerRadius": 26,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "IlKwt",
+                          "name": "bioIn",
+                          "fill": "#FFFFFF",
+                          "content": "DR",
+                          "fontFamily": "Inter",
+                          "fontSize": 18,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "5qswO",
+                      "name": "bioInfo",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "SGwpK",
+                          "name": "bioName",
+                          "fill": "#1a1a2e",
+                          "content": "Dalton Reed",
+                          "fontFamily": "Sora",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "JiTT3",
+                          "name": "bioDesc",
+                          "fill": "#64748b",
+                          "textGrowth": "fixed-width",
+                          "width": 500,
+                          "content": "Founder of Results Roofing. Building the roofing company we wished existed.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "xvjH2",
+          "name": "Related Posts",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            48,
+            180,
+            0,
+            180
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "1Yw5v",
+              "name": "relTitle",
+              "fill": "#1a1a2e",
+              "content": "Keep Reading",
+              "fontFamily": "Sora",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "letterSpacing": -0.3
+            },
+            {
+              "type": "frame",
+              "id": "zCveZ",
+              "name": "relGrid",
+              "width": "fill_container",
+              "gap": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "7qx9b",
+                  "name": "RelCard 1",
+                  "clip": true,
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "4kjeL",
+                      "name": "rc1Thumb",
+                      "width": "fill_container",
+                      "height": 100,
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "linear",
+                        "enabled": true,
+                        "rotation": 135,
+                        "size": {
+                          "height": 1
+                        },
+                        "colors": [
+                          {
+                            "color": "#f59e0b",
+                            "position": 0
+                          },
+                          {
+                            "color": "#ef4444",
+                            "position": 1
+                          }
+                        ]
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "TOInF",
+                          "name": "rc1Emoji",
+                          "content": "🏠",
+                          "fontFamily": "Inter",
+                          "fontSize": 36,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "t9PFF",
+                      "name": "rc1Body",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        0,
+                        14,
+                        14,
+                        14
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "QjvOR",
+                          "name": "rc1Cat",
+                          "fill": "#4361ee",
+                          "content": "HOMEOWNER TIPS",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "letterSpacing": 0.8
+                        },
+                        {
+                          "type": "text",
+                          "id": "ukVMP",
+                          "name": "rc1Title",
+                          "fill": "#1a1a2e",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "5 Warning Signs Your Roof Needs Replacing",
+                          "lineHeight": 1.35,
+                          "fontFamily": "Sora",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Do8i1",
+                          "name": "rc1Time",
+                          "fill": "#94a3b8",
+                          "content": "8 min read",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "x6Jt0",
+                  "name": "RelCard 2",
+                  "clip": true,
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "mqGxK",
+                      "name": "rc2Thumb",
+                      "width": "fill_container",
+                      "height": 100,
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "linear",
+                        "enabled": true,
+                        "rotation": 135,
+                        "size": {
+                          "height": 1
+                        },
+                        "colors": [
+                          {
+                            "color": "#10b981",
+                            "position": 0
+                          },
+                          {
+                            "color": "#0d9488",
+                            "position": 1
+                          }
+                        ]
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "fpRJU",
+                          "name": "rc2Emoji",
+                          "content": "📐",
+                          "fontFamily": "Inter",
+                          "fontSize": 36,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "9m4je",
+                      "name": "rc2Body",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        0,
+                        14,
+                        14,
+                        14
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "88hZK",
+                          "name": "rc2Cat",
+                          "fill": "#4361ee",
+                          "content": "ROOFING 101",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "letterSpacing": 0.8
+                        },
+                        {
+                          "type": "text",
+                          "id": "gyyEP",
+                          "name": "rc2Title",
+                          "fill": "#1a1a2e",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Understanding Roof Pitch: What It Means for Your Cost",
+                          "lineHeight": 1.35,
+                          "fontFamily": "Sora",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "vrKH5",
+                          "name": "rc2Time",
+                          "fill": "#94a3b8",
+                          "content": "7 min read",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "aDP4y",
+                  "name": "RelCard 3",
+                  "clip": true,
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e8ecf1"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "MciTu",
+                      "name": "rc3Thumb",
+                      "width": "fill_container",
+                      "height": 100,
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "linear",
+                        "enabled": true,
+                        "rotation": 135,
+                        "size": {
+                          "height": 1
+                        },
+                        "colors": [
+                          {
+                            "color": "#8b5cf6",
+                            "position": 0
+                          },
+                          {
+                            "color": "#6366f1",
+                            "position": 1
+                          }
+                        ]
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "eLWhF",
+                          "name": "rc3Emoji",
+                          "content": "🔷",
+                          "fontFamily": "Inter",
+                          "fontSize": 36,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Cx2cn",
+                      "name": "rc3Body",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        0,
+                        14,
+                        14,
+                        14
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "qeJcJ",
+                          "name": "rc3Cat",
+                          "fill": "#4361ee",
+                          "content": "ROOFING 101",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "letterSpacing": 0.8
+                        },
+                        {
+                          "type": "text",
+                          "id": "KNNeD",
+                          "name": "rc3Title",
+                          "fill": "#1a1a2e",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "GAF vs Owens Corning vs CertainTeed: Which Shingles?",
+                          "lineHeight": 1.35,
+                          "fontFamily": "Sora",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "EFV3q",
+                          "name": "rc3Time",
+                          "fill": "#94a3b8",
+                          "content": "9 min read",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "PFw5U",
+          "name": "Newsletter CTA",
+          "width": "fill_container",
+          "layout": "vertical",
+          "padding": [
+            40,
+            180
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "ScavQ",
+              "name": "nlCard",
+              "width": "fill_container",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "linear",
+                "enabled": true,
+                "rotation": 135,
+                "size": {
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#1a1a2e",
+                    "position": 0
+                  },
+                  {
+                    "color": "#2d2d5e",
+                    "position": 1
+                  }
+                ]
+              },
+              "cornerRadius": 16,
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 40,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "9WnOJ",
+                  "name": "nlTitle",
+                  "fill": "#FFFFFF",
+                  "content": "Get Roofing Tips in Your Inbox",
+                  "fontFamily": "Sora",
+                  "fontSize": 22,
+                  "fontWeight": "700",
+                  "letterSpacing": -0.3
+                },
+                {
+                  "type": "text",
+                  "id": "gsIaK",
+                  "name": "nlSub",
+                  "fill": "#FFFFFF99",
+                  "content": "Practical advice for homeowners. No spam, no sales pitches — just knowledge.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "sfiAn",
+                  "name": "nlInputRow",
+                  "width": "fill_container",
+                  "gap": 10,
+                  "padding": [
+                    12,
+                    0,
+                    0,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "EJung",
+                      "name": "nlInput",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "#FFFFFF15",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#FFFFFF33"
+                      },
+                      "padding": [
+                        0,
+                        14
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "m19YN",
+                          "name": "nlPlaceholder",
+                          "fill": "#FFFFFF66",
+                          "content": "you@email.com",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Hag4h",
+                      "name": "nlBtn",
+                      "height": 44,
+                      "fill": "#4361ee",
+                      "cornerRadius": 8,
+                      "padding": [
+                        0,
+                        20
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "EvgiQ",
+                          "name": "nlBtnTxt",
+                          "fill": "#FFFFFF",
+                          "content": "Subscribe",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "RsZJj",
+          "name": "Footer",
+          "width": "fill_container",
+          "fill": "#1a1a2e",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": 32,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "3abRf",
+              "name": "footerBrand",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "6vQmC",
+                  "name": "footLogo",
+                  "width": 24,
+                  "height": 24,
+                  "fill": "#4361ee",
+                  "cornerRadius": 6,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "E17xR",
+                      "name": "footLogoTxt",
+                      "fill": "#FFFFFF",
+                      "content": "R",
+                      "fontFamily": "Sora",
+                      "fontSize": 13,
+                      "fontWeight": "800"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "GNaPo",
+                  "name": "footName",
+                  "fill": "#FFFFFF",
+                  "content": "Results Roofing",
+                  "fontFamily": "Sora",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "IQNix",
+              "name": "footCopy",
+              "fill": "#FFFFFF59",
+              "content": "© 2026 Results Roofing. Premium roof replacement with transparent pricing.",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

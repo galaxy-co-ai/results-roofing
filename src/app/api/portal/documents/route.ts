@@ -13,6 +13,20 @@ const GAF_ASSET_LABELS: Record<string, string> = {
   Cover: 'Report Cover',
 };
 
+interface ProjectData {
+  address: string;
+  customerName: string;
+  email: string;
+  phone: string;
+  packageName: string;
+  totalPrice: number;
+  depositAmount: number;
+  installationDate: string;
+  contractDate: string;
+  materials: string;
+  warrantyYears: number;
+}
+
 interface DocumentResponse {
   id: string;
   name: string;
@@ -21,6 +35,7 @@ interface DocumentResponse {
   source: 'gaf' | 'manual' | 'generated';
   status?: string;
   createdAt: string;
+  projectData?: ProjectData;
 }
 
 /**
@@ -124,7 +139,54 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // 3. Inject synthetic (generated-on-the-fly) branded documents
+    // 3. Build projectData from order + contract + pricing tier
+    const signedContract = await db.query.contracts.findFirst({
+      where: and(
+        eq(schema.contracts.quoteId, quoteId),
+        eq(schema.contracts.status, 'signed'),
+      ),
+    });
+
+    let projectData: ProjectData | undefined;
+
+    if (order) {
+      // Fetch the pricing tier for package name + materials
+      const tier = order.selectedTier
+        ? await db.query.pricingTiers.findFirst({
+            where: eq(schema.pricingTiers.tier, order.selectedTier),
+          })
+        : null;
+
+      // Fetch installation appointment if scheduled
+      const appointment = orderId
+        ? await db.query.appointments.findFirst({
+            where: eq(schema.appointments.orderId, orderId),
+          })
+        : null;
+
+      const fullAddress = [order.propertyAddress, order.propertyCity, order.propertyState, order.propertyZip]
+        .filter(Boolean)
+        .join(', ');
+
+      const formatDate = (d: Date | null | undefined) =>
+        d ? d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+
+      projectData = {
+        address: fullAddress || '',
+        customerName: signedContract?.signatureText || order.customerName || '',
+        email: order.customerEmail || '',
+        phone: order.customerPhone || '',
+        packageName: tier?.displayName ? `${tier.displayName} Package` : order.selectedTier || '',
+        totalPrice: parseFloat(order.totalPrice) || 0,
+        depositAmount: parseFloat(order.depositAmount) || 0,
+        installationDate: formatDate(appointment?.scheduledStart ?? order.scheduledStartDate),
+        contractDate: formatDate(signedContract?.signedAt),
+        materials: tier ? `${tier.shingleBrand || ''} ${tier.shingleType || ''}`.trim() : '',
+        warrantyYears: tier?.warrantyYears ? parseInt(tier.warrantyYears, 10) : 25,
+      };
+    }
+
+    // 4. Inject synthetic (generated-on-the-fly) branded documents
     // Quote summary — always present
     documents.push({
       id: `quote-${quoteId}`,
@@ -133,14 +195,7 @@ export async function GET(request: NextRequest) {
       url: null,
       source: 'generated',
       createdAt: order?.createdAt?.toISOString() ?? new Date().toISOString(),
-    });
-
-    // Signed contract — check contracts table
-    const signedContract = await db.query.contracts.findFirst({
-      where: and(
-        eq(schema.contracts.quoteId, quoteId),
-        eq(schema.contracts.status, 'signed'),
-      ),
+      projectData,
     });
 
     if (signedContract) {
@@ -152,6 +207,7 @@ export async function GET(request: NextRequest) {
         source: 'generated',
         status: 'signed',
         createdAt: signedContract.signedAt?.toISOString() ?? signedContract.createdAt.toISOString(),
+        projectData,
       });
     }
 
@@ -164,6 +220,7 @@ export async function GET(request: NextRequest) {
         url: null,
         source: 'generated',
         createdAt: order?.createdAt?.toISOString() ?? new Date().toISOString(),
+        projectData,
       });
     }
 
@@ -185,6 +242,7 @@ export async function GET(request: NextRequest) {
           source: 'generated',
           status: 'signed',
           createdAt: depositPayment.processedAt?.toISOString() ?? order.createdAt.toISOString(),
+          projectData,
         });
       }
     }

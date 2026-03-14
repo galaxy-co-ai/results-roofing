@@ -132,23 +132,6 @@ export async function GET(request: NextRequest) {
           }
         }
       }
-    } else if (layers.mesh === undefined || layers.mesh === null) {
-      // Partial cache — has images but no mesh. Re-run mesh pipeline only.
-      const apiKey = process.env.GOOGLE_SOLAR_API_KEY;
-      if (apiKey) {
-        const freshLayers = await fetchRoofLayers(center.latitude, center.longitude, apiKey);
-        if (freshLayers?.mesh) {
-          layers = { ...layers, mesh: freshLayers.mesh };
-          try {
-            await db
-              .update(schema.measurements)
-              .set({ roofLayers: layers })
-              .where(eq(schema.measurements.id, measurement.id));
-          } catch (cacheErr) {
-            logger.error('[RoofData] Failed to cache mesh update', cacheErr);
-          }
-        }
-      }
     }
 
     const response: RoofDataResponse = {

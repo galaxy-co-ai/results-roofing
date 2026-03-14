@@ -1,0 +1,1798 @@
+{
+  "version": "2.8",
+  "children": [
+    {
+      "type": "frame",
+      "id": "CSe2G",
+      "x": 0,
+      "y": 0,
+      "name": "About Page — Desktop 1440",
+      "width": 1440,
+      "fill": "#000000",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "jrHYe",
+          "name": "Hero Section",
+          "width": "fill_container",
+          "fill": "#1E2329",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            100,
+            120
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "F4RZO",
+              "name": "overline",
+              "fill": "#2563EB",
+              "content": "ABOUT RESULTS ROOFING",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "600",
+              "letterSpacing": 3
+            },
+            {
+              "type": "text",
+              "id": "4CTGR",
+              "name": "headline",
+              "fill": "#FFFFFF",
+              "textGrowth": "fixed-width",
+              "width": 900,
+              "content": "You shouldn't need a salesperson to get a roof price.",
+              "lineHeight": 1.1,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 52,
+              "fontWeight": "700",
+              "letterSpacing": -1
+            },
+            {
+              "type": "text",
+              "id": "5INsR",
+              "name": "subline",
+              "fill": "#94A3B8",
+              "textGrowth": "fixed-width",
+              "width": 680,
+              "content": "We use satellite technology and transparent pricing to give you an instant quote in minutes — no home visit, no pressure, no games.",
+              "lineHeight": 1.6,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "ZlLU6",
+              "name": "ctaRow",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "mkLJ4",
+                  "name": "ctaPrimary",
+                  "fill": "#2563EB",
+                  "gap": 8,
+                  "padding": [
+                    16,
+                    32
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "EOFfE",
+                      "name": "ctaText",
+                      "fill": "#FFFFFF",
+                      "content": "Get Your Instant Quote",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "pfrL2",
+                      "name": "ctaArrow",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "arrow-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "E1EMZ",
+                  "name": "ctaSecondary",
+                  "fill": "#94A3B8",
+                  "content": "Takes less than 3 minutes",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "DqTA1",
+          "name": "Counter-Narrative",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "layout": "vertical",
+          "gap": 48,
+          "padding": [
+            80,
+            120
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "iIUFM",
+              "name": "contrastTitle",
+              "fill": "#1E2329",
+              "content": "A different kind of roofing company.",
+              "lineHeight": 1.2,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 32,
+              "fontWeight": "700",
+              "letterSpacing": -0.5
+            },
+            {
+              "type": "frame",
+              "id": "yopza",
+              "name": "Comparison Columns",
+              "width": 1000,
+              "gap": 40,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "T3V4l",
+                  "name": "The Old Way",
+                  "width": "fill_container",
+                  "fill": "#F8F5F2",
+                  "cornerRadius": 6,
+                  "layout": "vertical",
+                  "gap": 24,
+                  "padding": 32,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "j66iA",
+                      "name": "oldLabel",
+                      "fill": "#EF4444",
+                      "content": "THE OLD WAY",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "600",
+                      "letterSpacing": 2
+                    },
+                    {
+                      "type": "text",
+                      "id": "r7cSo",
+                      "name": "oldTitle",
+                      "fill": "#1E2329",
+                      "content": "The typical roofing experience",
+                      "lineHeight": 1.3,
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "NwJo7",
+                      "name": "oldList",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 16,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "ltwIX",
+                          "name": "oldItem1",
+                          "gap": 12,
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "PrluZ",
+                              "name": "oldIcon1",
+                              "width": 20,
+                              "height": 20,
+                              "iconFontName": "x",
+                              "iconFontFamily": "lucide",
+                              "fill": "#EF4444"
+                            },
+                            {
+                              "type": "text",
+                              "id": "cYeoN",
+                              "name": "oldText1",
+                              "fill": "#6B7280",
+                              "textGrowth": "fixed-width",
+                              "width": 380,
+                              "content": "Salesperson knocks on your door uninvited",
+                              "lineHeight": 1.5,
+                              "fontFamily": "Inter",
+                              "fontSize": 15,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "ngQfp",
+                          "name": "oldItem2",
+                          "gap": 12,
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "A0uUR",
+                              "name": "oldIcon2",
+                              "width": 20,
+                              "height": 20,
+                              "iconFontName": "x",
+                              "iconFontFamily": "lucide",
+                              "fill": "#EF4444"
+                            },
+                            {
+                              "type": "text",
+                              "id": "2KOT8",
+                              "name": "oldText2",
+                              "fill": "#6B7280",
+                              "textGrowth": "fixed-width",
+                              "width": 380,
+                              "content": "Wait days or weeks for a quote",
+                              "lineHeight": 1.5,
+                              "fontFamily": "Inter",
+                              "fontSize": 15,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "lkCND",
+                          "name": "oldItem3",
+                          "gap": 12,
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "pcd8L",
+                              "name": "oldIcon3",
+                              "width": 20,
+                              "height": 20,
+                              "iconFontName": "x",
+                              "iconFontFamily": "lucide",
+                              "fill": "#EF4444"
+                            },
+                            {
+                              "type": "text",
+                              "id": "jfB8I",
+                              "name": "oldText3",
+                              "fill": "#6B7280",
+                              "textGrowth": "fixed-width",
+                              "width": 380,
+                              "content": "Hidden fees revealed after you've committed",
+                              "lineHeight": 1.5,
+                              "fontFamily": "Inter",
+                              "fontSize": 15,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "Wb45U",
+                          "name": "oldItem4",
+                          "gap": 12,
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "shis2",
+                              "name": "oldIcon4",
+                              "width": 20,
+                              "height": 20,
+                              "iconFontName": "x",
+                              "iconFontFamily": "lucide",
+                              "fill": "#EF4444"
+                            },
+                            {
+                              "type": "text",
+                              "id": "6leRh",
+                              "name": "oldText4",
+                              "fill": "#6B7280",
+                              "textGrowth": "fixed-width",
+                              "width": 380,
+                              "content": "High-pressure tactics to close the sale today",
+                              "lineHeight": 1.5,
+                              "fontFamily": "Inter",
+                              "fontSize": 15,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "BFs9R",
+                  "name": "Our Way",
+                  "width": "fill_container",
+                  "fill": "#EFF6FF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#BFDBFE"
+                  },
+                  "layout": "vertical",
+                  "gap": 24,
+                  "padding": 32,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "E5JVA",
+                      "name": "ourLabel",
+                      "fill": "#2563EB",
+                      "content": "OUR WAY",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "600",
+                      "letterSpacing": 2
+                    },
+                    {
+                      "type": "text",
+                      "id": "J3RGS",
+                      "name": "ourTitle",
+                      "fill": "#1E2329",
+                      "content": "The Results Roofing experience",
+                      "lineHeight": 1.3,
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "PT4AI",
+                      "name": "ourList",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 16,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "KFmrb",
+                          "name": "ourItem1",
+                          "gap": 12,
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "inyEn",
+                              "name": "ourIconA",
+                              "width": 20,
+                              "height": 20,
+                              "iconFontName": "check",
+                              "iconFontFamily": "lucide",
+                              "fill": "#2563EB"
+                            },
+                            {
+                              "type": "text",
+                              "id": "jFOpB",
+                              "name": "ourTextA",
+                              "fill": "#1E2329",
+                              "textGrowth": "fixed-width",
+                              "width": 380,
+                              "content": "Get your quote online in under 3 minutes",
+                              "lineHeight": 1.5,
+                              "fontFamily": "Inter",
+                              "fontSize": 15,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "6cZy7",
+                          "name": "ourItem2",
+                          "gap": 12,
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "gG2Uk",
+                              "name": "ourIconB",
+                              "width": 20,
+                              "height": 20,
+                              "iconFontName": "check",
+                              "iconFontFamily": "lucide",
+                              "fill": "#2563EB"
+                            },
+                            {
+                              "type": "text",
+                              "id": "427ho",
+                              "name": "ourTextB",
+                              "fill": "#1E2329",
+                              "textGrowth": "fixed-width",
+                              "width": 380,
+                              "content": "Satellite measures your roof — no visit needed",
+                              "lineHeight": 1.5,
+                              "fontFamily": "Inter",
+                              "fontSize": 15,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "RDayi",
+                          "name": "ourItem3",
+                          "gap": 12,
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "7jSXh",
+                              "name": "ourIconC",
+                              "width": 20,
+                              "height": 20,
+                              "iconFontName": "check",
+                              "iconFontFamily": "lucide",
+                              "fill": "#2563EB"
+                            },
+                            {
+                              "type": "text",
+                              "id": "bhMKj",
+                              "name": "ourTextC",
+                              "fill": "#1E2329",
+                              "textGrowth": "fixed-width",
+                              "width": 380,
+                              "content": "Transparent pricing — see exactly what you're paying for",
+                              "lineHeight": 1.5,
+                              "fontFamily": "Inter",
+                              "fontSize": 15,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "YLTkl",
+                          "name": "ourItem4",
+                          "gap": 12,
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "WWdp8",
+                              "name": "ourIconD",
+                              "width": 20,
+                              "height": 20,
+                              "iconFontName": "check",
+                              "iconFontFamily": "lucide",
+                              "fill": "#2563EB"
+                            },
+                            {
+                              "type": "text",
+                              "id": "24g3a",
+                              "name": "ourTextD",
+                              "fill": "#1E2329",
+                              "textGrowth": "fixed-width",
+                              "width": 380,
+                              "content": "Move forward on your timeline — zero pressure",
+                              "lineHeight": 1.5,
+                              "fontFamily": "Inter",
+                              "fontSize": 15,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "AfRnl",
+          "name": "Process Section",
+          "width": "fill_container",
+          "fill": "#F7F9FC",
+          "layout": "vertical",
+          "gap": 48,
+          "padding": [
+            80,
+            120
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "JhoxZ",
+              "name": "processOverline",
+              "fill": "#2563EB",
+              "content": "HOW IT WORKS",
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "text",
+              "id": "qfc8n",
+              "name": "processTitle",
+              "fill": "#1E2329",
+              "content": "From address to new roof in 5 steps.",
+              "lineHeight": 1.2,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 32,
+              "fontWeight": "700",
+              "letterSpacing": -0.5
+            },
+            {
+              "type": "text",
+              "id": "0cgEk",
+              "name": "processSubline",
+              "fill": "#6B7280",
+              "content": "No salesperson. No home visit. No surprises.",
+              "lineHeight": 1.6,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "Q72e2",
+              "name": "Steps Row",
+              "width": 1100,
+              "gap": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "iaNHk",
+                  "name": "Step 1",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8EDF5"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "13H8s",
+                      "name": "step1Num",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#2563EB",
+                      "cornerRadius": 9999,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "dPpbi",
+                          "name": "step1NumText",
+                          "fill": "#FFFFFF",
+                          "content": "1",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "Avkfh",
+                      "name": "step1Icon",
+                      "width": 28,
+                      "height": 28,
+                      "iconFontName": "map-pin",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2563EB"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Ju5oA",
+                      "name": "step1Title",
+                      "fill": "#1E2329",
+                      "content": "Enter your address",
+                      "lineHeight": 1.3,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "i848Z",
+                      "name": "step1Desc",
+                      "fill": "#6B7280",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Type in your home address. That's all we need to get started.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "D6KXS",
+                  "name": "Step 2",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8EDF5"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "yDtSX",
+                      "name": "step2Num",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#2563EB",
+                      "cornerRadius": 9999,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "k5UiK",
+                          "name": "step2NumText",
+                          "fill": "#FFFFFF",
+                          "content": "2",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "zFRvo",
+                      "name": "step2Icon",
+                      "width": 28,
+                      "height": 28,
+                      "iconFontName": "satellite",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2563EB"
+                    },
+                    {
+                      "type": "text",
+                      "id": "G6RgE",
+                      "name": "step2Title",
+                      "fill": "#1E2329",
+                      "content": "We measure by satellite",
+                      "lineHeight": 1.3,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "i4q80",
+                      "name": "step2Desc",
+                      "fill": "#6B7280",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Google Solar imagery calculates your exact roof area. No ladders, no strangers on your property.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ybnak",
+                  "name": "Step 3",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8EDF5"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "RV5zT",
+                      "name": "step3Num",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#2563EB",
+                      "cornerRadius": 9999,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "MEXSB",
+                          "name": "step3NumText",
+                          "fill": "#FFFFFF",
+                          "content": "3",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "2eUIB",
+                      "name": "step3Icon",
+                      "width": 28,
+                      "height": 28,
+                      "iconFontName": "calculator",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2563EB"
+                    },
+                    {
+                      "type": "text",
+                      "id": "AcVts",
+                      "name": "step3Title",
+                      "fill": "#1E2329",
+                      "content": "See your price instantly",
+                      "lineHeight": 1.3,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "RzY5A",
+                      "name": "step3Desc",
+                      "fill": "#6B7280",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Choose from Good, Better, or Best packages. Pricing is upfront — what you see is what you pay.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "qXPIF",
+                  "name": "Step 4",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8EDF5"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "U7NbB",
+                      "name": "step4Num",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#2563EB",
+                      "cornerRadius": 9999,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "WVyTD",
+                          "name": "step4NumText",
+                          "fill": "#FFFFFF",
+                          "content": "4",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "82u7h",
+                      "name": "step4Icon",
+                      "width": 28,
+                      "height": 28,
+                      "iconFontName": "pen-tool",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2563EB"
+                    },
+                    {
+                      "type": "text",
+                      "id": "9EO1R",
+                      "name": "step4Title",
+                      "fill": "#1E2329",
+                      "content": "Book & sign online",
+                      "lineHeight": 1.3,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "rzKlf",
+                      "name": "step4Desc",
+                      "fill": "#6B7280",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Pick your install date, e-sign your contract, and place a small deposit. All from your couch.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "H7Ioy",
+                  "name": "Step 5",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8EDF5"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "VeKpU",
+                      "name": "step5Num",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#10B981",
+                      "cornerRadius": 9999,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "dfJry",
+                          "name": "step5NumText",
+                          "fill": "#FFFFFF",
+                          "content": "5",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "39T6a",
+                      "name": "step5Icon",
+                      "width": 28,
+                      "height": 28,
+                      "iconFontName": "house",
+                      "iconFontFamily": "lucide",
+                      "fill": "#10B981"
+                    },
+                    {
+                      "type": "text",
+                      "id": "urFP4",
+                      "name": "step5Title",
+                      "fill": "#1E2329",
+                      "content": "We install your roof",
+                      "lineHeight": 1.3,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "lyci8",
+                      "name": "step5Desc",
+                      "fill": "#6B7280",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "GAF-certified crews handle everything — permits, installation, cleanup. Track it all from your portal.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Xej7H",
+          "name": "Stats Section",
+          "width": "fill_container",
+          "fill": "#1E2329",
+          "layout": "vertical",
+          "gap": 48,
+          "padding": [
+            80,
+            120
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "N4DZK",
+              "name": "statsOverline",
+              "fill": "#2563EB",
+              "content": "BY THE NUMBERS",
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "text",
+              "id": "eyun2",
+              "name": "statsTitle",
+              "fill": "#FFFFFF",
+              "content": "Results speak louder than promises.",
+              "lineHeight": 1.2,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 32,
+              "fontWeight": "700",
+              "letterSpacing": -0.5
+            },
+            {
+              "type": "frame",
+              "id": "Cd85D",
+              "name": "Stats Grid",
+              "width": 1000,
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "dZOrM",
+                  "name": "stat1",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "CdkDN",
+                      "name": "stat1Num",
+                      "fill": "#FFFFFF",
+                      "content": "10,000+",
+                      "fontFamily": "Inter",
+                      "fontSize": 48,
+                      "fontWeight": "700",
+                      "letterSpacing": -2
+                    },
+                    {
+                      "type": "text",
+                      "id": "4pDhy",
+                      "name": "stat1Label",
+                      "fill": "#94A3B8",
+                      "content": "Roofs replaced",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "CMvlY",
+                  "name": "divider1",
+                  "fill": "#2A3038",
+                  "width": 1,
+                  "height": 80
+                },
+                {
+                  "type": "frame",
+                  "id": "BuvH5",
+                  "name": "stat2",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "hIhif",
+                      "name": "stat2Num",
+                      "fill": "#FFFFFF",
+                      "content": "5",
+                      "fontFamily": "Inter",
+                      "fontSize": 48,
+                      "fontWeight": "700",
+                      "letterSpacing": -2
+                    },
+                    {
+                      "type": "text",
+                      "id": "LUcGS",
+                      "name": "stat2Label",
+                      "fill": "#94A3B8",
+                      "content": "States served",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "8CiR7",
+                  "name": "divider2",
+                  "fill": "#2A3038",
+                  "width": 1,
+                  "height": 80
+                },
+                {
+                  "type": "frame",
+                  "id": "oUOuQ",
+                  "name": "stat3",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "I4FV6",
+                      "name": "stat3Num",
+                      "fill": "#2563EB",
+                      "content": "< 3 min",
+                      "fontFamily": "Inter",
+                      "fontSize": 48,
+                      "fontWeight": "700",
+                      "letterSpacing": -2
+                    },
+                    {
+                      "type": "text",
+                      "id": "0GX8W",
+                      "name": "stat3Label",
+                      "fill": "#94A3B8",
+                      "content": "To get your quote",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "vsVo6",
+                  "name": "divider3",
+                  "fill": "#2A3038",
+                  "width": 1,
+                  "height": 80
+                },
+                {
+                  "type": "frame",
+                  "id": "XDgeF",
+                  "name": "stat4",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "RiQrf",
+                      "name": "stat4Num",
+                      "fill": "#10B981",
+                      "content": "$0",
+                      "fontFamily": "Inter",
+                      "fontSize": 48,
+                      "fontWeight": "700",
+                      "letterSpacing": -2
+                    },
+                    {
+                      "type": "text",
+                      "id": "RrQVK",
+                      "name": "stat4Label",
+                      "fill": "#94A3B8",
+                      "content": "For your estimate",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ffaBm",
+          "name": "Trust Section",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "layout": "vertical",
+          "gap": 48,
+          "padding": [
+            80,
+            120
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "HEAgd",
+              "name": "trustOverline",
+              "fill": "#2563EB",
+              "content": "WHY HOMEOWNERS TRUST US",
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "text",
+              "id": "BBZX3",
+              "name": "trustTitle",
+              "fill": "#1E2329",
+              "content": "Certified. Insured. Proven.",
+              "lineHeight": 1.2,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 32,
+              "fontWeight": "700",
+              "letterSpacing": -0.5
+            },
+            {
+              "type": "frame",
+              "id": "AeRPv",
+              "name": "Trust Cards",
+              "width": 1100,
+              "gap": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "6Le8P",
+                  "name": "card1",
+                  "width": "fill_container",
+                  "fill": "#F7F9FC",
+                  "cornerRadius": 6,
+                  "layout": "vertical",
+                  "gap": 20,
+                  "padding": 32,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "KyPMY",
+                      "name": "card1Icon",
+                      "width": 52,
+                      "height": 52,
+                      "fill": "#EFF6FF",
+                      "cornerRadius": 12,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "zxFc8",
+                          "name": "card1IconInner",
+                          "width": 24,
+                          "height": 24,
+                          "iconFontName": "shield-check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#2563EB"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "ctH9O",
+                      "name": "card1Title",
+                      "fill": "#1E2329",
+                      "content": "GAF Certified",
+                      "lineHeight": 1.3,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "uFI7R",
+                      "name": "card1Desc",
+                      "fill": "#6B7280",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Factory-certified installers trained in the latest techniques. Your roof is backed by one of the strongest warranties in the industry.",
+                      "lineHeight": 1.6,
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "VGoJ0",
+                  "name": "card2",
+                  "width": "fill_container",
+                  "fill": "#F7F9FC",
+                  "cornerRadius": 6,
+                  "layout": "vertical",
+                  "gap": 20,
+                  "padding": 32,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "8LM6H",
+                      "name": "card2Icon",
+                      "width": 52,
+                      "height": 52,
+                      "fill": "#ECFDF5",
+                      "cornerRadius": 12,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "x9sIz",
+                          "name": "card2IconInner",
+                          "width": 24,
+                          "height": 24,
+                          "iconFontName": "award",
+                          "iconFontFamily": "lucide",
+                          "fill": "#10B981"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "iRxmn",
+                      "name": "card2Title",
+                      "fill": "#1E2329",
+                      "content": "Licensed & Insured",
+                      "lineHeight": 1.3,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "IPU6s",
+                      "name": "card2Desc",
+                      "fill": "#6B7280",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Fully licensed contractor with comprehensive insurance coverage in every state we operate. Your home is protected from day one.",
+                      "lineHeight": 1.6,
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kvVGk",
+                  "name": "card3",
+                  "width": "fill_container",
+                  "fill": "#F7F9FC",
+                  "cornerRadius": 6,
+                  "layout": "vertical",
+                  "gap": 20,
+                  "padding": 32,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "MB9C7",
+                      "name": "card3Icon",
+                      "width": 52,
+                      "height": 52,
+                      "fill": "#FFF7ED",
+                      "cornerRadius": 12,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "gi3XP",
+                          "name": "card3IconInner",
+                          "width": 24,
+                          "height": 24,
+                          "iconFontName": "eye",
+                          "iconFontFamily": "lucide",
+                          "fill": "#F59E0B"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "Rkpyj",
+                      "name": "card3Title",
+                      "fill": "#1E2329",
+                      "content": "Transparent Pricing",
+                      "lineHeight": 1.3,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "OXWpT",
+                      "name": "card3Desc",
+                      "fill": "#6B7280",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "No hidden fees, no surprise charges, no bait-and-switch. Your quote is your price. We publish our pricing tiers because we have nothing to hide.",
+                      "lineHeight": 1.6,
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "hC4dm",
+          "name": "Service Areas",
+          "width": "fill_container",
+          "fill": "#F7F9FC",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            64,
+            120
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "utxNR",
+              "name": "areasOverline",
+              "fill": "#2563EB",
+              "content": "WHERE WE WORK",
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "text",
+              "id": "pAeLe",
+              "name": "areasTitle",
+              "fill": "#1E2329",
+              "content": "Serving homeowners across 5 states.",
+              "lineHeight": 1.2,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 32,
+              "fontWeight": "700",
+              "letterSpacing": -0.5
+            },
+            {
+              "type": "text",
+              "id": "IngbL",
+              "name": "areasDesc",
+              "fill": "#6B7280",
+              "content": "Texas, Georgia, North Carolina, Arizona, and Oklahoma — with more on the way.",
+              "lineHeight": 1.6,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "8vMMf",
+              "name": "Areas Grid",
+              "width": 1000,
+              "gap": 16,
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "AdsZ3",
+                  "name": "area1",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8EDF5"
+                  },
+                  "gap": 8,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "v01AX",
+                      "name": "area1Icon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "map-pin",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2563EB"
+                    },
+                    {
+                      "type": "text",
+                      "id": "B0Wjh",
+                      "name": "area1Text",
+                      "fill": "#1E2329",
+                      "content": "Texas",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "D4vJA",
+                  "name": "area2",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8EDF5"
+                  },
+                  "gap": 8,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "ImDLu",
+                      "name": "area2Icon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "map-pin",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2563EB"
+                    },
+                    {
+                      "type": "text",
+                      "id": "kfwp6",
+                      "name": "area2Text",
+                      "fill": "#1E2329",
+                      "content": "Georgia",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rMDBL",
+                  "name": "area3",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8EDF5"
+                  },
+                  "gap": 8,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "XJx2U",
+                      "name": "area3Icon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "map-pin",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2563EB"
+                    },
+                    {
+                      "type": "text",
+                      "id": "d3TVT",
+                      "name": "area3Text",
+                      "fill": "#1E2329",
+                      "content": "North Carolina",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "LDYCA",
+                  "name": "area4",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8EDF5"
+                  },
+                  "gap": 8,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "03DhC",
+                      "name": "area4Icon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "map-pin",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2563EB"
+                    },
+                    {
+                      "type": "text",
+                      "id": "FTs3P",
+                      "name": "area4Text",
+                      "fill": "#1E2329",
+                      "content": "Arizona",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rVjJi",
+                  "name": "area5",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E8EDF5"
+                  },
+                  "gap": 8,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "c5Sgr",
+                      "name": "area5Icon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "map-pin",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2563EB"
+                    },
+                    {
+                      "type": "text",
+                      "id": "gw4Bd",
+                      "name": "area5Text",
+                      "fill": "#1E2329",
+                      "content": "Oklahoma",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "0O7MV",
+          "name": "Final CTA",
+          "width": "fill_container",
+          "fill": "#2563EB",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            100,
+            120
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "R1qav",
+              "name": "ctaTitle",
+              "fill": "#FFFFFF",
+              "content": "See for yourself.",
+              "lineHeight": 1.15,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 40,
+              "fontWeight": "700",
+              "letterSpacing": -1
+            },
+            {
+              "type": "text",
+              "id": "muNjJ",
+              "name": "ctaSub",
+              "fill": "#BFDBFE",
+              "content": "Get your instant roof quote in under 3 minutes. No signup required.",
+              "lineHeight": 1.6,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "TbzpQ",
+              "name": "ctaBtnRow",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "88gB6",
+                  "name": "ctaBtn",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "gap": 8,
+                  "padding": [
+                    16,
+                    32
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "FpnPx",
+                      "name": "ctaBtnText",
+                      "fill": "#2563EB",
+                      "content": "Get My Quote",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "UfsVl",
+                      "name": "ctaBtnArrow",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "arrow-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "#2563EB"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "WlLZl",
+              "name": "ctaNote",
+              "fill": "#93C5FD",
+              "content": "Free estimate  ·  No home visit  ·  No obligation",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "$--accent": {
+      "type": "color",
+      "value": "#2563EB"
+    },
+    "$--background": {
+      "type": "color",
+      "value": "#F7F9FC"
+    },
+    "$--border": {
+      "type": "color",
+      "value": "#E8EDF5"
+    },
+    "$--card": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "$--color-error": {
+      "type": "color",
+      "value": "#EF4444"
+    },
+    "$--color-success": {
+      "type": "color",
+      "value": "#10B981"
+    },
+    "$--color-warning": {
+      "type": "color",
+      "value": "#F59E0B"
+    },
+    "$--destructive": {
+      "type": "color",
+      "value": "#EF4444"
+    },
+    "$--font-primary": {
+      "type": "string",
+      "value": "system-ui"
+    },
+    "$--font-secondary": {
+      "type": "string",
+      "value": "system-ui"
+    },
+    "$--foreground": {
+      "type": "color",
+      "value": "#1E2329"
+    },
+    "$--muted-foreground": {
+      "type": "color",
+      "value": "#6B7280"
+    },
+    "$--primary": {
+      "type": "color",
+      "value": "#2563EB"
+    },
+    "$--radius-m": {
+      "type": "number",
+      "value": 6
+    },
+    "$--radius-pill": {
+      "type": "number",
+      "value": 9999
+    },
+    "$--secondary": {
+      "type": "color",
+      "value": "#F2F4F8"
+    }
+  }
+}

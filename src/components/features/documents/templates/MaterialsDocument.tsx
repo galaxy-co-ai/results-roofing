@@ -7,11 +7,11 @@ interface MaterialsDocumentProps {
 
 export function MaterialsDocument({ document }: MaterialsDocumentProps) {
   const project = document.projectData || {
-    address: '123 Main Street, Austin, TX 78701',
-    customerName: 'John Smith',
-    packageName: 'Premium Package',
-    contractDate: 'January 22, 2026',
-    materials: 'GAF Timberline HDZ Architectural Shingles',
+    address: '',
+    customerName: '',
+    packageName: '',
+    contractDate: '',
+    materials: '',
   };
 
   return (
