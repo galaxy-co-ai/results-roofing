@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { Home } from 'lucide-react';
 import { PortalHeader } from '@/components/features/portal/PortalHeader/PortalHeader';
-import { RoofImageViewer } from '@/components/features/roof/RoofImageViewer';
+import { RoofCanvasViewer } from '@/components/features/roof/RoofCanvasViewer';
 import { ShingleSelector } from '@/components/features/roof/ShingleSelector';
 import { RoofStats } from '@/components/features/roof/RoofStats';
 import { RoofPageSkeleton } from '@/components/features/roof/RoofPageSkeleton';
@@ -42,12 +42,23 @@ function RoofContent({ email }: { email: string | null }) {
       <div className={styles.content}>
         {/* Satellite aerial view */}
         <div className={styles.viewport}>
-          {hasData ? (
-            <RoofImageViewer
-              buildingCenter={roofData.buildingCenter}
+          {hasData && roofData?.layers ? (
+            <RoofCanvasViewer
+              rgbBase64={roofData.layers.rgb}
+              maskBase64={roofData.layers.mask}
+              width={roofData.layers.width}
+              height={roofData.layers.height}
               shingleHex={selectedShingle.hex}
               shingleName={selectedShingle.name}
             />
+          ) : hasData ? (
+            <div className={styles.emptyState}>
+              <Home size={40} color="var(--rr-color-muted)" />
+              <p className={styles.emptyTitle}>Roof Preview Unavailable</p>
+              <p className={styles.emptyText}>
+                Roof visualization is not available for this location. You can still select shingle colors from the swatches.
+              </p>
+            </div>
           ) : (
             <div className={styles.emptyState}>
               <Home size={40} color="var(--rr-color-muted)" />
