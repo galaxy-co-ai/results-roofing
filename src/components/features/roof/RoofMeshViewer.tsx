@@ -1,50 +1,24 @@
 'use client';
 
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
-import type { RoofMesh } from '@/lib/roof/types';
+import type { RoofGeometry } from '@/lib/roof/types';
 
 interface RoofMeshViewerProps {
-  mesh: RoofMesh;
+  geometry: RoofGeometry;
   shingleHex: string;
 }
 
-/** Decode a base64 string into a typed array */
-function decodeBase64Float32(base64: string): Float32Array {
-  const binary = atob(base64);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i);
-  }
-  return new Float32Array(bytes.buffer);
-}
-
-function decodeBase64Uint32(base64: string): Uint32Array {
-  const binary = atob(base64);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i);
-  }
-  return new Uint32Array(bytes.buffer);
-}
-
-function RoofScene({ mesh, shingleHex }: RoofMeshViewerProps) {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  const geometry = useMemo(() => {
-    const positions = decodeBase64Float32(mesh.positions);
-    const normals = decodeBase64Float32(mesh.normals);
-    const indices = decodeBase64Uint32(mesh.indices);
-
+function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
+  const bufferGeometry = useMemo(() => {
     const geom = new THREE.BufferGeometry();
-    geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geom.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
-    geom.setIndex(new THREE.BufferAttribute(indices, 1));
-
+    geom.setAttribute('position', new THREE.BufferAttribute(geometry.positions, 3));
+    geom.setAttribute('normal', new THREE.BufferAttribute(geometry.normals, 3));
+    geom.setIndex(new THREE.BufferAttribute(geometry.indices, 1));
     return geom;
-  }, [mesh.positions, mesh.normals, mesh.indices]);
+  }, [geometry.positions, geometry.normals, geometry.indices]);
 
   const material = useMemo(() => {
     return new THREE.MeshStandardMaterial({
@@ -54,38 +28,32 @@ function RoofScene({ mesh, shingleHex }: RoofMeshViewerProps) {
       flatShading: false,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // material created once, color updated via useEffect
+  }, []);
 
-  // Update color reactively without recreating material
   useEffect(() => {
     material.color.set(shingleHex);
   }, [shingleHex, material]);
 
-  // Dispose GPU resources on unmount
   useEffect(() => {
     return () => {
-      geometry.dispose();
+      bufferGeometry.dispose();
       material.dispose();
     };
-  }, [geometry, material]);
+  }, [bufferGeometry, material]);
 
   return (
     <>
-      {/* Lighting — two directional lights for visible slope shading */}
       <ambientLight intensity={0.6} />
       <directionalLight position={[10, 20, 8]} intensity={0.9} />
       <directionalLight position={[-8, 12, -6]} intensity={0.3} />
 
-      {/* Roof mesh */}
-      <mesh ref={meshRef} geometry={geometry} material={material} />
+      <mesh geometry={bufferGeometry} material={material} />
 
-      {/* Ground plane */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
         <planeGeometry args={[40, 40]} />
         <meshStandardMaterial color="#e5e5e5" roughness={1} />
       </mesh>
 
-      {/* Controls */}
       <OrbitControls
         enableDamping
         dampingFactor={0.1}
@@ -97,19 +65,14 @@ function RoofScene({ mesh, shingleHex }: RoofMeshViewerProps) {
   );
 }
 
-export function RoofMeshViewer({ mesh, shingleHex }: RoofMeshViewerProps) {
+export function RoofMeshViewer({ geometry, shingleHex }: RoofMeshViewerProps) {
   return (
     <div style={{ width: '100%', height: '100%', minHeight: 400 }}>
       <Canvas
-        camera={{
-          position: [12, 10, 12],
-          fov: 50,
-          near: 0.1,
-          far: 200,
-        }}
+        camera={{ position: [12, 10, 12], fov: 50, near: 0.1, far: 200 }}
         style={{ background: 'var(--background, #f0f0f0)' }}
       >
-        <RoofScene mesh={mesh} shingleHex={shingleHex} />
+        <RoofScene geometry={geometry} shingleHex={shingleHex} />
       </Canvas>
     </div>
   );
