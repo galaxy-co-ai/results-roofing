@@ -33,7 +33,7 @@ const RoofViewer = dynamic(
 // ---------------------------------------------------------------------------
 
 function RoofContent({ email }: { email: string | null }) {
-  const { phase, isLoading: phaseLoading, quote } = usePortalPhase(email);
+  const { isLoading: phaseLoading, quote } = usePortalPhase(email);
   const quoteId = quote?.id ?? null;
 
   const { data: roofData, isLoading: dataLoading } = useRoofData(quoteId);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CameraControls } from '@react-three/drei';
 import type { CameraPreset } from '@/lib/roof/types';
 
