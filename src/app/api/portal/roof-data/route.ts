@@ -117,11 +117,11 @@ export async function GET(request: NextRequest) {
     let layers: RoofLayers | null = (measurement.roofLayers as RoofLayers) ?? null;
 
     if (!layers) {
+      // Full cache miss — fetch everything
       const apiKey = process.env.GOOGLE_SOLAR_API_KEY;
       if (apiKey) {
         layers = await fetchRoofLayers(center.latitude, center.longitude, apiKey);
         if (layers) {
-          // Cache in DB — never need to call the API again for this property
           try {
             await db
               .update(schema.measurements)
@@ -129,7 +129,23 @@ export async function GET(request: NextRequest) {
               .where(eq(schema.measurements.id, measurement.id));
           } catch (cacheErr) {
             logger.error('[RoofData] Failed to cache layers', cacheErr);
-            // Non-fatal — we still have the layers for this response
+          }
+        }
+      }
+    } else if (layers.mesh === undefined || layers.mesh === null) {
+      // Partial cache — has images but no mesh. Re-run mesh pipeline only.
+      const apiKey = process.env.GOOGLE_SOLAR_API_KEY;
+      if (apiKey) {
+        const freshLayers = await fetchRoofLayers(center.latitude, center.longitude, apiKey);
+        if (freshLayers?.mesh) {
+          layers = { ...layers, mesh: freshLayers.mesh };
+          try {
+            await db
+              .update(schema.measurements)
+              .set({ roofLayers: layers })
+              .where(eq(schema.measurements.id, measurement.id));
+          } catch (cacheErr) {
+            logger.error('[RoofData] Failed to cache mesh update', cacheErr);
           }
         }
       }
