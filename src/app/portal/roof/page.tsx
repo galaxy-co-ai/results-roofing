@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
-import { Home } from 'lucide-react';
+import { Home, Loader2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { PortalHeader } from '@/components/features/portal/PortalHeader/PortalHeader';
 import { ShingleSelector } from '@/components/features/roof/ShingleSelector';
@@ -11,9 +11,10 @@ import { RoofPageSkeleton } from '@/components/features/roof/RoofPageSkeleton';
 import { usePortalPhase } from '@/hooks/usePortalPhase';
 import { useRoofData } from '@/hooks/useRoofData';
 import { getDefaultShingle } from '@/lib/roof/shingle-catalog';
-import { buildRoofGeometry } from '@/lib/roof/facet-geometry';
+import { parseDxfToFacets } from '@/lib/roof/dxf-parser';
+import { buildGeometryFromFacets } from '@/lib/roof/dxf-to-geometry';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
-import type { ShingleOption } from '@/lib/roof/types';
+import type { ShingleOption, RoofGeometry } from '@/lib/roof/types';
 import styles from './page.module.css';
 
 const RoofMeshViewer = dynamic(
@@ -28,23 +29,51 @@ const RoofMeshViewer = dynamic(
 function RoofContent({ email }: { email: string | null }) {
   const { isLoading: phaseLoading, quote } = usePortalPhase(email);
   const quoteId = quote?.id ?? null;
-
   const { data: roofData, isLoading: dataLoading } = useRoofData(quoteId);
 
   const [selectedShingle, setSelectedShingle] = useState<ShingleOption>(
     () => getDefaultShingle('better'),
   );
 
-  const roofGeometry = useMemo(() => {
-    if (!roofData?.segments || !roofData?.buildingCenter) return null;
-    return buildRoofGeometry(roofData.segments, roofData.buildingCenter);
-  }, [roofData?.segments, roofData?.buildingCenter]);
+  // Fetch and parse DXF when URL is available
+  const [roofGeometry, setRoofGeometry] = useState<RoofGeometry | null>(null);
+  const [dxfLoading, setDxfLoading] = useState(false);
+
+  const dxfUrl = roofData?.gafDxfUrl ?? null;
+
+  useEffect(() => {
+    if (!dxfUrl) {
+      setRoofGeometry(null);
+      return;
+    }
+
+    let cancelled = false;
+    setDxfLoading(true);
+
+    fetch(dxfUrl)
+      .then(res => res.text())
+      .then(dxfText => {
+        if (cancelled) return;
+        const facets = parseDxfToFacets(dxfText);
+        const geometry = buildGeometryFromFacets(facets);
+        setRoofGeometry(geometry);
+      })
+      .catch(() => {
+        if (!cancelled) setRoofGeometry(null);
+      })
+      .finally(() => {
+        if (!cancelled) setDxfLoading(false);
+      });
+
+    return () => { cancelled = true; };
+  }, [dxfUrl]);
 
   if (phaseLoading || dataLoading) {
     return <RoofPageSkeleton />;
   }
 
   const hasData = !!roofData?.buildingCenter;
+  const gafStatus = roofData?.gafStatus ?? 'none';
 
   return (
     <div className={styles.page}>
@@ -57,6 +86,14 @@ function RoofContent({ email }: { email: string | null }) {
               geometry={roofGeometry}
               shingleHex={selectedShingle.hex}
             />
+          ) : gafStatus === 'pending' || dxfLoading ? (
+            <div className={styles.emptyState}>
+              <Loader2 size={40} color="var(--rr-color-muted)" className={styles.spinner} />
+              <p className={styles.emptyTitle}>Your Roof Model Is Being Prepared</p>
+              <p className={styles.emptyText}>
+                This typically takes about an hour. The page will update automatically when your roof is ready.
+              </p>
+            </div>
           ) : hasData ? (
             <div className={styles.emptyState}>
               <Home size={40} color="var(--rr-color-muted)" />
