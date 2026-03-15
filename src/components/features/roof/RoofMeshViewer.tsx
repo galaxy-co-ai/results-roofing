@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, ContactShadows } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import type { RoofGeometry } from '@/lib/roof/types';
 
@@ -36,7 +36,10 @@ function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
       roughness: 0.8,
       metalness: 0.1,
       flatShading: false,
-      side: THREE.DoubleSide,
+      side: THREE.FrontSide,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+      polygonOffsetUnits: -1,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -55,25 +58,22 @@ function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
 
   return (
     <>
-      <ambientLight intensity={0.4} />
-      <hemisphereLight args={['#87CEEB', '#e0ddd8', 0.3]} />
-      <directionalLight position={[10, 20, 8]} intensity={1.0} castShadow />
-      <directionalLight position={[-8, 12, -6]} intensity={0.3} />
+      <ambientLight intensity={0.5} />
+      <hemisphereLight args={['#87CEEB', '#e0ddd8', 0.4]} />
+      <directionalLight position={[10, 20, 8]} intensity={1.0} />
+      <directionalLight position={[-8, 12, -6]} intensity={0.4} />
 
       <mesh geometry={roofBufferGeometry} material={shingleMaterial} />
       {wallBufferGeometry.attributes.position && (
         <mesh geometry={wallBufferGeometry}>
-          <meshStandardMaterial color="#e0ddd8" roughness={0.9} metalness={0} side={THREE.DoubleSide} />
+          <meshStandardMaterial color="#e0ddd8" roughness={0.9} metalness={0} side={THREE.FrontSide} />
         </mesh>
       )}
 
-      <ContactShadows
-        position={[0, -0.01, 0]}
-        opacity={0.4}
-        scale={30}
-        blur={2}
-        far={20}
-      />
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]} receiveShadow>
+        <planeGeometry args={[50, 50]} />
+        <shadowMaterial opacity={0.15} />
+      </mesh>
 
       <OrbitControls
         enableDamping
