@@ -103,10 +103,7 @@ function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
       roughness: 0.85,
       metalness: 0.05,
       flatShading: false,
-      side: THREE.FrontSide,
-      polygonOffset: true,
-      polygonOffsetFactor: -1,
-      polygonOffsetUnits: -1,
+      side: THREE.DoubleSide,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shingleTexture]);
@@ -134,7 +131,7 @@ function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
       <mesh geometry={roofBufferGeometry} material={shingleMaterial} />
       {wallBufferGeometry.attributes.position && (
         <mesh geometry={wallBufferGeometry}>
-          <meshStandardMaterial color="#e0ddd8" roughness={0.9} metalness={0} side={THREE.FrontSide} />
+          <meshStandardMaterial color="#e0ddd8" roughness={0.9} metalness={0} side={THREE.DoubleSide} />
         </mesh>
       )}
 
