@@ -1,5 +1,8 @@
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
 import { buildGeometryFromFacets } from '../dxf-to-geometry';
+import { parseDxfToFacets } from '../dxf-parser';
 import type { DxfFacet } from '../types';
 
 const gableFacets: DxfFacet[] = [
@@ -74,6 +77,26 @@ describe('buildGeometryFromFacets', () => {
 
   it('all indices reference valid vertices', () => {
     const geo = buildGeometryFromFacets(gableFacets)!;
+    for (let i = 0; i < geo.indices.length; i++) {
+      expect(geo.indices[i]).toBeLessThan(geo.vertexCount);
+    }
+  });
+
+  it('builds complete geometry from real GAF DXF (3815 Sendera Lakes)', () => {
+    const dxfPath = resolve(__dirname, '../../../../docs/gaf-3815.dxf');
+    const dxfText = readFileSync(dxfPath, 'utf8');
+    const facets = parseDxfToFacets(dxfText);
+    const geo = buildGeometryFromFacets(facets)!;
+
+    expect(geo).not.toBeNull();
+    expect(geo.facetCount).toBe(20);
+    expect(geo.vertexCount).toBeGreaterThan(100); // 20 facets + walls
+    expect(geo.triangleCount).toBeGreaterThan(40);
+    expect(geo.positions.length).toBe(geo.vertexCount * 3);
+    expect(geo.normals.length).toBe(geo.vertexCount * 3);
+    expect(geo.indices.length).toBe(geo.triangleCount * 3);
+
+    // All indices valid
     for (let i = 0; i < geo.indices.length; i++) {
       expect(geo.indices[i]).toBeLessThan(geo.vertexCount);
     }

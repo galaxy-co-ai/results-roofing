@@ -1,3 +1,5 @@
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
 import { parseDxfToFacets } from '../dxf-parser';
 
@@ -133,5 +135,21 @@ describe('parseDxfToFacets', () => {
   it('deduplicates 4th vertex when it equals the 3rd (triangle face)', () => {
     const facets = parseDxfToFacets(SINGLE_TRIANGLE_DXF);
     expect(facets[0].vertices.length).toBe(3);
+  });
+
+  it('parses real GAF QuickMeasure DXF (POLYLINE polyface mesh)', () => {
+    const dxfPath = resolve(__dirname, '../../../../docs/gaf-3815.dxf');
+    const dxfText = readFileSync(dxfPath, 'utf8');
+    const facets = parseDxfToFacets(dxfText);
+
+    // GAF report for 3815 Sendera Lakes Dr has 20 roof facets
+    expect(facets.length).toBe(20);
+
+    // Each facet should have at least 3 vertices and a unit normal
+    for (const f of facets) {
+      expect(f.vertices.length).toBeGreaterThanOrEqual(3);
+      const len = Math.sqrt(f.normal[0] ** 2 + f.normal[1] ** 2 + f.normal[2] ** 2);
+      expect(len).toBeCloseTo(1.0, 4);
+    }
   });
 });

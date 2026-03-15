@@ -1,8 +1,9 @@
 /**
  * Parse a DXF file string into roof facet polygons.
  *
- * Extracts 3DFACE entities (triangulated roof surfaces) from the DXF
- * and returns them as arrays of 3D vertices with computed face normals.
+ * Handles two DXF entity formats:
+ * - POLYLINE (polyface mesh, flag=8) — used by GAF QuickMeasure
+ * - 3DFACE — standard triangulated surfaces
  */
 
 import DxfParser from 'dxf-parser';
@@ -27,28 +28,62 @@ export function parseDxfToFacets(dxfText: string): DxfFacet[] {
   const facets: DxfFacet[] = [];
 
   for (const entity of dxf.entities) {
-    if (entity.type !== '3DFACE') continue;
+    // GAF QuickMeasure uses POLYLINE (polyface mesh) entities
+    if (entity.type === 'POLYLINE') {
+      const verts = (entity as { vertices?: { x: number; y: number; z: number }[] }).vertices;
+      if (!verts) continue;
 
-    const verts = (entity as { vertices?: { x: number; y: number; z: number }[] }).vertices;
-    if (!verts || verts.length < 3) continue;
+      const validVerts = verts.filter(
+        v => typeof v.x === 'number' && typeof v.y === 'number' && typeof v.z === 'number',
+      );
+      if (validVerts.length < 3) continue;
 
-    // Filter out incomplete vertices (dxf-parser sometimes appends an empty {})
-    const validVerts = verts.filter(v => typeof v.x === 'number' && typeof v.y === 'number' && typeof v.z === 'number');
-    if (validVerts.length < 3) continue;
+      const points: Vec3[] = validVerts.map(v => [v.x, v.y, v.z]);
 
-    const points: Vec3[] = validVerts.map(v => [v.x, v.y, v.z]);
-
-    // Deduplicate 4th vertex if it matches the 3rd (triangle encoded as quad)
-    if (points.length === 4) {
-      const [ax, ay, az] = points[2];
-      const [bx, by, bz] = points[3];
-      if (Math.abs(ax - bx) < 1e-6 && Math.abs(ay - by) < 1e-6 && Math.abs(az - bz) < 1e-6) {
-        points.pop();
+      // Remove closing vertex if it duplicates the first (closed polyline)
+      if (points.length > 3) {
+        const first = points[0];
+        const last = points[points.length - 1];
+        if (
+          Math.abs(first[0] - last[0]) < 1e-6 &&
+          Math.abs(first[1] - last[1]) < 1e-6 &&
+          Math.abs(first[2] - last[2]) < 1e-6
+        ) {
+          points.pop();
+        }
       }
+
+      if (points.length < 3) continue;
+
+      const normal = computeNormal(points[0], points[1], points[2]);
+      facets.push({ vertices: points, normal });
+      continue;
     }
 
-    const normal = computeNormal(points[0], points[1], points[2]);
-    facets.push({ vertices: points, normal });
+    // Standard 3DFACE entities (triangulated surfaces)
+    if (entity.type === '3DFACE') {
+      const verts = (entity as { vertices?: { x: number; y: number; z: number }[] }).vertices;
+      if (!verts) continue;
+
+      const validVerts = verts.filter(
+        v => typeof v.x === 'number' && typeof v.y === 'number' && typeof v.z === 'number',
+      );
+      if (validVerts.length < 3) continue;
+
+      const points: Vec3[] = validVerts.map(v => [v.x, v.y, v.z]);
+
+      // Deduplicate 4th vertex if it matches the 3rd (triangle encoded as quad)
+      if (points.length === 4) {
+        const [ax, ay, az] = points[2];
+        const [bx, by, bz] = points[3];
+        if (Math.abs(ax - bx) < 1e-6 && Math.abs(ay - by) < 1e-6 && Math.abs(az - bz) < 1e-6) {
+          points.pop();
+        }
+      }
+
+      const normal = computeNormal(points[0], points[1], points[2]);
+      facets.push({ vertices: points, normal });
+    }
   }
 
   return facets;
