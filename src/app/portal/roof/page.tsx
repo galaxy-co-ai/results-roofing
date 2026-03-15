@@ -82,13 +82,13 @@ function RoofContent({ email }: { email: string | null }) {
 
       <div className={styles.content}>
         <div className={styles.viewport}>
-          {roofData?.gafReport3dUrl ? (
-            <GafViewerEmbed report3dUrl={roofData.gafReport3dUrl} />
-          ) : roofGeometry ? (
+          {roofGeometry ? (
             <RoofMeshViewer
               geometry={roofGeometry}
               shingleHex={selectedShingle.hex}
             />
+          ) : roofData?.gafReport3dUrl ? (
+            <GafViewerEmbed report3dUrl={roofData.gafReport3dUrl} />
           ) : gafStatus === 'pending' || dxfLoading ? (
             <div className={styles.emptyState}>
               <Loader2 size={40} color="var(--rr-color-muted)" className={styles.spinner} />
