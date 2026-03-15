@@ -49,6 +49,8 @@ export interface RoofDataResponse {
   gafDxfUrl: string | null;
   /** All GAF asset URLs keyed by asset type */
   gafAssets: Record<string, string> | null;
+  /** GAF's hosted 3D viewer URL */
+  gafReport3dUrl: string | null;
 }
 
 /** Cached roof visualization layers from Google Solar Data Layers API */

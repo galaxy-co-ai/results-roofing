@@ -153,6 +153,7 @@ export async function GET(request: NextRequest) {
     }
 
     const gafDxfUrl = gafAssets?.DxfUrl ?? gafAssets?.BuildingDxfUrl ?? gafAssets?.dxfUrl ?? null;
+    const gafReport3dUrl = gafAssets?.Report3D ?? null;
 
     const response: RoofDataResponse = {
       segments: segments as RoofDataResponse['segments'],
@@ -173,6 +174,7 @@ export async function GET(request: NextRequest) {
       gafStatus,
       gafDxfUrl,
       gafAssets,
+      gafReport3dUrl,
     };
 
     return NextResponse.json(response);
