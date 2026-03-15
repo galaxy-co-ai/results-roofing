@@ -74,7 +74,10 @@ function createShingleTexture(): THREE.CanvasTexture {
   const texture = new THREE.CanvasTexture(canvas);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
-  texture.repeat.set(3, 3);
+  // UVs are in DXF feet. Texture has 6 tabs × 13 rows.
+  // Real Timberline HDZ: ~12" tab width, ~5" exposure.
+  // One tile = 6ft wide × 5.4ft tall → repeat = 1/tileSize
+  texture.repeat.set(1 / 6, 1 / 5.4);
   texture.anisotropy = 8;
   return texture;
 }
