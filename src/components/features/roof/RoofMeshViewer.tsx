@@ -11,6 +11,70 @@ interface RoofMeshViewerProps {
   shingleHex: string;
 }
 
+/**
+ * Generate a tileable shingle pattern on an offscreen canvas.
+ * Returns a Three.js CanvasTexture ready for use as a bump/detail map.
+ * The texture is grayscale — color comes from the material's `color` property.
+ */
+function createShingleTexture(): THREE.CanvasTexture {
+  const size = 512;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d')!;
+
+  // Base fill — neutral gray (will be tinted by material color)
+  ctx.fillStyle = '#808080';
+  ctx.fillRect(0, 0, size, size);
+
+  const rowHeight = 32; // px per shingle row
+  const rows = Math.ceil(size / rowHeight);
+  const shingleWidth = 64;
+
+  for (let row = 0; row < rows; row++) {
+    const y = row * rowHeight;
+    const offset = row % 2 === 0 ? 0 : shingleWidth / 2; // staggered brick pattern
+
+    // Subtle row shadow line (bottom edge of each shingle)
+    ctx.fillStyle = 'rgba(0,0,0,0.12)';
+    ctx.fillRect(0, y + rowHeight - 2, size, 2);
+
+    // Subtle highlight line (top edge)
+    ctx.fillStyle = 'rgba(255,255,255,0.06)';
+    ctx.fillRect(0, y, size, 1);
+
+    // Vertical seams between shingles
+    const cols = Math.ceil(size / shingleWidth) + 1;
+    for (let col = 0; col < cols; col++) {
+      const x = col * shingleWidth + offset;
+
+      // Vertical seam line
+      ctx.fillStyle = 'rgba(0,0,0,0.10)';
+      ctx.fillRect(x - 1, y, 2, rowHeight);
+
+      // Per-shingle subtle noise variation
+      const brightness = 0.95 + Math.random() * 0.10; // 0.95–1.05
+      const gray = Math.round(128 * brightness);
+      ctx.fillStyle = `rgba(${gray},${gray},${gray},0.15)`;
+      ctx.fillRect(x + 2, y + 2, shingleWidth - 5, rowHeight - 4);
+    }
+
+    // Add some granular noise across the row for texture depth
+    for (let px = 0; px < size; px += 4) {
+      const noise = Math.random() * 0.08;
+      ctx.fillStyle = `rgba(0,0,0,${noise})`;
+      ctx.fillRect(px, y, 4, rowHeight);
+    }
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(6, 6);
+  texture.anisotropy = 4;
+  return texture;
+}
+
 function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
   const roofBufferGeometry = useMemo(() => {
     const geom = new THREE.BufferGeometry();
@@ -30,11 +94,14 @@ function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
     return geom;
   }, [geometry.walls.positions, geometry.walls.normals, geometry.walls.indices]);
 
+  const shingleTexture = useMemo(() => createShingleTexture(), []);
+
   const shingleMaterial = useMemo(() => {
     return new THREE.MeshStandardMaterial({
       color: new THREE.Color(shingleHex),
-      roughness: 0.8,
-      metalness: 0.1,
+      map: shingleTexture,
+      roughness: 0.85,
+      metalness: 0.05,
       flatShading: false,
       side: THREE.FrontSide,
       polygonOffset: true,
@@ -42,7 +109,7 @@ function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
       polygonOffsetUnits: -1,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [shingleTexture]);
 
   useEffect(() => {
     shingleMaterial.color.set(shingleHex);
@@ -53,8 +120,9 @@ function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
       roofBufferGeometry.dispose();
       wallBufferGeometry.dispose();
       shingleMaterial.dispose();
+      shingleTexture.dispose();
     };
-  }, [roofBufferGeometry, wallBufferGeometry, shingleMaterial]);
+  }, [roofBufferGeometry, wallBufferGeometry, shingleMaterial, shingleTexture]);
 
   return (
     <>
