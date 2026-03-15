@@ -11,6 +11,7 @@ import { RoofPageSkeleton } from '@/components/features/roof/RoofPageSkeleton';
 import { usePortalPhase } from '@/hooks/usePortalPhase';
 import { useRoofData } from '@/hooks/useRoofData';
 import { getDefaultShingle } from '@/lib/roof/shingle-catalog';
+import { GafViewerEmbed } from '@/components/features/roof/GafViewerEmbed';
 import { parseDxfToFacets } from '@/lib/roof/dxf-parser';
 import { buildGeometryFromFacets } from '@/lib/roof/dxf-to-geometry';
 import { DEV_BYPASS_ENABLED, MOCK_USER } from '@/lib/auth/dev-bypass';
@@ -81,7 +82,9 @@ function RoofContent({ email }: { email: string | null }) {
 
       <div className={styles.content}>
         <div className={styles.viewport}>
-          {roofGeometry ? (
+          {roofData?.gafReport3dUrl ? (
+            <GafViewerEmbed report3dUrl={roofData.gafReport3dUrl} />
+          ) : roofGeometry ? (
             <RoofMeshViewer
               geometry={roofGeometry}
               shingleHex={selectedShingle.hex}
