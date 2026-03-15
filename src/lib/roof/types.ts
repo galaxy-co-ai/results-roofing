@@ -73,14 +73,22 @@ export interface RoofLayers {
 export interface SubGeometry {
   positions: Float32Array;
   normals: Float32Array;
+  uvs: Float32Array;
   indices: Uint32Array;
   vertexCount: number;
   triangleCount: number;
+}
+
+/** Edge line geometry for trim/ridge caps */
+export interface EdgeGeometry {
+  positions: Float32Array;
+  vertexCount: number;
 }
 
 /** Geometry output from the DXF facet engine — ready for Three.js */
 export interface RoofGeometry {
   roof: SubGeometry;
   walls: SubGeometry;
+  edges: EdgeGeometry;
   facetCount: number;
 }

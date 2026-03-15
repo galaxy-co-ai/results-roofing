@@ -38,11 +38,17 @@ describe('buildGeometryFromFacets', () => {
 
     expect(geo.roof.positions.length).toBe(geo.roof.vertexCount * 3);
     expect(geo.roof.normals.length).toBe(geo.roof.vertexCount * 3);
+    expect(geo.roof.uvs.length).toBe(geo.roof.vertexCount * 2);
     expect(geo.roof.indices.length).toBe(geo.roof.triangleCount * 3);
 
     expect(geo.walls.positions.length).toBe(geo.walls.vertexCount * 3);
     expect(geo.walls.normals.length).toBe(geo.walls.vertexCount * 3);
+    expect(geo.walls.uvs.length).toBe(geo.walls.vertexCount * 2);
     expect(geo.walls.indices.length).toBe(geo.walls.triangleCount * 3);
+
+    // Edge geometry exists
+    expect(geo.edges.positions.length).toBeGreaterThan(0);
+    expect(geo.edges.vertexCount).toBe(geo.edges.positions.length / 3);
 
     // Sanity: totals are consistent
     expect(totalVertexCount).toBeGreaterThan(0);
@@ -118,11 +124,15 @@ describe('buildGeometryFromFacets', () => {
 
     expect(geo.roof.positions.length).toBe(geo.roof.vertexCount * 3);
     expect(geo.roof.normals.length).toBe(geo.roof.vertexCount * 3);
+    expect(geo.roof.uvs.length).toBe(geo.roof.vertexCount * 2);
     expect(geo.roof.indices.length).toBe(geo.roof.triangleCount * 3);
 
     expect(geo.walls.positions.length).toBe(geo.walls.vertexCount * 3);
     expect(geo.walls.normals.length).toBe(geo.walls.vertexCount * 3);
+    expect(geo.walls.uvs.length).toBe(geo.walls.vertexCount * 2);
     expect(geo.walls.indices.length).toBe(geo.walls.triangleCount * 3);
+
+    expect(geo.edges.positions.length).toBeGreaterThan(0);
 
     // All indices valid
     for (let i = 0; i < geo.roof.indices.length; i++) {
