@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
 import type { RoofGeometry } from '@/lib/roof/types';
 
@@ -55,8 +55,9 @@ function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
 
   return (
     <>
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[10, 20, 8]} intensity={0.9} />
+      <ambientLight intensity={0.4} />
+      <hemisphereLight args={['#87CEEB', '#e0ddd8', 0.3]} />
+      <directionalLight position={[10, 20, 8]} intensity={1.0} castShadow />
       <directionalLight position={[-8, 12, -6]} intensity={0.3} />
 
       <mesh geometry={roofBufferGeometry} material={shingleMaterial} />
@@ -66,10 +67,13 @@ function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
         </mesh>
       )}
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
-        <planeGeometry args={[40, 40]} />
-        <meshStandardMaterial color="#e5e5e5" roughness={1} />
-      </mesh>
+      <ContactShadows
+        position={[0, -0.01, 0]}
+        opacity={0.4}
+        scale={30}
+        blur={2}
+        far={20}
+      />
 
       <OrbitControls
         enableDamping
@@ -86,8 +90,8 @@ export function RoofMeshViewer({ geometry, shingleHex }: RoofMeshViewerProps) {
   return (
     <div style={{ width: '100%', height: '100%', minHeight: 400 }}>
       <Canvas
-        camera={{ position: [12, 10, 12], fov: 50, near: 0.1, far: 200 }}
-        style={{ background: 'var(--background, #f0f0f0)' }}
+        camera={{ position: [15, 12, 15], fov: 45, near: 0.1, far: 200 }}
+        style={{ background: 'linear-gradient(180deg, #87CEEB 0%, #dbe9f4 100%)' }}
       >
         <RoofScene geometry={geometry} shingleHex={shingleHex} />
       </Canvas>
