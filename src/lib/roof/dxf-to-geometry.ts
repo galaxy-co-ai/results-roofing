@@ -11,7 +11,7 @@
  * 3. Detect eave edges (boundary edges not shared between two facets)
  * 4. Extrude walls from eave edges down to ground plane
  * 5. Center at origin, scale to ~15 units
- * 6. Output positions, normals, indices as typed arrays
+ * 6. Output separate roof and wall sub-geometries as typed arrays
  */
 
 import type { DxfFacet, RoofGeometry } from './types';
@@ -37,21 +37,26 @@ export function buildGeometryFromFacets(facets: DxfFacet[]): RoofGeometry | null
     normal: dxfNormalToThree(f.normal),
   }));
 
-  const allPositions: number[] = [];
-  const allNormals: number[] = [];
-  const allIndices: number[] = [];
-  let vertexOffset = 0;
+  const roofPositions: number[] = [];
+  const roofNormals: number[] = [];
+  const roofIndices: number[] = [];
+  let roofVertexOffset = 0;
+
+  const wallPositions: number[] = [];
+  const wallNormals: number[] = [];
+  const wallIndices: number[] = [];
+  let wallVertexOffset = 0;
 
   // 2. Add roof facet geometry
   for (const facet of converted) {
-    const startIdx = vertexOffset;
+    const startIdx = roofVertexOffset;
     for (const [x, y, z] of facet.vertices) {
-      allPositions.push(x, y, z);
-      allNormals.push(facet.normal[0], facet.normal[1], facet.normal[2]);
-      vertexOffset++;
+      roofPositions.push(x, y, z);
+      roofNormals.push(facet.normal[0], facet.normal[1], facet.normal[2]);
+      roofVertexOffset++;
     }
     for (let k = 1; k < facet.vertices.length - 1; k++) {
-      allIndices.push(startIdx, startIdx + k, startIdx + k + 1);
+      roofIndices.push(startIdx, startIdx + k, startIdx + k + 1);
     }
   }
 
@@ -73,15 +78,15 @@ export function buildGeometryFromFacets(facets: DxfFacet[]): RoofGeometry | null
 
   // 4. Extrude walls from eave edges down to ground
   let minY = Infinity, maxY = -Infinity;
-  for (let i = 1; i < allPositions.length; i += 3) {
-    minY = Math.min(minY, allPositions[i]);
-    maxY = Math.max(maxY, allPositions[i]);
+  for (let i = 1; i < roofPositions.length; i += 3) {
+    minY = Math.min(minY, roofPositions[i]);
+    maxY = Math.max(maxY, roofPositions[i]);
   }
   const roofHeight = maxY - minY;
   const wallBottom = minY - roofHeight * 0.6;
 
   for (const { a, b } of Array.from(edgeCount.values())) {
-    const startIdx = vertexOffset;
+    const startIdx = wallVertexOffset;
     // Wall normal: perpendicular to edge in XZ plane, pointing outward
     const edgeDx = b[0] - a[0];
     const edgeDz = b[2] - a[2];
@@ -92,35 +97,35 @@ export function buildGeometryFromFacets(facets: DxfFacet[]): RoofGeometry | null
     const wallNz = edgeDx / edgeLen;
 
     // Top edge (at roof eave)
-    allPositions.push(a[0], a[1], a[2]);
-    allNormals.push(wallNx, 0, wallNz);
-    allPositions.push(b[0], b[1], b[2]);
-    allNormals.push(wallNx, 0, wallNz);
+    wallPositions.push(a[0], a[1], a[2]);
+    wallNormals.push(wallNx, 0, wallNz);
+    wallPositions.push(b[0], b[1], b[2]);
+    wallNormals.push(wallNx, 0, wallNz);
     // Bottom edge (at ground)
-    allPositions.push(b[0], wallBottom, b[2]);
-    allNormals.push(wallNx, 0, wallNz);
-    allPositions.push(a[0], wallBottom, a[2]);
-    allNormals.push(wallNx, 0, wallNz);
-    vertexOffset += 4;
+    wallPositions.push(b[0], wallBottom, b[2]);
+    wallNormals.push(wallNx, 0, wallNz);
+    wallPositions.push(a[0], wallBottom, a[2]);
+    wallNormals.push(wallNx, 0, wallNz);
+    wallVertexOffset += 4;
 
-    allIndices.push(startIdx, startIdx + 1, startIdx + 2);
-    allIndices.push(startIdx, startIdx + 2, startIdx + 3);
+    wallIndices.push(startIdx, startIdx + 1, startIdx + 2);
+    wallIndices.push(startIdx, startIdx + 2, startIdx + 3);
   }
 
   // 5. Normalize: center at origin, scale to ~15 units
-  const positions = new Float32Array(allPositions);
-  const normals = new Float32Array(allNormals);
-  const indices = new Uint32Array(allIndices);
-
+  // Compute bounds from BOTH roof and wall positions combined
   let pMinX = Infinity, pMaxX = -Infinity;
   let pMinY = Infinity;
   let pMinZ = Infinity, pMaxZ = -Infinity;
-  for (let i = 0; i < positions.length; i += 3) {
-    pMinX = Math.min(pMinX, positions[i]);
-    pMaxX = Math.max(pMaxX, positions[i]);
-    pMinY = Math.min(pMinY, positions[i + 1]);
-    pMinZ = Math.min(pMinZ, positions[i + 2]);
-    pMaxZ = Math.max(pMaxZ, positions[i + 2]);
+
+  for (const posArr of [roofPositions, wallPositions]) {
+    for (let i = 0; i < posArr.length; i += 3) {
+      pMinX = Math.min(pMinX, posArr[i]);
+      pMaxX = Math.max(pMaxX, posArr[i]);
+      pMinY = Math.min(pMinY, posArr[i + 1]);
+      pMinZ = Math.min(pMinZ, posArr[i + 2]);
+      pMaxZ = Math.max(pMaxZ, posArr[i + 2]);
+    }
   }
 
   const centerX = (pMinX + pMaxX) / 2;
@@ -128,19 +133,30 @@ export function buildGeometryFromFacets(facets: DxfFacet[]): RoofGeometry | null
   const maxSpan = Math.max(pMaxX - pMinX, pMaxZ - pMinZ, 1);
   const scale = 15 / maxSpan;
 
-  for (let i = 0; i < positions.length; i += 3) {
-    positions[i] = (positions[i] - centerX) * scale;
-    positions[i + 1] = (positions[i + 1] - pMinY) * scale;
-    positions[i + 2] = (positions[i + 2] - centerZ) * scale;
+  // Apply centering + scaling to both sets
+  for (const posArr of [roofPositions, wallPositions]) {
+    for (let i = 0; i < posArr.length; i += 3) {
+      posArr[i] = (posArr[i] - centerX) * scale;
+      posArr[i + 1] = (posArr[i + 1] - pMinY) * scale;
+      posArr[i + 2] = (posArr[i + 2] - centerZ) * scale;
+    }
   }
 
-  const vertexCount = positions.length / 3;
   return {
-    positions,
-    normals,
-    indices,
-    vertexCount,
-    triangleCount: indices.length / 3,
+    roof: {
+      positions: new Float32Array(roofPositions),
+      normals: new Float32Array(roofNormals),
+      indices: new Uint32Array(roofIndices),
+      vertexCount: roofPositions.length / 3,
+      triangleCount: roofIndices.length / 3,
+    },
+    walls: {
+      positions: new Float32Array(wallPositions),
+      normals: new Float32Array(wallNormals),
+      indices: new Uint32Array(wallIndices),
+      vertexCount: wallPositions.length / 3,
+      triangleCount: wallIndices.length / 3,
+    },
     facetCount: facets.length,
   };
 }

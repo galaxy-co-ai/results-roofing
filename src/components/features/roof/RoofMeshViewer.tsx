@@ -12,15 +12,25 @@ interface RoofMeshViewerProps {
 }
 
 function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
-  const bufferGeometry = useMemo(() => {
+  const roofBufferGeometry = useMemo(() => {
     const geom = new THREE.BufferGeometry();
-    geom.setAttribute('position', new THREE.BufferAttribute(geometry.positions, 3));
-    geom.setAttribute('normal', new THREE.BufferAttribute(geometry.normals, 3));
-    geom.setIndex(new THREE.BufferAttribute(geometry.indices, 1));
+    geom.setAttribute('position', new THREE.BufferAttribute(geometry.roof.positions, 3));
+    geom.setAttribute('normal', new THREE.BufferAttribute(geometry.roof.normals, 3));
+    geom.setIndex(new THREE.BufferAttribute(geometry.roof.indices, 1));
     return geom;
-  }, [geometry.positions, geometry.normals, geometry.indices]);
+  }, [geometry.roof.positions, geometry.roof.normals, geometry.roof.indices]);
 
-  const material = useMemo(() => {
+  const wallBufferGeometry = useMemo(() => {
+    const geom = new THREE.BufferGeometry();
+    if (geometry.walls.positions.length > 0) {
+      geom.setAttribute('position', new THREE.BufferAttribute(geometry.walls.positions, 3));
+      geom.setAttribute('normal', new THREE.BufferAttribute(geometry.walls.normals, 3));
+      geom.setIndex(new THREE.BufferAttribute(geometry.walls.indices, 1));
+    }
+    return geom;
+  }, [geometry.walls.positions, geometry.walls.normals, geometry.walls.indices]);
+
+  const shingleMaterial = useMemo(() => {
     return new THREE.MeshStandardMaterial({
       color: new THREE.Color(shingleHex),
       roughness: 0.8,
@@ -32,15 +42,16 @@ function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
   }, []);
 
   useEffect(() => {
-    material.color.set(shingleHex);
-  }, [shingleHex, material]);
+    shingleMaterial.color.set(shingleHex);
+  }, [shingleHex, shingleMaterial]);
 
   useEffect(() => {
     return () => {
-      bufferGeometry.dispose();
-      material.dispose();
+      roofBufferGeometry.dispose();
+      wallBufferGeometry.dispose();
+      shingleMaterial.dispose();
     };
-  }, [bufferGeometry, material]);
+  }, [roofBufferGeometry, wallBufferGeometry, shingleMaterial]);
 
   return (
     <>
@@ -48,7 +59,12 @@ function RoofScene({ geometry, shingleHex }: RoofMeshViewerProps) {
       <directionalLight position={[10, 20, 8]} intensity={0.9} />
       <directionalLight position={[-8, 12, -6]} intensity={0.3} />
 
-      <mesh geometry={bufferGeometry} material={material} />
+      <mesh geometry={roofBufferGeometry} material={shingleMaterial} />
+      {wallBufferGeometry.attributes.position && (
+        <mesh geometry={wallBufferGeometry}>
+          <meshStandardMaterial color="#e0ddd8" roughness={0.9} metalness={0} side={THREE.DoubleSide} />
+        </mesh>
+      )}
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
         <planeGeometry args={[40, 40]} />

@@ -69,12 +69,18 @@ export interface RoofLayers {
   };
 }
 
-/** Geometry output from the parametric facet engine — ready for Three.js */
-export interface RoofGeometry {
-  positions: Float32Array;   // [x,y,z, ...] — centered at origin, ~15 units span
-  normals: Float32Array;     // [nx,ny,nz, ...] — per-vertex
-  indices: Uint32Array;      // [i0,i1,i2, ...] — triangles
+/** Sub-geometry for a mesh group */
+export interface SubGeometry {
+  positions: Float32Array;
+  normals: Float32Array;
+  indices: Uint32Array;
   vertexCount: number;
   triangleCount: number;
+}
+
+/** Geometry output from the DXF facet engine — ready for Three.js */
+export interface RoofGeometry {
+  roof: SubGeometry;
+  walls: SubGeometry;
   facetCount: number;
 }
