@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import { Home, Loader2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
@@ -28,6 +29,8 @@ const RoofMeshViewer = dynamic(
 // ---------------------------------------------------------------------------
 
 function RoofContent({ email }: { email: string | null }) {
+  const searchParams = useSearchParams();
+  const forceViewer = searchParams.get('viewer'); // ?viewer=gaf or ?viewer=custom
   const { isLoading: phaseLoading, quote } = usePortalPhase(email);
   const quoteId = quote?.id ?? null;
   const { data: roofData, isLoading: dataLoading } = useRoofData(quoteId);
@@ -82,7 +85,9 @@ function RoofContent({ email }: { email: string | null }) {
 
       <div className={styles.content}>
         <div className={styles.viewport}>
-          {roofGeometry ? (
+          {forceViewer === 'gaf' && roofData?.gafReport3dUrl ? (
+            <GafViewerEmbed report3dUrl={roofData.gafReport3dUrl} />
+          ) : roofGeometry && forceViewer !== 'gaf' ? (
             <RoofMeshViewer
               geometry={roofGeometry}
               shingleHex={selectedShingle.hex}
