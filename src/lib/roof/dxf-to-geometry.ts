@@ -1,27 +1,49 @@
 /**
  * Convert parsed DXF facets into Three.js-ready BufferGeometry arrays.
  *
- * 1. Triangulate roof facets (fan from vertex 0)
- * 2. Detect eave edges (boundary edges not shared between two facets)
- * 3. Extrude walls from eave edges down to ground plane
- * 4. Center at origin, scale to ~15 units
- * 5. Output positions, normals, indices as typed arrays
+ * DXF coordinate convention: X=east, Y=north, Z=up
+ * Three.js convention:        X=east, Y=up,    Z=south
+ * Conversion: threeX = dxfX, threeY = dxfZ, threeZ = -dxfY
+ *
+ * Pipeline:
+ * 1. Convert DXF coords → Three.js coords
+ * 2. Triangulate roof facets (fan from vertex 0)
+ * 3. Detect eave edges (boundary edges not shared between two facets)
+ * 4. Extrude walls from eave edges down to ground plane
+ * 5. Center at origin, scale to ~15 units
+ * 6. Output positions, normals, indices as typed arrays
  */
 
 import type { DxfFacet, RoofGeometry } from './types';
 
 type Vec3 = [number, number, number];
 
+/** Convert DXF vertex [x,y,z] to Three.js [x,y,z] */
+function dxfToThree(v: Vec3): Vec3 {
+  return [v[0], v[2], -v[1]];
+}
+
+/** Convert DXF normal [x,y,z] to Three.js [x,y,z] */
+function dxfNormalToThree(n: Vec3): Vec3 {
+  return [n[0], n[2], -n[1]];
+}
+
 export function buildGeometryFromFacets(facets: DxfFacet[]): RoofGeometry | null {
   if (facets.length === 0) return null;
+
+  // 1. Convert all facets to Three.js coordinate system
+  const converted = facets.map(f => ({
+    vertices: f.vertices.map(dxfToThree),
+    normal: dxfNormalToThree(f.normal),
+  }));
 
   const allPositions: number[] = [];
   const allNormals: number[] = [];
   const allIndices: number[] = [];
   let vertexOffset = 0;
 
-  // 1. Add roof facet geometry
-  for (const facet of facets) {
+  // 2. Add roof facet geometry
+  for (const facet of converted) {
     const startIdx = vertexOffset;
     for (const [x, y, z] of facet.vertices) {
       allPositions.push(x, y, z);
@@ -33,9 +55,9 @@ export function buildGeometryFromFacets(facets: DxfFacet[]): RoofGeometry | null
     }
   }
 
-  // 2. Detect eave edges (boundary edges used by only one facet)
+  // 3. Detect eave edges (boundary edges used by only one facet)
   const edgeCount = new Map<string, { a: Vec3; b: Vec3 }>();
-  for (const facet of facets) {
+  for (const facet of converted) {
     const n = facet.vertices.length;
     for (let i = 0; i < n; i++) {
       const a = facet.vertices[i];
@@ -49,7 +71,7 @@ export function buildGeometryFromFacets(facets: DxfFacet[]): RoofGeometry | null
     }
   }
 
-  // 3. Extrude walls from eave edges
+  // 4. Extrude walls from eave edges down to ground
   let minY = Infinity, maxY = -Infinity;
   for (let i = 1; i < allPositions.length; i += 3) {
     minY = Math.min(minY, allPositions[i]);
@@ -60,6 +82,7 @@ export function buildGeometryFromFacets(facets: DxfFacet[]): RoofGeometry | null
 
   for (const { a, b } of Array.from(edgeCount.values())) {
     const startIdx = vertexOffset;
+    // Wall normal: perpendicular to edge in XZ plane, pointing outward
     const edgeDx = b[0] - a[0];
     const edgeDz = b[2] - a[2];
     const edgeLen = Math.sqrt(edgeDx * edgeDx + edgeDz * edgeDz);
@@ -68,10 +91,12 @@ export function buildGeometryFromFacets(facets: DxfFacet[]): RoofGeometry | null
     const wallNx = -edgeDz / edgeLen;
     const wallNz = edgeDx / edgeLen;
 
+    // Top edge (at roof eave)
     allPositions.push(a[0], a[1], a[2]);
     allNormals.push(wallNx, 0, wallNz);
     allPositions.push(b[0], b[1], b[2]);
     allNormals.push(wallNx, 0, wallNz);
+    // Bottom edge (at ground)
     allPositions.push(b[0], wallBottom, b[2]);
     allNormals.push(wallNx, 0, wallNz);
     allPositions.push(a[0], wallBottom, a[2]);
@@ -82,7 +107,7 @@ export function buildGeometryFromFacets(facets: DxfFacet[]): RoofGeometry | null
     allIndices.push(startIdx, startIdx + 2, startIdx + 3);
   }
 
-  // 4. Normalize: center at origin, scale to ~15 units
+  // 5. Normalize: center at origin, scale to ~15 units
   const positions = new Float32Array(allPositions);
   const normals = new Float32Array(allNormals);
   const indices = new Uint32Array(allIndices);
